@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrackScore - Vendor Evaluation Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #F58220;
+      --primary-hover: #E06F12;
+      --navy: #0F172A;
+      --navy-card: #1E293B;
+      --surface: #FFFFFF;
+      --surface-subtle: #F8FAFC;
+      --border-color: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --success: #10B981;
+      --warning: #F59E0B;
+      --danger: #EF4444;
+      --info: #3B82F6;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: #F1F5F9;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Bar */
+    .navbar {
+      background: #111827;
+      color: #FFFFFF;
+      border-bottom: 3px solid var(--primary);
+      padding: 14px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #FFFFFF;
+    }
+
+    .brand-badge {
+      background: rgba(245, 130, 32, 0.15);
+      border: 1px solid rgba(245, 130, 32, 0.3);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .user-info {
+      text-align: right;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .user-email {
+      font-size: 11px;
+      color: #94A3B8;
+    }
+
+    .btn-logout {
+      background: #334155;
+      color: #FFFFFF;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .btn-logout:hover {
+      background: #475569;
+    }
+
+    /* Main Container */
+    .container {
+      max-width: 1120px;
+      margin: 28px auto;
+      padding: 0 20px;
+      width: 100%;
+      flex: 1;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .header-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    /* Lifecycle Stepper / Progress Bar */
+    .lifecycle-stepper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin: 20px 0 28px 0;
+      position: relative;
+      overflow-x: auto;
+      padding: 10px 0;
+    }
+
+    .step-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+      min-width: 90px;
+      text-align: center;
+    }
+
+    .step-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: #E2E8F0;
+      color: #64748B;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      border: 3px solid #FFFFFF;
+      box-shadow: 0 0 0 1px #CBD5E1;
+      transition: all 0.2s ease;
+    }
+
+    .step-item.completed .step-icon {
+      background: #10B981;
+      color: #FFFFFF;
+      box-shadow: 0 0 0 1px #10B981;
+    }
+
+    .step-item.current .step-icon {
+      background: var(--primary);
+      color: #FFFFFF;
+      box-shadow: 0 0 0 3px rgba(245, 130, 32, 0.25);
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: capitalize;
+    }
+
+    .step-item.completed .step-label {
+      color: #065F46;
+    }
+
+    .step-item.current .step-label {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .step-line {
+      position: absolute;
+      top: 25px;
+      left: 45px;
+      right: 45px;
+      height: 3px;
+      background: #E2E8F0;
+      z-index: 1;
+    }
+
+    .step-line-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      background: #10B981;
+      transition: width 0.3s ease;
+    }
+
+    /* Grid Sections */
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .info-box {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px 16px;
+    }
+
+    .info-label {
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .info-value {
+      font-size: 15px;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-paid {
+      background: #DEF7EC;
+      color: #03543F;
+      border: 1px solid #BCF0DA;
+    }
+
+    .badge-pending {
+      background: #FEF3C7;
+      color: #92400E;
+      border: 1px solid #FDE68A;
+    }
+
+    .badge-issued {
+      background: #E0E7FF;
+      color: #3730A3;
+      border: 1px solid #C7D2FE;
+    }
+
+    .badge-completed {
+      background: #D1FAE5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+    }
+
+    /* Certificate Download Banner */
+    .cert-banner {
+      background: linear-gradient(135deg, #1E293B 0%, #0F172A 100%);
+      color: #FFFFFF;
+      border-radius: 8px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      border: 1px solid #334155;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .cert-info h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin-bottom: 4px;
+    }
+
+    .cert-info p {
+      font-size: 12px;
+      color: #94A3B8;
+    }
+
+    .btn-download-cert {
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn-download-cert:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Audit History Timeline */
+    .timeline {
+      position: relative;
+      padding-left: 20px;
+      border-left: 2px solid var(--border-color);
+      margin-top: 16px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 18px;
+    }
+
+    .timeline-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .timeline-dot {
+      position: absolute;
+      left: -26px;
+      top: 2px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid #FFFFFF;
+      box-shadow: 0 0 0 1px var(--primary);
+    }
+
+    .timeline-content {
+      font-size: 12px;
+      color: #334155;
+    }
+
+    .timeline-date {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 48px 20px;
+      color: var(--text-muted);
+    }
+
+    .spinner-large {
+      width: 32px;
+      height: 32px;
+      border: 3px solid #CBD5E1;
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin: 0 auto 16px auto;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navbar -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-title">TrackScore</span>
+      <span class="brand-badge">Vendor Portal</span>
+    </div>
+    <div class="nav-user">
+      <div class="user-info">
+        <div class="user-name" id="user-display-name">Loading...</div>
+        <div class="user-email" id="user-display-email">--</div>
+      </div>
+      <button class="btn-logout" id="btn-logout">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="page-header">
+      <div>
+        <h1 class="header-title">Telematics Device Evaluation Registry</h1>
+        <div class="header-subtitle">Official tracking and certificate repository for your telematics hardware.</div>
+      </div>
+      <div class="live-indicator">
+        <div class="pulse-dot"></div>
+        <span>Live Status Connected</span>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div id="loading-view" class="card empty-state">
+      <div class="spinner-large"></div>
+      <p>Synchronizing your telematics evaluation records...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-view" class="card empty-state" style="display: none;">
+      <h3 style="color: #DC2626; margin-bottom: 8px;">Access Denied or Error Loading Records</h3>
+      <p id="error-message">Unable to verify your vendor credentials.</p>
+      <button class="btn-download-cert" style="margin-top: 16px;" onclick="window.location.href='/login.html'">Return to Login</button>
+    </div>
+
+    <!-- Main Content View -->
+    <div id="records-view" style="display: none;"></div>
+  </div>
+
+  <script>
+    // Lifecycle order for stepper
+    const LIFECYCLE_STAGES = [
+      { key: 'registered', label: 'Registered' },
+      { key: 'scheduled', label: 'Scheduled' },
+      { key: 'submitted', label: 'Submitted' },
+      { key: 'pending_review', label: 'Review' },
+      { key: 'pre_final_sent', label: 'Pre-Final' },
+      { key: 'payment_confirmed', label: 'Payment' },
+      { key: 'certificate_issued', label: 'Cert Issued' },
+      { key: 'completed', label: 'Completed' }
+    ];
+
+    const token = localStorage.getItem('trackscore_token');
+    const userRole = localStorage.getItem('trackscore_user_role');
+
+    // Security check on mount: vendor token required
+    if (!token || userRole !== 'vendor') {
+      window.location.href = '/login.html';
+    }
+
+    // Sign out button
+    document.getElementById('btn-logout').addEventListener('click', () => {
+      localStorage.removeItem('trackscore_token');
+      localStorage.removeItem('trackscore_user_role');
+      localStorage.removeItem('trackscore_user');
+      window.location.href = '/login.html';
+    });
+
+    async function loadVendorData() {
+      try {
+        const res = await fetch('/.netlify/functions/vendor-portal-data', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (res.status === 401 || res.status === 403) {
+          throw new Error('Your session has expired or is unauthorized. Please log in again.');
+        }
+
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to retrieve vendor data.');
+        }
+
+        document.getElementById('loading-view').style.display = 'none';
+
+        // Update vendor details in header
+        if (data.vendor) {
+          document.getElementById('user-display-name').textContent = data.vendor.companyName || 'Authorized Vendor';
+          document.getElementById('user-display-email').textContent = data.vendor.contactEmail || '';
+        }
+
+        renderEvaluations(data.evaluations || []);
+      } catch (err) {
+        document.getElementById('loading-view').style.display = 'none';
+        document.getElementById('error-view').style.display = 'block';
+        document.getElementById('error-message').textContent = err.message || 'Error communicating with server.';
+      }
+    }
+
+    function renderEvaluations(evaluations) {
+      const recordsView = document.getElementById('records-view');
+      recordsView.innerHTML = '';
+      recordsView.style.display = 'block';
+
+      if (evaluations.length === 0) {
+        recordsView.innerHTML = `
+          <div class="card empty-state">
+            <h3>No Evaluation Records Linked</h3>
+            <p style="margin-top: 8px;">No telematics device evaluations are currently registered for your company account. Once MIROS schedules your inspection, your evaluation progress will appear here.</p>
+          </div>
+        `;
+        return;
+      }
+
+      evaluations.forEach((evalDoc) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'card';
+
+        const status = evalDoc.status || 'registered';
+        const currentIdx = LIFECYCLE_STAGES.findIndex(s => s.key === status);
+        const progressPercent = currentIdx >= 0 ? (currentIdx / (LIFECYCLE_STAGES.length - 1)) * 100 : 0;
+
+        // Stepper HTML
+        const stepsHtml = LIFECYCLE_STAGES.map((s, idx) => {
+          let stateClass = '';
+          if (idx < currentIdx) stateClass = 'completed';
+          else if (idx === currentIdx) stateClass = 'current';
+
+          return `
+            <div class="step-item ${stateClass}">
+              <div class="step-icon">${idx < currentIdx ? '✓' : (idx + 1)}</div>
+              <div class="step-label">${s.label}</div>
+            </div>
+          `;
+        }).join('');
+
+        // Certificate Banner (if issued or completed)
+        const cert = evalDoc.certificate || {};
+        const isCertReady = ['certificate_issued', 'completed'].includes(status) && cert.certificateNumber;
+        const certBannerHtml = isCertReady ? `
+          <div class="cert-banner">
+            <div class="cert-info">
+              <div style="font-size: 11px; font-weight: 700; color: #F58220; text-transform: uppercase;">Official MIROS Endorsement Ready</div>
+              <h3>Certificate: ${escapeHtml(cert.certificateNumber)}</h3>
+              <p>Endorsed by ${escapeHtml(cert.signedBy || 'Director General Office')} • Date: ${cert.signedDate ? new Date(cert.signedDate).toLocaleDateString() : 'Issued'}</p>
+            </div>
+            <button type="button" class="btn-download-cert" onclick="downloadOfficialCertificate('${evalDoc._id}', '${escapeHtml(cert.certificateNumber)}')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+              Download Certificate
+            </button>
+          </div>
+        ` : '';
+
+        // Payment status badge
+        const isPaid = evalDoc.payment?.status === 'paid' || status === 'payment_confirmed' || status === 'certificate_issued' || status === 'completed';
+        const paymentBadge = isPaid
+          ? `<span class="badge badge-paid">PAID &bull; RM ${Number(evalDoc.invoice?.amount || 1500).toLocaleString()}</span>`
+          : `<span class="badge badge-pending">PAYMENT PENDING &bull; RM ${Number(evalDoc.invoice?.amount || 1500).toLocaleString()}</span>`;
+
+        // Audit timeline HTML
+        const timelineList = Array.isArray(evalDoc.statusHistory) && evalDoc.statusHistory.length > 0
+          ? evalDoc.statusHistory.map(h => `
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <strong>${formatStatusName(h.status)}</strong>: ${escapeHtml(h.note || 'Status updated')}
+                </div>
+                <div class="timeline-date">${new Date(h.timestamp).toLocaleString()}</div>
+              </div>
+            `).join('')
+          : `<div style="font-size: 12px; color: #94A3B8;">Initial registration confirmed. Pending further lifecycle updates.</div>`;
+
+        cardEl.innerHTML = `
+          <div class="card-header">
+            <div>
+              <div style="font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase;">Company Record</div>
+              <h2 class="card-title">${escapeHtml(evalDoc.companyName || 'Telematics Customer')}</h2>
+              <div style="font-size: 13px; color: #475569; font-weight: 600; margin-top: 2px;">
+                Device Model: <span style="color: #0F172A;">${escapeHtml(evalDoc.deviceModel || 'N/A')}</span> &bull; 
+                Package: <span style="color: #0F172A;">${escapeHtml(evalDoc.packageName || 'Standard Evaluation')}</span>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Status</div>
+              <span class="badge badge-${status.replace('_', '-')}">${formatStatusName(status)}</span>
+            </div>
+          </div>
+
+          <!-- Lifecycle Stepper -->
+          <div class="lifecycle-stepper">
+            <div class="step-line">
+              <div class="step-line-progress" style="width: ${progressPercent}%;"></div>
+            </div>
+            ${stepsHtml}
+          </div>
+
+          ${certBannerHtml}
+
+          <!-- Information Grid -->
+          <div class="details-grid">
+            <div class="info-box">
+              <div class="info-label">Invoice Reference</div>
+              <div class="info-value">${escapeHtml(evalDoc.invoice?.invoiceNumber || 'INV-2026-PENDING')}</div>
+              <div style="margin-top: 6px;">${paymentBadge}</div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-label">Assessment Schedule</div>
+              <div class="info-value">${evalDoc.scheduledDate ? new Date(evalDoc.scheduledDate).toLocaleDateString() : 'Date Pending'}</div>
+              <div style="font-size: 11px; color: #64748B; margin-top: 4px;">
+                ${evalDoc.assessmentDate ? `Evaluated on ${evalDoc.assessmentDate}` : 'To be conducted by certified assessor'}
+              </div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-label">Accreditation Result</div>
+              <div class="info-value">
+                ${evalDoc.starsCount ? `${'★'.repeat(evalDoc.starsCount)}${'☆'.repeat(5 - evalDoc.starsCount)} (${evalDoc.starsCount} Stars)` : 'Awaiting Completion'}
+              </div>
+              <div style="font-size: 11px; color: #64748B; margin-top: 4px;">
+                ${evalDoc.ratingLabel ? escapeHtml(evalDoc.ratingLabel) : 'Compliant with MIROS safety standards'}
+              </div>
+            </div>
+          </div>
+
+          <!-- Status Audit Trail -->
+          <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+            <div style="font-size: 13px; font-weight: 700; color: #1E293B; margin-bottom: 12px;">Evaluation Activity History</div>
+            <div class="timeline">
+              ${timelineList}
+            </div>
+          </div>
+        `;
+
+        recordsView.appendChild(cardEl);
+      });
+    }
+
+    function formatStatusName(status) {
+      if (!status) return 'Registered';
+      return status.replace(/_/g, ' ').toUpperCase();
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    function downloadOfficialCertificate(evalId, certNum) {
+      alert(`Downloading Official MIROS Telematics Certificate #${certNum}.\n\nA digital copy has been endorsed and delivered for evaluation ID: ${evalId}.`);
+    }
+
+    // Connect to SSE live updates stream for instant notification of lifecycle changes
+    function setupStatusStream() {
+      try {
+        const es = new EventSource('/.netlify/functions/stream-status');
+        es.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data && data.newStatus) {
+              console.log('[SSE EVENT]', data);
+              // Auto-reload to reflect latest state
+              loadVendorData();
+            }
+          } catch (e) {}
+        };
+        es.onerror = () => {
+          es.close();
+          // Fallback to polling every 20s if SSE fails in sandbox
+          setTimeout(setupStatusStream, 20000);
+        };
+      } catch (err) {
+        console.warn('SSE not supported or failed to connect:', err);
+      }
+    }
+
+    // Initial load and live stream setup
+    loadVendorData();
+    setupStatusStream();
+  </script>
+</body>
+</html>

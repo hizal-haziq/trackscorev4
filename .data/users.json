@@ -1,0 +1,40 @@
+[
+  {
+    "_id": "user_manager_001",
+    "email": "manager@trackscore.my",
+    "passwordHash": "$2b$12$0EFvQaGaQCKiTaUfnA.T0.m85nXv/HHfZbR2donkE1AAPIkSl9AdK",
+    "name": "Lead Operations Manager",
+    "role": "manager",
+    "createdAt": "2026-09-11T01:42:43.968Z",
+    "updatedAt": "2026-09-11T02:43:52.029Z"
+  },
+  {
+    "_id": "user_manager_002",
+    "email": "admin@trackscore.my",
+    "passwordHash": "$2b$12$lyJ.EATLKPZCyd8MMuwnfuw1d6DFNEakGg4NjqABHFHRUx5yiaY/S",
+    "name": "System Admin Manager",
+    "role": "manager",
+    "createdAt": "2026-09-11T01:42:44.065Z",
+    "updatedAt": "2026-09-11T02:43:52.399Z"
+  },
+  {
+    "_id": "user_assessor_001",
+    "email": "farhan@trackscore.my",
+    "passwordHash": "$2b$12$p19VZHllNjpC.pdmjC.70exp7fZJxsxOfDkrWWRQ5gnxxHTwc8kja",
+    "name": "Ts. Mohd Farhan",
+    "role": "assessor",
+    "assessorId": "AS-8812",
+    "createdAt": "2026-09-11T01:42:44.163Z",
+    "updatedAt": "2026-09-11T02:43:52.763Z"
+  },
+  {
+    "_id": "user_assessor_002",
+    "email": "assessor@trackscore.my",
+    "passwordHash": "$2b$12$vfaiV3SATWRvXgIOOuKCXeAVZxqIi5cohA12RT7H7zPOzZVSYWFzW",
+    "name": "Certified Assessor",
+    "role": "assessor",
+    "assessorId": "AS-9001",
+    "createdAt": "2026-09-11T01:42:44.265Z",
+    "updatedAt": "2026-09-11T02:43:53.130Z"
+  }
+]

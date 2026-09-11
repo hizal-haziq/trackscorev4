@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrackScore - Unified Portal Login</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #F58220;
+      --primary-hover: #E06F12;
+      --dark-bg: #0F172A;
+      --dark-card: #1E293B;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --border-color: #E2E8F0;
+      --surface: #FFFFFF;
+      --surface-subtle: #F8FAFC;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: #F1F5F9;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+    }
+
+    .login-container {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border-radius: 12px;
+      border: 1px solid var(--border-color);
+      box-shadow: 0 10px 25px -5px rgba(15, 23, 42, 0.08), 0 8px 10px -6px rgba(15, 23, 42, 0.04);
+      overflow: hidden;
+    }
+
+    .brand-header {
+      background: #111827;
+      padding: 24px 28px;
+      border-bottom: 3px solid var(--primary);
+      text-align: center;
+      color: #FFFFFF;
+    }
+
+    .brand-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 4px;
+    }
+
+    .brand-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #FFFFFF;
+    }
+
+    .brand-subtitle {
+      font-size: 12px;
+      color: #94A3B8;
+      margin-top: 4px;
+    }
+
+    .login-body {
+      padding: 28px;
+    }
+
+    .role-tabs {
+      display: flex;
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 4px;
+      margin-bottom: 24px;
+      gap: 4px;
+    }
+
+    .role-tab {
+      flex: 1;
+      padding: 8px 12px;
+      border: none;
+      background: transparent;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    .role-tab.active {
+      background: #FFFFFF;
+      color: #0F172A;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .role-tab:hover:not(.active) {
+      color: #1E293B;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin-bottom: 6px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 14px;
+      color: #0F172A;
+      background: #FFFFFF;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(245, 130, 32, 0.15);
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 12px;
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.05s active;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .btn-submit:hover {
+      background: var(--primary-hover);
+    }
+
+    .btn-submit:active {
+      transform: scale(0.99);
+    }
+
+    .btn-submit:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .alert {
+      padding: 12px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 18px;
+      display: none;
+    }
+
+    .alert-error {
+      background: #FEF2F2;
+      border: 1px solid #FCA5A5;
+      color: #991B1B;
+    }
+
+    .alert-info {
+      background: #EFF6FF;
+      border: 1px solid #BFDBFE;
+      color: #1E40AF;
+    }
+
+    .demo-creds-box {
+      margin-top: 24px;
+      padding: 14px;
+      background: var(--surface-subtle);
+      border: 1px dashed var(--border-color);
+      border-radius: 8px;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .demo-creds-title {
+      font-weight: 700;
+      color: #1E293B;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .demo-btn {
+      background: #E2E8F0;
+      border: none;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #334155;
+      transition: background 0.15s ease;
+    }
+
+    .demo-btn:hover {
+      background: #CBD5E1;
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .demo-card {
+      padding: 8px;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-radius: 6px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .demo-card:hover {
+      border-color: var(--primary);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+
+    .demo-card strong {
+      display: block;
+      color: #0F172A;
+      font-size: 11px;
+    }
+
+    .demo-card span {
+      display: block;
+      color: var(--text-muted);
+      font-size: 10px;
+    }
+
+    .footer-links {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .footer-links a {
+      color: var(--primary);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+
+    .spinner {
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.4);
+      border-top-color: #FFFFFF;
+      border-radius: 50%;
+      animation: spin 0.6s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="brand-header">
+      <div class="brand-eyebrow">MIROS Telematics Assessment</div>
+      <h1 class="brand-title">TrackScore</h1>
+      <div class="brand-subtitle">Unified Authentication & Role-Based Access</div>
+    </div>
+
+    <div class="login-body">
+      <!-- Role Selector Tabs -->
+      <div class="role-tabs" id="role-tabs">
+        <button type="button" class="role-tab active" data-role="all" id="tab-all">Unified Login</button>
+        <button type="button" class="role-tab" data-role="manager" id="tab-manager">Manager</button>
+        <button type="button" class="role-tab" data-role="assessor" id="tab-assessor">Assessor</button>
+        <button type="button" class="role-tab" data-role="vendor" id="tab-vendor">Vendor</button>
+      </div>
+
+      <div id="alert-box" class="alert alert-error"></div>
+
+      <form id="login-form">
+        <div class="form-group">
+          <label class="form-label" for="login-email">Email or Assessor ID</label>
+          <input 
+            type="text" 
+            id="login-email" 
+            class="form-input" 
+            placeholder="name@organization.com or MKA 9006" 
+            required 
+            autocomplete="username"
+          />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="login-password">Password</label>
+          <input 
+            type="password" 
+            id="login-password" 
+            class="form-input" 
+            placeholder="••••••••••••" 
+            required 
+            autocomplete="current-password"
+          />
+        </div>
+
+        <button type="submit" id="btn-login-submit" class="btn-submit">
+          <span id="btn-text">Sign In</span>
+          <span id="btn-spinner" class="spinner" style="display: none;"></span>
+        </button>
+      </form>
+
+      <!-- Quick Demo Access (for convenience) -->
+      <div class="demo-creds-box">
+        <div class="demo-creds-title">
+          <span>Quick Demo Roles</span>
+          <span style="font-weight: 500; font-size: 11px;">Click to auto-fill</span>
+        </div>
+        <div class="demo-grid">
+          <div class="demo-card" onclick="fillDemoCreds('admin@trackscore.my', 'Mgr_I8bNjBLdEx7Y!', 'manager')">
+            <strong>Manager</strong>
+            <span>Dashboard &amp; Review</span>
+          </div>
+          <div class="demo-card" onclick="fillDemoCreds('assessor@trackscore.my', 'Asr_jBte-EKkG09Q!', 'assessor')">
+            <strong>Assessor</strong>
+            <span>Inspection Matrix</span>
+          </div>
+          <div class="demo-card" onclick="fillDemoCreds('vendor@fleetmatics.com', 'Vnd_sBcOvXlg_ESo!', 'vendor')">
+            <strong>Vendor</strong>
+            <span>Client Self-Service</span>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-top: 20px; padding: 12px 14px; background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 8px; text-align: center; font-size: 13px;">
+        <span style="color: #9A3412;">Not a registered vendor yet?</span>
+        <br />
+        <a href="/request-assessment.html" style="color: #EA580C; font-weight: 700; text-decoration: underline;">
+          Want to register your company? Click here &rarr;
+        </a>
+      </div>
+
+      <div class="footer-links">
+        <div style="margin-bottom: 6px;">
+          <a href="/landing.html" style="color: #475569; font-weight: 500;">&larr; Back to TrackScore Home</a>
+        </div>
+        <span>Need assistance? Contact </span>
+        <a href="mailto:admin@miros.gov.my">MIROS Telematics Operations</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let selectedRoleConstraint = 'all';
+
+    // Role Tab Switching
+    document.querySelectorAll('.role-tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        selectedRoleConstraint = tab.dataset.role;
+        hideAlert();
+      });
+    });
+
+    function fillDemoCreds(email, password, role) {
+      document.getElementById('login-email').value = email;
+      document.getElementById('login-password').value = password;
+      const tab = document.querySelector(`.role-tab[data-role="${role}"]`) || document.getElementById('tab-all');
+      if (tab) {
+        document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+        selectedRoleConstraint = role;
+      }
+      hideAlert();
+    }
+
+    function showAlert(message, type = 'error') {
+      const alertBox = document.getElementById('alert-box');
+      alertBox.textContent = message;
+      alertBox.className = `alert ${type === 'error' ? 'alert-error' : 'alert-info'}`;
+      alertBox.style.display = 'block';
+    }
+
+    function hideAlert() {
+      const alertBox = document.getElementById('alert-box');
+      alertBox.style.display = 'none';
+    }
+
+    // Unified Login Submission
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      hideAlert();
+
+      const email = document.getElementById('login-email').value.trim();
+      const password = document.getElementById('login-password').value;
+      const btn = document.getElementById('btn-login-submit');
+      const btnText = document.getElementById('btn-text');
+      const btnSpinner = document.getElementById('btn-spinner');
+
+      if (!email || !password) {
+        showAlert('Please enter both email and password.');
+        return;
+      }
+
+      btn.disabled = true;
+      btnText.textContent = 'Verifying...';
+      btnSpinner.style.display = 'inline-block';
+
+      try {
+        const response = await fetch('/.netlify/functions/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await response.json();
+
+        if (!response.ok || !data.success) {
+          throw new Error(data.error || 'Authentication failed. Please check your credentials.');
+        }
+
+        const role = data.role || data.user?.role;
+        const token = data.token;
+
+        // Auto-adapt selected role tab to authenticated role
+        if (selectedRoleConstraint !== 'all' && selectedRoleConstraint !== role) {
+          const matchingTab = document.querySelector(`.role-tab[data-role="${role}"]`);
+          if (matchingTab) {
+            document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
+            matchingTab.classList.add('active');
+            selectedRoleConstraint = role;
+          }
+        }
+
+        // Store tokens across standard storage keys for full compatibility
+        localStorage.setItem('trackscore_token', token);
+        localStorage.setItem('trackscore_user_role', role);
+        localStorage.setItem('trackscore_user', JSON.stringify(data.user || {}));
+        if (role === 'manager') {
+          localStorage.setItem('manager_api_key', 'trackscore-manager-key-2026');
+          sessionStorage.setItem('manager_authenticated', 'true');
+        }
+
+        showAlert('Authentication successful. Redirecting to your portal...', 'info');
+
+        // Role-based destination redirect
+        setTimeout(() => {
+          if (role === 'manager') {
+            window.location.href = '/dashboard.html';
+          } else if (role === 'vendor') {
+            window.location.href = '/vendor-portal.html';
+          } else {
+            // Assessor
+            window.location.href = '/index.html';
+          }
+        }, 600);
+
+      } catch (err) {
+        showAlert(err.message || 'Network error during sign-in.');
+        btn.disabled = false;
+        btnText.textContent = 'Sign In';
+        btnSpinner.style.display = 'none';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 250 50" width="250" height="50">
+  <defs>
+    <linearGradient id="tsLogoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF8A24"/>
+      <stop offset="100%" stop-color="#F58220"/>
+    </linearGradient>
+  </defs>
+  <!-- TS Emblem Squircle -->
+  <rect x="2" y="3" width="44" height="44" rx="11" ry="11" fill="url(#tsLogoGrad)"/>
+  <text x="24" y="27.5" 
+        font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" 
+        font-size="20" 
+        font-weight="900" 
+        letter-spacing="-0.8" 
+        fill="#FFFFFF" 
+        text-anchor="middle" 
+        dominant-baseline="central">TS</text>
+
+  <!-- TrackScore Wordmark -->
+  <text x="58" y="31" 
+        font-family="'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif" 
+        font-size="25" 
+        font-weight="800" 
+        letter-spacing="-0.5" 
+        fill="#FFFFFF">Track<tspan font-weight="700" fill="#FFFFFF">Score</tspan></text>
+
+  <!-- Signature Orange Track Accent Line under Track -->
+  <rect x="58" y="38" width="64" height="4" rx="2" fill="#F58220"/>
+</svg>
