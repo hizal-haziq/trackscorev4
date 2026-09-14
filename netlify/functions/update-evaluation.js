@@ -159,6 +159,8 @@ export const handler = async (event, context) => {
     };
 
     if (payload.companyName) updateFields.companyName = String(payload.companyName).trim();
+    if (payload.officeAddress !== undefined) updateFields.officeAddress = String(payload.officeAddress).trim();
+    if (payload.state !== undefined) updateFields.state = String(payload.state).trim();
     if (payload.deviceModel) updateFields.deviceModel = String(payload.deviceModel).trim();
     if (payload.packageName) updateFields.packageName = String(payload.packageName).trim();
     if (payload.assessorName) updateFields.assessorName = String(payload.assessorName).trim();

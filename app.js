@@ -380,7 +380,7 @@ function handleAuthError(response) {
     localStorage.removeItem('trackscore_token');
     localStorage.removeItem('trackscore_user_role');
     localStorage.removeItem('trackscore_user');
-    window.location.href = '/login.html?session_expired=true';
+    window.location.href = '/login.html?reason=expired';
     return true;
   }
   return false;
@@ -407,6 +407,18 @@ window.handleLogout = handleLogout;
     return;
   }
 
+  // Check if forced password change is pending
+  try {
+    const rawUser = localStorage.getItem('trackscore_user');
+    const user = rawUser ? JSON.parse(rawUser) : null;
+    if (user && user.mustChangePassword === true) {
+      window.location.href = '/change-password.html';
+      return;
+    }
+  } catch (e) {
+    // Ignore JSON parsing errors
+  }
+
   // Render user session badge in header when DOM is ready
   function renderUserHeader() {
     const nav = document.getElementById('main-nav');
@@ -415,12 +427,51 @@ window.handleLogout = handleLogout;
       const rawUser = localStorage.getItem('trackscore_user');
       const user = rawUser ? JSON.parse(rawUser) : null;
       if (user) {
+        // Hide sign in button
+        const loginBtn = document.getElementById('nav-login');
+        if (loginBtn) loginBtn.style.display = 'none';
+
+        // Manage dashboard link: ONLY shown if user is a manager
+        const dashBtn = document.getElementById('nav-dashboard');
+        if (dashBtn) {
+          dashBtn.style.display = (role === 'manager') ? 'inline-flex' : 'none';
+        }
+
+        // Adapt brand badge and subtitle if user is Manager in audit mode
+        const brandBadge = document.getElementById('header-brand-badge');
+        const brandSubtitle = document.getElementById('header-brand-subtitle');
+        if (role === 'manager') {
+          if (brandBadge) {
+            brandBadge.textContent = 'Manager Audit';
+            brandBadge.style.background = '#1E293B';
+            brandBadge.style.color = '#38BDF8';
+            brandBadge.style.border = '1px solid #334155';
+          }
+          if (brandSubtitle) {
+            brandSubtitle.textContent = 'Auditing Evaluation Rubric';
+          }
+        }
+
+        // Manager viewing banner
+        const managerBanner = document.getElementById('manager-viewing-assessor-banner');
+        if (managerBanner) {
+          managerBanner.style.display = (role === 'manager') ? 'flex' : 'none';
+        }
+
         const badge = document.createElement('div');
         badge.id = 'user-session-badge';
-        badge.style.cssText = 'display: inline-flex; align-items: center; gap: 8px; margin-left: 10px; padding: 4px 10px; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; font-size: 12px; color: #E2E8F0;';
-        const roleLabel = role === 'manager' ? '👔 Manager' : '📋 Assessor';
+        badge.style.cssText = 'display: inline-flex; align-items: center; gap: 8px; margin-left: 6px; padding: 4px 10px; background: #1E293B; border: 1px solid #334155; border-radius: 6px; font-size: 12px; color: #E2E8F0; white-space: nowrap !important; flex-shrink: 0;';
+        const roleTitle = role === 'manager' ? 'Manager' : 'Assessor';
+        const roleColor = role === 'manager' ? '#38BDF8' : '#F58220';
         const displayName = escapeHtml(user.name || user.email || 'User');
-        badge.innerHTML = `<span><strong>${displayName}</strong> (${roleLabel})</span><button type="button" style="background: none; border: none; color: #F87171; font-size: 11.5px; cursor: pointer; text-decoration: underline; padding: 0 2px;" onclick="handleLogout()">Sign Out</button>`;
+        badge.innerHTML = `
+          <span style="display: inline-flex; align-items: center; gap: 6px; white-space: nowrap;">
+            <span style="display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: #10B981; flex-shrink: 0;"></span>
+            <span style="max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;" title="${displayName}">${displayName}</span>
+            <span style="background: rgba(255,255,255,0.1); color: ${roleColor}; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 3px; text-transform: uppercase;">${roleTitle}</span>
+          </span>
+          <button type="button" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #FCA5A5; font-size: 11px; font-weight: 600; cursor: pointer; padding: 2px 7px; border-radius: 4px; white-space: nowrap; line-height: 1.2;" onclick="handleLogout()">Sign Out</button>
+        `;
         nav.appendChild(badge);
 
         // Auto-fill assessor info if empty
@@ -431,6 +482,11 @@ window.handleLogout = handleLogout;
         const assessorIdInput = document.getElementById('assessorId');
         if (assessorIdInput && !assessorIdInput.value && (user.assessorCode || user.assessorId)) {
           assessorIdInput.value = user.assessorCode || user.assessorId;
+        }
+
+        // Initialize assessor submissions count badge
+        if (typeof window.fetchAssessorSubmissions === 'function') {
+          window.fetchAssessorSubmissions(true);
         }
       }
     } catch (e) {
@@ -783,10 +839,66 @@ function updateAssessorIdValidationUI() {
   }
 }
 
+function setPackageSelectValue(val) {
+  const selectEl = document.getElementById("packageName");
+  const customEl = document.getElementById("packageNameCustom");
+  if (!selectEl) return;
+  const cleanVal = (val || "").trim();
+  if (!cleanVal) {
+    selectEl.value = "";
+    if (customEl) {
+      customEl.style.display = "none";
+      customEl.value = "";
+    }
+    return;
+  }
+
+  // 1. Direct option value match
+  let matched = false;
+  for (let i = 0; i < selectEl.options.length; i++) {
+    if (selectEl.options[i].value === cleanVal) {
+      selectEl.selectedIndex = i;
+      matched = true;
+      break;
+    }
+  }
+
+  // 2. Fuzzy match for standard tiers
+  if (!matched) {
+    if (/package\s*2/i.test(cleanVal) || /6[,.]?000/.test(cleanVal) || /comprehensive/i.test(cleanVal)) {
+      selectEl.value = "Package 2: Comprehensive Assessment (RM 6,000)";
+      matched = true;
+    } else if (/package\s*1/i.test(cleanVal) || /4[,.]?500/.test(cleanVal) || /standard/i.test(cleanVal)) {
+      selectEl.value = "Package 1: Standard Assessment (RM 4,500)";
+      matched = true;
+    }
+  }
+
+  // 3. Custom tier if not matching predefined options
+  if (!matched) {
+    selectEl.value = "Custom";
+    if (customEl) {
+      customEl.style.display = "block";
+      customEl.value = cleanVal;
+    }
+  } else if (customEl) {
+    customEl.style.display = "none";
+    customEl.value = "";
+  }
+}
+
 function captureMetadata() {
   assessmentState.metadata.companyName = (document.getElementById("companyName")?.value || "").trim();
   assessmentState.metadata.deviceModel = (document.getElementById("deviceModel")?.value || "").trim();
-  assessmentState.metadata.packageName = (document.getElementById("packageName")?.value || "").trim();
+  
+  const pkgEl = document.getElementById("packageName");
+  const customPkgEl = document.getElementById("packageNameCustom");
+  let pkgVal = (pkgEl?.value || "").trim();
+  if (pkgVal === "Custom") {
+    pkgVal = (customPkgEl?.value || "").trim();
+  }
+  assessmentState.metadata.packageName = pkgVal;
+
   assessmentState.metadata.assessorName = (document.getElementById("assessorName")?.value || "").trim();
   assessmentState.metadata.assessorId = (document.getElementById("assessorId")?.value || "").trim().toUpperCase();
   assessmentState.metadata.assessmentDate = document.getElementById("assessmentDate")?.value || new Date().toISOString().split("T")[0];
@@ -1387,8 +1499,7 @@ function restoreDraft(draft) {
       if (el) el.value = state.metadata.deviceModel;
     }
     if (state.metadata.packageName !== undefined) {
-      const el = document.getElementById("packageName");
-      if (el) el.value = state.metadata.packageName;
+      setPackageSelectValue(state.metadata.packageName);
     }
     if (state.metadata.assessorName !== undefined) {
       const el = document.getElementById("assessorName");
@@ -1521,14 +1632,13 @@ function startNewEvaluation() {
   // Reset inputs
   const companyEl = document.getElementById("companyName");
   const deviceEl = document.getElementById("deviceModel");
-  const packageEl = document.getElementById("packageName");
   const assessorEl = document.getElementById("assessorName");
   const assessorIdEl = document.getElementById("assessorId");
   const dateEl = document.getElementById("assessmentDate");
 
   if (companyEl) companyEl.value = "";
   if (deviceEl) deviceEl.value = "";
-  if (packageEl) packageEl.value = "";
+  setPackageSelectValue("");
   if (assessorEl) assessorEl.value = "";
   if (assessorIdEl) {
     assessorIdEl.value = "";
@@ -1891,7 +2001,7 @@ async function loadEvaluationForCorrection(recordId) {
     // Populate metadata
     if (document.getElementById("companyName")) document.getElementById("companyName").value = doc.companyName || "";
     if (document.getElementById("deviceModel")) document.getElementById("deviceModel").value = doc.deviceModel || "";
-    if (document.getElementById("packageName")) document.getElementById("packageName").value = doc.packageName || "";
+    setPackageSelectValue(doc.packageName || "");
     if (document.getElementById("assessorName")) document.getElementById("assessorName").value = doc.assessorName || "";
     if (document.getElementById("assessorId")) {
       document.getElementById("assessorId").value = doc.assessorId || "";
@@ -2700,14 +2810,13 @@ function resetEvaluationForm() {
   // Reset metadata inputs
   const companyEl = document.getElementById("companyName");
   const deviceEl = document.getElementById("deviceModel");
-  const packageEl = document.getElementById("packageName");
   const assessorEl = document.getElementById("assessorName");
   const assessorIdEl = document.getElementById("assessorId");
   const dateEl = document.getElementById("assessmentDate");
 
   if (companyEl) companyEl.value = "";
   if (deviceEl) deviceEl.value = "";
-  if (packageEl) packageEl.value = "";
+  setPackageSelectValue("");
   if (assessorEl) assessorEl.value = "";
   if (assessorIdEl) {
     assessorIdEl.value = "";
@@ -2739,7 +2848,7 @@ function resetEvaluationForm() {
 function fillDemoData() {
   document.getElementById("companyName").value = "Vortex Telematics Malaysia Sdn Bhd";
   document.getElementById("deviceModel").value = "VT-900 GPS Telematics Hub";
-  document.getElementById("packageName").value = "Commercial Fleet Gold Plus";
+  setPackageSelectValue("Package 2: Comprehensive Assessment (RM 6,000)");
   document.getElementById("assessorName").value = "Ir. Khairul Azhar";
   const demoAssessorIdEl = document.getElementById("assessorId");
   if (demoAssessorIdEl) {
@@ -3444,6 +3553,9 @@ function renderNotificationCardsList() {
 }
 
 async function loadAndScrollEvaluationForCorrection(recordId) {
+  if (typeof window.switchAssessorPortalTab === "function") {
+    window.switchAssessorPortalTab("matrix");
+  }
   await loadEvaluationForCorrection(recordId);
   const metaCard = document.getElementById("card-metadata");
   if (metaCard) {
@@ -3631,13 +3743,67 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("evaluation-form")?.addEventListener("change", handleOptionChange);
 
     // Debounced autosave on metadata field inputs and changes
-    ["companyName", "deviceModel", "packageName", "assessorName", "assessorId", "assessmentDate"].forEach(fieldId => {
+    ["companyName", "deviceModel", "packageName", "packageNameCustom", "assessorName", "assessorId", "assessmentDate"].forEach(fieldId => {
       const el = document.getElementById(fieldId);
       if (el) {
         el.addEventListener("input", debouncedAutosave);
         el.addEventListener("change", debouncedAutosave);
       }
     });
+
+    // Assessment Package dropdown and custom input handlers
+    const packageSelectEl = document.getElementById("packageName");
+    const packageCustomEl = document.getElementById("packageNameCustom");
+    if (packageSelectEl) {
+      packageSelectEl.addEventListener("change", (e) => {
+        if (e.target.value === "Custom") {
+          if (packageCustomEl) {
+            packageCustomEl.style.display = "block";
+            packageCustomEl.focus();
+          }
+        } else {
+          if (packageCustomEl) {
+            packageCustomEl.style.display = "none";
+            packageCustomEl.value = "";
+          }
+        }
+        captureMetadata();
+        debouncedAutosave();
+      });
+    }
+    if (packageCustomEl) {
+      packageCustomEl.addEventListener("input", () => {
+        captureMetadata();
+        debouncedAutosave();
+      });
+    }
+
+    // Check URL parameters for pre-filling evaluation (e.g. from Dashboard or Scheduled Customer)
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const companyParam = urlParams.get("company");
+      const deviceParam = urlParams.get("device");
+      const packageParam = urlParams.get("package") || urlParams.get("pkg");
+      const assessorParam = urlParams.get("assessor");
+
+      if (companyParam && document.getElementById("companyName")) {
+        document.getElementById("companyName").value = companyParam;
+      }
+      if (deviceParam && document.getElementById("deviceModel")) {
+        document.getElementById("deviceModel").value = deviceParam;
+      }
+      if (packageParam) {
+        setPackageSelectValue(packageParam);
+      }
+      if (assessorParam && document.getElementById("assessorName")) {
+        document.getElementById("assessorName").value = assessorParam;
+      }
+      if (companyParam || deviceParam || packageParam) {
+        captureMetadata();
+      }
+    } catch (err) {
+      console.warn("Error parsing URL params:", err);
+    }
 
     // Assessor ID auto-formatting and real-time validation handler
     const assessorIdEl = document.getElementById("assessorId");
@@ -3801,10 +3967,464 @@ document.addEventListener("DOMContentLoaded", () => {
         closeSubmitConfirmModal();
       }
     });
+    // Assessor Submissions search listener
+    const submissionsSearchInput = document.getElementById("assessor-submissions-search");
+    if (submissionsSearchInput) {
+      let searchDebounceTimer = null;
+      submissionsSearchInput.addEventListener("input", () => {
+        clearTimeout(searchDebounceTimer);
+        searchDebounceTimer = setTimeout(() => {
+          if (typeof window.renderAssessorSubmissionsTable === "function") {
+            window.renderAssessorSubmissionsTable(cachedAssessorSubmissions);
+          }
+        }, 200);
+      });
+    }
   }
 });
 
-// Export globally so dashboard or tests can reference if needed
+// ==========================================================================
+// 8. Assessor Portal Navigation & Submissions Repository
+// ==========================================================================
+
+let cachedAssessorSubmissions = [];
+
+window.switchAssessorPortalTab = function(tabName) {
+  const workbench = document.getElementById("evaluation-workbench-layout");
+  const submissionsView = document.getElementById("assessor-submissions-view");
+  const notifSection = document.getElementById("notification-section");
+  const stickyBar = document.getElementById("sticky-score-bar");
+
+  // Tab buttons
+  const tabMatrix = document.getElementById("tab-btn-matrix");
+  const tabSubmissions = document.getElementById("tab-btn-submissions");
+  const tabNotifs = document.getElementById("tab-btn-notifications");
+  const navEval = document.getElementById("nav-eval-form");
+  const navSub = document.getElementById("nav-my-submissions");
+  const navNotifs = document.getElementById("btn-nav-notifications");
+
+  // Reset tab button styles
+  [tabMatrix, tabSubmissions, tabNotifs].forEach(btn => {
+    if (btn) {
+      btn.classList.remove("active");
+      btn.style.background = "#FFFFFF";
+      btn.style.color = "#475569";
+      btn.style.borderColor = "#CBD5E1";
+      btn.style.fontWeight = "600";
+    }
+  });
+
+  if (navEval) navEval.classList.remove("active");
+  if (navSub) navSub.classList.remove("active");
+  if (navNotifs) navNotifs.classList.remove("active");
+
+  const titleBar = document.getElementById("page-title-bar");
+
+  if (tabName === "submissions") {
+    if (workbench) workbench.style.display = "none";
+    if (stickyBar) stickyBar.style.display = "none";
+    if (notifSection) notifSection.style.display = "none";
+    if (titleBar) titleBar.style.display = "none";
+    if (submissionsView) submissionsView.style.display = "block";
+
+    if (tabSubmissions) {
+      tabSubmissions.classList.add("active");
+      tabSubmissions.style.background = "#F58220";
+      tabSubmissions.style.color = "#FFFFFF";
+      tabSubmissions.style.borderColor = "#F58220";
+      tabSubmissions.style.fontWeight = "700";
+    }
+    if (navSub) navSub.classList.add("active");
+
+    window.fetchAssessorSubmissions();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else if (tabName === "notifications") {
+    if (workbench) workbench.style.display = "none";
+    if (stickyBar) stickyBar.style.display = "none";
+    if (submissionsView) submissionsView.style.display = "none";
+    if (titleBar) titleBar.style.display = "none";
+    if (notifSection) notifSection.style.display = "block";
+
+    if (tabNotifs) {
+      tabNotifs.classList.add("active");
+      tabNotifs.style.background = "#F58220";
+      tabNotifs.style.color = "#FFFFFF";
+      tabNotifs.style.borderColor = "#F58220";
+      tabNotifs.style.fontWeight = "700";
+    }
+    if (navNotifs) navNotifs.classList.add("active");
+
+    if (typeof fetchNotificationsFeed === "function") {
+      fetchNotificationsFeed();
+    }
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } else {
+    // Default: 'matrix'
+    if (workbench) workbench.style.display = "";
+    if (stickyBar) stickyBar.style.display = "";
+    if (submissionsView) submissionsView.style.display = "none";
+    if (notifSection) notifSection.style.display = "none";
+    if (titleBar) titleBar.style.display = "";
+
+    if (tabMatrix) {
+      tabMatrix.classList.add("active");
+      tabMatrix.style.background = "#F58220";
+      tabMatrix.style.color = "#FFFFFF";
+      tabMatrix.style.borderColor = "#F58220";
+      tabMatrix.style.fontWeight = "700";
+    }
+    if (navEval) navEval.classList.add("active");
+  }
+};
+
+window.fetchAssessorSubmissions = async function(countOnly = false) {
+  const tbody = document.getElementById("assessor-submissions-tbody");
+  const countSpan = document.getElementById("assessor-submissions-count");
+  const navBadge = document.getElementById("nav-submissions-badge");
+  const statTotal = document.getElementById("assessor-stat-total");
+  const statPending = document.getElementById("assessor-stat-pending");
+  const statApproved = document.getElementById("assessor-stat-approved");
+  const statRejected = document.getElementById("assessor-stat-rejected");
+
+  if (!countOnly && tbody) {
+    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 32px; color: #64748B;">Loading your evaluations...</td></tr>`;
+  }
+
+  try {
+    const res = await fetch("/.netlify/functions/get-evaluations?limit=100&includeBreakdown=false", {
+      headers: getAuthHeaders()
+    });
+
+    if (handleAuthError(res)) return;
+    if (!res.ok) throw new Error("Failed to load submissions.");
+
+    const data = await res.json();
+    const records = Array.isArray(data.evaluations) ? data.evaluations : (Array.isArray(data) ? data : []);
+    cachedAssessorSubmissions = records;
+
+    // Update counters
+    const totalCount = records.length;
+    let pendingCount = 0;
+    let approvedCount = 0;
+    let rejectedCount = 0;
+
+    records.forEach(r => {
+      const s = (r.status || "pending_review").toLowerCase();
+      if (s === "approved" || s === "completed") approvedCount++;
+      else if (s === "rejected" || s === "remediation_required") rejectedCount++;
+      else pendingCount++;
+    });
+
+    if (countSpan) countSpan.textContent = totalCount;
+    if (navBadge) navBadge.textContent = totalCount;
+    if (statTotal) statTotal.textContent = totalCount;
+    if (statPending) statPending.textContent = pendingCount;
+    if (statApproved) statApproved.textContent = approvedCount;
+    if (statRejected) statRejected.textContent = rejectedCount;
+
+    if (!countOnly && tbody) {
+      window.renderAssessorSubmissionsTable(records);
+    }
+  } catch (err) {
+    console.error("Failed to fetch assessor submissions:", err);
+    if (!countOnly && tbody) {
+      tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 24px; color: #DC2626;">Error loading submissions: ${escapeHtml(err.message || "Network error")}</td></tr>`;
+    }
+  }
+};
+
+window.renderAssessorSubmissionsTable = function(records) {
+  const tbody = document.getElementById("assessor-submissions-tbody");
+  if (!tbody) return;
+
+  const searchInput = document.getElementById("assessor-submissions-search");
+  const query = (searchInput ? searchInput.value : "").toLowerCase().trim();
+
+  const filtered = records.filter(r => {
+    if (!query) return true;
+    const comp = (r.companyName || r.metadata?.companyName || "").toLowerCase();
+    const dev = (r.deviceModel || r.metadata?.deviceModel || "").toLowerCase();
+    const ref = (r.submissionRef || r._id || "").toLowerCase();
+    return comp.includes(query) || dev.includes(query) || ref.includes(query);
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" style="text-align: center; padding: 36px 16px; color: #64748B;">
+          <div style="font-size: 15px; font-weight: 600; color: #1E293B; margin-bottom: 4px;">No evaluations found</div>
+          <div style="font-size: 13px;">${query ? "No submissions match your search query." : "You have not submitted any evaluations yet."}</div>
+          ${!query ? '<button type="button" class="btn btn-primary btn-sm" onclick="switchAssessorPortalTab(\'matrix\')" style="margin-top: 12px;">Start First Assessment</button>' : ''}
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((r, idx) => {
+    const id = r._id || r.id;
+    const dateStr = r.assessmentDate || (r.createdAt ? new Date(r.createdAt).toLocaleDateString("en-GB") : "-");
+    const comp = escapeHtml(r.companyName || r.metadata?.companyName || "Unknown Company");
+    const model = escapeHtml(r.deviceModel || r.metadata?.deviceModel || "Unknown Device");
+    const pkg = escapeHtml(r.packageName || r.metadata?.packageName || "Comprehensive");
+    const totalScore = Number(r.totalScore ?? r.scores?.total ?? 0).toFixed(2);
+    const starRating = Number(r.starRating ?? r.scores?.starRating ?? 0).toFixed(1);
+    const starsCount = Math.round(Number(starRating));
+    let starsStr = "";
+    for (let s = 1; s <= 5; s++) starsStr += s <= starsCount ? "★" : "☆";
+
+    const status = (r.status || "pending_review").toLowerCase();
+    let statusBadge = "";
+    if (status === "approved" || status === "completed") {
+      statusBadge = '<span class="status-badge" style="background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">✔ Approved &amp; Certified</span>';
+    } else if (status === "rejected" || status === "remediation_required") {
+      statusBadge = '<span class="status-badge" style="background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">⚠ Remediation Required</span>';
+    } else if (status === "pre_final_sent") {
+      statusBadge = '<span class="status-badge" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Pre-Final Issued</span>';
+    } else if (status === "payment_confirmed") {
+      statusBadge = '<span class="status-badge" style="background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Payment Confirmed</span>';
+    } else {
+      statusBadge = '<span class="status-badge" style="background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">⏳ Pending Manager Review</span>';
+    }
+
+    const isRejected = status === "rejected" || status === "remediation_required";
+
+    return `
+      <tr style="background: ${idx % 2 === 0 ? '#FFFFFF' : '#F8FAFC'}; border-bottom: 1px solid #E2E8F0;">
+        <td style="padding: 10px 12px; color: #475569; font-size: 12.5px; white-space: nowrap;">${dateStr}</td>
+        <td style="padding: 10px 12px; font-weight: 600; color: #0F172A;">${comp}</td>
+        <td style="padding: 10px 12px; color: #334155;">${model}</td>
+        <td style="padding: 10px 12px; color: #64748B; font-size: 12px;">${pkg}</td>
+        <td style="padding: 10px 12px; text-align: center; font-weight: 700; color: #F58220;">${totalScore} / 5.00</td>
+        <td style="padding: 10px 12px; text-align: center; font-size: 12.5px; color: #EAB308; white-space: nowrap;" title="${starRating} Stars">${starsStr}</td>
+        <td style="padding: 10px 12px; text-align: center;">${statusBadge}</td>
+        <td style="padding: 10px 12px; text-align: right; white-space: nowrap;">
+          ${isRejected ? `
+            <button type="button" class="btn btn-primary btn-sm" onclick="loadAndScrollEvaluationForCorrection('${escapeHtml(id)}')" style="font-size: 11.5px; padding: 4px 9px; font-weight: 700; margin-right: 6px;">
+              Fix &amp; Resubmit
+            </button>
+          ` : ''}
+          <button type="button" class="btn btn-secondary btn-sm" onclick="viewAssessorSubmissionReport('${escapeHtml(id)}')" style="font-size: 11.5px; padding: 4px 9px;">
+            View Report
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+};
+
+function generatePdfReportForRecord(record) {
+  const companyName = record.companyName || record.metadata?.companyName || "Unknown Company";
+  const deviceModel = record.deviceModel || record.metadata?.deviceModel || "Unknown Device";
+  const packageName = record.packageName || record.metadata?.packageName || "Comprehensive";
+  const assessorName = record.assessorName || record.metadata?.assessorName || "Assessor";
+  const assessorId = record.assessorId || record.metadata?.assessorId || "ASR 0000";
+  const assessmentDate = record.assessmentDate || record.metadata?.assessmentDate || new Date().toISOString().split("T")[0];
+
+  const sectionA = Number(record.scores?.sectionA ?? record.sectionAScore ?? 0).toFixed(2);
+  const sectionB = Number(record.scores?.sectionB ?? record.sectionBScore ?? 0).toFixed(2);
+  const total = Number(record.scores?.total ?? record.totalScore ?? 0).toFixed(2);
+  const starRating = Number(record.scores?.starRating ?? record.starRating ?? 0).toFixed(1);
+  const starsCount = Math.round(Number(starRating));
+
+  let starDisplay = "";
+  for (let s = 1; s <= 5; s++) {
+    starDisplay += s <= starsCount ? "★" : "☆";
+  }
+
+  const rawBreakdown = Array.isArray(record.breakdown) ? record.breakdown : [];
+  let allCriteriaItems = [];
+  if (rawBreakdown.length > 0) {
+    let aCount = 0;
+    let bCount = 0;
+    allCriteriaItems = rawBreakdown.map(item => {
+      const isB = (item.section || "").toUpperCase() === "B";
+      const num = isB ? ++bCount : ++aCount;
+      return {
+        sec: isB ? "B" : "A",
+        num,
+        name: item.name || "",
+        selectedOption: item.selectedOption || "None (0)",
+        points: Number(item.points || 0)
+      };
+    });
+  } else {
+    SECTION_A_CRITERIA.forEach((crit, idx) => {
+      allCriteriaItems.push({
+        sec: "A",
+        num: idx + 1,
+        name: crit.name,
+        selectedOption: "Verified",
+        points: (Number(sectionA) / 24).toFixed(3)
+      });
+    });
+    SECTION_B_CRITERIA.forEach((crit, idx) => {
+      allCriteriaItems.push({
+        sec: "B",
+        num: idx + 1,
+        name: crit.name,
+        selectedOption: "Verified",
+        points: (Number(sectionB) / 9).toFixed(3)
+      });
+    });
+  }
+
+  const leftColumnItems = allCriteriaItems.slice(0, 17);
+  const rightColumnItems = allCriteriaItems.slice(17);
+
+  const renderColumnRows = (itemsList) => itemsList.map((item, idx) => `
+    <tr style="background-color: ${idx % 2 === 0 ? '#FFFFFF' : '#F8FAFC'};">
+      <td style="padding: 2.5px 4px; border-bottom: 1px solid #E2E8F0; font-size: 8px; text-align: center; color: #64748B; font-weight: 700;">
+        ${item.sec}${item.num}
+      </td>
+      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 8px; font-weight: 600; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;">
+        ${escapeHtml(item.name)}
+      </td>
+      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 7.5px; color: ${item.points > 0 ? (item.sec === 'A' ? '#C2410C' : '#1D4ED8') : '#64748B'}; font-weight: ${item.points > 0 ? '700' : '400'}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">
+        ${escapeHtml(item.selectedOption)}
+      </td>
+      <td style="padding: 2.5px 4px; border-bottom: 1px solid #E2E8F0; font-size: 8px; text-align: right; font-weight: 700; color: #0F172A;">
+        +${Number(item.points).toFixed(2)}
+      </td>
+    </tr>
+  `).join("");
+
+  return `
+    <div id="pdf-report-content" style="width: 794px; min-height: 1120px; padding: 22px 28px; background: #FFFFFF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0F172A; box-sizing: border-box; position: relative;">
+      <!-- Header -->
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #F58220; padding-bottom: 8px; margin-bottom: 10px;">
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <img src="/TrackScore_Logo.svg" alt="TrackScore" style="height: 32px; width: auto;" />
+          <div style="border-left: 1.5px solid #CBD5E1; padding-left: 10px;">
+            <div style="font-size: 11px; font-weight: 800; color: #0F172A; letter-spacing: 0.05em; text-transform: uppercase;">Telematics Compliance Assessment</div>
+            <div style="font-size: 8.5px; color: #64748B;">Official Technical Audit Report</div>
+          </div>
+        </div>
+        <div style="text-align: right; font-size: 8.5px; color: #64748B; line-height: 1.3;">
+          <div style="font-weight: 700; color: #0F172A; font-size: 9.5px;">Malaysian Institute of Road Safety Research</div>
+          <div>Telematics Verification Division</div>
+          <div>Ref: <strong>${escapeHtml(record.submissionRef || record._id || 'TS-EVAL')}</strong></div>
+        </div>
+      </div>
+
+      <!-- Metadata Box -->
+      <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 4px; padding: 6px 10px; margin-bottom: 10px;">
+        <table style="width: 100%; border-collapse: collapse;">
+          <tr>
+            <td style="width: 18%; padding: 2px 4px; font-size: 8px; font-weight: 700; color: #64748B; text-transform: uppercase;">Company:</td>
+            <td style="width: 32%; padding: 2px 4px; font-size: 10px; font-weight: 700; color: #0F172A;">${escapeHtml(companyName)}</td>
+            <td style="width: 18%; padding: 2px 4px; font-size: 8px; font-weight: 700; color: #64748B; text-transform: uppercase;">Date:</td>
+            <td style="width: 32%; padding: 2px 4px; font-size: 10px; font-weight: 700; color: #0F172A;">${escapeHtml(assessmentDate)}</td>
+          </tr>
+          <tr>
+            <td style="padding: 2px 4px; font-size: 8px; font-weight: 700; color: #64748B; text-transform: uppercase;">Device Model:</td>
+            <td style="padding: 2px 4px; font-size: 10px; font-weight: 700; color: #0F172A;">${escapeHtml(deviceModel)}</td>
+            <td style="padding: 2px 4px; font-size: 8px; font-weight: 700; color: #64748B; text-transform: uppercase;">Assessor:</td>
+            <td style="padding: 2px 4px; font-size: 10px; font-weight: 700; color: #0F172A;">${escapeHtml(assessorName)} (${escapeHtml(assessorId)})</td>
+          </tr>
+          <tr>
+            <td style="padding: 2px 4px; font-size: 8px; font-weight: 700; color: #64748B; text-transform: uppercase;">Package:</td>
+            <td style="padding: 2px 4px; font-size: 10px; font-weight: 700; color: #0F172A;">${escapeHtml(packageName)}</td>
+            <td style="padding: 2px 4px; font-size: 8px; font-weight: 700; color: #64748B; text-transform: uppercase;">Status:</td>
+            <td style="padding: 2px 4px; font-size: 10px; font-weight: 700; color: #F58220; text-transform: uppercase;">${escapeHtml(record.status || 'Verified')}</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Score Summary Table -->
+      <table style="width: 100%; border-collapse: collapse; border: 1px solid #1A1A1A; margin-bottom: 10px;">
+        <thead>
+          <tr style="background-color: #1A1A1A; color: #FFFFFF;">
+            <th style="padding: 5px 8px; text-align: left; font-size: 9px; font-weight: 700; width: 25%;">Section A Score</th>
+            <th style="padding: 5px 8px; text-align: left; font-size: 9px; font-weight: 700; width: 25%;">Section B Score</th>
+            <th style="padding: 5px 8px; text-align: left; font-size: 9px; font-weight: 700; width: 25%; color: #F58220;">Total Score</th>
+            <th style="padding: 5px 8px; text-align: left; font-size: 9px; font-weight: 700; width: 25%;">Star Rating</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="padding: 6px 8px; font-size: 11px; font-weight: 700; border-right: 1px solid #E2E8F0;">${sectionA} / 3.50</td>
+            <td style="padding: 6px 8px; font-size: 11px; font-weight: 700; border-right: 1px solid #E2E8F0;">${sectionB} / 1.50</td>
+            <td style="padding: 6px 8px; font-size: 13px; font-weight: 800; color: #F58220; border-right: 1px solid #E2E8F0;">${total} / 5.00</td>
+            <td style="padding: 6px 8px; font-size: 11px; font-weight: 700; color: #EAB308;">${starDisplay} (${starRating} ★)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Dual-Column Breakdown Matrix -->
+      <table style="width: 100%; border-collapse: collapse; margin-bottom: 10px;">
+        <tr>
+          <td style="width: 49.5%; vertical-align: top; padding-right: 4px;">
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1;">
+              <thead>
+                <tr style="background-color: #1A1A1A; color: #FFFFFF;">
+                  <th style="padding: 3px 4px; font-size: 7.5px; font-weight: 700; width: 10%; text-align: center;">#</th>
+                  <th style="padding: 3px 5px; font-size: 7.5px; font-weight: 700; width: 48%; text-align: left;">Criterion (Sec A)</th>
+                  <th style="padding: 3px 5px; font-size: 7.5px; font-weight: 700; width: 26%; text-align: left;">Selected Option</th>
+                  <th style="padding: 3px 4px; font-size: 7.5px; font-weight: 700; width: 16%; text-align: right;">Pts</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${renderColumnRows(leftColumnItems)}
+              </tbody>
+            </table>
+          </td>
+          <td style="width: 49.5%; vertical-align: top; padding-left: 4px;">
+            <table style="width: 100%; border-collapse: collapse; border: 1px solid #CBD5E1;">
+              <thead>
+                <tr style="background-color: #1A1A1A; color: #FFFFFF;">
+                  <th style="padding: 3px 4px; font-size: 7.5px; font-weight: 700; width: 10%; text-align: center;">#</th>
+                  <th style="padding: 3px 5px; font-size: 7.5px; font-weight: 700; width: 48%; text-align: left;">Criterion (Sec A/B)</th>
+                  <th style="padding: 3px 5px; font-size: 7.5px; font-weight: 700; width: 26%; text-align: left;">Selected Option</th>
+                  <th style="padding: 3px 4px; font-size: 7.5px; font-weight: 700; width: 16%; text-align: right;">Pts</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${renderColumnRows(rightColumnItems)}
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </table>
+
+      <!-- Footer -->
+      <div style="border-top: 1px solid #E2E8F0; padding-top: 6px; font-size: 8px; color: #64748B; display: flex; justify-content: space-between;">
+        <div>
+          <span style="font-weight: 700; color: #0F172A;">TrackScore Assessor Evaluation Matrix</span> • MIROS Telematics Standards
+        </div>
+        <div>
+          Official System Archive: <strong>${new Date().toLocaleDateString("en-GB")}</strong>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+window.viewAssessorSubmissionReport = async function(recordId) {
+  try {
+    showToast("Loading evaluation record report...");
+    const res = await fetch(`/.netlify/functions/lookup-evaluation?id=${encodeURIComponent(recordId)}`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error("Could not retrieve evaluation details.");
+    const data = await res.json();
+    const record = data.evaluation || (Array.isArray(data.records) ? data.records[0] : (Array.isArray(data.data) ? data.data[0] : data));
+    if (!record) throw new Error("Record not found.");
+
+    const reportHtml = generatePdfReportForRecord(record);
+    const container = document.getElementById("report-document-wrapper");
+    const modal = document.getElementById("report-modal");
+    if (container && modal) {
+      container.innerHTML = reportHtml;
+      currentReportHtml = reportHtml;
+      currentReportFilename = `TrackScore-Assessment-${(record.companyName || "Report").replace(/[^a-zA-Z0-9]/g, "_")}.pdf`;
+      modal.classList.add("active");
+    }
+  } catch (err) {
+    console.error("Failed to view submission report:", err);
+    showToast("Error loading report: " + err.message, true);
+  }
+};
 window.TrackScore = {
   assessmentState,
   SECTION_A_CRITERIA,

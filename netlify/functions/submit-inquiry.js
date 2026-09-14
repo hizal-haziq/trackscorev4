@@ -121,6 +121,8 @@ export const handler = async (event) => {
 
     // 4. Server-side validation
     const companyName = sanitizeString(body.companyName, 120);
+    const officeAddress = sanitizeString(body.officeAddress, 250);
+    const state = sanitizeString(body.state, 80);
     const contactPerson = sanitizeString(body.contactPerson, 100);
     const contactEmail = sanitizeString(body.contactEmail, 120).toLowerCase();
     const contactPhone = sanitizeString(body.contactPhone, 30);
@@ -134,6 +136,22 @@ export const handler = async (event) => {
         statusCode: 400,
         headers,
         body: JSON.stringify({ success: false, error: 'Valid Company Name is required (minimum 2 characters).' })
+      };
+    }
+
+    if (!officeAddress || officeAddress.length < 2) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ success: false, error: 'Valid Office Address is required.' })
+      };
+    }
+
+    if (!state) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ success: false, error: 'Please select a valid Malaysian State or Federal Territory.' })
       };
     }
 
@@ -170,6 +188,8 @@ export const handler = async (event) => {
       recordType: 'inquiry',
       status: 'inquiry',
       companyName,
+      officeAddress,
+      state,
       contactPerson,
       contactEmail,
       contactPhone,

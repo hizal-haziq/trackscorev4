@@ -81,6 +81,16 @@ export function validateRole(event, requiredRole) {
 
   const userRole = decoded.role;
 
+  // Block access to protected endpoints if password change is required
+  if (decoded.mustChangePassword === true) {
+    return {
+      authorized: false,
+      statusCode: 403,
+      mustChangePassword: true,
+      error: 'Password change required: You must change your temporary password before accessing system functions.'
+    };
+  }
+
   // Strict Role Isolation:
   // 1. Vendor JWT can NEVER access manager or assessor endpoints
   if (userRole === ROLE_VENDOR) {

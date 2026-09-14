@@ -43,170 +43,7 @@ function ensureFallbackStore() {
 
   // 1. Evaluations Store
   if (!fs.existsSync(FALLBACK_FILE)) {
-    // Seed with sample realistic evaluations for immediate review
-    const sampleData = [
-      {
-        _id: 'seed-eval-001',
-        rubricVersion: '1.0',
-        companyName: 'Apex Telematics Sdn Bhd',
-        deviceModel: 'FleetGuard Pro 400',
-        packageName: 'Enterprise Fleet Tracker',
-        package: 'package_2',
-        assessorName: 'Ts. Mohd Farhan (AS-8812)',
-        assessorId: 'AS-8812',
-        assessmentDate: '2026-09-06',
-        sectionAScore: 30.5,
-        sectionBScore: 8.75,
-        totalScore: 39.25,
-        starRating: 4.56,
-        starsCount: 5,
-        ratingLabel: '5 Stars - Outstanding (MIROS Grade A)',
-        breakdown: [
-          { section: 'A', id: 'trip_history', name: 'Trip History Data', selectedOption: '>1 year', points: 1.5 },
-          { section: 'A', id: 'realtime_tracking', name: 'Real-time Tracking', selectedOption: 'Available', points: 1.0 },
-          { section: 'A', id: 'map_source', name: 'Map Source', selectedOption: 'Open updated', points: 1.5 },
-          { section: 'A', id: 'geofence', name: 'Geofence', selectedOption: 'Polygon', points: 1.25 },
-          { section: 'A', id: 'geofence_alert', name: 'Geofence Alert', selectedOption: 'Push', points: 1.5 },
-          { section: 'A', id: 'vehicle_status', name: 'Vehicle Status', selectedOption: 'Available', points: 1.0 },
-          { section: 'A', id: 'engine_status', name: 'Engine ON/OFF', selectedOption: 'Report', points: 1.25 },
-          { section: 'A', id: 'overspeed_detection', name: 'Overspeed Detection', selectedOption: 'Configurable', points: 1.5 },
-          { section: 'A', id: 'overspeed_alert', name: 'Overspeed Alert', selectedOption: 'Push', points: 1.5 },
-          { section: 'A', id: 'offline_memory', name: 'Offline Memory', selectedOption: '>60m', points: 1.5 },
-          { section: 'A', id: 'backup_battery', name: 'Backup Battery', selectedOption: '>24h', points: 1.5 },
-          { section: 'A', id: 'sim_network', name: 'SIM Network', selectedOption: 'Roaming', points: 1.5 },
-          { section: 'A', id: 'connectivity', name: 'Connectivity', selectedOption: '4G', points: 1.0 },
-          { section: 'A', id: 'multilingual', name: 'Multilingual', selectedOption: 'Other', points: 1.25 },
-          { section: 'A', id: 'user_manual', name: 'User Manual', selectedOption: 'Other', points: 1.25 },
-          { section: 'A', id: 'warranty', name: 'Warranty', selectedOption: '>12m', points: 1.25 },
-          { section: 'A', id: 'customer_service', name: 'Customer Service', selectedOption: 'Control Centre', points: 1.5 },
-          { section: 'A', id: 'os_compatibility', name: 'OS Compatibility', selectedOption: 'Mobile', points: 1.5 },
-          { section: 'A', id: 'trip_report', name: 'Trip Report', selectedOption: 'Duration', points: 1.25 },
-          { section: 'A', id: 'data_interval', name: 'Data Interval', selectedOption: '<30s', points: 1.5 },
-          { section: 'A', id: 'harsh_accel', name: 'Harsh Acceleration', selectedOption: 'Config', points: 1.5 },
-          { section: 'A', id: 'harsh_accel_alert', name: 'Harsh Accel Alert', selectedOption: 'Push', points: 1.5 },
-          { section: 'A', id: 'harsh_braking', name: 'Harsh Braking', selectedOption: 'Config', points: 1.5 },
-          { section: 'A', id: 'harsh_braking_alert', name: 'Harsh Braking Alert', selectedOption: 'Push', points: 1.5 },
-          { section: 'B', id: 'tow_detection', name: 'Tow Detection', selectedOption: 'Available', points: 1.0 },
-          { section: 'B', id: 'panic_button', name: 'Panic Button', selectedOption: 'SMS', points: 1.25 },
-          { section: 'B', id: 'mfa', name: 'MFA', selectedOption: 'OTP', points: 1.0 },
-          { section: 'B', id: 'sop_tech_problems', name: 'SOP Tech Problems', selectedOption: '3 days', points: 1.0 },
-          { section: 'B', id: 'service_records', name: 'Service Records', selectedOption: 'Available', points: 1.0 },
-          { section: 'B', id: 'driver_id', name: 'Driver ID', selectedOption: 'Report', points: 1.25 },
-          { section: 'B', id: 'certification', name: 'Certification', selectedOption: 'SIRIM/CE', points: 1.0 },
-          { section: 'B', id: 'immobilizer', name: 'Immobilizer', selectedOption: 'Available', points: 1.0 },
-          { section: 'B', id: 'tampered_alert', name: 'Tamper Detection & Power Disconnect Alert', selectedOption: 'SMS', points: 1.25 }
-        ],
-        status: 'completed',
-        approvedBy: 'Lead Manager',
-        approvedAt: '2026-09-06T06:00:00.000Z',
-        statusChangedAt: '2026-09-06T06:00:00.000Z',
-        packageDetails: {
-          packageId: 'package_2',
-          price: 6000,
-          validityYears: 3,
-          freeReassessments: 2
-        },
-        invoice: {
-          invoiceNumber: 'INV-2026-0041',
-          amount: 6000,
-          issuedDate: '2026-09-05T08:00:00.000Z',
-          dueDate: '2026-09-20'
-        },
-        payment: {
-          status: 'paid',
-          amountReceived: 6000,
-          paymentDate: '2026-09-06T04:30:00.000Z',
-          paymentMethod: 'Bank Transfer / DuitNow',
-          verifiedBy: 'Finance & Compliance Team'
-        },
-        certificate: {
-          certificateNumber: 'TS-CERT-2026-0041',
-          preparedDate: '2026-09-06T05:00:00.000Z',
-          printedDate: '2026-09-06T05:15:00.000Z',
-          signedBy: 'Director General Office (DGO)',
-          signedDate: '2026-09-06T05:30:00.000Z',
-          sentToCustomerDate: '2026-09-06T06:00:00.000Z'
-        },
-        statusHistory: [
-          { status: 'registered', timestamp: '2026-09-01T09:00:00.000Z', actor: 'Operations Manager', note: 'Customer registered for Package 2.' },
-          { status: 'scheduled', timestamp: '2026-09-02T10:00:00.000Z', actor: 'Operations Manager', note: 'Assessment session scheduled for 2026-09-06.' },
-          { status: 'submitted', timestamp: '2026-09-06T04:00:00.000Z', actor: 'Ts. Mohd Farhan (AS-8812)', note: 'Evaluation submitted for manager review.' },
-          { status: 'pending_review', timestamp: '2026-09-06T04:10:00.000Z', actor: 'Operations Manager', note: 'Score audited and confirmed at 39.25 pts (5 Stars).' },
-          { status: 'pre_final_sent', timestamp: '2026-09-06T04:15:00.000Z', actor: 'Operations Manager', note: 'Preliminary result dispatched to Apex Telematics.' },
-          { status: 'payment_confirmed', timestamp: '2026-09-06T04:30:00.000Z', actor: 'Lead Manager', note: 'Full RM 6,000 payment received and verified.' },
-          { status: 'certificate_issued', timestamp: '2026-09-06T05:30:00.000Z', actor: 'Lead Manager', note: 'Certificate TS-CERT-2026-0041 endorsed by DGO.' },
-          { status: 'completed', timestamp: '2026-09-06T06:00:00.000Z', actor: 'Lead Manager', note: 'Final certificate package delivered to vendor.' }
-        ],
-        evaluationHistory: [
-          {
-            action: 'approved',
-            timestamp: '2026-09-06T06:00:00.000Z',
-            changedBy: 'Lead Manager',
-            note: 'Evaluation approved and certified.'
-          }
-        ],
-        createdAt: '2026-09-06T04:56:17.982Z'
-      },
-      {
-        _id: 'seed-eval-002',
-        rubricVersion: '1.0',
-        companyName: 'OmniTrack Mobility Solutions',
-        deviceModel: 'OT-Lite 200 GPS',
-        packageName: 'Basic Commercial Standard',
-        package: 'package_1',
-        assessorName: 'Engr. Sarah Wong (AS-7741)',
-        assessmentDate: '2026-09-03',
-        sectionAScore: 24.25,
-        sectionBScore: 5.25,
-        totalScore: 29.5,
-        starRating: 3.43,
-        starsCount: 3,
-        ratingLabel: '3 Stars - Satisfactory (MIROS Grade C)',
-        breakdown: [
-          { section: 'A', id: 'trip_history', name: 'Trip History Data', selectedOption: '>3m-1y', points: 1.25 },
-          { section: 'A', id: 'realtime_tracking', name: 'Real-time Tracking', selectedOption: 'Available', points: 1.0 },
-          { section: 'A', id: 'map_source', name: 'Map Source', selectedOption: 'Open', points: 1.25 },
-          { section: 'A', id: 'geofence', name: 'Geofence', selectedOption: 'Radius', points: 1.0 },
-          { section: 'A', id: 'geofence_alert', name: 'Geofence Alert', selectedOption: 'System', points: 1.0 },
-          { section: 'A', id: 'vehicle_status', name: 'Vehicle Status', selectedOption: 'Available', points: 1.0 },
-          { section: 'A', id: 'engine_status', name: 'Engine ON/OFF', selectedOption: 'System', points: 1.0 },
-          { section: 'A', id: 'overspeed_detection', name: 'Overspeed Detection', selectedOption: 'Available', points: 1.0 },
-          { section: 'A', id: 'overspeed_alert', name: 'Overspeed Alert', selectedOption: 'System', points: 1.0 },
-          { section: 'A', id: 'offline_memory', name: 'Offline Memory', selectedOption: '15-60m', points: 1.25 },
-          { section: 'A', id: 'backup_battery', name: 'Backup Battery', selectedOption: '1-24h', points: 1.25 },
-          { section: 'A', id: 'sim_network', name: 'SIM Network', selectedOption: '4G fallback', points: 1.25 },
-          { section: 'A', id: 'connectivity', name: 'Connectivity', selectedOption: '4G', points: 1.0 },
-          { section: 'A', id: 'multilingual', name: 'Multilingual', selectedOption: 'English', points: 1.0 },
-          { section: 'A', id: 'user_manual', name: 'User Manual', selectedOption: 'English', points: 1.0 },
-          { section: 'A', id: 'warranty', name: 'Warranty', selectedOption: '12m', points: 1.0 },
-          { section: 'A', id: 'customer_service', name: 'Customer Service', selectedOption: '09-19', points: 1.0 },
-          { section: 'A', id: 'os_compatibility', name: 'OS Compatibility', selectedOption: 'Web', points: 1.0 },
-          { section: 'A', id: 'trip_report', name: 'Trip Report', selectedOption: 'Coords', points: 1.0 },
-          { section: 'A', id: 'data_interval', name: 'Data Interval', selectedOption: '1m', points: 1.0 },
-          { section: 'A', id: 'harsh_accel', name: 'Harsh Acceleration', selectedOption: 'Available', points: 1.0 },
-          { section: 'A', id: 'harsh_accel_alert', name: 'Harsh Accel Alert', selectedOption: 'System', points: 1.0 },
-          { section: 'A', id: 'harsh_braking', name: 'Harsh Braking', selectedOption: 'Available', points: 1.0 },
-          { section: 'A', id: 'harsh_braking_alert', name: 'Harsh Braking Alert', selectedOption: 'System', points: 1.0 },
-          { section: 'B', id: 'tow_detection', name: 'Tow Detection', selectedOption: 'None (0)', points: 0.0 },
-          { section: 'B', id: 'panic_button', name: 'Panic Button', selectedOption: 'Available', points: 1.0 },
-          { section: 'B', id: 'mfa', name: 'MFA', selectedOption: 'OTP', points: 1.0 },
-          { section: 'B', id: 'sop_tech_problems', name: 'SOP Tech Problems', selectedOption: '3 days', points: 1.0 },
-          { section: 'B', id: 'service_records', name: 'Service Records', selectedOption: 'Available', points: 1.0 },
-          { section: 'B', id: 'driver_id', name: 'Driver ID', selectedOption: 'None (0)', points: 0.0 },
-          { section: 'B', id: 'certification', name: 'Certification', selectedOption: 'SIRIM/CE', points: 1.0 },
-          { section: 'B', id: 'immobilizer', name: 'Immobilizer', selectedOption: 'None (0)', points: 0.0 },
-          { section: 'B', id: 'tampered_alert', name: 'Tamper Detection & Power Disconnect Alert', selectedOption: 'None (0)', points: 0.0 }
-        ],
-        status: 'pending_review',
-        statusChangedAt: '2026-09-03T04:56:17.982Z',
-        statusHistory: [
-          { status: 'submitted', timestamp: '2026-09-03T04:56:17.982Z', actor: 'Engr. Sarah Wong (AS-7741)', note: 'Initial evaluation submitted.' }
-        ],
-        evaluationHistory: [],
-        createdAt: '2026-09-03T04:56:17.982Z'
-      }
-    ];
-    fs.writeFileSync(FALLBACK_FILE, JSON.stringify(sampleData, null, 2), 'utf-8');
+    fs.writeFileSync(FALLBACK_FILE, JSON.stringify([], null, 2), 'utf-8');
   }
 
   // 2. Users Store (Manager & Assessor Accounts)
@@ -253,30 +90,12 @@ function ensureFallbackStore() {
 
   // 3. Vendors Store (External Client Accounts)
   if (!fs.existsSync(VENDORS_FILE)) {
-    const salt = bcrypt.genSaltSync(10);
-    const initialVendors = [
-      {
-        _id: 'vendor_001',
-        companyName: 'Apex Telematics Sdn Bhd',
-        contactEmail: 'vendor@apex.com',
-        contactPhone: '+603-8888 1234',
-        passwordHash: bcrypt.hashSync('Vendor2026!', salt),
-        linkedRegistrationIds: ['seed-eval-001'],
-        isActive: true,
-        createdAt: new Date().toISOString()
-      },
-      {
-        _id: 'vendor_002',
-        companyName: 'Fleetmatics Global Ltd',
-        contactEmail: 'vendor@fleetmatics.com',
-        contactPhone: '+603-7777 9999',
-        passwordHash: bcrypt.hashSync('Vendor@2026!', salt),
-        linkedRegistrationIds: [],
-        isActive: true,
-        createdAt: new Date().toISOString()
-      }
-    ];
-    fs.writeFileSync(VENDORS_FILE, JSON.stringify(initialVendors, null, 2), 'utf-8');
+    fs.writeFileSync(VENDORS_FILE, JSON.stringify([], null, 2), 'utf-8');
+  }
+
+  // 4. Inquiries Store
+  if (!fs.existsSync(INQUIRIES_FILE)) {
+    fs.writeFileSync(INQUIRIES_FILE, JSON.stringify([], null, 2), 'utf-8');
   }
 
   fallbackStoreEnsured = true;
@@ -334,29 +153,7 @@ export async function seedAtlasUsersAndVendors(db) {
       }
     ];
 
-    const initialVendors = [
-      {
-        companyName: 'Fleetmatics Global Ltd',
-        contactEmail: 'vendor@fleetmatics.com',
-        contactPhone: '+603-7777 9999',
-        passwordHash: bcrypt.hashSync(generateBootstrapPassword(), 12),
-        linkedRegistrationIds: [],
-        isActive: true,
-        createdAt: new Date().toISOString()
-      },
-      {
-        companyName: 'Apex Telematics Sdn Bhd',
-        contactEmail: 'vendor@apex.com',
-        contactPhone: '+603-8888 1234',
-        passwordHash: bcrypt.hashSync(generateBootstrapPassword(), 12),
-        linkedRegistrationIds: ['seed-eval-001'],
-        isActive: true,
-        createdAt: new Date().toISOString()
-      }
-    ];
-
     const usersCol = db.collection(COLLECTION_USERS);
-    const vendorsCol = db.collection(COLLECTION_VENDORS);
 
     for (const u of initialUsers) {
       await usersCol.updateOne(
@@ -370,24 +167,6 @@ export async function seedAtlasUsersAndVendors(db) {
             assessorId: u.assessorId,
             createdBy: u.createdBy,
             createdAt: u.createdAt
-          }
-        },
-        { upsert: true }
-      );
-    }
-
-    for (const v of initialVendors) {
-      await vendorsCol.updateOne(
-        { contactEmail: v.contactEmail },
-        {
-          $setOnInsert: {
-            companyName: v.companyName,
-            contactEmail: v.contactEmail,
-            contactPhone: v.contactPhone,
-            passwordHash: v.passwordHash,
-            linkedRegistrationIds: v.linkedRegistrationIds,
-            isActive: v.isActive,
-            createdAt: v.createdAt
           }
         },
         { upsert: true }
@@ -779,6 +558,19 @@ function createFallbackStoreInterface(hasAtlasUri = false) {
       const users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf-8'));
       return users.map(({ passwordHash, ...safe }) => safe);
     },
+    async deleteUser(id) {
+      ensureFallbackStore();
+      let users = [];
+      if (fs.existsSync(USERS_FILE)) {
+        try { users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf-8')); } catch { users = []; }
+      }
+      const filtered = users.filter(u => String(u._id) !== String(id) && String(u.id || '') !== String(id));
+      if (filtered.length !== users.length) {
+        fs.writeFileSync(USERS_FILE, JSON.stringify(filtered, null, 2), 'utf-8');
+        return true;
+      }
+      return false;
+    },
 
     // Vendor Operations
     async getVendorByEmail(email) {
@@ -834,20 +626,28 @@ export async function findUserByEmailOrIdentifier(connection, identifier) {
 
   if (connection.isMongoAtlas) {
     const col = connection.db.collection(COLLECTION_USERS);
-    // 1. Direct email match (case-insensitive)
-    let user = await col.findOne({ email: cleanEmail });
+    // 1. Direct email match (case-insensitive with regex fallback)
+    const escapedEmail = cleanEmail.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    let user = await col.findOne({
+      $or: [
+        { email: cleanEmail },
+        { email: { $regex: new RegExp(`^\\s*${escapedEmail}\\s*$`, 'i') } }
+      ]
+    });
     if (user) return user;
 
     // 2. Direct assessor ID match (case-insensitive regex)
     const escaped = raw.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     user = await col.findOne({
-      assessorId: { $regex: new RegExp(`^${escaped}$`, 'i') }
+      assessorId: { $regex: new RegExp(`^\\s*${escaped}\\s*$`, 'i') }
     });
     if (user) return user;
 
     // 3. Stripped assessor ID comparison across users
-    const allUsers = await col.find({ assessorId: { $exists: true, $ne: null } }).toArray();
+    const allUsers = await col.find({}).toArray();
     user = allUsers.find(u => {
+      const uEmail = String(u.email || '').trim().toLowerCase();
+      if (uEmail === cleanEmail) return true;
       const uId = String(u.assessorId || '').replace(/[\s\-_]/g, '').toLowerCase();
       return uId && (uId === strippedId || uId.includes(strippedId) || strippedId.includes(uId));
     });
@@ -873,6 +673,59 @@ export async function findUserByEmailOrIdentifier(connection, identifier) {
     return connection.getUserById(user._id);
   }
   return null;
+}
+
+export async function findUserById(connection, id) {
+  if (connection.isMongoAtlas) {
+    return connection.db.collection(COLLECTION_USERS).findOne(buildMongoIdFilter(id));
+  }
+  return connection.getUserById(id);
+}
+
+export async function updateUserRecord(connection, id, updates) {
+  if (connection.isMongoAtlas) {
+    await connection.db.collection(COLLECTION_USERS).updateOne(
+      buildMongoIdFilter(id),
+      { $set: { ...updates, updatedAt: new Date().toISOString() } }
+    );
+    return findUserById(connection, id);
+  }
+
+  ensureFallbackStore();
+  let users = [];
+  if (fs.existsSync(USERS_FILE)) {
+    try { users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf-8')); } catch { users = []; }
+  }
+  const idx = users.findIndex(u => String(u._id) === String(id));
+  if (idx >= 0) {
+    users[idx] = { ...users[idx], ...updates, updatedAt: new Date().toISOString() };
+    fs.writeFileSync(USERS_FILE, JSON.stringify(users, null, 2), 'utf-8');
+    return users[idx];
+  }
+  return null;
+}
+
+export async function deleteUserRecord(connection, id) {
+  if (connection.isMongoAtlas && connection.db) {
+    const res = await connection.db.collection(COLLECTION_USERS).deleteOne(buildMongoIdFilter(id));
+    return res.deletedCount > 0;
+  }
+
+  if (typeof connection.deleteUser === 'function') {
+    return connection.deleteUser(id);
+  }
+
+  ensureFallbackStore();
+  let users = [];
+  if (fs.existsSync(USERS_FILE)) {
+    try { users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf-8')); } catch { users = []; }
+  }
+  const filtered = users.filter(u => String(u._id) !== String(id) && String(u.id || '') !== String(id));
+  if (filtered.length !== users.length) {
+    fs.writeFileSync(USERS_FILE, JSON.stringify(filtered, null, 2), 'utf-8');
+    return true;
+  }
+  return false;
 }
 
 export async function findUserByEmail(connection, email) {
@@ -1019,6 +872,9 @@ export default {
   connectToDatabase,
   buildMongoIdFilter,
   findUserByEmail,
+  findUserById,
+  updateUserRecord,
+  deleteUserRecord,
   findVendorByEmail,
   findVendorById,
   createVendorRecord,

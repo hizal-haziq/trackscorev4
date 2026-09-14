@@ -165,6 +165,7 @@ export const handler = async (event) => {
     }
 
     const sanitized = records.map(sanitizeVendorRecord);
+    const primaryRecord = records[0] || {};
 
     return {
       statusCode: 200,
@@ -175,7 +176,9 @@ export const handler = async (event) => {
           id: String(vendor._id),
           companyName: vendor.companyName,
           contactEmail: vendor.contactEmail,
-          contactPhone: vendor.contactPhone
+          contactPhone: vendor.contactPhone,
+          officeAddress: vendor.officeAddress || primaryRecord.officeAddress || '',
+          state: vendor.state || primaryRecord.state || ''
         },
         evaluations: sanitized
       })
@@ -196,6 +199,8 @@ function sanitizeVendorRecord(doc) {
   return {
     _id: String(doc._id || doc.id),
     companyName: doc.companyName,
+    officeAddress: doc.officeAddress || '',
+    state: doc.state || '',
     deviceModel: doc.deviceModel,
     package: doc.package || 'package_1',
     packageName: doc.packageName || 'Standard Assessment',

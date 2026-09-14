@@ -309,7 +309,7 @@
       </a>
       <div class="nav-actions">
         <a href="/landing.html" class="btn-nav">Home</a>
-        <a href="/login.html" class="btn-nav">Staff / Vendor Login</a>
+        <a href="/login.html" class="btn-nav">Sign In</a>
       </div>
     </div>
   </header>
@@ -354,6 +354,44 @@
               required 
               maxlength="120" 
             />
+          </div>
+
+          <!-- Office Address -->
+          <div class="form-group col-full">
+            <label class="form-label" for="officeAddress">Office Address <span class="required">*</span></label>
+            <textarea 
+              id="officeAddress" 
+              name="officeAddress" 
+              class="form-textarea" 
+              style="min-height: 80px;"
+              placeholder="e.g. Level 12, Tower 2, VSQ @ PJ City Centre, Jalan Utara" 
+              required 
+              maxlength="250"
+            ></textarea>
+          </div>
+
+          <!-- State Dropdown (All States & Federal Territories in Malaysia) -->
+          <div class="form-group col-full">
+            <label class="form-label" for="state">State / Federal Territory <span class="required">*</span></label>
+            <select id="state" name="state" class="form-select" required>
+              <option value="">-- Select State / Federal Territory --</option>
+              <option value="Johor">Johor</option>
+              <option value="Kedah">Kedah</option>
+              <option value="Kelantan">Kelantan</option>
+              <option value="Melaka">Melaka</option>
+              <option value="Negeri Sembilan">Negeri Sembilan</option>
+              <option value="Pahang">Pahang</option>
+              <option value="Perak">Perak</option>
+              <option value="Perlis">Perlis</option>
+              <option value="Pulau Pinang">Pulau Pinang (Penang)</option>
+              <option value="Sabah">Sabah</option>
+              <option value="Sarawak">Sarawak</option>
+              <option value="Selangor">Selangor</option>
+              <option value="Terengganu">Terengganu</option>
+              <option value="Wilayah Persekutuan Kuala Lumpur">Wilayah Persekutuan Kuala Lumpur</option>
+              <option value="Wilayah Persekutuan Labuan">Wilayah Persekutuan Labuan</option>
+              <option value="Wilayah Persekutuan Putrajaya">Wilayah Persekutuan Putrajaya</option>
+            </select>
           </div>
 
           <!-- Contact Person -->
@@ -456,7 +494,7 @@
         <div class="ref-badge" id="display-inquiry-ref">REF: INQ-PENDING</div>
         <div style="margin-top: 14px; display: flex; justify-content: center; gap: 10px;">
           <a href="/landing.html" class="btn-nav" style="display: inline-block; padding: 8px 20px;">Return to Home</a>
-          <a href="/login.html" class="btn-nav" style="display: inline-block; padding: 8px 20px; background: var(--accent-orange); color: #000; font-weight: 700; border-color: var(--accent-orange);">Go to Portal Login</a>
+          <a href="/login.html" class="btn-nav" style="display: inline-block; padding: 8px 20px; background: var(--accent-orange); color: #000; font-weight: 700; border-color: var(--accent-orange);">Go to Portal Sign In</a>
         </div>
       </div>
     </div>
@@ -492,6 +530,8 @@
       hideAlert();
 
       const companyName = document.getElementById('companyName').value.trim();
+      const officeAddress = document.getElementById('officeAddress').value.trim();
+      const state = document.getElementById('state').value;
       const contactPerson = document.getElementById('contactPerson').value.trim();
       const contactEmail = document.getElementById('contactEmail').value.trim();
       const contactPhone = document.getElementById('contactPhone').value.trim();
@@ -501,8 +541,8 @@
       const honeypot = document.getElementById('hp-field').value;
 
       // Basic client-side sanity checks
-      if (!companyName || !contactPerson || !contactEmail || !contactPhone) {
-        showAlert('Please fill in all mandatory fields marked with an asterisk (*).');
+      if (!companyName || !officeAddress || !state || !contactPerson || !contactEmail || !contactPhone) {
+        showAlert('Please fill in all mandatory fields marked with an asterisk (*), including Office Address and State.');
         return;
       }
 
@@ -518,6 +558,8 @@
           },
           body: JSON.stringify({
             companyName,
+            officeAddress,
+            state,
             contactPerson,
             contactEmail,
             contactPhone,

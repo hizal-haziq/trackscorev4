@@ -58,6 +58,19 @@ describe('Status Lifecycle & History Tracking Unit Tests', () => {
   });
 
   after(async () => {
+    try {
+      const conn = await connectToDatabase();
+      if (conn.isMongoAtlas) {
+        if (testEvalId) {
+          await conn.db.collection(COLLECTION_NAME).deleteOne(buildMongoIdFilter(testEvalId));
+        }
+        await conn.db.collection(COLLECTION_NAME).deleteMany({ companyName: 'Ban Soon Sdn Bhd' });
+      } else {
+        if (testEvalId) {
+          conn.deleteEvaluation(testEvalId);
+        }
+      }
+    } catch {}
     await closeDatabaseConnection();
   });
 

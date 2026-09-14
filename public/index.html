@@ -20,37 +20,69 @@
     <!-- Site Header: Enterprise Solid Black & Refined Vibrant Orange -->
     <header class="site-header" id="main-header">
       <div class="header-inner">
-        <a href="/index.html" class="brand-wrapper" id="brand-link" title="TrackScore Home">
-          <img src="/TrackScore_Logo.svg" alt="TrackScore" class="brand-logo-desktop" width="190" height="38" />
-          <img src="/TrackScore_TS_Icon.svg" alt="TrackScore" class="brand-logo-mobile" width="36" height="36" />
+        <a href="/index.html" class="brand-wrapper" id="brand-link" title="TrackScore Assessor Portal">
+          <img src="/TrackScore_Logo.svg" alt="TrackScore" class="brand-logo-desktop" width="160" height="32" style="height: 32px; width: auto;" />
+          <img src="/TrackScore_TS_Icon.svg" alt="TrackScore" class="brand-logo-mobile" width="32" height="32" />
           <div class="brand-details">
-            <span class="brand-badge">MIROS Telematics</span>
-            <p class="brand-subtitle">Telematics Assessment &amp; Compliance Platform</p>
+            <span class="brand-badge" id="header-brand-badge">Assessor Portal</span>
+            <p class="brand-subtitle" id="header-brand-subtitle">Inspection Matrix &amp; Submissions</p>
           </div>
         </a>
 
         <nav class="nav-links" id="main-nav">
           <a href="/landing.html" class="nav-btn" id="nav-landing">Home</a>
+          <button type="button" class="nav-btn active" id="nav-eval-form" onclick="switchAssessorPortalTab('matrix')" title="Evaluation Rubric Matrix">Evaluation</button>
+          <button type="button" class="nav-btn" id="nav-my-submissions" onclick="switchAssessorPortalTab('submissions')" title="View your submitted evaluations and review status">
+            My Submissions <span id="nav-submissions-badge" class="badge-counter" style="background: #3B82F6; color: #FFF; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: 4px;">0</span>
+          </button>
           <button type="button" class="nav-btn" id="btn-my-drafts" title="Manage your in-progress evaluation drafts">
             Drafts (<span id="header-drafts-count">0</span>/3)
           </button>
-          <button type="button" class="nav-btn" id="btn-nav-notifications" title="View manager review notifications and remediation alerts">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 4px;">
+          <button type="button" class="nav-btn" id="btn-nav-notifications" onclick="switchAssessorPortalTab('notifications')" title="View manager review notifications and remediation alerts">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 3px;">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
-            Notifications <span id="nav-notifications-badge" class="badge-counter" style="display: none; background: #DC2626; color: #FFF; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: 4px;">0</span>
+            Alerts <span id="nav-notifications-badge" class="badge-counter" style="display: none; background: #DC2626; color: #FFF; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: 3px;">0</span>
           </button>
-          <a href="/index.html" class="nav-btn active" id="nav-eval-form">Evaluation</a>
-          <a href="/dashboard.html" class="nav-btn" id="nav-dashboard">Executive Summary</a>
-          <a href="/login.html" class="nav-btn" id="nav-login" style="background: rgba(249, 115, 22, 0.15); color: #F97316; border-color: rgba(249, 115, 22, 0.4);">Login</a>
+          <a href="/dashboard.html" class="nav-btn" id="nav-dashboard" style="display: none; background: #1D4ED8; color: #FFFFFF; border-color: #2563EB; font-weight: 600;">
+            Manager Dashboard &rarr;
+          </a>
+          <a href="/login.html" class="nav-btn" id="nav-login" style="background: rgba(249, 115, 22, 0.15); color: #F97316; border-color: rgba(249, 115, 22, 0.4);">Sign In</a>
         </nav>
       </div>
     </header>
 
     <main class="container" id="main-content">
+      <!-- Assessor Portal Navigation Tabs -->
+      <div class="assessor-portal-tabs" id="assessor-portal-tabs" role="tablist" style="display: flex; gap: 8px; margin: 18px 0 16px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; flex-wrap: wrap;">
+        <button type="button" class="portal-tab-btn active" id="tab-btn-matrix" onclick="switchAssessorPortalTab('matrix')" role="tab" aria-selected="true" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-size: 14px; font-weight: 700; border-radius: 6px; border: 1px solid #F58220; background: #F58220; color: #FFFFFF; cursor: pointer; transition: all 0.15s ease;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
+          Evaluation Form (33 Criteria)
+        </button>
+        <button type="button" class="portal-tab-btn" id="tab-btn-submissions" onclick="switchAssessorPortalTab('submissions')" role="tab" aria-selected="false" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-size: 14px; font-weight: 600; border-radius: 6px; border: 1px solid #CBD5E1; background: #FFFFFF; color: #475569; cursor: pointer; transition: all 0.15s ease;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          My Submissions (<span id="assessor-submissions-count">0</span>)
+        </button>
+        <button type="button" class="portal-tab-btn" id="tab-btn-notifications" onclick="switchAssessorPortalTab('notifications')" role="tab" aria-selected="false" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-size: 14px; font-weight: 600; border-radius: 6px; border: 1px solid #CBD5E1; background: #FFFFFF; color: #475569; cursor: pointer; transition: all 0.15s ease;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+          Review &amp; Remediation Alerts <span id="portal-tab-notif-badge" class="badge-counter" style="display: none; background: #DC2626; color: #FFF; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 10px; margin-left: 4px;">0</span>
+        </button>
+      </div>
+
+      <!-- Manager Audit Mode Banner (only shown if a Manager is viewing this Assessor tool) -->
+      <div id="manager-viewing-assessor-banner" style="display: none; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 18px; margin-bottom: 18px; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
+        <div style="display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: #1E40AF;">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          <span><strong>Manager Audit Mode:</strong> You are viewing the Assessor Evaluation Tool. To review evaluations, manage customer accounts, and issue certificates, visit your Executive Operations Portal.</span>
+        </div>
+        <a href="/dashboard.html" class="btn btn-primary btn-sm" style="background: #1D4ED8; border-color: #1D4ED8; white-space: nowrap;">
+          Go to Manager Dashboard &rarr;
+        </a>
+      </div>
+
       <!-- Title & Quick Actions Bar -->
-      <div class="page-title-bar">
+      <div class="page-title-bar" id="page-title-bar">
         <div>
           <div class="page-title-row">
             <h2>Assessor Evaluation Matrix</h2>
@@ -80,16 +112,16 @@
             </svg>
             Drafts (<span id="header-drafts-count-top">0</span>/3)
           </button>
-          <button type="button" class="btn btn-secondary" id="btn-toggle-notification-section" title="View manager review notifications & remediation alerts">
+          <button type="button" class="btn btn-secondary" id="btn-toggle-notification-section" onclick="switchAssessorPortalTab('notifications')" title="View manager review notifications & remediation alerts">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
             Notifications (<span id="header-notifications-count">0</span>)
           </button>
-          <button type="button" class="btn btn-secondary" id="btn-lookup-rejections" title="Lookup your submissions and check review status">
+          <button type="button" class="btn btn-secondary" id="btn-lookup-rejections" onclick="switchAssessorPortalTab('submissions')" title="Lookup your submissions and check review status">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            Check Status
+            My Submissions
           </button>
           <div class="actions-secondary-group">
             <button type="button" class="btn btn-secondary btn-sm" id="btn-demo-data" title="Load sample dataset for verification">Load Sample Data</button>
@@ -201,8 +233,76 @@
         </div>
       </section>
 
+      <!-- View 2: Assessor Submissions & Status Tracking -->
+      <section id="assessor-submissions-view" style="display: none; margin-bottom: 30px;">
+        <div class="card" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid #F1F5F9;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin: 0;">My Evaluated Submissions</h3>
+                <span class="compliance-badge" style="background: #E0F2FE; color: #0369A1; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700;">Assessor Repository</span>
+              </div>
+              <p style="font-size: 13px; color: #64748B; margin: 4px 0 0 0;">
+                All telematics device evaluations submitted under your assessor credentials. Monitor real-time manager review outcomes, remediation requests, and download official evaluation reports.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <input type="text" id="assessor-submissions-search" placeholder="Search company or device..." style="padding: 7px 12px; font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px; width: 220px; outline: none;" />
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-assessor-submissions" onclick="fetchAssessorSubmissions()" style="display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                Refresh
+              </button>
+              <button type="button" class="btn btn-primary btn-sm" id="btn-submissions-new-eval" onclick="switchAssessorPortalTab('matrix')" style="display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                New Assessment
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Stats Pill Bar -->
+          <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
+            <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #334155;">
+              Total Submissions: <strong id="assessor-stat-total" style="color: #0F172A; font-weight: 700;">0</strong>
+            </div>
+            <div style="background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #92400E;">
+              Under Review: <strong id="assessor-stat-pending" style="font-weight: 700;">0</strong>
+            </div>
+            <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #065F46;">
+              Approved / Certified: <strong id="assessor-stat-approved" style="font-weight: 700;">0</strong>
+            </div>
+            <div style="background: #FEE2E2; border: 1px solid #FECACA; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #991B1B;">
+              Remediation Required: <strong id="assessor-stat-rejected" style="font-weight: 700;">0</strong>
+            </div>
+          </div>
+
+          <div class="table-responsive" style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px;">
+            <table class="data-table" id="assessor-submissions-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+              <thead>
+                <tr style="background: #0F172A; color: #FFFFFF; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em;">
+                  <th style="padding: 10px 12px; text-align: left;">Submission Date</th>
+                  <th style="padding: 10px 12px; text-align: left;">Company</th>
+                  <th style="padding: 10px 12px; text-align: left;">Device Model</th>
+                  <th style="padding: 10px 12px; text-align: left;">Package</th>
+                  <th style="padding: 10px 12px; text-align: center;">Score</th>
+                  <th style="padding: 10px 12px; text-align: center;">Rating</th>
+                  <th style="padding: 10px 12px; text-align: center;">Lifecycle Status</th>
+                  <th style="padding: 10px 12px; text-align: right;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="assessor-submissions-tbody">
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 32px; color: #64748B;">
+                    Loading your submissions...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
       <!-- Evaluation Workbench Layout (Feature 3: Section Progress Sidebar) -->
-      <div class="evaluation-workbench-layout">
+      <div class="evaluation-workbench-layout" id="evaluation-workbench-layout">
         <!-- Sticky Section Progress Sidebar -->
         <aside id="section-progress-sidebar" class="section-progress-sidebar">
           <div class="sidebar-header">
@@ -374,14 +474,28 @@
 
             <div class="form-group">
               <label for="packageName" class="form-label">
-                Package Name
+                Assessment Package <span class="required">*</span>
               </label>
-              <input
-                type="text"
+              <select
                 id="packageName"
                 class="form-control"
-                placeholder="e.g. Enterprise Commercial Tier"
+                required
+              >
+                <option value="">-- Select Assessment Package --</option>
+                <option value="Package 1: Standard Assessment (RM 4,500)">Package 1: Standard Assessment (RM 4,500 &bull; 2-Year Validity, 1 Free Reassessment)</option>
+                <option value="Package 2: Comprehensive Assessment (RM 6,000)">Package 2: Comprehensive Assessment (RM 6,000 &bull; 3-Year Validity, 2 Free Reassessments)</option>
+                <option value="Custom">Other / Custom Package...</option>
+              </select>
+              <input
+                type="text"
+                id="packageNameCustom"
+                class="form-control"
+                placeholder="Specify custom package name..."
+                style="display: none; margin-top: 8px;"
               />
+              <div id="packageName-hint" class="field-hint" style="color: #64748B; font-size: 11.5px; margin-top: 4px;">
+                Select official MIROS assessment package tier
+              </div>
             </div>
 
             <div class="form-group">

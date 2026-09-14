@@ -90,6 +90,8 @@ async function runVerification() {
   console.log('[TEST 3] Valid Inquiry Submission (No Authentication):');
   const validInquiryRes = await makeRequest('POST', '/api/submit-inquiry', {}, {
     companyName: 'FleetTech Telematics Solutions Sdn Bhd',
+    officeAddress: 'Level 10, Menara FleetTech, Jalan Sultan Ismail',
+    state: 'Kuala Lumpur',
     contactPerson: 'Ts. Kamaruddin Ali',
     contactEmail: 'kamaruddin@fleettech.com.my',
     contactPhone: '+60198877665',

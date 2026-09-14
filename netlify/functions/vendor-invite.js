@@ -20,6 +20,7 @@ import {
   COLLECTION_VENDORS
 } from './db.js';
 import { validateRole, generateToken, ROLE_MANAGER, ROLE_VENDOR, authErrorResponse } from './auth.js';
+import { sendVendorInviteEmail } from './lib/send-email.js';
 
 export const handler = async (event) => {
   const headers = {
@@ -228,6 +229,25 @@ export const handler = async (event) => {
     const setupToken = crypto.randomBytes(24).toString('hex');
     const setupTokenExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days
 
+    // Determine public origin for full setup URL in email
+    const host = event.headers?.['x-forwarded-host'] || event.headers?.host || 'localhost:3000';
+    const proto = event.headers?.['x-forwarded-proto'] || (host.includes('localhost') ? 'http' : 'https');
+    const fullSetupUrl = `${proto}://${host}/login.html?setupToken=${setupToken}`;
+
+    // Trigger automated email delivery via transactional provider (Resend)
+    let emailResult = { sent: false };
+    try {
+      emailResult = await sendVendorInviteEmail({
+        to: cleanEmail,
+        companyName: finalCompanyName,
+        setupUrl: fullSetupUrl,
+        invitedBy: managerName
+      });
+    } catch (emailErr) {
+      console.warn('[VENDOR-INVITE-EMAIL-NOTICE]', emailErr.message || emailErr);
+      emailResult = { sent: false, error: emailErr.message };
+    }
+
     if (existingVendor) {
       const linked = Array.isArray(existingVendor.linkedRegistrationIds) ? [...existingVendor.linkedRegistrationIds] : [];
       if (targetId && !linked.includes(String(targetId))) {
@@ -249,10 +269,20 @@ export const handler = async (event) => {
         headers,
         body: JSON.stringify({
           success: true,
-          message: `Generated invitation setup link for ${cleanEmail}.`,
+          message: emailResult.sent
+            ? `Invitation email successfully sent to ${cleanEmail}.`
+            : `Generated invitation setup link for ${cleanEmail}. (Email notice: ${emailResult.error || 'requires manual delivery'})`,
           isExistingAccount: true,
           setupToken,
           setupLink: `/login.html?setupToken=${setupToken}`,
+          fullSetupUrl,
+          emailDelivery: {
+            attempted: true,
+            sent: emailResult.sent,
+            sandboxRestricted: Boolean(emailResult.sandboxRestricted),
+            error: emailResult.error || null,
+            messageId: emailResult.id || null
+          },
           vendor: {
             email: cleanEmail,
             companyName: finalCompanyName,
@@ -284,10 +314,20 @@ export const handler = async (event) => {
       headers,
       body: JSON.stringify({
         success: true,
-        message: `Vendor account created and setup link generated for ${cleanEmail}.`,
+        message: emailResult.sent
+          ? `Vendor account created and invitation email sent to ${cleanEmail}.`
+          : `Vendor account created and setup link generated for ${cleanEmail}. (Email notice: ${emailResult.error || 'requires manual delivery'})`,
         isExistingAccount: false,
         setupToken,
         setupLink: `/login.html?setupToken=${setupToken}`,
+        fullSetupUrl,
+        emailDelivery: {
+          attempted: true,
+          sent: emailResult.sent,
+          sandboxRestricted: Boolean(emailResult.sandboxRestricted),
+          error: emailResult.error || null,
+          messageId: emailResult.id || null
+        },
         vendor: {
           id: String(created._id),
           email: cleanEmail,

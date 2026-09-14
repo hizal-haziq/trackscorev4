@@ -32,8 +32,8 @@ export const handler = async (event, context) => {
     };
   }
 
-  // 1. API Protection Check (Manager Role Required; Assessor or Vendor Forbidden from Global List)
-  const roleCheck = validateRole(event, ROLE_MANAGER);
+  // 1. API Protection Check (Assessor or Manager Role Required; Vendors Forbidden)
+  const roleCheck = validateRole(event, ROLE_ASSESSOR);
   if (!roleCheck.authorized) {
     return authErrorResponse(headers, roleCheck.statusCode, roleCheck.error);
   }

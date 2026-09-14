@@ -12,7 +12,7 @@ import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { handler } from '../netlify/functions/save-evaluation.js';
 import { generateToken, ROLE_ASSESSOR } from '../netlify/functions/auth.js';
-import { closeDatabaseConnection } from '../netlify/functions/db.js';
+import { connectToDatabase, closeDatabaseConnection, COLLECTION_NAME } from '../netlify/functions/db.js';
 import { recomputeScores } from '../netlify/functions/rubric.js';
 
 describe('save-evaluation.js Integration Suite', () => {
@@ -23,6 +23,14 @@ describe('save-evaluation.js Integration Suite', () => {
   });
 
   after(async () => {
+    try {
+      const conn = await connectToDatabase();
+      if (conn.isMongoAtlas) {
+        await conn.db.collection(COLLECTION_NAME).deleteMany({
+          companyName: { $regex: /^(Test Fleet Corp|DuplicateCorp|InvalidId Corp)/i }
+        });
+      }
+    } catch {}
     await closeDatabaseConnection();
   });
 

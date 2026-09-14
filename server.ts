@@ -34,6 +34,7 @@ import { handler as vendorInviteHandler } from './netlify/functions/vendor-invit
 import { handler as vendorLoginHandler } from './netlify/functions/vendor-login.js';
 import { handler as vendorPortalDataHandler } from './netlify/functions/vendor-portal-data.js';
 import { handler as manageUsersHandler } from './netlify/functions/manage-users.js';
+import { handler as changePasswordHandler } from './netlify/functions/change-password.js';
 import { handler as submitInquiryHandler } from './netlify/functions/submit-inquiry.js';
 import { handler as manageInquiriesHandler } from './netlify/functions/manage-inquiries.js';
 import { statusEmitter, getRecentStatusEvents } from './netlify/functions/status-bus.js';
@@ -135,6 +136,10 @@ app.all(['/.netlify/functions/vendor-login', '/api/vendor-login'], (req: Request
 
 app.all(['/.netlify/functions/manage-users', '/api/manage-users'], (req: Request, res: Response) => {
   return invokeNetlifyHandler(manageUsersHandler, req, res);
+});
+
+app.all(['/.netlify/functions/change-password', '/api/change-password'], (req: Request, res: Response) => {
+  return invokeNetlifyHandler(changePasswordHandler, req, res);
 });
 
 // Full Lifecycle Workflow Handlers
@@ -275,7 +280,7 @@ app.get(['/', '/landing', '/landing.html'], (req: Request, res: Response) => {
   res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'landing.html'));
 });
 
-app.get(['/index.html', '/evaluation', '/evaluation.html', '/eval'], (req: Request, res: Response) => {
+app.get(['/index.html', '/evaluation', '/evaluation.html', '/eval', '/assessor', '/assessor.html', '/assessor-portal', '/assessor-portal.html'], (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'index.html');
   res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'index.html'));
 });
@@ -313,6 +318,11 @@ app.get('/vendor-portal', (req: Request, res: Response) => {
 app.get('/vendor-portal.html', (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'vendor-portal.html');
   res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'vendor-portal.html'));
+});
+
+app.get(['/change-password', '/change-password.html'], (req: Request, res: Response) => {
+  const target = isProduction && path.join(distDir, 'change-password.html');
+  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'change-password.html'));
 });
 
 // Serve assets (public, dist, and root)

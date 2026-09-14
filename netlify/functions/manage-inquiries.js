@@ -139,6 +139,8 @@ export const handler = async (event) => {
         const evaluationDoc = {
           recordType: 'evaluation',
           companyName: inquiry.companyName,
+          officeAddress: inquiry.officeAddress || '',
+          state: inquiry.state || '',
           deviceModel: inquiry.deviceModel || 'Pending Specification',
           contactPerson: inquiry.contactPerson,
           contactEmail: inquiry.contactEmail,

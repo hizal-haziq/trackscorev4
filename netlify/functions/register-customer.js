@@ -63,6 +63,8 @@ export const handler = async (event) => {
 
     const {
       companyName,
+      officeAddress = '',
+      state = '',
       deviceModel = '',
       requestedPackage,
       package: selectedPackageId,
@@ -100,6 +102,8 @@ export const handler = async (event) => {
 
     const registrationDoc = {
       companyName: companyName.trim(),
+      officeAddress: officeAddress ? officeAddress.trim() : '',
+      state: state ? state.trim() : '',
       contactPerson: contactPerson.trim(),
       contactEmail: contactEmail.trim(),
       contactPhone: contactPhone.trim(),

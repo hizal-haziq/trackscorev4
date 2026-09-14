@@ -36,6 +36,17 @@ describe('Role-Based Access Control (RBAC) Security Boundaries', () => {
   const vendorToken = generateToken({ role: ROLE_VENDOR, vendorId: 'vendor-a-id', email: 'vendor-a@example.com', linkedRegistrationIds: ['rec-a-123'] });
 
   after(async () => {
+    try {
+      const conn = await connectToDatabase();
+      if (conn.isMongoAtlas) {
+        await conn.db.collection('vendors').deleteMany({
+          $or: [
+            { companyName: 'Vendor A Logistics' },
+            { contactEmail: { $regex: /^vendor-a-/i } }
+          ]
+        });
+      }
+    } catch {}
     await closeDatabaseConnection();
   });
 

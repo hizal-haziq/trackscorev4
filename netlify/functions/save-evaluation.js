@@ -58,7 +58,7 @@ export const handler = async (event, context) => {
     }
 
     // 2. Validate mandatory metadata fields
-    const { companyName, deviceModel, assessorName, assessorId, assessmentDate, packageName, breakdown, resubmitRecordId } = payload;
+    const { companyName, officeAddress, state, deviceModel, assessorName, assessorId, assessmentDate, packageName, breakdown, resubmitRecordId } = payload;
     
     if (!companyName || !deviceModel || !assessorName) {
       return {
@@ -176,6 +176,8 @@ export const handler = async (event, context) => {
 
         const updateFields = {
           companyName: cleanCompany,
+          officeAddress: officeAddress ? String(officeAddress).trim() : (existingToResubmit.officeAddress || ''),
+          state: state ? String(state).trim() : (existingToResubmit.state || ''),
           deviceModel: cleanModel,
           packageName: packageName ? String(packageName).trim() : 'Standard Evaluation',
           assessorName: cleanAssessorName,
@@ -377,6 +379,8 @@ export const handler = async (event, context) => {
         paymentMethod: null,
         verifiedBy: null
       },
+      officeAddress: officeAddress ? String(officeAddress).trim() : (matchedRegistration?.officeAddress || ''),
+      state: state ? String(state).trim() : (matchedRegistration?.state || ''),
       contactPerson: matchedRegistration?.contactPerson || payload.contactPerson || null,
       contactEmail: matchedRegistration?.contactEmail || payload.contactEmail || null,
       contactPhone: matchedRegistration?.contactPhone || payload.contactPhone || null,
