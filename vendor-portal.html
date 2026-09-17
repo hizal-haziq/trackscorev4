@@ -510,7 +510,6 @@
       { key: 'submitted', label: 'Submitted' },
       { key: 'pending_review', label: 'Review' },
       { key: 'pre_final_sent', label: 'Pre-Final' },
-      { key: 'payment_confirmed', label: 'Payment' },
       { key: 'certificate_issued', label: 'Certificate' },
       { key: 'completed', label: 'Completed' }
     ];
@@ -620,7 +619,7 @@
         ` : '';
 
         // Payment status badge
-        const isPaid = evalDoc.payment?.status === 'paid' || status === 'payment_confirmed' || status === 'certificate_issued' || status === 'completed';
+        const isPaid = evalDoc.payment?.status === 'paid' || status === 'pre_final_sent' || status === 'payment_confirmed' || status === 'certificate_issued' || status === 'completed';
         const paymentBadge = isPaid
           ? `<span class="badge badge-paid">PAID &bull; RM ${Number(evalDoc.invoice?.amount || 1500).toLocaleString()}</span>`
           : `<span class="badge badge-pending">PAYMENT PENDING &bull; RM ${Number(evalDoc.invoice?.amount || 1500).toLocaleString()}</span>`;

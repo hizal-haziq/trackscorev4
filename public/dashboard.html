@@ -272,7 +272,6 @@
             <option value="submitted">Submitted</option>
             <option value="pending_review">Pending Review</option>
             <option value="pre_final_sent">Pre-Final Sent</option>
-            <option value="payment_confirmed">Payment Confirmed</option>
             <option value="certificate_issued">Certificate Issued</option>
             <option value="completed">Completed</option>
             <option value="rejected">Rejected</option>
@@ -459,14 +458,15 @@
                 <th style="min-width: 130px;">Device Model</th>
                 <th style="min-width: 105px;">Status</th>
                 <th style="min-width: 170px;">Package</th>
+                <th style="min-width: 160px;">Assigned Assessor</th>
                 <th style="min-width: 130px;">Scheduled Date</th>
                 <th style="min-width: 160px;">Invoice Tracking</th>
-                <th style="text-align: right; min-width: 150px;">Manager Actions</th>
+                <th style="text-align: right; min-width: 180px;">Manager Actions</th>
               </tr>
             </thead>
             <tbody id="registered-customers-tbody">
               <tr>
-                <td colspan="8" style="text-align: center; padding: 36px 20px; color: var(--text-muted);">
+                <td colspan="9" style="text-align: center; padding: 36px 20px; color: var(--text-muted);">
                   Loading registered customer records...
                 </td>
               </tr>
@@ -890,6 +890,16 @@
               </div>
 
               <div>
+                <label for="convert-assessor-select" style="display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">
+                  Assign Assessor (Optional)
+                </label>
+                <select id="convert-assessor-select" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13.5px; background: #FFF;">
+                  <option value="">-- Unassigned (Assign Later) --</option>
+                </select>
+                <span style="font-size: 11.5px; color: #64748B; margin-top: 3px; display: block;">You can designate an assessor now, or assign one anytime from Registered Customers.</span>
+              </div>
+
+              <div>
                 <label for="convert-scheduled-date" style="display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">
                   Planned Assessment Schedule Date (Optional)
                 </label>
@@ -1077,6 +1087,16 @@
                 </div>
               </div>
 
+              <div>
+                <label for="reg-assessor-select" style="display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">
+                  Assign Assessor (Optional)
+                </label>
+                <select id="reg-assessor-select" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13.5px; background: #FFF;">
+                  <option value="">-- Unassigned (Assign Later) --</option>
+                </select>
+                <span style="font-size: 11.5px; color: #64748B; margin-top: 3px; display: block;">Select an assessor to automatically assign this product evaluation upon creation.</span>
+              </div>
+
               <div id="reg-modal-alert" class="form-alert-container alert-danger" style="display: none;" role="alert">
                 <div id="reg-modal-alert-msg" class="form-alert-content"></div>
               </div>
@@ -1135,6 +1155,15 @@
               </div>
 
               <div>
+                <label for="schedule-assessor-select" style="display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">
+                  Assign / Reassign Assessor (Optional)
+                </label>
+                <select id="schedule-assessor-select" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 13.5px; background: #FFF;">
+                  <option value="">-- Keep Current / Unassigned --</option>
+                </select>
+              </div>
+
+              <div>
                 <label for="schedule-notes-input" style="display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">
                   Assessor or Location Notes (Optional)
                 </label>
@@ -1150,6 +1179,85 @@
           <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px;">
             <button type="button" class="btn btn-secondary btn-sm" onclick="closeScheduleModal()">Cancel</button>
             <button type="submit" class="btn btn-primary btn-sm" id="btn-submit-schedule">Confirm Schedule</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 2b. Dedicated Assign Assessment Task to Assessor Modal (Manager Only) -->
+    <div class="modal-overlay" id="assign-task-modal" aria-hidden="true">
+      <div class="modal-container" style="max-width: 550px;">
+        <div class="modal-header" style="border-bottom: 2px solid #4F46E5;">
+          <h3 style="display: flex; align-items: center; gap: 8px; font-size: 17px; margin: 0; color: #312E81;">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#4F46E5" stroke-width="2.2">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+              <circle cx="8.5" cy="7" r="4"></circle>
+              <line x1="20" y1="8" x2="20" y2="14"></line>
+              <line x1="23" y1="11" x2="17" y2="11"></line>
+            </svg>
+            Assign Task to Assessor
+          </h3>
+          <button type="button" class="modal-close-btn" onclick="closeAssignTaskModal()" aria-label="Close modal">&times;</button>
+        </div>
+
+        <form id="form-assign-task" onsubmit="handleAssignTaskSubmit(event)">
+          <input type="hidden" id="assign-task-record-id" value="" />
+          <div class="modal-body">
+            <div style="background: #EEF2FF; border: 1px solid #C7D2FE; padding: 12px 14px; border-radius: 6px; margin-bottom: 14px;">
+              <div style="font-size: 11px; color: #4338CA; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;">Target Vendor &amp; Registered Product</div>
+              <div id="assign-task-company-display" style="font-size: 15px; font-weight: 700; color: #1E1B4B; margin-top: 2px;">Company Name</div>
+              <div style="display: flex; gap: 8px; align-items: center; margin-top: 4px; font-size: 12px; color: #4338CA; flex-wrap: wrap;">
+                <span>Device: <strong id="assign-task-model-display">-</strong></span>
+                <span>&bull;</span>
+                <span id="assign-task-current-assessor-display">Current Assessor: <em>Unassigned</em></span>
+              </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 14px;">
+              <div>
+                <label for="assign-task-assessor-select" style="display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">
+                  Choose Assessor <span style="color: #EF4444;">*</span>
+                </label>
+                <select id="assign-task-assessor-select" class="form-control" required style="width: 100%; padding: 9px 12px; border: 1px solid #CBD5E1; border-radius: 5px; font-size: 13.5px; background: #FFF;">
+                  <option value="">-- Select Assessor --</option>
+                </select>
+                <div style="font-size: 11.5px; color: #64748B; margin-top: 3px;">
+                  The selected assessor will immediately receive this task in their "Assigned Tasks" tab and real-time alerts.
+                </div>
+              </div>
+
+              <div>
+                <label for="assign-task-date-input" style="display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">
+                  Scheduled Inspection Date (Optional / Recommended)
+                </label>
+                <input type="date" id="assign-task-date-input" class="form-control" style="width: 100%; padding: 8px 12px; border: 1px solid #CBD5E1; border-radius: 5px; font-size: 13.5px;" />
+              </div>
+
+              <div>
+                <label for="assign-task-device-input" style="display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">
+                  Device Model
+                </label>
+                <input type="text" id="assign-task-device-input" class="form-control" placeholder="e.g. TRK-550 IoT Gateway" style="width: 100%; padding: 8px 12px; border: 1px solid #CBD5E1; border-radius: 5px; font-size: 13.5px;" />
+              </div>
+
+              <div>
+                <label for="assign-task-instructions" style="display: block; font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">
+                  Manager Briefing &amp; Assessment Instructions (Optional)
+                </label>
+                <textarea id="assign-task-instructions" class="form-control" rows="3" placeholder="e.g. Please verify hardware tampering sensor and test CAN bus baud rate compliance." style="width: 100%; padding: 8px 12px; border: 1px solid #CBD5E1; border-radius: 5px; font-size: 13px;"></textarea>
+              </div>
+
+              <div id="assign-task-modal-alert" class="form-alert-container alert-danger" style="display: none;" role="alert">
+                <div id="assign-task-modal-alert-msg" class="form-alert-content"></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px; border-top: 1px solid #E2E8F0; padding: 14px 20px;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="closeAssignTaskModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="btn-submit-assign-task" style="background: #4F46E5; border-color: #4338CA; color: #FFFFFF; font-weight: 700;">
+              Assign Task to Assessor
+            </button>
           </div>
         </form>
       </div>
@@ -1660,7 +1768,7 @@
 
     <!-- 6. User Management Modal (Manager-Only) -->
     <div class="modal-overlay" id="user-management-modal" aria-hidden="true">
-      <div class="modal-container" style="max-width: 620px;">
+      <div class="modal-container" style="max-width: 680px;">
         <div class="modal-header">
           <div style="display: flex; align-items: center; gap: 8px;">
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1675,55 +1783,119 @@
         </div>
 
         <div class="modal-body" style="padding: 20px;">
-          <!-- Created Account Temporary Password Alert Banner -->
-          <div id="new-user-credentials-banner" style="display: none; background: #FEF3C7; border: 1px solid #FCD34D; border-radius: 6px; padding: 14px; margin-bottom: 16px;">
-            <div style="display: flex; gap: 10px; align-items: flex-start;">
-              <span style="font-size: 18px;">🔑</span>
+          <!-- Created / Updated Account Credentials Banner -->
+          <div id="new-user-credentials-banner" style="display: none; background: #ECFDF5; border: 1px solid #6EE7B7; border-radius: 8px; padding: 16px; margin-bottom: 18px;">
+            <div style="display: flex; gap: 12px; align-items: flex-start;">
+              <span style="font-size: 24px; line-height: 1;">✅</span>
               <div style="flex: 1;">
-                <div style="font-size: 12.5px; font-weight: 800; color: #92400E; text-transform: uppercase;">Temporary Password Generated</div>
-                <p style="font-size: 12px; color: #78350F; margin: 4px 0 8px 0;">
-                  A secure temporary password was auto-generated server-side. Relay this password to the staff member. They will be <strong>forced to set their own permanent password</strong> upon initial sign-in.
-                </p>
-                <div style="display: flex; gap: 8px; align-items: center;">
-                  <input type="text" id="new-user-temp-pw" readonly style="flex: 1; padding: 6px 10px; font-family: monospace; font-size: 13px; font-weight: 700; background: #FFFFFF; border: 1px solid #CBD5E1; border-radius: 4px;" />
-                  <button type="button" class="btn btn-sm btn-primary" onclick="copyNewUserTempPassword()" style="white-space: nowrap;">Copy Password</button>
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                  <div style="font-size: 13.5px; font-weight: 800; color: #065F46; text-transform: uppercase; letter-spacing: 0.5px;">Account Credentials Ready</div>
+                  <span id="banner-role-badge" style="font-size: 10.5px; font-weight: 700; padding: 2px 8px; border-radius: 4px; background: #D1FAE5; color: #065F46;">ASSESSOR</span>
                 </div>
-                <div id="new-user-copy-feedback" style="font-size: 11px; color: #15803D; font-weight: 700; margin-top: 4px; display: none;">✓ Copied to clipboard!</div>
+                <p style="font-size: 12.5px; color: #047857; margin: 0 0 12px 0;">
+                  This account has been saved with the password you specified. The user can sign in immediately at the portal. Send credentials directly to the assessor below:
+                </p>
+
+                <!-- Credentials Detail Card -->
+                <div style="background: #FFFFFF; border: 1px solid #A7F3D0; border-radius: 6px; padding: 12px; margin-bottom: 12px; font-size: 12.5px;">
+                  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                    <div><span style="color: #64748B;">Staff Name:</span> <strong id="banner-staff-name" style="color: #0F172A;">-</strong></div>
+                    <div><span style="color: #64748B;">Assessor ID:</span> <strong id="banner-assessor-id" style="color: #0F172A;">-</strong></div>
+                  </div>
+                  <div style="margin-bottom: 8px;">
+                    <span style="color: #64748B;">Login Email:</span> <strong id="banner-staff-email" style="color: #0F172A; font-family: monospace;">-</strong>
+                  </div>
+                  <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="color: #64748B; white-space: nowrap;">Password:</span>
+                    <div style="position: relative; flex: 1;">
+                      <input type="text" id="new-user-temp-pw" readonly style="width: 100%; padding: 6px 36px 6px 10px; font-family: monospace; font-size: 13px; font-weight: 700; color: #0F172A; background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 4px;" />
+                      <button type="button" onclick="toggleBannerPasswordMask()" id="btn-mask-banner-pw" title="Toggle password visibility" style="position: absolute; right: 6px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748B; padding: 2px;">
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                      </button>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-secondary" onclick="copyNewUserTempPassword()" style="white-space: nowrap; padding: 6px 10px; font-size: 12px;">Copy PW</button>
+                  </div>
+                </div>
+
+                <!-- Instant Share Buttons (WhatsApp, Email, Copy All) -->
+                <div style="display: flex; flex-wrap: wrap; gap: 8px;">
+                  <button type="button" id="btn-share-whatsapp" onclick="shareCredentialsViaWhatsApp()" class="btn btn-sm" style="background: #25D366; color: #FFFFFF; border: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 5px; cursor: pointer;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
+                    Send via WhatsApp
+                  </button>
+
+                  <button type="button" id="btn-share-email" onclick="shareCredentialsViaEmail()" class="btn btn-sm" style="background: #2563EB; color: #FFFFFF; border: none; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 5px; cursor: pointer;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                    Send via Email
+                  </button>
+
+                  <button type="button" class="btn btn-sm" onclick="copyFullCredentialsMessage()" style="background: #334155; color: #FFFFFF; border: none; font-weight: 600; display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; border-radius: 5px; cursor: pointer;">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+                    Copy Full Message
+                  </button>
+                </div>
+                <div id="new-user-copy-feedback" style="font-size: 11.5px; color: #047857; font-weight: 700; margin-top: 6px; display: none;">✓ Copied to clipboard! Ready to paste.</div>
               </div>
             </div>
           </div>
 
           <!-- Provision New User Form -->
-          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 16px; margin-bottom: 16px;">
-            <div style="font-size: 13px; font-weight: 700; color: #0F172A; margin-bottom: 12px;">Provision New Staff Account</div>
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 18px; margin-bottom: 18px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+              <div style="font-size: 13.5px; font-weight: 700; color: #0F172A;">Provision New Staff Account</div>
+              <span style="font-size: 11px; color: #64748B; background: #E2E8F0; padding: 2px 7px; border-radius: 4px;">Direct Manager Provisioning</span>
+            </div>
             <form id="create-user-form" onsubmit="handleCreateStaffAccount(event)">
               <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                 <div>
                   <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">Full Name *</label>
-                  <input type="text" id="staff-name-input" required placeholder="e.g. Ahmad Razali" class="form-control" style="width: 100%; padding: 7px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 4px;" />
+                  <input type="text" id="staff-name-input" required placeholder="e.g. Ahmad Razali" class="form-control" style="width: 100%; padding: 8px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 5px;" />
                 </div>
                 <div>
-                  <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">Email Address *</label>
-                  <input type="email" id="staff-email-input" required placeholder="e.g. ahmad@miros.gov.my" class="form-control" style="width: 100%; padding: 7px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 4px;" />
+                  <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">Email Address * (Login ID)</label>
+                  <input type="email" id="staff-email-input" required placeholder="e.g. ahmad@miros.gov.my" class="form-control" style="width: 100%; padding: 8px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 5px;" />
                 </div>
               </div>
-              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;">
                 <div>
                   <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">Role *</label>
-                  <select id="staff-role-select" class="form-control" style="width: 100%; padding: 7px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 4px;">
-                    <option value="assessor">Assessor (Evaluation Forms)</option>
-                    <option value="manager">Manager (Full Dashboard)</option>
+                  <select id="staff-role-select" class="form-control" style="width: 100%; padding: 8px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 5px;">
+                    <option value="assessor">Assessor (Evaluation Forms &amp; Matrix)</option>
+                    <option value="manager">Manager (Full Operational Dashboard)</option>
                   </select>
                 </div>
                 <div>
                   <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">Assessor ID (Optional)</label>
-                  <input type="text" id="staff-assessor-id-input" placeholder="e.g. AS-9006" class="form-control" style="width: 100%; padding: 7px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 4px;" />
+                  <input type="text" id="staff-assessor-id-input" placeholder="e.g. MKA 9006 or AS-9006" class="form-control" style="width: 100%; padding: 8px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 5px;" />
                 </div>
               </div>
-              <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="font-size: 11.5px; color: #64748B;">A secure temporary password will be created automatically.</div>
-                <button type="submit" class="btn btn-primary btn-sm" id="btn-submit-create-user">
-                  + Create Account
+
+              <!-- Password & Phone row -->
+              <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; margin-bottom: 12px;">
+                <div>
+                  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase;">Enter Password *</label>
+                    <button type="button" onclick="generateAndSetPassword()" style="background: none; border: none; color: #EA580C; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">Suggest Password</button>
+                  </div>
+                  <div style="position: relative;">
+                    <input type="password" id="staff-password-input" required minlength="6" placeholder="Enter password (min 6 chars)" class="form-control" style="width: 100%; padding: 8px 36px 8px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 5px;" />
+                    <button type="button" onclick="togglePasswordVisibility('staff-password-input', 'icon-pw-eye')" title="Show/Hide Password" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748B; padding: 2px;">
+                      <svg id="icon-pw-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                    </button>
+                  </div>
+                </div>
+                <div>
+                  <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">Mobile / WhatsApp (Optional)</label>
+                  <input type="tel" id="staff-phone-input" placeholder="e.g. 0123456789 or +60123456789" class="form-control" style="width: 100%; padding: 8px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 5px;" />
+                </div>
+              </div>
+
+              <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #E2E8F0; padding-top: 12px; margin-top: 4px;">
+                <div style="font-size: 11.5px; color: #64748B;">
+                  <span style="color: #059669; font-weight: 600;">✓ Active immediately</span> &bull; Manager-assigned permanent password
+                </div>
+                <button type="submit" class="btn btn-primary btn-sm" id="btn-submit-create-user" style="display: inline-flex; align-items: center; gap: 6px;">
+                  <span>+ Create Account &amp; Share</span>
                 </button>
               </div>
             </form>
@@ -1731,8 +1903,11 @@
 
           <!-- Existing Users List -->
           <div>
-            <div style="font-size: 12px; font-weight: 700; color: #475569; margin-bottom: 8px; text-transform: uppercase;">Registered System Users</div>
-            <div id="staff-users-list" style="max-height: 220px; overflow-y: auto; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 12.5px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+              <div style="font-size: 12px; font-weight: 700; color: #475569; text-transform: uppercase;">Registered System Users</div>
+              <button type="button" onclick="loadStaffUsersList()" class="btn btn-sm btn-secondary" style="font-size: 11px; padding: 2px 8px;">Refresh List</button>
+            </div>
+            <div id="staff-users-list" style="max-height: 250px; overflow-y: auto; border: 1px solid #E2E8F0; border-radius: 6px; font-size: 12.5px; background: #FFFFFF;">
               <div style="padding: 14px; text-align: center; color: #94A3B8;">Loading staff directory...</div>
             </div>
           </div>
@@ -1740,6 +1915,94 @@
 
         <div class="modal-footer" style="display: flex; justify-content: flex-end;">
           <button type="button" class="btn btn-secondary btn-sm" onclick="closeUserManagementModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. Reset Password Sub-Modal -->
+    <div class="modal-overlay" id="reset-password-modal" aria-hidden="true">
+      <div class="modal-container" style="max-width: 460px;">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 18px;">🔑</span>
+            <h3 style="margin: 0; font-size: 15px; font-weight: 700;">Reset Staff Password</h3>
+          </div>
+          <button type="button" class="modal-close-btn" onclick="closeResetPasswordModal()">&times;</button>
+        </div>
+        <form id="reset-password-form" onsubmit="handleExecutePasswordReset(event)">
+          <div class="modal-body" style="padding: 18px;">
+            <input type="hidden" id="reset-user-id" />
+            <input type="hidden" id="reset-user-role" />
+            <input type="hidden" id="reset-user-assessor-id" />
+
+            <div style="background: #F1F5F9; border-radius: 6px; padding: 10px 12px; margin-bottom: 14px;">
+              <div style="font-size: 13px; font-weight: 700; color: #0F172A;" id="reset-user-name-display">-</div>
+              <div style="font-size: 11.5px; color: #64748B;" id="reset-user-email-display">-</div>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                <label style="font-size: 11px; font-weight: 700; color: #475569; text-transform: uppercase;">New Password *</label>
+                <button type="button" onclick="generateResetModalPassword()" style="background: none; border: none; color: #EA580C; font-size: 11px; font-weight: 700; cursor: pointer; text-decoration: underline; padding: 0;">Suggest Password</button>
+              </div>
+              <div style="position: relative;">
+                <input type="password" id="reset-password-input" required minlength="6" placeholder="Enter new password (min 6 chars)" class="form-control" style="width: 100%; padding: 8px 36px 8px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 5px;" />
+                <button type="button" onclick="togglePasswordVisibility('reset-password-input', 'icon-reset-eye')" title="Show/Hide Password" style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: #64748B; padding: 2px;">
+                  <svg id="icon-reset-eye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                </button>
+              </div>
+            </div>
+
+            <div style="margin-bottom: 12px;">
+              <label style="display: block; font-size: 11px; font-weight: 700; color: #475569; margin-bottom: 4px; text-transform: uppercase;">Mobile / WhatsApp (Optional for Dispatch)</label>
+              <input type="tel" id="reset-phone-input" placeholder="e.g. 0123456789 or +60123456789" class="form-control" style="width: 100%; padding: 8px 10px; font-size: 13px; border: 1px solid var(--border-color); border-radius: 5px;" />
+            </div>
+
+            <p style="font-size: 11.5px; color: #64748B; margin: 0;">
+              Once updated, you can immediately send the new credentials to the assessor via WhatsApp or Email.
+            </p>
+          </div>
+          <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 8px;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="closeResetPasswordModal()">Cancel</button>
+            <button type="submit" class="btn btn-primary btn-sm" id="btn-submit-reset-pw">Update &amp; Share Credentials</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- 8. Delete Staff User Confirmation Modal (In-App Modal for sandboxed iframe safety) -->
+    <div class="modal-overlay" id="delete-user-modal" aria-hidden="true">
+      <div class="modal-container" style="max-width: 460px;">
+        <div class="modal-header" style="border-bottom: 2px solid #EF4444;">
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="font-size: 18px; color: #DC2626;">⚠️</span>
+            <h3 style="margin: 0; font-size: 15px; font-weight: 700; color: #B91C1C;">Remove Staff Account</h3>
+          </div>
+          <button type="button" class="modal-close-btn" onclick="closeDeleteUserModal()" aria-label="Close modal">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 18px;">
+          <input type="hidden" id="delete-target-user-id" />
+          <p style="margin-top: 0; margin-bottom: 12px; font-size: 13.5px; color: #1E293B;">
+            Are you sure you want to remove this staff user account? This action cannot be undone.
+          </p>
+          <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px; padding: 12px 14px; margin-bottom: 14px;">
+            <div style="font-size: 14px; font-weight: 700; color: #991B1B;" id="delete-user-name-display">-</div>
+            <div style="font-size: 12px; color: #B91C1C; margin-top: 2px;" id="delete-user-email-display">-</div>
+            <div style="font-size: 11.5px; color: #7F1D1D; margin-top: 4px; font-weight: 600;" id="delete-user-extra-display"></div>
+          </div>
+          <p style="font-size: 11.5px; color: #64748B; margin: 0; line-height: 1.4;">
+            The staff member will immediately lose access to the system. Existing evaluation records historically completed by this assessor will be preserved for compliance and audit trail purposes.
+          </p>
+          <div id="delete-user-modal-alert" class="form-alert-container alert-danger" style="display: none; margin-top: 12px;" role="alert">
+            <div id="delete-user-modal-alert-msg" class="form-alert-content"></div>
+          </div>
+        </div>
+        <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 8px;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeDeleteUserModal()">Cancel</button>
+          <button type="button" class="btn btn-sm" id="btn-confirm-delete-user" onclick="executeDeleteUser()" style="background: #DC2626; color: #FFFFFF; border: none; font-weight: 700; padding: 6px 14px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 6px;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+            <span id="btn-confirm-delete-user-text">Delete Account</span>
+          </button>
         </div>
       </div>
     </div>
@@ -1969,7 +2232,7 @@
           if (tbody) {
             tbody.innerHTML = `
               <tr>
-                <td colspan="8" style="text-align: center; padding: 36px 20px; color: #EF4444;">
+                <td colspan="9" style="text-align: center; padding: 36px 20px; color: #EF4444;">
                   <strong>Failed to load registered customers:</strong> ${escapeHtml(error.message)}
                   <div style="margin-top: 10px;">
                     <button type="button" class="btn btn-secondary btn-xs" onclick="fetchRegisteredCustomers()">Retry</button>
@@ -2014,7 +2277,7 @@
         if (!items || items.length === 0) {
           tbody.innerHTML = `
             <tr>
-              <td colspan="8" style="text-align: center; padding: 48px 24px; color: var(--text-muted);">
+              <td colspan="9" style="text-align: center; padding: 48px 24px; color: var(--text-muted);">
                 <div style="font-size: 15px; font-weight: 600; color: #475569; margin-bottom: 6px;">No registered customer records found</div>
                 <p style="font-size: 13px; margin-bottom: 14px;">Pre-register a telematics solution provider to track package and schedule their inspection.</p>
                 <button type="button" class="btn btn-primary btn-sm" onclick="openRegisterCustomerModal()">
@@ -2046,12 +2309,41 @@
           if (item.scheduledDate) {
             scheduleCol = `
               <div style="font-weight: 600; color: #1E293B; font-size: 13px;">📅 ${escapeHtml(item.scheduledDate)}</div>
-              <button type="button" class="btn btn-xs btn-secondary" style="margin-top: 4px;" onclick="openScheduleModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.scheduledDate)}', '${escapeHtml(item.deviceModel || '')}')">Reschedule</button>
+              <button type="button" class="btn btn-xs btn-secondary" style="margin-top: 4px;" onclick="openScheduleModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.scheduledDate)}', '${escapeHtml(item.deviceModel || '')}', '${escapeHtml(item.assignedAssessor || item.assignedAssessorName || '')}', '${escapeHtml(item.assignedAssessorId || '')}')">Reschedule</button>
             `;
           } else {
             scheduleCol = `
               <span style="color: #94A3B8; font-size: 12px; font-style: italic;">Not scheduled</span><br>
-              <button type="button" class="btn btn-xs btn-primary" style="margin-top: 4px; padding: 2px 8px;" onclick="openScheduleModal('${item._id}', '${escapeHtml(item.companyName)}', '', '${escapeHtml(item.deviceModel || '')}')">+ Schedule</button>
+              <button type="button" class="btn btn-xs btn-primary" style="margin-top: 4px; padding: 2px 8px;" onclick="openScheduleModal('${item._id}', '${escapeHtml(item.companyName)}', '', '${escapeHtml(item.deviceModel || '')}', '${escapeHtml(item.assignedAssessor || item.assignedAssessorName || '')}', '${escapeHtml(item.assignedAssessorId || '')}')">+ Schedule</button>
+            `;
+          }
+
+          // Assessor column
+          let assessorCol = '';
+          const currentAssessorName = item.assignedAssessor || item.assignedAssessorName || '';
+          const currentAssessorId = item.assignedAssessorId || '';
+          const currentInstructions = item.assignmentInstructions || item.schedulingNotes || '';
+          if (currentAssessorName) {
+            assessorCol = `
+              <div>
+                <div style="font-weight: 700; color: #1E293B; font-size: 13px; display: flex; align-items: center; gap: 4px;">
+                  <span>👤 ${escapeHtml(currentAssessorName)}</span>
+                </div>
+                ${currentAssessorId ? `<div style="font-size: 11px; color: #64748B;">ID: ${escapeHtml(currentAssessorId)}</div>` : ''}
+                ${currentInstructions ? `<div style="font-size: 10.5px; color: #4338CA; margin-top: 2px; font-style: italic;" title="${escapeHtml(currentInstructions)}">📝 Briefed</div>` : ''}
+                <button type="button" class="btn btn-xs btn-secondary" style="margin-top: 4px; padding: 2px 7px; font-size: 11px;" onclick="openAssignTaskModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.deviceModel || '')}', '${escapeHtml(currentAssessorName)}', '${escapeHtml(currentAssessorId)}', '${escapeHtml(item.scheduledDate || '')}', '${escapeHtml(currentInstructions)}')">Reassign</button>
+              </div>
+            `;
+          } else {
+            assessorCol = `
+              <div>
+                <span style="display: inline-flex; align-items: center; gap: 3px; font-size: 11px; font-weight: 700; background: #FEF3C7; color: #92400E; border: 1px solid #FCD34D; padding: 2px 7px; border-radius: 9999px;">
+                  ⚠️ Unassigned
+                </span>
+                <div style="margin-top: 5px;">
+                  <button type="button" class="btn btn-xs" style="padding: 2px 8px; font-size: 11px; background: #4F46E5; border-color: #4338CA; color: #FFFFFF; font-weight: 600;" onclick="openAssignTaskModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.deviceModel || '')}', '', '', '${escapeHtml(item.scheduledDate || '')}', '')">+ Assign</button>
+                </div>
+              </div>
             `;
           }
 
@@ -2128,14 +2420,18 @@
                 <div style="color: #10B981; font-weight: 700; font-size: 12.5px;">RM ${pkgPrice.toLocaleString()}</div>
                 <div style="font-size: 11px; color: #64748B;">${pkgValidity}-yr validity &bull; ${pkgReassessments} free reassessment${pkgReassessments > 1 ? 's' : ''}</div>
               </td>
+              <td>${assessorCol}</td>
               <td>${scheduleCol}</td>
               <td>${invoiceCol}</td>
               <td style="text-align: right; white-space: nowrap;">
                 <div style="display: inline-flex; gap: 6px;">
+                  <button type="button" class="btn btn-xs" title="Assign or reassign an assessor for this evaluation" style="background: #4F46E5; border-color: #4338CA; color: #FFFFFF; font-weight: 600;" onclick="openAssignTaskModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.deviceModel || '')}', '${escapeHtml(currentAssessorName)}', '${escapeHtml(currentAssessorId)}', '${escapeHtml(item.scheduledDate || '')}', '${escapeHtml(currentInstructions)}')">
+                    Assign
+                  </button>
                   <button type="button" class="btn btn-primary btn-xs" title="Generate one-time setup link for Vendor Portal" style="background: #F58220; border-color: #EA580C; color: #FFFFFF;" onclick="inviteCustomerToVendorPortal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.contactEmail || '')}')">
                     Invite Portal
                   </button>
-                  <button type="button" class="btn btn-secondary btn-xs" title="Schedule or update assessment inspection date" onclick="openScheduleModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.scheduledDate || '')}', '${escapeHtml(item.deviceModel || '')}')">
+                  <button type="button" class="btn btn-secondary btn-xs" title="Schedule or update assessment inspection date" onclick="openScheduleModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.scheduledDate || '')}', '${escapeHtml(item.deviceModel || '')}', '${escapeHtml(currentAssessorName)}', '${escapeHtml(currentAssessorId)}')">
                     Schedule
                   </button>
                   <button type="button" class="btn btn-secondary btn-xs" title="Confirm package and update invoice details" onclick="openManageInvoiceModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(pkgName)}', ${item.invoice ? JSON.stringify(item.invoice).replace(/"/g, '&quot;') : 'null'})">
@@ -2425,6 +2721,8 @@
         if (dateInput) dateInput.value = '';
         if (notesInput) notesInput.value = '';
 
+        await populateAssessorDropdown("convert-assessor-select", "", "-- Unassigned (Assign Later) --");
+
         if (submitBtn) {
           submitBtn.disabled = false;
           submitBtn.innerHTML = '✓ Convert to Registered Customer';
@@ -2454,6 +2752,12 @@
         const alertMsg = document.getElementById("convert-modal-alert-msg");
         const submitBtn = document.getElementById("btn-confirm-convert-inq");
 
+        const assessorSelect = document.getElementById("convert-assessor-select");
+        const selectedAssessorOpt = assessorSelect?.options[assessorSelect.selectedIndex];
+        const assignedAssessorName = selectedAssessorOpt?.getAttribute("data-name") || assessorSelect?.value || null;
+        const assignedAssessorId = selectedAssessorOpt?.getAttribute("data-id") || null;
+        const assignedAssessorEmail = selectedAssessorOpt?.getAttribute("data-email") || null;
+
         if (!inquiryId) {
           if (alertBox && alertMsg) {
             alertMsg.textContent = "Missing inquiry reference ID.";
@@ -2477,7 +2781,11 @@
               action: 'convert',
               selectedPackage,
               scheduledDate,
-              notes
+              notes,
+              assignedAssessor: assignedAssessorName,
+              assignedAssessorName,
+              assignedAssessorId,
+              assignedAssessorEmail
             })
           });
 
@@ -2618,11 +2926,12 @@
       }
 
       // REGISTER CUSTOMER MODAL
-      function openRegisterCustomerModal() {
+      async function openRegisterCustomerModal() {
         const modal = document.getElementById("register-customer-modal");
         const alert = document.getElementById("reg-modal-alert");
         if (alert) alert.style.display = "none";
         document.getElementById("form-register-customer")?.reset();
+        await populateAssessorDropdown("reg-assessor-select", "", "-- Unassigned (Assign Later) --");
         if (modal) {
           modal.classList.add("active");
           modal.setAttribute("aria-hidden", "false");
@@ -2653,6 +2962,12 @@
         const deviceModel = document.getElementById("reg-deviceModel")?.value.trim();
         const scheduledDate = document.getElementById("reg-scheduledDate")?.value;
 
+        const assessorSelect = document.getElementById("reg-assessor-select");
+        const selectedAssessorOpt = assessorSelect?.options[assessorSelect.selectedIndex];
+        const assignedAssessorName = selectedAssessorOpt?.getAttribute("data-name") || assessorSelect?.value || null;
+        const assignedAssessorId = selectedAssessorOpt?.getAttribute("data-id") || null;
+        const assignedAssessorEmail = selectedAssessorOpt?.getAttribute("data-email") || null;
+
         if (!companyName || !contactPerson || !contactEmail || !contactPhone) {
           if (alertBox && alertMsg) {
             alertMsg.textContent = "Please fill in all required customer fields.";
@@ -2679,7 +2994,11 @@
               contactPhone,
               requestedPackage,
               deviceModel: deviceModel || null,
-              scheduledDate: scheduledDate || null
+              scheduledDate: scheduledDate || null,
+              assignedAssessor: assignedAssessorName,
+              assignedAssessorName,
+              assignedAssessorId,
+              assignedAssessorEmail
             })
           });
 
@@ -2705,7 +3024,7 @@
       }
 
       // VENDOR PORTAL INVITATION
-      function openVendorInviteModal(company, email, setupToken, setupLink, emailDelivery) {
+      function openVendorInviteModal(company, email, setupToken, setupLink) {
         const modal = document.getElementById("vendor-invite-modal");
         const companyEl = document.getElementById("vendor-invite-company");
         const emailEl = document.getElementById("vendor-invite-email");
@@ -2718,24 +3037,7 @@
         const fullLink = setupLink ? (setupLink.startsWith('http') ? setupLink : (window.location.origin + setupLink)) : (window.location.origin + '/login.html?setupToken=' + setupToken);
         if (linkInput) linkInput.value = fullLink;
         if (feedback) feedback.style.display = "none";
-
-        if (statusEl) {
-          if (emailDelivery && emailDelivery.sent) {
-            statusEl.style.display = "block";
-            statusEl.style.color = "#059669";
-            statusEl.innerHTML = "✉️ <strong>Email Dispatched:</strong> An invitation was successfully sent via email. The link below is also available for your records.";
-          } else if (emailDelivery && emailDelivery.sandboxRestricted) {
-            statusEl.style.display = "block";
-            statusEl.style.color = "#D97706";
-            statusEl.innerHTML = `ℹ️ <strong>Testing Mode Notice:</strong> Direct email delivery is restricted in Resend free testing mode (only sends to account owner until a custom domain is verified at resend.com). The secure setup link has been generated below for immediate sharing with the client.`;
-          } else if (emailDelivery && emailDelivery.error) {
-            statusEl.style.display = "block";
-            statusEl.style.color = "#D97706";
-            statusEl.innerHTML = `⚠️ <strong>Email Delivery Note:</strong> ${escapeHtml(emailDelivery.error)}. Please copy and relay the setup link below directly to the customer.`;
-          } else {
-            statusEl.style.display = "none";
-          }
-        }
+        if (statusEl) statusEl.style.display = "none";
 
         if (modal) {
           modal.classList.add("active");
@@ -2815,8 +3117,195 @@
       }
 
       // ==========================================================================
-      // USER MANAGEMENT & FORCED PASSWORD CHANGE (MANAGER ONLY)
+      // USER MANAGEMENT & CREDENTIAL DISPATCH (MANAGER-DIRECTED)
       // ==========================================================================
+      let cachedStaffUsers = {};
+
+      function escapeJs(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/\\/g, '\\\\')
+          .replace(/'/g, "\\'")
+          .replace(/"/g, '\\"')
+          .replace(/\n/g, '\\n')
+          .replace(/\r/g, '\\r');
+      }
+
+      let activeStaffSharePayload = {
+        name: '',
+        email: '',
+        role: 'assessor',
+        assessorId: '',
+        phone: '',
+        password: ''
+      };
+
+      function generateSuggestedPassword() {
+        const words = ['Score', 'Track', 'Miros', 'Audit', 'Telematics'];
+        const word = words[Math.floor(Math.random() * words.length)];
+        const num = Math.floor(1000 + Math.random() * 9000);
+        const specials = ['@', '#', '$', '!'];
+        const spec = specials[Math.floor(Math.random() * specials.length)];
+        return `${word}${spec}${num}`;
+      }
+
+      function generateAndSetPassword() {
+        const pwInput = document.getElementById("staff-password-input");
+        if (!pwInput) return;
+        const suggested = generateSuggestedPassword();
+        pwInput.value = suggested;
+        pwInput.type = "text";
+        showToast("Generated suggested password: " + suggested);
+      }
+
+      function generateResetModalPassword() {
+        const pwInput = document.getElementById("reset-password-input");
+        if (!pwInput) return;
+        const suggested = generateSuggestedPassword();
+        pwInput.value = suggested;
+        pwInput.type = "text";
+        showToast("Generated suggested password: " + suggested);
+      }
+
+      function togglePasswordVisibility(inputId, iconId) {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        if (input.type === "password") {
+          input.type = "text";
+        } else {
+          input.type = "password";
+        }
+      }
+
+      function toggleBannerPasswordMask() {
+        const input = document.getElementById("new-user-temp-pw");
+        if (!input) return;
+        if (input.type === "password") {
+          input.type = "text";
+        } else {
+          input.type = "password";
+        }
+      }
+
+      function buildStaffShareText(payload) {
+        const portalUrl = window.location.origin;
+        const roleLabel = payload.role === 'manager' ? 'Operations Manager (Admin)' : 'Technical Assessor';
+        const assessorLine = payload.assessorId ? `🆔 *Assessor ID:* ${payload.assessorId}\n` : '';
+
+        return (
+          `*TrackScore Assessment Portal Access*\n` +
+          `Hello ${payload.name || 'Assessor'},\n\n` +
+          `Your staff account has been set up on the MIROS TrackScore Telematics Assessment Portal.\n\n` +
+          `🔗 *Portal URL:* ${portalUrl}/login.html\n` +
+          `👤 *Role:* ${roleLabel}\n` +
+          `📧 *Login Email:* ${payload.email}\n` +
+          assessorLine +
+          `🔑 *Password:* ${payload.password}\n\n` +
+          `You can sign in immediately at:\n${portalUrl}/login.html\n\n` +
+          `_Official MIROS Telematics Standardization Verification Framework_`
+        );
+      }
+
+      function shareCredentialsViaWhatsApp(targetPhone) {
+        const payload = activeStaffSharePayload;
+        if (!payload.email || !payload.password) {
+          showToast("No active user credentials to share.", true);
+          return;
+        }
+
+        let phone = targetPhone || payload.phone || '';
+        if (!phone) {
+          const userPromptPhone = prompt("Enter the staff member's WhatsApp phone number (e.g. 0123456789 or +60123456789):");
+          if (userPromptPhone && userPromptPhone.trim()) {
+            phone = userPromptPhone.trim();
+            payload.phone = phone;
+          }
+        }
+
+        let cleanPhone = String(phone || '').replace(/[^0-9+]/g, '');
+        if (cleanPhone.startsWith('0')) {
+          cleanPhone = '60' + cleanPhone.substring(1);
+        } else if (cleanPhone.startsWith('+')) {
+          cleanPhone = cleanPhone.substring(1);
+        }
+
+        const msg = buildStaffShareText(payload);
+        const encoded = encodeURIComponent(msg);
+        const waUrl = cleanPhone
+          ? `https://api.whatsapp.com/send?phone=${cleanPhone}&text=${encoded}`
+          : `https://api.whatsapp.com/send?text=${encoded}`;
+
+        window.open(waUrl, '_blank');
+        showToast("Opening WhatsApp with pre-filled credentials...");
+      }
+
+      function shareCredentialsViaEmail() {
+        const payload = activeStaffSharePayload;
+        if (!payload.email || !payload.password) {
+          showToast("No active user credentials to share.", true);
+          return;
+        }
+
+        const msg = buildStaffShareText(payload);
+        const cleanEmailBody = msg.replace(/\*/g, '');
+        const subject = encodeURIComponent(`TrackScore Portal Login Credentials - ${payload.name || 'Assessor'}`);
+        const body = encodeURIComponent(cleanEmailBody);
+
+        window.location.href = `mailto:${payload.email}?subject=${subject}&body=${body}`;
+        showToast("Opening email client with pre-filled credentials...");
+      }
+
+      async function copyFullCredentialsMessage() {
+        const payload = activeStaffSharePayload;
+        if (!payload.email || !payload.password) {
+          showToast("No active user credentials to copy.", true);
+          return;
+        }
+
+        const msg = buildStaffShareText(payload);
+        const feedback = document.getElementById("new-user-copy-feedback");
+
+        try {
+          await navigator.clipboard.writeText(msg);
+        } catch (e) {
+          const textarea = document.createElement("textarea");
+          textarea.value = msg;
+          document.body.appendChild(textarea);
+          textarea.select();
+          document.execCommand('copy');
+          document.body.removeChild(textarea);
+        }
+
+        if (feedback) {
+          feedback.style.display = "block";
+          setTimeout(() => { feedback.style.display = "none"; }, 3500);
+        }
+        showToast("Full message copied to clipboard! Ready to paste into WhatsApp or Email.");
+      }
+
+      function copyNewUserTempPassword() {
+        const input = document.getElementById("new-user-temp-pw");
+        const feedback = document.getElementById("new-user-copy-feedback");
+        if (!input) return;
+        input.select();
+        navigator.clipboard.writeText(input.value).then(() => {
+          if (feedback) {
+            feedback.textContent = "✓ Password copied to clipboard!";
+            feedback.style.display = "block";
+            setTimeout(() => { feedback.style.display = "none"; }, 3000);
+          }
+          showToast("Password copied to clipboard.");
+        }).catch(() => {
+          document.execCommand('copy');
+          if (feedback) {
+            feedback.textContent = "✓ Password copied to clipboard!";
+            feedback.style.display = "block";
+            setTimeout(() => { feedback.style.display = "none"; }, 3000);
+          }
+          showToast("Password copied to clipboard.");
+        });
+      }
+
       async function openUserManagementModal() {
         const modal = document.getElementById("user-management-modal");
         const banner = document.getElementById("new-user-credentials-banner");
@@ -2860,30 +3349,44 @@
             return;
           }
 
+          cachedStaffUsers = {};
+          data.users.forEach(u => {
+            const uid = String(u._id || u.id || '');
+            if (uid) cachedStaffUsers[uid] = u;
+          });
+
           listEl.innerHTML = data.users.map(u => {
-            const isPendingChange = u.mustChangePassword === true;
+            const userId = String(u._id || u.id || '');
             const roleBadgeColor = u.role === 'manager' ? '#1E3A8A' : '#059669';
             const roleBadgeBg = u.role === 'manager' ? '#DBEAFE' : '#D1FAE5';
+            const escapedName = escapeHtml(u.name || 'Staff Member');
+            const escapedEmail = escapeHtml(u.email || '');
+            const escapedId = escapeHtml(u.assessorId || '');
+            const escapedPhone = escapeHtml(u.phone || '');
 
             return `
-              <div style="padding: 10px 12px; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
-                <div>
-                  <div style="font-weight: 700; color: #0F172A;">${escapeHtml(u.name || 'Staff Member')}</div>
-                  <div style="font-size: 11.5px; color: #64748B;">${escapeHtml(u.email || '')} ${u.assessorId ? `&bull; ID: ${escapeHtml(u.assessorId)}` : ''}</div>
+              <div style="padding: 10px 12px; border-bottom: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                <div style="min-width: 0;">
+                  <div style="font-weight: 700; color: #0F172A; display: flex; align-items: center; gap: 6px;">
+                    <span>${escapedName}</span>
+                    <span style="font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 3px; background: ${roleBadgeBg}; color: ${roleBadgeColor}; text-transform: uppercase;">
+                      ${escapeHtml(u.role || 'assessor')}
+                    </span>
+                  </div>
+                  <div style="font-size: 11.5px; color: #64748B; margin-top: 1px;">
+                    ${escapedEmail}
+                    ${u.assessorId ? ` &bull; <strong style="color: #334155;">ID: ${escapedId}</strong>` : ''}
+                    ${u.phone ? ` &bull; <span>📞 ${escapedPhone}</span>` : ''}
+                  </div>
                 </div>
-                <div style="display: flex; gap: 6px; align-items: center;">
-                  <span style="font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: ${roleBadgeBg}; color: ${roleBadgeColor}; text-transform: uppercase;">
-                    ${escapeHtml(u.role || 'assessor')}
-                  </span>
-                  ${isPendingChange ? `
-                    <span style="font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: #FEF3C7; color: #B45309;">
-                      Must Change PW
-                    </span>
-                  ` : `
-                    <span style="font-size: 10.5px; font-weight: 700; padding: 2px 7px; border-radius: 4px; background: #F1F5F9; color: #475569;">
-                      Active
-                    </span>
-                  `}
+                <div style="display: flex; gap: 6px; align-items: center; flex-shrink: 0;">
+                  <button type="button" class="btn btn-sm" onclick="openResetPasswordModal('${userId}')" style="background: #F8FAFC; border: 1px solid #CBD5E1; color: #334155; font-size: 11px; padding: 4px 8px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
+                    <span>🔑 Reset PW</span>
+                  </button>
+                  <button type="button" class="btn btn-sm" onclick="openDeleteUserModal('${userId}')" style="background: #FEF2F2; border: 1px solid #FECACA; color: #DC2626; font-size: 11px; padding: 4px 8px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;" title="Remove User Account">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
+                    <span>Delete</span>
+                  </button>
                 </div>
               </div>
             `;
@@ -2899,12 +3402,18 @@
         const email = (document.getElementById("staff-email-input")?.value || "").trim();
         const role = document.getElementById("staff-role-select")?.value || "assessor";
         const assessorId = (document.getElementById("staff-assessor-id-input")?.value || "").trim();
+        const password = (document.getElementById("staff-password-input")?.value || "").trim();
+        const phone = (document.getElementById("staff-phone-input")?.value || "").trim();
         const submitBtn = document.getElementById("btn-submit-create-user");
         const banner = document.getElementById("new-user-credentials-banner");
-        const tempPwInput = document.getElementById("new-user-temp-pw");
 
         if (!name || !email) {
           showToast("Name and email are required to create an account.", true);
+          return;
+        }
+
+        if (!password || password.length < 6) {
+          showToast("Please enter a password with at least 6 characters.", true);
           return;
         }
 
@@ -2917,7 +3426,15 @@
           const res = await fetch('/.netlify/functions/manage-users', {
             method: 'POST',
             headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
-            body: JSON.stringify({ name, email, role, assessorId })
+            body: JSON.stringify({
+              action: 'create',
+              name,
+              email,
+              role,
+              assessorId,
+              password,
+              phone
+            })
           });
 
           if (handleAuthError(res)) return;
@@ -2927,18 +3444,36 @@
             throw new Error(data.error || 'Failed to create user account.');
           }
 
-          showToast(`Account created for ${name}! Temporary password generated.`);
+          showToast(`Account created for ${name}! Password assigned.`);
 
-          // Display server-generated temporary password in banner for copying
-          if (banner && tempPwInput && data.temporaryPassword) {
-            tempPwInput.value = data.temporaryPassword;
+          // Update active share payload
+          activeStaffSharePayload = {
+            name,
+            email,
+            role,
+            assessorId: data.user?.assessorId || assessorId || '',
+            phone,
+            password
+          };
+
+          // Populate banner
+          if (banner) {
+            document.getElementById("banner-staff-name").textContent = name;
+            document.getElementById("banner-staff-email").textContent = email;
+            document.getElementById("banner-assessor-id").textContent = data.user?.assessorId || assessorId || 'N/A';
+            document.getElementById("banner-role-badge").textContent = role.toUpperCase();
+            const tempPwInput = document.getElementById("new-user-temp-pw");
+            if (tempPwInput) tempPwInput.value = password;
             banner.style.display = "block";
+            banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
 
           // Reset form fields
           document.getElementById("staff-name-input").value = "";
           document.getElementById("staff-email-input").value = "";
           document.getElementById("staff-assessor-id-input").value = "";
+          document.getElementById("staff-password-input").value = "";
+          document.getElementById("staff-phone-input").value = "";
 
           await loadStaffUsersList();
         } catch (err) {
@@ -2946,32 +3481,436 @@
         } finally {
           if (submitBtn) {
             submitBtn.disabled = false;
-            submitBtn.textContent = "+ Create Account";
+            submitBtn.textContent = "+ Create Account & Share";
           }
         }
       }
 
-      function copyNewUserTempPassword() {
-        const input = document.getElementById("new-user-temp-pw");
-        const feedback = document.getElementById("new-user-copy-feedback");
-        if (!input) return;
-        input.select();
-        navigator.clipboard.writeText(input.value).then(() => {
-          if (feedback) {
-            feedback.style.display = "block";
-            setTimeout(() => { feedback.style.display = "none"; }, 3000);
+      // RESET PASSWORD SUB-MODAL HANDLERS
+      function openResetPasswordModal(userId, name, email, assessorId, role, phone) {
+        const u = cachedStaffUsers[String(userId || '')] || {};
+        const finalName = name || u.name || 'Staff Member';
+        const finalEmail = email || u.email || '';
+        const finalAssessorId = assessorId || u.assessorId || '';
+        const finalRole = role || u.role || 'assessor';
+        const finalPhone = phone || u.phone || '';
+
+        document.getElementById("reset-user-id").value = userId || '';
+        document.getElementById("reset-user-role").value = finalRole;
+        document.getElementById("reset-user-assessor-id").value = finalAssessorId;
+        document.getElementById("reset-user-name-display").textContent = finalName;
+        document.getElementById("reset-user-email-display").textContent = `${finalEmail} ${finalAssessorId ? `(ID: ${finalAssessorId})` : ''}`;
+        document.getElementById("reset-phone-input").value = finalPhone;
+        document.getElementById("reset-password-input").value = '';
+
+        const modal = document.getElementById("reset-password-modal");
+        if (modal) {
+          modal.classList.add("active");
+          modal.setAttribute("aria-hidden", "false");
+        }
+      }
+
+      function closeResetPasswordModal() {
+        const modal = document.getElementById("reset-password-modal");
+        if (modal) {
+          modal.classList.remove("active");
+          modal.setAttribute("aria-hidden", "true");
+        }
+      }
+
+      async function handleExecutePasswordReset(e) {
+        e.preventDefault();
+        const userId = document.getElementById("reset-user-id").value;
+        const role = document.getElementById("reset-user-role").value;
+        const assessorId = document.getElementById("reset-user-assessor-id").value;
+        const name = document.getElementById("reset-user-name-display").textContent;
+        const email = document.getElementById("reset-user-email-display").textContent.split(' ')[0];
+        const newPassword = (document.getElementById("reset-password-input").value || "").trim();
+        const phone = (document.getElementById("reset-phone-input").value || "").trim();
+        const submitBtn = document.getElementById("btn-submit-reset-pw");
+
+        if (!newPassword || newPassword.length < 6) {
+          showToast("Password must be at least 6 characters.", true);
+          return;
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Updating...";
+        }
+
+        try {
+          const res = await fetch('/.netlify/functions/manage-users', {
+            method: 'POST',
+            headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+              action: 'reset-password',
+              userId,
+              password: newPassword,
+              phone
+            })
+          });
+
+          if (handleAuthError(res)) return;
+
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.success) {
+            throw new Error(data.error || 'Failed to update password.');
           }
-        }).catch(() => {
-          document.execCommand('copy');
-          if (feedback) {
-            feedback.style.display = "block";
-            setTimeout(() => { feedback.style.display = "none"; }, 3000);
+
+          showToast(`Password updated for ${name}!`);
+          closeResetPasswordModal();
+
+          // Set active share payload
+          activeStaffSharePayload = {
+            name,
+            email,
+            role,
+            assessorId,
+            phone,
+            password: newPassword
+          };
+
+          // Show updated credentials banner in user modal
+          const banner = document.getElementById("new-user-credentials-banner");
+          if (banner) {
+            document.getElementById("banner-staff-name").textContent = name;
+            document.getElementById("banner-staff-email").textContent = email;
+            document.getElementById("banner-assessor-id").textContent = assessorId || 'N/A';
+            document.getElementById("banner-role-badge").textContent = role.toUpperCase();
+            const tempPwInput = document.getElementById("new-user-temp-pw");
+            if (tempPwInput) tempPwInput.value = newPassword;
+            banner.style.display = "block";
+            banner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
           }
+
+          await loadStaffUsersList();
+        } catch (err) {
+          showToast("Password Reset Failed: " + err.message, true);
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Update & Share Credentials";
+          }
+        }
+      }
+
+      // DELETE USER SUB-MODAL HANDLERS
+      function openDeleteUserModal(userId) {
+        const u = cachedStaffUsers[String(userId || '')] || {};
+        const userName = u.name || 'Staff Member';
+        const userEmail = u.email || '';
+        const userRole = (u.role || 'assessor').toUpperCase();
+        const userAssessorId = u.assessorId || '';
+
+        const currentAuthUser = getAuthUser();
+        const currentUserId = currentAuthUser.userId || currentAuthUser._id || currentAuthUser.id;
+        const currentEmail = (currentAuthUser.email || '').trim().toLowerCase();
+
+        const alertBox = document.getElementById("delete-user-modal-alert");
+        const alertMsg = document.getElementById("delete-user-modal-alert-msg");
+        const confirmBtn = document.getElementById("btn-confirm-delete-user");
+        const confirmBtnText = document.getElementById("btn-confirm-delete-user-text");
+
+        if (alertBox) alertBox.style.display = "none";
+        if (confirmBtn) confirmBtn.disabled = false;
+        if (confirmBtnText) confirmBtnText.textContent = "Delete Account";
+
+        const targetIdInput = document.getElementById("delete-target-user-id");
+        if (targetIdInput) targetIdInput.value = userId || '';
+
+        const nameEl = document.getElementById("delete-user-name-display");
+        if (nameEl) nameEl.textContent = userName;
+
+        const emailEl = document.getElementById("delete-user-email-display");
+        if (emailEl) emailEl.textContent = `${userEmail} (${userRole})`;
+
+        const extraEl = document.getElementById("delete-user-extra-display");
+        if (extraEl) extraEl.textContent = userAssessorId ? `Assessor ID: ${userAssessorId}` : (u.phone ? `Phone: ${u.phone}` : '');
+
+        // Check if manager is trying to delete their own logged-in account
+        const isSelf = (currentUserId && String(currentUserId) === String(userId)) ||
+                       (currentEmail && userEmail && currentEmail === userEmail.toLowerCase());
+        if (isSelf) {
+          if (alertBox && alertMsg) {
+            alertMsg.textContent = "You cannot delete your own active administrator account.";
+            alertBox.style.display = "block";
+          }
+          if (confirmBtn) confirmBtn.disabled = true;
+        }
+
+        const modal = document.getElementById("delete-user-modal");
+        if (modal) {
+          modal.classList.add("active");
+          modal.setAttribute("aria-hidden", "false");
+        }
+      }
+
+      function closeDeleteUserModal() {
+        const modal = document.getElementById("delete-user-modal");
+        if (modal) {
+          modal.classList.remove("active");
+          modal.setAttribute("aria-hidden", "true");
+        }
+      }
+
+      async function executeDeleteUser() {
+        const targetIdInput = document.getElementById("delete-target-user-id");
+        const userId = targetIdInput ? targetIdInput.value : '';
+        if (!userId) {
+          showToast("User ID is missing.", true);
+          return;
+        }
+
+        const u = cachedStaffUsers[String(userId)] || {};
+        const userName = u.name || 'Staff Member';
+
+        const confirmBtn = document.getElementById("btn-confirm-delete-user");
+        const confirmBtnText = document.getElementById("btn-confirm-delete-user-text");
+        const alertBox = document.getElementById("delete-user-modal-alert");
+        const alertMsg = document.getElementById("delete-user-modal-alert-msg");
+
+        if (confirmBtn) confirmBtn.disabled = true;
+        if (confirmBtnText) confirmBtnText.textContent = "Deleting...";
+        if (alertBox) alertBox.style.display = "none";
+
+        try {
+          const res = await fetch('/.netlify/functions/manage-users', {
+            method: 'POST',
+            headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+              action: 'delete-user',
+              userId
+            })
+          });
+
+          if (handleAuthError(res)) return;
+
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok || !data.success) {
+            throw new Error(data.error || 'Failed to remove user account.');
+          }
+
+          closeDeleteUserModal();
+          showToast(data.message || `User "${userName}" removed successfully.`);
+          await loadStaffUsersList();
+        } catch (err) {
+          if (alertBox && alertMsg) {
+            alertMsg.textContent = err.message || "Failed to remove user account.";
+            alertBox.style.display = "block";
+          } else {
+            showToast("Delete Failed: " + err.message, true);
+          }
+        } finally {
+          if (confirmBtn) confirmBtn.disabled = false;
+          if (confirmBtnText) confirmBtnText.textContent = "Delete Account";
+        }
+      }
+
+      // Backward compatible alias
+      function deleteStaffUser(userId, name) {
+        openDeleteUserModal(userId);
+      }
+
+      // ASSESSOR DIRECTORY & TASK ASSIGNMENT HELPERS (Manager-Directed)
+      let availableAssessorsList = [];
+      async function getAvailableAssessors() {
+        if (availableAssessorsList && availableAssessorsList.length > 0) {
+          return availableAssessorsList;
+        }
+
+        // Check cachedStaffUsers first
+        const fromCache = Object.values(cachedStaffUsers || {}).filter(u => u.role === 'assessor');
+        if (fromCache.length > 0) {
+          availableAssessorsList = fromCache;
+          return availableAssessorsList;
+        }
+
+        try {
+          const res = await fetch('/.netlify/functions/manage-users', {
+            headers: getAuthHeaders()
+          });
+          if (res.ok) {
+            const data = await res.json().catch(() => ({}));
+            if (data.success && Array.isArray(data.users)) {
+              data.users.forEach(u => {
+                const uid = String(u._id || u.id || '');
+                if (uid) cachedStaffUsers[uid] = u;
+              });
+              const assessors = data.users.filter(u => u.role === 'assessor');
+              if (assessors.length > 0) {
+                availableAssessorsList = assessors;
+                return availableAssessorsList;
+              }
+            }
+          }
+        } catch (e) {
+          console.warn("Could not fetch staff directory for assessor assignment:", e);
+        }
+
+        // Fallback default certified assessors if offline or cold-start
+        availableAssessorsList = [
+          { name: 'Ts. Mohd Farhan', email: 'farhan@trackscore.my', assessorId: 'AS-8812', role: 'assessor' },
+          { name: 'Ahmad Farhan', email: 'assessor@trackscore.my', assessorId: 'MKA 9006', role: 'assessor' },
+          { name: 'Certified Assessor (General)', email: 'assessor@trackscore.my', assessorId: 'AS-9001', role: 'assessor' }
+        ];
+        return availableAssessorsList;
+      }
+
+      async function populateAssessorDropdown(selectId, selectedAssessorVal, defaultLabel = '-- Select Assessor --') {
+        const select = document.getElementById(selectId);
+        if (!select) return;
+
+        const assessors = await getAvailableAssessors();
+        let opts = `<option value="">${defaultLabel}</option>`;
+
+        assessors.forEach(a => {
+          const aName = a.name || 'Assessor';
+          const aId = a.assessorId || '';
+          const aEmail = a.email || '';
+          const isSelected = (
+            selectedAssessorVal && (
+              selectedAssessorVal === aName ||
+              selectedAssessorVal === aId ||
+              selectedAssessorVal === aEmail ||
+              String(selectedAssessorVal).toLowerCase() === String(aName).toLowerCase() ||
+              (aId && String(selectedAssessorVal).toLowerCase() === String(aId).toLowerCase())
+            )
+          ) ? 'selected' : '';
+
+          const displayLabel = `${aName}${aId ? ` (${aId})` : ''} - ${aEmail}`;
+          opts += `<option value="${escapeHtml(aName)}" data-name="${escapeHtml(aName)}" data-id="${escapeHtml(aId)}" data-email="${escapeHtml(aEmail)}" ${isSelected}>${escapeHtml(displayLabel)}</option>`;
         });
+
+        select.innerHTML = opts;
+      }
+
+      // ASSIGN TASK MODAL (Manager assigns product inspection directly to any assessor)
+      async function openAssignTaskModal(id, companyName, deviceModel, currentAssessor, currentAssessorId, scheduledDate, instructions) {
+        const modal = document.getElementById("assign-task-modal");
+        const alertBox = document.getElementById("assign-task-modal-alert");
+        if (alertBox) alertBox.style.display = "none";
+
+        const recIdEl = document.getElementById("assign-task-record-id");
+        if (recIdEl) recIdEl.value = id || '';
+
+        const compEl = document.getElementById("assign-task-company-display");
+        if (compEl) compEl.textContent = companyName || 'Customer';
+
+        const modelEl = document.getElementById("assign-task-model-display");
+        if (modelEl) modelEl.textContent = deviceModel || 'Not Specified';
+
+        const deviceInput = document.getElementById("assign-task-device-input");
+        if (deviceInput) deviceInput.value = deviceModel || '';
+
+        const dateInput = document.getElementById("assign-task-date-input");
+        if (dateInput) dateInput.value = scheduledDate || '';
+
+        const instrInput = document.getElementById("assign-task-instructions");
+        if (instrInput) instrInput.value = instructions || '';
+
+        const currentDisplay = document.getElementById("assign-task-current-assessor-display");
+        if (currentDisplay) {
+          if (currentAssessor) {
+            currentDisplay.innerHTML = `Current Assessor: <strong style="color: #1E1B4B;">${escapeHtml(currentAssessor)}</strong>${currentAssessorId ? ` (${escapeHtml(currentAssessorId)})` : ''}`;
+          } else {
+            currentDisplay.innerHTML = `Current Assessor: <em>Unassigned</em>`;
+          }
+        }
+
+        await populateAssessorDropdown("assign-task-assessor-select", currentAssessor || currentAssessorId, "-- Choose Assessor --");
+
+        if (modal) {
+          modal.classList.add("active");
+          modal.setAttribute("aria-hidden", "false");
+        }
+      }
+
+      function closeAssignTaskModal() {
+        const modal = document.getElementById("assign-task-modal");
+        if (modal) {
+          modal.classList.remove("active");
+          modal.setAttribute("aria-hidden", "true");
+        }
+      }
+
+      async function handleAssignTaskSubmit(event) {
+        event.preventDefault();
+        const alertBox = document.getElementById("assign-task-modal-alert");
+        const alertMsg = document.getElementById("assign-task-modal-alert-msg");
+        const submitBtn = document.getElementById("btn-submit-assign-task");
+
+        const id = document.getElementById("assign-task-record-id")?.value;
+        const select = document.getElementById("assign-task-assessor-select");
+        const selectedOpt = select?.options[select.selectedIndex];
+
+        const assessorName = selectedOpt?.getAttribute("data-name") || select?.value;
+        const assessorId = selectedOpt?.getAttribute("data-id") || '';
+        const assessorEmail = selectedOpt?.getAttribute("data-email") || '';
+
+        const scheduledDate = document.getElementById("assign-task-date-input")?.value || '';
+        const deviceModel = document.getElementById("assign-task-device-input")?.value.trim() || '';
+        const instructions = document.getElementById("assign-task-instructions")?.value.trim() || '';
+
+        if (!id) {
+          if (alertBox && alertMsg) {
+            alertMsg.textContent = "Missing registration record reference.";
+            alertBox.style.display = "block";
+          }
+          return;
+        }
+
+        if (!assessorName) {
+          if (alertBox && alertMsg) {
+            alertMsg.textContent = "Please select an assessor from the list.";
+            alertBox.style.display = "block";
+          }
+          return;
+        }
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Assigning Task...";
+        }
+
+        try {
+          const res = await fetch('/.netlify/functions/assign-assessor', {
+            method: 'POST',
+            headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
+            body: JSON.stringify({
+              id,
+              assessorId,
+              assessorName,
+              assessorEmail,
+              scheduledDate,
+              deviceModel,
+              instructions
+            })
+          });
+
+          const result = await res.json();
+          if (!res.ok || !result.success) {
+            throw new Error(result.error || 'Failed to assign assessor.');
+          }
+
+          closeAssignTaskModal();
+          showToast(`Task successfully assigned to ${assessorName}! Assessor notified in real time.`);
+          fetchRegisteredCustomers(true);
+        } catch (err) {
+          if (alertBox && alertMsg) {
+            alertMsg.textContent = err.message || "An error occurred while assigning task.";
+            alertBox.style.display = "block";
+          }
+        } finally {
+          if (submitBtn) {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Assign Task to Assessor";
+          }
+        }
       }
 
       // SCHEDULE ASSESSMENT MODAL
-      function openScheduleModal(id, companyName, scheduledDate, deviceModel) {
+      async function openScheduleModal(id, companyName, scheduledDate, deviceModel, currentAssessor, currentAssessorId) {
         const modal = document.getElementById("schedule-assessment-modal");
         const alert = document.getElementById("schedule-modal-alert");
         if (alert) alert.style.display = "none";
@@ -2981,6 +3920,8 @@
         document.getElementById("schedule-date-input").value = scheduledDate || '';
         document.getElementById("schedule-device-model-input").value = deviceModel || '';
         document.getElementById("schedule-notes-input").value = '';
+
+        await populateAssessorDropdown("schedule-assessor-select", currentAssessor || currentAssessorId, "-- Keep Current / Unassigned --");
 
         if (modal) {
           modal.classList.add("active");
@@ -3007,6 +3948,12 @@
         const deviceModel = document.getElementById("schedule-device-model-input")?.value.trim();
         const notes = document.getElementById("schedule-notes-input")?.value.trim();
 
+        const assessorSelect = document.getElementById("schedule-assessor-select");
+        const opt = assessorSelect?.options[assessorSelect.selectedIndex];
+        const assignedAssessorName = opt?.getAttribute("data-name") || assessorSelect?.value || undefined;
+        const assignedAssessorId = opt?.getAttribute("data-id") || undefined;
+        const assignedAssessorEmail = opt?.getAttribute("data-email") || undefined;
+
         if (!id || !scheduledDate) {
           if (alertBox && alertMsg) {
             alertMsg.textContent = "Please select a scheduled inspection date.";
@@ -3028,7 +3975,11 @@
               id,
               scheduledDate,
               deviceModel: deviceModel || undefined,
-              notes: notes || undefined
+              notes: notes || undefined,
+              assignedAssessor: assignedAssessorName,
+              assignedAssessorName,
+              assignedAssessorId,
+              assignedAssessorEmail
             })
           });
 
@@ -3664,11 +4615,11 @@
           const title = `Prepared on ${prepDate}${cert.certificateNumber ? ' • Ref: ' + escapeHtml(cert.certificateNumber) : ''}`;
           return `<span class="badge-status" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700; background: #EFF6FF; color: #1D4ED8; border: 1px solid #BFDBFE; white-space: nowrap;" title="${title}"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#3B82F6;"></span>Prepared</span>`;
         }
-        const isPaid = evalRecord?.payment?.status === 'paid' || evalRecord?.payment?.overridden || evalRecord?.status === 'payment_confirmed' || evalRecord?.status === 'certificate_issued' || evalRecord?.status === 'completed';
+        const isPaid = evalRecord?.payment?.status === 'paid' || evalRecord?.payment?.overridden || evalRecord?.status === 'payment_confirmed' || evalRecord?.status === 'pre_final_sent' || evalRecord?.status === 'certificate_issued' || evalRecord?.status === 'completed';
         if (isPaid) {
-          return `<span class="badge-status" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700; background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; white-space: nowrap;" title="Payment verified • Certificate ready to prepare"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#F59E0B;"></span>Ready</span>`;
+          return `<span class="badge-status" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 700; background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; white-space: nowrap;" title="Certificate ready to prepare"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#F59E0B;"></span>Ready</span>`;
         }
-        return `<span class="badge-status" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 600; background: #F8FAFC; color: #94A3B8; border: 1px solid #E2E8F0; white-space: nowrap;" title="Certificate workflow opens after payment confirmation"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#CBD5E1;"></span>Pending</span>`;
+        return `<span class="badge-status" style="display: inline-flex; align-items: center; gap: 4px; padding: 2px 8px; border-radius: 9999px; font-size: 11px; font-weight: 600; background: #F8FAFC; color: #94A3B8; border: 1px solid #E2E8F0; white-space: nowrap;" title="Certificate workflow opens after pre-final evaluation"><span style="display:inline-block; width:6px; height:6px; border-radius:50%; background:#CBD5E1;"></span>Pending</span>`;
       }
 
       function renderEvaluationsTable(records) {
@@ -4198,7 +5149,7 @@
         const status = (record.status || 'pending_review').toLowerCase();
         const recordId = record._id || record.id;
         const cert = record.certificate || {};
-        const isPaymentPaid = ((record.payment?.status || '').toLowerCase() === 'paid') || Boolean(record.payment?.overridden) || status === 'payment_confirmed' || status === 'certificate_issued' || status === 'completed';
+        const isPaymentPaid = ((record.payment?.status || '').toLowerCase() === 'paid') || Boolean(record.payment?.overridden) || status === 'payment_confirmed' || status === 'pre_final_sent' || status === 'certificate_issued' || status === 'completed';
 
         // Approval status banner
         let statusBannerHtml = '';
@@ -5421,13 +6372,14 @@
         const isPaid = ((record.payment?.status || '').toLowerCase() === 'paid') ||
           Boolean(record.payment?.overridden) ||
           curStatus === 'payment_confirmed' ||
+          curStatus === 'pre_final_sent' ||
           curStatus === 'certificate_issued' ||
           curStatus === 'completed';
 
         // Enforce sequential rules
         if (action === 'prepare') {
           if (!isPaid) {
-            showToast("Cannot prepare certificate: Payment must be verified (status 'paid' or 'payment_confirmed') before certificate preparation.", true);
+            showToast("Cannot prepare certificate: Evaluation must reach pre-final result or review stage first.", true);
             return;
           }
         } else if (action === 'print') {
@@ -6590,6 +7542,12 @@
         document.getElementById("schedule-modal-cancel")?.addEventListener("click", closeScheduleModal);
         document.getElementById("schedule-assessment-modal")?.addEventListener("click", (e) => {
           if (e.target.id === "schedule-assessment-modal") closeScheduleModal();
+        });
+
+        // Assign task modal (Manager assigns product inspection directly to any assessor)
+        document.getElementById("form-assign-task")?.addEventListener("submit", handleAssignTaskSubmit);
+        document.getElementById("assign-task-modal")?.addEventListener("click", (e) => {
+          if (e.target.id === "assign-task-modal") closeAssignTaskModal();
         });
 
         // Invoice modal

@@ -72,6 +72,10 @@ export const handler = async (event) => {
       contactEmail = '',
       contactPhone = '',
       scheduledDate = '',
+      assignedAssessor = '',
+      assignedAssessorId = '',
+      assignedAssessorName = '',
+      assignedAssessorEmail = '',
       notes = '',
       inviteVendor = false,
       vendorPassword = ''
@@ -154,6 +158,19 @@ export const handler = async (event) => {
       ],
       createdAt: nowIso
     };
+
+    const chosenAssessor = (assignedAssessorName || assignedAssessor || '').trim();
+    if (chosenAssessor) {
+      registrationDoc.assignedAssessor = chosenAssessor;
+      registrationDoc.assignedAssessorName = chosenAssessor;
+      registrationDoc.assignedAssessorId = (assignedAssessorId || '').trim();
+      registrationDoc.assignedAssessorEmail = (assignedAssessorEmail || '').trim();
+      registrationDoc.assignedAt = nowIso;
+      registrationDoc.assignedBy = managerName;
+      if (scheduledDate) {
+        registrationDoc.status = 'scheduled';
+      }
+    }
 
     if (scheduledDate) {
       registrationDoc.scheduledAt = nowIso;
@@ -242,12 +259,26 @@ export const handler = async (event) => {
     // Real-time broadcast
     recordStatusEvent({
       evaluationId: savedId,
+      id: savedId,
       companyName: registrationDoc.companyName,
       deviceModel: registrationDoc.deviceModel,
+      packageName: registrationDoc.packageName,
+      assessorId: registrationDoc.assignedAssessorId || undefined,
+      assessorName: registrationDoc.assignedAssessor || undefined,
+      assignedAssessor: registrationDoc.assignedAssessor || undefined,
+      assignedAssessorId: registrationDoc.assignedAssessorId || undefined,
+      assignedAssessorEmail: registrationDoc.assignedAssessorEmail || undefined,
       oldStatus: null,
       newStatus: registrationDoc.status,
+      status: registrationDoc.status,
+      eventType: registrationDoc.assignedAssessor ? 'ASSIGNMENT' : 'REGISTRATION',
+      scheduledDate: registrationDoc.scheduledDate || null,
       actor: managerName,
-      note: `New customer registered (${registrationDoc.packageName})`
+      assignedBy: registrationDoc.assignedAssessor ? managerName : null,
+      assignedAt: registrationDoc.assignedAssessor ? nowIso : null,
+      note: registrationDoc.assignedAssessor
+        ? `New assessment assigned: ${registrationDoc.companyName} (${registrationDoc.deviceModel || 'Unspecified'}) assigned to ${registrationDoc.assignedAssessor}`
+        : `New customer registered (${registrationDoc.packageName})`
     });
 
     return {

@@ -65,9 +65,15 @@ export const handler = async (event, context) => {
         const assessorConditions = [];
         if (authenticatedAssessorId) {
           assessorConditions.push({ assessorId: authenticatedAssessorId });
+          assessorConditions.push({ assignedAssessorId: authenticatedAssessorId });
         }
         if (authenticatedAssessorName) {
           assessorConditions.push({ assessorName: authenticatedAssessorName });
+          assessorConditions.push({ assignedAssessor: { $regex: authenticatedAssessorName, $options: 'i' } });
+          assessorConditions.push({ assignedAssessorName: { $regex: authenticatedAssessorName, $options: 'i' } });
+        }
+        if (roleCheck.user?.email) {
+          assessorConditions.push({ assignedAssessorEmail: { $regex: roleCheck.user.email, $options: 'i' } });
         }
         if (assessorConditions.length > 0) {
           queryFilter.$or = assessorConditions;
@@ -76,7 +82,10 @@ export const handler = async (event, context) => {
         const aParam = params.assessor.trim();
         queryFilter.$or = [
           { assessorId: aParam },
-          { assessorName: { $regex: aParam, $options: 'i' } }
+          { assignedAssessorId: aParam },
+          { assessorName: { $regex: aParam, $options: 'i' } },
+          { assignedAssessor: { $regex: aParam, $options: 'i' } },
+          { assignedAssessorName: { $regex: aParam, $options: 'i' } }
         ];
       }
 
@@ -123,15 +132,26 @@ export const handler = async (event, context) => {
       // Strict role scoping for assessors in local fallback
       if (isAssessorOnly) {
         allEvaluations = allEvaluations.filter(d => {
-          const matchId = authenticatedAssessorId && String(d.assessorId || '') === authenticatedAssessorId;
-          const matchName = authenticatedAssessorName && String(d.assessorName || '').toLowerCase().includes(authenticatedAssessorName.toLowerCase());
-          return matchId || matchName;
+          const matchId = authenticatedAssessorId && (
+            String(d.assessorId || '') === authenticatedAssessorId ||
+            String(d.assignedAssessorId || '') === authenticatedAssessorId
+          );
+          const matchName = authenticatedAssessorName && (
+            String(d.assessorName || '').toLowerCase().includes(authenticatedAssessorName.toLowerCase()) ||
+            String(d.assignedAssessor || '').toLowerCase().includes(authenticatedAssessorName.toLowerCase()) ||
+            String(d.assignedAssessorName || '').toLowerCase().includes(authenticatedAssessorName.toLowerCase())
+          );
+          const matchEmail = roleCheck.user?.email && String(d.assignedAssessorEmail || '').toLowerCase() === roleCheck.user.email.toLowerCase();
+          return matchId || matchName || matchEmail;
         });
       } else if (params.assessor) {
         const aParam = params.assessor.trim().toLowerCase();
         allEvaluations = allEvaluations.filter(d => 
           String(d.assessorId || '').toLowerCase() === aParam ||
-          String(d.assessorName || '').toLowerCase().includes(aParam)
+          String(d.assignedAssessorId || '').toLowerCase() === aParam ||
+          String(d.assessorName || '').toLowerCase().includes(aParam) ||
+          String(d.assignedAssessor || '').toLowerCase().includes(aParam) ||
+          String(d.assignedAssessorName || '').toLowerCase().includes(aParam)
         );
       }
 

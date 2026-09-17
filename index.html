@@ -175,6 +175,9 @@
               <button type="button" class="notif-filter-btn active" data-filter="all" id="notif-filter-all">
                 All (<span id="notif-count-all">0</span>)
               </button>
+              <button type="button" class="notif-filter-btn filter-assigned" data-filter="assigned" id="notif-filter-assigned">
+                Assigned (<span id="notif-count-assigned">0</span>)
+              </button>
               <button type="button" class="notif-filter-btn filter-rejected" data-filter="rejected" id="notif-filter-rejected">
                 Action Required (<span id="notif-count-rejected">0</span>)
               </button>
@@ -849,6 +852,69 @@
           </div>
           <button type="button" class="btn btn-secondary btn-sm" id="btn-close-report-modal">
             Close Viewer
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- New Assessment Assignment Alert Modal (Pop Up) -->
+    <div class="modal-overlay" id="assignment-alert-modal" aria-hidden="true" style="display: none;">
+      <div class="modal-container" role="dialog" aria-labelledby="assign-modal-title" style="max-width: 520px; border-top: 4px solid #4F46E5; box-shadow: 0 20px 30px -10px rgba(79, 70, 229, 0.25), 0 10px 15px -3px rgba(0, 0, 0, 0.1);">
+        <div class="modal-header" style="display: flex; align-items: flex-start; justify-content: space-between; border-bottom: 1px solid #E2E8F0; padding: 18px 22px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 42px; height: 42px; border-radius: 10px; background: #EEF2FF; border: 1px solid #C7D2FE; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0;">
+              🎯
+            </div>
+            <div>
+              <div style="font-size: 11px; font-weight: 700; color: #4F46E5; text-transform: uppercase; letter-spacing: 0.5px;">MIROS Task Assignment</div>
+              <h3 id="assign-modal-title" style="margin: 2px 0 0; font-size: 17px; font-weight: 700; color: #0F172A;">New Assessment Assigned</h3>
+            </div>
+          </div>
+          <button type="button" class="modal-close-btn" id="btn-close-assignment-modal" aria-label="Close dialog" style="font-size: 20px; background: none; border: none; cursor: pointer; color: #94A3B8;">&times;</button>
+        </div>
+        <div class="modal-body" style="padding: 20px 22px; display: flex; flex-direction: column; gap: 14px;">
+          <p style="margin: 0; font-size: 13.5px; color: #334155; line-height: 1.5;">
+            You have received a new customer telematics assessment assignment. Review details below and start scoring directly:
+          </p>
+
+          <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #CBD5E1; padding-bottom: 8px;">
+              <span style="font-size: 12px; color: #64748B; font-weight: 600;">Customer / Company</span>
+              <strong id="assign-modal-company" style="font-size: 13.5px; color: #0F172A;">—</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #CBD5E1; padding-bottom: 8px;">
+              <span style="font-size: 12px; color: #64748B; font-weight: 600;">Device Model</span>
+              <span id="assign-modal-device" style="font-size: 13px; color: #1E293B; font-weight: 600;">—</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #CBD5E1; padding-bottom: 8px;">
+              <span style="font-size: 12px; color: #64748B; font-weight: 600;">Evaluation Package</span>
+              <span id="assign-modal-package" style="font-size: 12px; color: #4338CA; font-weight: 600;">—</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #CBD5E1; padding-bottom: 8px;">
+              <span style="font-size: 12px; color: #64748B; font-weight: 600;">Scheduled Date</span>
+              <span id="assign-modal-date" style="font-size: 12.5px; color: #0F172A; font-weight: 600;">—</span>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+              <span style="font-size: 12px; color: #64748B; font-weight: 600;">Assigned By</span>
+              <span id="assign-modal-manager" style="font-size: 12.5px; color: #0F172A; font-weight: 500;">MIROS Manager</span>
+            </div>
+          </div>
+
+          <div id="assign-modal-notes-container" style="display: none; background: #EEF2FF; border: 1px solid #C7D2FE; border-radius: 8px; padding: 12px 14px;">
+            <div style="font-size: 11.5px; font-weight: 700; color: #4338CA; margin-bottom: 4px;">Manager Instructions / Briefing:</div>
+            <div id="assign-modal-notes" style="font-size: 12.5px; color: #1E1B4B; line-height: 1.45; font-style: italic;"></div>
+          </div>
+        </div>
+
+        <div class="modal-footer" style="padding: 14px 22px; background: #F8FAFC; border-top: 1px solid #E2E8F0; display: flex; justify-content: space-between; align-items: center;">
+          <button type="button" class="btn btn-secondary btn-sm" id="btn-dismiss-assignment-modal" style="font-size: 12.5px; padding: 6px 14px;">
+            Dismiss for Now
+          </button>
+          <button type="button" class="btn btn-primary btn-sm" id="btn-start-assigned-modal" style="background: #4F46E5; border-color: #4338CA; font-weight: 700; font-size: 13px; padding: 7px 18px; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 10px rgba(79, 70, 229, 0.3);">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Start Assessment Now
           </button>
         </div>
       </div>

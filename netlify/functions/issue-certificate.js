@@ -98,8 +98,9 @@ export const handler = async (event) => {
     const oldStatus = existing.status || 'pending_review';
     let newStatus = oldStatus;
 
-    // Check payment status
+    // Check payment status or pre-final lifecycle stage
     const isPaymentPaid = (existing.payment?.status === 'paid') ||
+      existing.status === 'pre_final_sent' ||
       existing.status === 'payment_confirmed' ||
       existing.status === 'certificate_issued' ||
       existing.status === 'completed' ||

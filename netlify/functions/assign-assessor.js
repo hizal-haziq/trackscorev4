@@ -1,7 +1,15 @@
 /**
- * Netlify Serverless Function: schedule-assessment
- * Allows managers to schedule an inspection date for a registered customer.
- * Moves status: 'registered' -> 'scheduled' (or updates schedule if already scheduled).
+ * Netlify Serverless Function: assign-assessor
+ * Allows Managers to assign any registered customer, scheduled assessment,
+ * or evaluation task to any chosen assessor.
+ *
+ * Features:
+ * - Select assessor from registered staff directory
+ * - Set or update scheduled inspection date
+ * - Add manager briefing instructions/notes
+ * - Updates status from 'registered' to 'scheduled'
+ * - Records audit trail in statusHistory
+ * - Emits real-time SSE notification for the assessor
  */
 
 import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js';
@@ -50,14 +58,15 @@ export const handler = async (event) => {
     const {
       id,
       companyName,
-      scheduledDate,
+      assessorId = '',
+      assessorName = '',
+      assessorEmail = '',
+      scheduledDate = '',
+      deviceModel = '',
       notes = '',
-      assignedAssessor = '',
-      assignedAssessorId = '',
-      assignedAssessorName = '',
-      assignedAssessorEmail = '',
-      deviceModel
+      instructions = ''
     } = body;
+
     if (!id && !companyName) {
       return {
         statusCode: 400,
@@ -66,11 +75,12 @@ export const handler = async (event) => {
       };
     }
 
-    if (!scheduledDate || !scheduledDate.trim()) {
+    const chosenAssessorName = (assessorName || '').trim();
+    if (!chosenAssessorName) {
       return {
         statusCode: 400,
         headers,
-        body: JSON.stringify({ success: false, error: 'Scheduled inspection date is required.' })
+        body: JSON.stringify({ success: false, error: 'Please choose an assessor to assign this task.' })
       };
     }
 
@@ -89,7 +99,6 @@ export const handler = async (event) => {
         const escapeRegex = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
         filter = {
           companyName: { $regex: new RegExp(`^${escapeRegex(companyName.trim())}$`, 'i') },
-          status: { $in: ['registered', 'scheduled'] },
           deletedAt: null
         };
         existing = await collection.findOne(filter);
@@ -102,7 +111,6 @@ export const handler = async (event) => {
         const all = await connection.getEvaluations();
         existing = all.find(r =>
           String(r.companyName || '').toLowerCase() === companyName.trim().toLowerCase() &&
-          ['registered', 'scheduled'].includes(r.status) &&
           !r.deletedAt
         );
       }
@@ -112,46 +120,50 @@ export const handler = async (event) => {
       return {
         statusCode: 404,
         headers,
-        body: JSON.stringify({ success: false, error: 'Customer registration record not found.' })
+        body: JSON.stringify({ success: false, error: 'Assessment registration record not found.' })
       };
     }
 
     const recordId = String(existing._id || id);
     const nowIso = new Date().toISOString();
     const oldStatus = existing.status || 'registered';
-    const newStatus = 'scheduled';
+    // Promote registered to scheduled when assigned; otherwise keep existing status
+    const newStatus = oldStatus === 'registered' ? 'scheduled' : oldStatus;
+    const taskBriefing = (instructions || notes || '').trim();
 
-    const chosenAssessor = (assignedAssessorName || assignedAssessor || '').trim();
     const historyEntry = {
       status: newStatus,
       changedAt: nowIso,
       changedBy: managerName,
       timestamp: nowIso,
       actor: managerName,
-      note: `Inspection scheduled for ${scheduledDate.trim()}.${deviceModel ? ` Device Model: ${deviceModel.trim()}.` : ''}${chosenAssessor ? ` Assigned to: ${chosenAssessor}${assignedAssessorId ? ` (${assignedAssessorId})` : ''}.` : ''} ${notes ? `Note: ${notes}` : ''}`
+      note: `Task assigned to assessor ${chosenAssessorName}${assessorId ? ` (${assessorId})` : ''} by ${managerName}.${scheduledDate ? ` Scheduled inspection date: ${scheduledDate.trim()}.` : ''}${taskBriefing ? ` Instructions: ${taskBriefing}` : ''}`
     };
 
     const updateFields = {
-      scheduledDate: scheduledDate.trim(),
+      assignedAssessor: chosenAssessorName,
+      assignedAssessorName: chosenAssessorName,
+      assignedAssessorId: (assessorId || '').trim(),
+      assignedAssessorEmail: (assessorEmail || '').trim(),
+      assignedAt: nowIso,
+      assignedBy: managerName,
       status: newStatus,
-      statusChangedAt: nowIso,
-      scheduledBy: managerName,
-      scheduledAt: nowIso
+      statusChangedAt: nowIso
     };
+
+    if (scheduledDate && scheduledDate.trim()) {
+      updateFields.scheduledDate = scheduledDate.trim();
+      updateFields.scheduledBy = managerName;
+      updateFields.scheduledAt = nowIso;
+    }
 
     if (deviceModel && deviceModel.trim()) {
       updateFields.deviceModel = deviceModel.trim();
     }
-    if (chosenAssessor) {
-      updateFields.assignedAssessor = chosenAssessor;
-      updateFields.assignedAssessorName = chosenAssessor;
-      updateFields.assignedAssessorId = (assignedAssessorId || '').trim();
-      updateFields.assignedAssessorEmail = (assignedAssessorEmail || '').trim();
-      updateFields.assignedAt = nowIso;
-      updateFields.assignedBy = managerName;
-    }
-    if (notes) {
-      updateFields.schedulingNotes = notes.trim();
+
+    if (taskBriefing) {
+      updateFields.schedulingNotes = taskBriefing;
+      updateFields.assignmentInstructions = taskBriefing;
     }
 
     if (connection.isMongoAtlas) {
@@ -163,27 +175,28 @@ export const handler = async (event) => {
       await connection.updateEvaluation(recordId, updateFields, historyEntry);
     }
 
+    // Broadcast SSE notification to assessor and management
     recordStatusEvent({
       evaluationId: recordId,
       id: recordId,
       companyName: existing.companyName,
       deviceModel: updateFields.deviceModel || existing.deviceModel,
       packageName: existing.packageName || '',
-      assessorId: updateFields.assignedAssessorId || undefined,
-      assessorName: chosenAssessor || undefined,
-      assignedAssessor: chosenAssessor || undefined,
-      assignedAssessorId: updateFields.assignedAssessorId || undefined,
-      assignedAssessorEmail: updateFields.assignedAssessorEmail || undefined,
+      assessorId: updateFields.assignedAssessorId,
+      assessorName: chosenAssessorName,
+      assignedAssessor: chosenAssessorName,
+      assignedAssessorId: updateFields.assignedAssessorId,
+      assignedAssessorEmail: updateFields.assignedAssessorEmail,
       oldStatus,
       newStatus,
       status: newStatus,
-      eventType: chosenAssessor ? 'ASSIGNMENT' : 'SCHEDULE',
-      scheduledDate: scheduledDate.trim(),
-      assignmentInstructions: notes ? notes.trim() : null,
+      eventType: 'ASSIGNMENT',
+      scheduledDate: updateFields.scheduledDate || existing.scheduledDate || null,
+      assignmentInstructions: updateFields.assignmentInstructions || null,
       actor: managerName,
       assignedBy: managerName,
       assignedAt: nowIso,
-      note: `Inspection scheduled for ${scheduledDate.trim()}${chosenAssessor ? ` (Assigned to ${chosenAssessor})` : ''}`
+      note: `New task assigned: ${existing.companyName} assigned to ${chosenAssessorName}`
     });
 
     return {
@@ -192,19 +205,20 @@ export const handler = async (event) => {
       body: JSON.stringify({
         success: true,
         id: recordId,
-        message: `Inspection scheduled for ${scheduledDate.trim()}${chosenAssessor ? ` and assigned to ${chosenAssessor}` : ''}`,
+        message: `Task successfully assigned to ${chosenAssessorName}.`,
+        assignedAssessor: chosenAssessorName,
+        assignedAssessorId: updateFields.assignedAssessorId,
         status: newStatus,
-        scheduledDate: scheduledDate.trim(),
-        assignedAssessor: chosenAssessor || null,
-        deviceModel: updateFields.deviceModel || existing.deviceModel
+        scheduledDate: updateFields.scheduledDate || existing.scheduledDate || null
       })
     };
+
   } catch (error) {
-    console.error('[SCHEDULE-ASSESSMENT-ERROR]', error);
+    console.error('[ASSIGN-ASSESSOR-ERROR]', error);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ success: false, error: error.message || 'Error scheduling assessment.' })
+      body: JSON.stringify({ success: false, error: error.message || 'Error assigning assessor.' })
     };
   }
 };

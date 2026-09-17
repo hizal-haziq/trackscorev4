@@ -26,6 +26,7 @@ import { handler as loginHandler } from './netlify/functions/login.js';
 import { handler as packagesHandler } from './netlify/functions/packages.js';
 import { handler as registerCustomerHandler } from './netlify/functions/register-customer.js';
 import { handler as scheduleAssessmentHandler } from './netlify/functions/schedule-assessment.js';
+import { handler as assignAssessorHandler } from './netlify/functions/assign-assessor.js';
 import { handler as manageInvoiceHandler } from './netlify/functions/manage-invoice.js';
 import { handler as sendPreFinalHandler } from './netlify/functions/send-pre-final.js';
 import { handler as verifyPaymentHandler } from './netlify/functions/verify-payment.js';
@@ -155,6 +156,10 @@ app.all(['/.netlify/functions/schedule-assessment', '/api/schedule-assessment'],
   return invokeNetlifyHandler(scheduleAssessmentHandler, req, res);
 });
 
+app.all(['/.netlify/functions/assign-assessor', '/api/assign-assessor'], (req: Request, res: Response) => {
+  return invokeNetlifyHandler(assignAssessorHandler, req, res);
+});
+
 app.all(['/.netlify/functions/manage-invoice', '/api/manage-invoice'], (req: Request, res: Response) => {
   return invokeNetlifyHandler(manageInvoiceHandler, req, res);
 });
@@ -209,9 +214,15 @@ app.get(['/.netlify/functions/status-stream', '/api/status-stream'], (req: Reque
 
   const listener = (event: any) => {
     if (assessorQuery) {
-      const eAssessorId = String(event.assessorId || '').trim().toLowerCase();
-      const eAssessorName = String(event.assessorName || '').trim().toLowerCase();
-      if (eAssessorId !== assessorQuery && eAssessorName !== assessorQuery && !eAssessorName.includes(assessorQuery)) {
+      const eAssessorId = String(event.assessorId || event.assignedAssessorId || '').trim().toLowerCase();
+      const eAssessorName = String(event.assessorName || event.assignedAssessor || event.assignedAssessorName || '').trim().toLowerCase();
+      const eAssessorEmail = String(event.assessorEmail || event.assignedAssessorEmail || '').trim().toLowerCase();
+      const matches = eAssessorId === assessorQuery || 
+                      eAssessorName === assessorQuery || 
+                      (assessorQuery.length >= 3 && eAssessorName.includes(assessorQuery)) || 
+                      (eAssessorName.length >= 3 && assessorQuery.includes(eAssessorName)) ||
+                      (assessorQuery.includes('@') && eAssessorEmail === assessorQuery);
+      if (!matches) {
         return;
       }
     }

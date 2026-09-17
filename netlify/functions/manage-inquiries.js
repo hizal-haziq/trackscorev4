@@ -84,7 +84,17 @@ export const handler = async (event) => {
         };
       }
 
-      const { inquiryId, action, selectedPackage, scheduledDate, notes } = body;
+      const {
+        inquiryId,
+        action,
+        selectedPackage,
+        scheduledDate,
+        notes,
+        assignedAssessor,
+        assignedAssessorId,
+        assignedAssessorName,
+        assignedAssessorEmail
+      } = body;
 
       if (!inquiryId) {
         return {
@@ -175,6 +185,19 @@ export const handler = async (event) => {
           createdAt: nowIso,
           updatedAt: nowIso
         };
+
+        const chosenAssessor = (assignedAssessorName || assignedAssessor || '').trim();
+        if (chosenAssessor) {
+          evaluationDoc.assignedAssessor = chosenAssessor;
+          evaluationDoc.assignedAssessorName = chosenAssessor;
+          evaluationDoc.assignedAssessorId = (assignedAssessorId || '').trim();
+          evaluationDoc.assignedAssessorEmail = (assignedAssessorEmail || '').trim();
+          evaluationDoc.assignedAt = nowIso;
+          evaluationDoc.assignedBy = managerName;
+          if (scheduledDate) {
+            evaluationDoc.status = 'scheduled';
+          }
+        }
 
         let newEvalId = null;
         if (connection.isMongoAtlas) {

@@ -101,7 +101,6 @@ export const handler = async (event, context) => {
       'submitted',
       'pending_review',
       'pre_final_sent',
-      'payment_confirmed',
       'certificate_issued',
       'completed',
       'rejected'

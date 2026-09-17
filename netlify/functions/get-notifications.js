@@ -47,56 +47,111 @@ export const handler = async (event, context) => {
     if (connection.isMongoAtlas) {
       const collection = connection.db.collection(COLLECTION_NAME);
       const query = {
-        deletedAt: { $exists: false },
-        status: { $in: ['approved', 'rejected'] }
+        deletedAt: { $exists: false }
       };
 
       if (assessorId) {
+        const regexAssessor = new RegExp(assessorId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i');
+        const exactAssessorId = new RegExp(`^${assessorId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i');
+
         query.$or = [
-          { assessorId: { $regex: new RegExp(`^${assessorId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}$`, 'i') } },
-          { assessorName: { $regex: new RegExp(assessorId.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'i') } }
+          // 1. Approved / Rejected submissions for this assessor
+          {
+            status: { $in: ['approved', 'rejected', 'remediation_required'] },
+            $or: [
+              { assessorId: exactAssessorId },
+              { assessorName: regexAssessor },
+              { assignedAssessorId: exactAssessorId },
+              { assignedAssessor: regexAssessor }
+            ]
+          },
+          // 2. Newly assigned or scheduled evaluations for this assessor
+          {
+            status: { $in: ['assigned', 'scheduled', 'registered'] },
+            $or: [
+              { assignedAssessorId: exactAssessorId },
+              { assignedAssessor: regexAssessor },
+              { assignedAssessorName: regexAssessor },
+              { assignedAssessorEmail: regexAssessor },
+              { assessorId: exactAssessorId },
+              { assessorName: regexAssessor }
+            ]
+          }
         ];
+      } else {
+        query.status = { $in: ['approved', 'rejected', 'remediation_required', 'assigned', 'scheduled'] };
       }
 
       records = await collection
         .find(query)
-        .sort({ statusChangedAt: -1, updatedAt: -1, createdAt: -1 })
-        .limit(20)
+        .sort({ assignedAt: -1, statusChangedAt: -1, updatedAt: -1, createdAt: -1 })
+        .limit(30)
         .toArray();
     } else {
       const all = await connection.getEvaluations(false);
       records = all.filter(r => {
         if (r.deletedAt) return false;
-        if (r.status !== 'approved' && r.status !== 'rejected') return false;
+        const s = (r.status || '').toLowerCase();
+        const isApprovedOrRejected = s === 'approved' || s === 'rejected' || s === 'remediation_required';
+        const isAssigned = s === 'assigned' || s === 'scheduled' || (s === 'registered' && (r.assignedAssessor || r.assignedAssessorId));
+        if (!isApprovedOrRejected && !isAssigned) return false;
         if (!assessorId) return true;
+
         const aid = assessorId.toLowerCase();
-        const rId = String(r.assessorId || '').toLowerCase();
-        const rName = String(r.assessorName || '').toLowerCase();
-        return rId === aid || rName.includes(aid);
+        if (isApprovedOrRejected) {
+          const rId = String(r.assessorId || r.assignedAssessorId || '').toLowerCase();
+          const rName = String(r.assessorName || r.assignedAssessor || '').toLowerCase();
+          return rId === aid || rName.includes(aid) || aid.includes(rName);
+        }
+        if (isAssigned) {
+          const aId = String(r.assignedAssessorId || r.assessorId || '').toLowerCase();
+          const aName = String(r.assignedAssessor || r.assignedAssessorName || r.assessorName || '').toLowerCase();
+          const aEmail = String(r.assignedAssessorEmail || '').toLowerCase();
+          return aId === aid || aName.includes(aid) || aid.includes(aName) || aEmail === aid;
+        }
+        return false;
       });
-      records.sort((a, b) => new Date(b.statusChangedAt || b.updatedAt || 0) - new Date(a.statusChangedAt || a.updatedAt || 0));
-      records = records.slice(0, 20);
+      records.sort((a, b) => new Date(b.assignedAt || b.statusChangedAt || b.updatedAt || 0) - new Date(a.assignedAt || a.statusChangedAt || a.updatedAt || 0));
+      records = records.slice(0, 30);
     }
 
     // Merge database state into unified notification list
-    const notifications = records.map(r => ({
-      evaluationId: r._id || r.id,
-      companyName: r.companyName || 'Untitled Company',
-      deviceModel: r.deviceModel || 'Unspecified Model',
-      assessorId: r.assessorId || '',
-      assessorName: r.assessorName || '',
-      status: r.status,
-      rejectionReason: r.rejectionReason || null,
-      approvedBy: r.approvedBy || null,
-      approvedAt: r.approvedAt || null,
-      rejectedBy: r.rejectedBy || null,
-      rejectedAt: r.rejectedAt || null,
-      totalScore: typeof r.totalScore === 'number' ? r.totalScore : (parseFloat(r.totalScore) || 0),
-      starsCount: r.starsCount || 0,
-      ratingLabel: r.ratingLabel || '',
-      createdAt: r.createdAt || null,
-      statusChangedAt: r.statusChangedAt || r.updatedAt || r.createdAt
-    }));
+    const notifications = records.map(r => {
+      const s = (r.status || '').toLowerCase();
+      const isAssigned = s === 'assigned' || s === 'scheduled' || (s === 'registered' && (r.assignedAssessor || r.assignedAssessorId));
+      const isApproved = s === 'approved';
+      const isRejected = s === 'rejected' || s === 'remediation_required';
+
+      return {
+        evaluationId: r._id || r.id,
+        id: r._id || r.id,
+        companyName: r.companyName || 'Untitled Company',
+        deviceModel: r.deviceModel || 'Unspecified Model',
+        packageName: r.packageName || 'Package 2: Comprehensive Assessment (RM 6,000)',
+        assessorId: r.assignedAssessorId || r.assessorId || '',
+        assessorName: r.assignedAssessor || r.assignedAssessorName || r.assessorName || '',
+        assignedAssessor: r.assignedAssessor || r.assignedAssessorName || '',
+        assignedAssessorId: r.assignedAssessorId || '',
+        assignedBy: r.assignedBy || r.scheduledBy || null,
+        assignedAt: r.assignedAt || r.scheduledAt || null,
+        scheduledDate: r.scheduledDate || null,
+        assignmentInstructions: r.assignmentInstructions || r.schedulingNotes || null,
+        status: isAssigned ? 'assigned' : (isApproved ? 'approved' : (isRejected ? 'rejected' : r.status)),
+        originalStatus: r.status,
+        eventType: isAssigned ? 'ASSIGNMENT' : (isApproved ? 'APPROVAL' : 'REMEDIATION'),
+        rejectionReason: r.rejectionReason || null,
+        approvedBy: r.approvedBy || null,
+        approvedAt: r.approvedAt || null,
+        rejectedBy: r.rejectedBy || null,
+        rejectedAt: r.rejectedAt || null,
+        totalScore: typeof r.totalScore === 'number' ? r.totalScore : (parseFloat(r.totalScore) || 0),
+        starsCount: r.starsCount || 0,
+        ratingLabel: r.ratingLabel || '',
+        rubricVersion: r.rubricVersion || '2.0',
+        createdAt: r.createdAt || null,
+        statusChangedAt: r.assignedAt || r.scheduledAt || r.statusChangedAt || r.updatedAt || r.createdAt
+      };
+    });
 
     return {
       statusCode: 200,

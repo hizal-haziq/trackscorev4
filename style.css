@@ -517,6 +517,185 @@ a:hover {
   font-weight: 700;
 }
 
+/* ==========================================================================
+   MIROS Official Criteria Description Tooltips & Popovers
+   Compliant with MIROS Black/Orange Theme (Light card, crisp dark text)
+   Supports Desktop Hover and Mobile Tap-to-Toggle with Edge-Aware Positioning
+   ========================================================================== */
+
+.criterion-tooltip-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-left: 6px;
+  vertical-align: middle;
+}
+
+.criterion-info-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 19px;
+  height: 19px;
+  border-radius: 50%;
+  background: #F1F5F9;
+  border: 1px solid #CBD5E1;
+  color: #64748B;
+  cursor: pointer;
+  padding: 0;
+  margin: 0;
+  transition: all 0.18s ease;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.criterion-info-icon:hover,
+.criterion-info-icon:focus-visible,
+.criterion-tooltip-wrapper.is-open .criterion-info-icon {
+  background: #FFF7ED;
+  border-color: #F58220;
+  color: #EA580C;
+  outline: none;
+  box-shadow: 0 0 0 2.5px rgba(245, 130, 32, 0.22);
+}
+
+.criterion-tooltip-popover {
+  display: none;
+  position: absolute;
+  bottom: calc(100% + 9px);
+  left: 0;
+  width: 360px;
+  max-width: min(380px, calc(100vw - 32px));
+  background: #FFFFFF;
+  color: #1E293B;
+  border: 1px solid #E2E8F0;
+  border-top: 3.5px solid #F58220;
+  border-radius: 7px;
+  padding: 12px 14px;
+  box-shadow: 0 12px 28px -4px rgba(15, 23, 42, 0.14), 0 4px 10px -2px rgba(15, 23, 42, 0.06);
+  z-index: 1000;
+  pointer-events: none;
+  text-align: left;
+  white-space: normal;
+}
+
+/* Caret / Pointer pointing down */
+.criterion-tooltip-popover::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 10px;
+  border-width: 6px;
+  border-style: solid;
+  border-color: #FFFFFF transparent transparent transparent;
+}
+.criterion-tooltip-popover::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 9px;
+  border-width: 7px;
+  border-style: solid;
+  border-color: #CBD5E1 transparent transparent transparent;
+}
+
+/* Flipped bottom caret when flipped to avoid top viewport clipping */
+.criterion-tooltip-popover.flipped-bottom::after {
+  top: auto;
+  bottom: 100%;
+  border-color: transparent transparent #FFFFFF transparent;
+}
+.criterion-tooltip-popover.flipped-bottom::before {
+  top: auto;
+  bottom: 100%;
+  border-color: transparent transparent #CBD5E1 transparent;
+}
+
+/* Show on desktop hover or keyboard focus-within */
+@media (hover: hover) and (pointer: fine) {
+  .criterion-tooltip-wrapper:hover .criterion-tooltip-popover,
+  .criterion-tooltip-wrapper:focus-within .criterion-tooltip-popover {
+    display: block;
+    pointer-events: auto;
+    animation: tooltipFadeIn 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+}
+
+/* Show on mobile tap or when toggled open */
+.criterion-tooltip-wrapper.is-open .criterion-tooltip-popover {
+  display: block;
+  pointer-events: auto;
+  animation: tooltipFadeIn 0.16s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes tooltipFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.criterion-tooltip-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 8px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #F1F5F9;
+}
+
+.criterion-tooltip-pill {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #FFF7ED;
+  color: #C2410C;
+  border: 1px solid #FED7AA;
+  padding: 1.5px 6px;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.criterion-tooltip-name {
+  font-size: 12.5px;
+  font-weight: 700;
+  color: #0F172A;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.criterion-tooltip-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  line-height: 1;
+  color: #94A3B8;
+  cursor: pointer;
+  padding: 0 2px;
+  border-radius: 3px;
+  transition: color 0.15s;
+}
+
+.criterion-tooltip-close:hover {
+  color: #0F172A;
+}
+
+.criterion-tooltip-text {
+  font-size: 12px;
+  line-height: 1.55;
+  color: #334155;
+  font-weight: 400;
+  margin: 0;
+}
+
 .options-group {
   display: flex;
   flex-wrap: wrap;
@@ -2748,6 +2927,16 @@ a:hover {
   border-left-color: #DC2626;
 }
 
+.status-toast.assigned,
+.status-toast.toast-assigned {
+  border-left-color: #4F46E5;
+  background: linear-gradient(180deg, #FFFFFF 0%, #F5F7FF 100%);
+  border-top: 1px solid #C7D2FE;
+  border-right: 1px solid #C7D2FE;
+  border-bottom: 1px solid #C7D2FE;
+  box-shadow: 0 10px 25px -3px rgba(79, 70, 229, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
 @keyframes toastIn {
   from {
     transform: translateX(100%);
@@ -2977,6 +3166,19 @@ a:hover {
   background: #FAFCF9;
 }
 
+.notification-card-item.is-assigned {
+  border-left: 4.5px solid #4F46E5;
+  background: #F8FAFC;
+  border-top: 1px solid #E0E7FF;
+  border-right: 1px solid #E0E7FF;
+  border-bottom: 1px solid #E0E7FF;
+}
+
+.notification-card-item.is-assigned:hover {
+  background: #F5F7FF;
+  box-shadow: 0 4px 12px rgba(79, 70, 229, 0.08);
+}
+
 .notif-card-header {
   display: flex;
   align-items: flex-start;
@@ -3006,6 +3208,23 @@ a:hover {
   background: #DCFCE7;
   color: #166534;
   border: 1px solid #BBF7D0;
+}
+
+.notif-status-badge.badge-assigned {
+  background: #EEF2FF;
+  color: #4338CA;
+  border: 1px solid #C7D2FE;
+}
+
+.notif-assignment-callout {
+  background: #F0F4FF;
+  border: 1px solid #C7D2FE;
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  font-size: 12.5px;
+  color: #1E1B4B;
+  margin: 6px 0 2px;
+  line-height: 1.5;
 }
 
 .notif-meta-text {

@@ -29,9 +29,14 @@ export function getRecentStatusEvents(assessorId = null, sinceTimestamp = null) 
   if (assessorId) {
     const aid = String(assessorId).trim().toLowerCase();
     events = events.filter(e => {
-      const eAssessorId = String(e.assessorId || '').trim().toLowerCase();
-      const eAssessorName = String(e.assessorName || '').trim().toLowerCase();
-      return eAssessorId === aid || eAssessorName === aid;
+      const eAssessorId = String(e.assessorId || e.assignedAssessorId || '').trim().toLowerCase();
+      const eAssessorName = String(e.assessorName || e.assignedAssessor || e.assignedAssessorName || '').trim().toLowerCase();
+      const eAssessorEmail = String(e.assessorEmail || e.assignedAssessorEmail || '').trim().toLowerCase();
+      return eAssessorId === aid || 
+             eAssessorName === aid || 
+             (aid.length >= 3 && eAssessorName.includes(aid)) || 
+             (eAssessorName.length >= 3 && aid.includes(eAssessorName)) ||
+             (aid.includes('@') && eAssessorEmail === aid);
     });
   }
   if (sinceTimestamp) {

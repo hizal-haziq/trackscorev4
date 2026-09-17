@@ -69,7 +69,7 @@ export const handler = async (event, context) => {
       targetStatus = payload.targetStatus || 'completed';
     } else if (rawAction === 'reject' || rawAction === 'rejected') {
       targetStatus = 'rejected';
-    } else if (['registered', 'scheduled', 'submitted', 'pending_review', 'pre_final_sent', 'payment_confirmed', 'certificate_issued', 'completed'].includes(rawAction)) {
+    } else if (['registered', 'scheduled', 'submitted', 'pending_review', 'pre_final_sent', 'certificate_issued', 'completed'].includes(rawAction)) {
       targetStatus = rawAction;
     } else {
       return {

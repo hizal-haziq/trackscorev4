@@ -38,7 +38,6 @@ export const LIFECYCLE_STATUSES = [
   'submitted',
   'pending_review',
   'pre_final_sent',
-  'payment_confirmed',
   'certificate_issued',
   'completed',
   'rejected'
@@ -88,16 +87,7 @@ export const LIFECYCLE_METADATA = {
     color: '#8B5CF6',
     bgColor: '#F5F3FF',
     step: 5,
-    description: 'Preliminary results delivered to customer before invoice.'
-  },
-  payment_confirmed: {
-    key: 'payment_confirmed',
-    label: 'Payment Confirmed',
-    badgeClass: 'badge-paid',
-    color: '#059669',
-    bgColor: '#ECFDF5',
-    step: 6,
-    description: 'Package invoice paid and verified by manager.'
+    description: 'Preliminary results delivered to customer.'
   },
   certificate_issued: {
     key: 'certificate_issued',
@@ -105,7 +95,7 @@ export const LIFECYCLE_METADATA = {
     badgeClass: 'badge-certified',
     color: '#16A34A',
     bgColor: '#F0FDF4',
-    step: 7,
+    step: 6,
     description: 'MIROS Certificate generated and signed by DGO.'
   },
   completed: {
@@ -114,7 +104,7 @@ export const LIFECYCLE_METADATA = {
     badgeClass: 'badge-completed',
     color: '#15803D',
     bgColor: '#DCFCE7',
-    step: 8,
+    step: 7,
     description: 'Certificate delivered to vendor; evaluation cycle completed.'
   },
   rejected: {

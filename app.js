@@ -7,6 +7,48 @@
 // 1. Scoring Matrix Data Structures
 // ==========================================================================
 
+// Official MIROS Criteria Descriptions (Version 1.1, May 2025)
+// Sourced directly from MIROS TrackScore Features & Scoring Distribution
+// Exact wording maintained without paraphrasing or truncation
+const CRITERIA_OFFICIAL_DESCRIPTIONS = {
+  // Section A — Basic Features
+  trip_history: "A record or log of the historical data related to the movement and location of a vehicle. It can be used to review past routes, monitor driving habits, optimize travel routes, and provide a historical record for various analytical and management purposes.",
+  realtime_tracking: "Continuous and instantaneous (real-time) monitoring of the current location and movement of an object or person equipped with a tracking device/global navigation satellite system (GNSS). This valuable feature enables users to monitor the precise locations of assets, vehicles, or individuals instantaneously.",
+  map_source: "Various choices and features available for displaying and interacting with geographical maps through a GNSS device or application. It encompasses the tools and settings that allow users to customize how maps are presented, navigate, and obtain information about specific locations.",
+  geofence: "A virtual boundary or perimeter that is defined around a specific geographical area. The purpose of a geofence is to trigger certain actions or notifications when a GPS-enabled device or asset enters or exits the predefined area.",
+  geofence_alert: "A virtual boundary or perimeter that is defined around a specific geographical area. The purpose of a geofence is to trigger certain actions or notifications when a GPS-enabled device or asset enters or exits the predefined area.",
+  vehicle_status: "Information about the current condition and state of a vehicle. The vehicle status data can include a range of parameters and details that provide insights into the health, performance, and operational aspects of the vehicle.",
+  engine_status: "Capability of a tracking system to detect and report whether the engine of a vehicle is currently running (ON) or turned off (OFF).",
+  overspeed_detection: "Capability of a tracking system to monitor and identify instances where a vehicle exceeds a predefined speed limit.",
+  overspeed_alert: "Capability of a tracking system to monitor and identify instances where a vehicle exceeds a predefined speed limit.",
+  offline_memory: "Storage capacity that is integrated directly into the tracking device or receiver. This built-in memory allows the device to store and retain certain types of data that allows it to store and use map data, waypoints, and other information without requiring a continuous internet connection. This feature is particularly useful in situations where there is limited or no access to the internet, such as in remote areas or locations with poor connectivity.",
+  backup_battery: "A backup battery ensures the system operates during main power failures or off vehicle engines maintaining continuous tracking, data logging, and navigation. This secondary power source enhances vehicle management, security, and operational efficiency by preventing GPS interruptions.",
+  sim_network: "Ability of a tracking device or system to establish and maintain communication with other devices, networks, or servers. The ability to establish and maintain reliable connectivity is critical for the effective functioning of tracking devices in various contexts, from personal navigation to fleet management and asset tracking.",
+  connectivity: "Ability of a tracking device or system to establish and maintain communication with other devices, networks, or servers. The ability to establish and maintain reliable connectivity is critical for the effective functioning of tracking devices in various contexts, from personal navigation to fleet management and asset tracking.",
+  multilingual: "Ability of tracking applications or software to operate and display information in multiple languages. This feature is designed to enhance user accessibility and accommodate individuals who speak different languages or prefer using tracking applications in their native language.",
+  user_manual: "A document or guide provided by the manufacturer or developer of a tracking device or application which serves as a comprehensive reference for users, offering detailed information about the features, functions, settings, and proper usage of the tracking product.",
+  warranty: "Duration during which the manufacturer or seller guarantees the product against defects in materials or workmanship of the tracking device and system.",
+  customer_service: "Support and assistance provided by the manufacturer, seller, or service provider to users of tracking devices.",
+  os_compatibility: "Ability of a tracking device or application to work seamlessly with specific operating systems (OS) on various devices. The compatibility ensures that the tracking system can be installed, run, and perform optimally on devices running a particular operating system.",
+  trip_report: "A document or file, typically in PDF and CSV format, generated by a tracking system that summarizes and presents detailed information about a specific trip taken by a vehicle or asset equipped with a tracking device.",
+  data_interval: "The data transmission interval in GPS refers to the time interval at which GPS data (such as location, speed, and time) is updated and sent from the GPS device to the receiver.",
+  harsh_accel: "Capability of a tracking system to monitor and identify instances of harsh acceleration, typically recorded when the rate of change in speed exceeds predefined thresholds set by the monitoring system.",
+  harsh_accel_alert: "Capability of a tracking system to monitor and identify instances of harsh acceleration, typically recorded when the rate of change in speed exceeds predefined thresholds set by the monitoring system.",
+  harsh_braking: "Capability of a tracking system to monitor and identify instances where the rate of change in speed exceeds predefined thresholds set by the monitoring system, indicating harsh braking or a potential crash event.",
+  harsh_braking_alert: "Capability of a tracking system to monitor and identify instances where the rate of change in speed exceeds predefined thresholds set by the monitoring system, indicating harsh braking or a potential crash event.",
+
+  // Section B — Additional Features
+  tow_detection: "A feature in tracking systems or devices that is designed to identify instances when a vehicle is being towed or transported by another vehicle. This feature helps in detecting unauthorized movement or towing of a vehicle, providing alerts or notifications to the vehicle owner, fleet manager, or relevant authorities.",
+  panic_button: "A feature commonly found in tracking devices, especially those used in personal safety and security applications. The panic button is a physical or virtual button that, when pressed, triggers an immediate and often high-priority alert or notification with a primary purpose to quickly summon assistance or notify predefined contacts in emergency situations.",
+  mfa: "An implementation of multifactor authentication (MFA) within the associated mobile or web applications that are part of a tracking system. Multifactor authentication is a security measure that requires users to provide multiple forms of identification before accessing the tracking application, enhancing the overall security of the system.",
+  sop_tech_problems: "SOPs for technical problems offer structured procedures, reducing downtime and errors. They clarify responsibilities, streamline troubleshooting, and improve communication and documentation. Consistent use fosters efficiency, reliability, and ongoing enhancement of technical operations within organizations.",
+  service_records: "A documentation or log that records the maintenance and service history of a tracking device, system, or associated components. Service records provide a detailed account of maintenance activities, repairs, updates, and any other service-related actions performed on the tracking equipment throughout its operational life.",
+  driver_id: "Monitoring and analysis of how a vehicle operator behaves while driving. Tracking systems often include features and sensors that can capture data related to the behavior of drivers. Analyzing driver behavior can provide valuable insights into safety, efficiency, and compliance with established guidelines.",
+  certification: "The process through which a tracking product is officially recognized and confirmed to meet specific standards, specifications, or requirements set by relevant authorities, organizations, or industry bodies. The certification process ensures that the tracking product complies with established criteria, including technical specifications, safety standards, and regulatory requirements.",
+  immobilizer: "A security feature commonly used in vehicle tracking and anti-theft systems. An immobilizer is a device or mechanism designed to prevent the engine of a vehicle from starting unless the correct authorization or authentication is provided.",
+  tampered_alert: "Tampered alerts in GPS systems are crucial for security and asset protection. They promptly notify of any unauthorized interference or tampering with the device or vehicle, enabling swift action to prevent theft, ensure safety, and maintain operational integrity."
+};
+
 const SECTION_A_CRITERIA = [
   {
     id: "trip_history",
@@ -527,6 +569,110 @@ const assessmentState = {
 };
 
 // ==========================================================================
+// Criteria Description Tooltips & Popovers Management
+// Supports desktop hover and mobile tap-to-toggle with edge-aware positioning
+// ==========================================================================
+
+function positionTooltipPopover(popover, wrapper) {
+  if (!popover || !wrapper) return;
+  // Reset positioning properties to measure natural bounding box
+  popover.style.left = "0px";
+  popover.style.top = "";
+  popover.style.bottom = "calc(100% + 9px)";
+
+  const rect = popover.getBoundingClientRect();
+
+  // Vertical: if clipped at the top of the viewport (rect.top < 10), flip to bottom
+  if (rect.top < 10) {
+    popover.style.bottom = "auto";
+    popover.style.top = "calc(100% + 9px)";
+    popover.classList.add("flipped-bottom");
+  } else {
+    popover.classList.remove("flipped-bottom");
+  }
+
+  // Horizontal: ensure it stays within viewport padding (min 12px margins)
+  const windowWidth = window.innerWidth || document.documentElement.clientWidth;
+  if (rect.right > windowWidth - 12) {
+    const shiftRight = rect.right - (windowWidth - 12);
+    popover.style.left = `-${shiftRight}px`;
+  } else if (rect.left < 12) {
+    const shiftLeft = 12 - rect.left;
+    popover.style.left = `${shiftLeft}px`;
+  }
+}
+
+function closeAllCriterionTooltips() {
+  document.querySelectorAll(".criterion-tooltip-wrapper.is-open").forEach(wrap => {
+    wrap.classList.remove("is-open");
+    const btn = wrap.querySelector(".criterion-info-icon");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+    const pop = wrap.querySelector(".criterion-tooltip-popover");
+    if (pop) pop.setAttribute("aria-hidden", "true");
+  });
+}
+
+function toggleCriterionTooltip(event, criterionId) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  const wrapper = document.getElementById(`tooltip-wrap-${criterionId}`);
+  if (!wrapper) return;
+
+  const isOpen = wrapper.classList.contains("is-open");
+  closeAllCriterionTooltips();
+
+  if (!isOpen) {
+    wrapper.classList.add("is-open");
+    const btn = wrapper.querySelector(".criterion-info-icon");
+    if (btn) btn.setAttribute("aria-expanded", "true");
+    const popover = wrapper.querySelector(".criterion-tooltip-popover");
+    if (popover) {
+      popover.setAttribute("aria-hidden", "false");
+      positionTooltipPopover(popover, wrapper);
+    }
+  }
+}
+
+function closeCriterionTooltip(event, criterionId) {
+  if (event) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+  const wrapper = document.getElementById(`tooltip-wrap-${criterionId}`);
+  if (wrapper) {
+    wrapper.classList.remove("is-open");
+    const btn = wrapper.querySelector(".criterion-info-icon");
+    if (btn) btn.setAttribute("aria-expanded", "false");
+    const pop = wrapper.querySelector(".criterion-tooltip-popover");
+    if (pop) pop.setAttribute("aria-hidden", "true");
+  }
+}
+
+// Global click and Escape key dismissal
+if (typeof document !== "undefined") {
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest(".criterion-tooltip-wrapper")) {
+      closeAllCriterionTooltips();
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+      closeAllCriterionTooltips();
+    }
+  });
+}
+
+if (typeof window !== "undefined") {
+  window.toggleCriterionTooltip = toggleCriterionTooltip;
+  window.closeCriterionTooltip = closeCriterionTooltip;
+  window.closeAllCriterionTooltips = closeAllCriterionTooltips;
+  window.positionTooltipPopover = positionTooltipPopover;
+}
+
+// ==========================================================================
 // 2. DOM Rendering Functions (Accessibility Pass - Item 9)
 // Every radio group is rendered as a proper <fieldset> with a semantic <legend>
 // All radio inputs have explicit associated <label for="...">
@@ -549,11 +695,50 @@ function renderCriteriaSection(criteriaList, containerId, sectionPrefix) {
     // Max score for this item
     const maxPoints = computeCriterionMaxRawPoints(criterion);
 
+    const descText = CRITERIA_OFFICIAL_DESCRIPTIONS[criterion.id] || criterion.description || "";
+    const escapedDesc = escapeHtml(descText);
+    const escapedName = escapeHtml(criterion.name);
+
+    const tooltipHtml = descText ? `
+      <div class="criterion-tooltip-wrapper" id="tooltip-wrap-${criterion.id}">
+        <button
+          type="button"
+          class="criterion-info-icon"
+          id="info-btn-${criterion.id}"
+          aria-label="Official description for ${escapedName}"
+          aria-describedby="tooltip-${criterion.id}"
+          aria-expanded="false"
+          title="Click or hover to view official MIROS description"
+          onclick="toggleCriterionTooltip(event, '${criterion.id}')"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+        </button>
+        <div
+          class="criterion-tooltip-popover"
+          role="tooltip"
+          id="tooltip-${criterion.id}"
+          aria-hidden="true"
+        >
+          <div class="criterion-tooltip-header">
+            <span class="criterion-tooltip-pill">MIROS Rubric v1.1</span>
+            <span class="criterion-tooltip-name">${escapedName}</span>
+            <button type="button" class="criterion-tooltip-close" onclick="closeCriterionTooltip(event, '${criterion.id}')" aria-label="Close description">&times;</button>
+          </div>
+          <div class="criterion-tooltip-text">${escapedDesc}</div>
+        </div>
+      </div>
+    ` : '';
+
     const metaHtml = `
       <div class="criterion-meta" id="label-${criterion.id}">
         <div class="criterion-title-wrap">
           <span class="criterion-number">${sectionPrefix}${index + 1}.</span>
-          <span class="criterion-title">${criterion.name}</span>
+          <span class="criterion-title">${escapedName}</span>
+          ${tooltipHtml}
         </div>
         <div class="criterion-badge" id="badge-${criterion.id}">Max ${maxPoints.toFixed(2)} pts</div>
       </div>
@@ -593,6 +778,15 @@ function renderCriteriaSection(criteriaList, containerId, sectionPrefix) {
 
     rowEl.innerHTML = metaHtml + optionsHtml;
     container.appendChild(rowEl);
+
+    // Attach edge-positioning listener on desktop hover for zero screen-edge clipping
+    const tipWrap = rowEl.querySelector('.criterion-tooltip-wrapper');
+    if (tipWrap) {
+      tipWrap.addEventListener('mouseenter', () => {
+        const pop = tipWrap.querySelector('.criterion-tooltip-popover');
+        if (pop) positionTooltipPopover(pop, tipWrap);
+      });
+    }
 
     // Initial state capture (starts at None 0 if not set)
     if (!assessmentState.selectedItems[criterion.id]) {
@@ -3132,36 +3326,135 @@ function playNotificationChime() {
   } catch (e) {}
 }
 
+function showAssignmentModal(evt) {
+  if (!evt) return;
+  const modal = document.getElementById("assignment-alert-modal");
+  if (!modal) return;
+
+  const compEl = document.getElementById("assign-modal-company");
+  const devEl = document.getElementById("assign-modal-device");
+  const pkgEl = document.getElementById("assign-modal-package");
+  const dateEl = document.getElementById("assign-modal-date");
+  const mgrEl = document.getElementById("assign-modal-manager");
+  const notesCont = document.getElementById("assign-modal-notes-container");
+  const notesEl = document.getElementById("assign-modal-notes");
+  const startBtn = document.getElementById("btn-start-assigned-modal");
+  const closeBtn = document.getElementById("btn-close-assignment-modal");
+  const dismissBtn = document.getElementById("btn-dismiss-assignment-modal");
+
+  const evalId = evt.evaluationId || evt.id;
+  const comp = evt.companyName || "Assigned Customer";
+  const device = evt.deviceModel || "Unspecified Model";
+  const pkg = evt.packageName || "Package 2: Comprehensive Assessment (RM 6,000)";
+  const date = evt.scheduledDate ? evt.scheduledDate : "Immediate / Flexible";
+  const manager = evt.actor || evt.assignedBy || "MIROS Management";
+  const instructions = evt.assignmentInstructions || evt.schedulingNotes || evt.note || "";
+
+  if (compEl) compEl.textContent = comp;
+  if (devEl) devEl.textContent = device;
+  if (pkgEl) pkgEl.textContent = pkg;
+  if (dateEl) dateEl.textContent = date;
+  if (mgrEl) mgrEl.textContent = manager;
+
+  if (notesCont && notesEl) {
+    if (instructions) {
+      notesEl.textContent = `"${instructions}"`;
+      notesCont.style.display = "block";
+    } else {
+      notesCont.style.display = "none";
+    }
+  }
+
+  const closeModal = () => {
+    modal.style.display = "none";
+    modal.setAttribute("aria-hidden", "true");
+  };
+
+  if (closeBtn) closeBtn.onclick = closeModal;
+  if (dismissBtn) dismissBtn.onclick = closeModal;
+  modal.onclick = (e) => {
+    if (e.target === modal) closeModal();
+  };
+
+  if (startBtn) {
+    startBtn.onclick = () => {
+      closeModal();
+      window.startAssignedEvaluation(evalId, comp, device, pkg);
+    };
+  }
+
+  modal.style.display = "flex";
+  modal.setAttribute("aria-hidden", "false");
+}
+window.showAssignmentModal = showAssignmentModal;
+
+function showAssignmentModalFromFeed(id) {
+  const item = notificationsFeedState.items.find(it => (it.evaluationId || it.id) === id);
+  if (item) {
+    showAssignmentModal(item);
+  }
+}
+window.showAssignmentModalFromFeed = showAssignmentModalFromFeed;
+
 function showStatusBanner(evt) {
   const banner = document.getElementById("assessor-status-banner");
   const textEl = document.getElementById("assessor-banner-text");
   const actionBtn = document.getElementById("btn-banner-action");
   if (!banner || !textEl) return;
 
+  const isAssignment = evt.eventType === 'ASSIGNMENT' || evt.status === 'assigned' || evt.status === 'scheduled';
   const isApproved = evt.status === "approved";
-  banner.className = `status-notification-banner ${isApproved ? 'banner-approved' : 'banner-rejected'}`;
 
   const comp = evt.companyName || "Evaluation";
   const model = evt.deviceModel ? ` (${evt.deviceModel})` : "";
-  const reviewer = evt.reviewedBy ? ` by ${evt.reviewedBy}` : (evt.approvedBy ? ` by ${evt.approvedBy}` : (evt.rejectedBy ? ` by ${evt.rejectedBy}` : ""));
+  const reviewer = evt.reviewedBy ? ` by ${evt.reviewedBy}` : (evt.approvedBy ? ` by ${evt.approvedBy}` : (evt.rejectedBy ? ` by ${evt.rejectedBy}` : (evt.assignedBy ? ` by ${evt.assignedBy}` : "")));
 
-  if (isApproved) {
+  if (isAssignment) {
+    banner.className = "status-notification-banner banner-assigned";
+    banner.style.borderLeftColor = "#4F46E5";
+    banner.style.background = "#EEF2FF";
+    textEl.innerHTML = `<strong>🎯 New Assessment Assigned:</strong> ${escapeHtml(comp)}${escapeHtml(model)} was assigned to you${escapeHtml(reviewer)}.${evt.scheduledDate ? ' Scheduled for ' + escapeHtml(evt.scheduledDate) + '.' : ''} Ready to start evaluation.`;
+    if (actionBtn) {
+      actionBtn.style.display = "inline-flex";
+      actionBtn.textContent = "▶ Start Assessment";
+      actionBtn.style.background = "#4F46E5";
+      actionBtn.style.borderColor = "#4338CA";
+      actionBtn.style.color = "#FFFFFF";
+      actionBtn.onclick = () => {
+        const evalId = evt.evaluationId || evt.id;
+        window.startAssignedEvaluation(evalId, evt.companyName, evt.deviceModel, evt.packageName);
+        banner.style.display = "none";
+      };
+    }
+  } else if (isApproved) {
+    banner.className = `status-notification-banner banner-approved`;
+    banner.style.borderLeftColor = "#16A34A";
+    banner.style.background = "";
     const maxScoreVal = evt.rubricVersion === '1.0' ? '43.00' : '5.00';
     const scoreStr = evt.totalScore !== undefined ? ` [Score: ${Number(evt.totalScore).toFixed(2)}/${maxScoreVal}, ${evt.ratingLabel || 'Grade A'}]` : "";
     textEl.innerHTML = `<strong>Evaluation Approved:</strong> ${escapeHtml(comp)}${escapeHtml(model)}${scoreStr} was approved${escapeHtml(reviewer)}. Record is locked from further edits.`;
     if (actionBtn) {
       actionBtn.style.display = "inline-flex";
       actionBtn.textContent = "View Notifications";
+      actionBtn.style.background = "";
+      actionBtn.style.borderColor = "";
+      actionBtn.style.color = "";
       actionBtn.onclick = () => {
         scrollToNotificationSection();
       };
     }
   } else {
+    banner.className = `status-notification-banner banner-rejected`;
+    banner.style.borderLeftColor = "#DC2626";
+    banner.style.background = "";
     const reason = evt.rejectionReason ? ` — Reason: "${escapeHtml(evt.rejectionReason)}"` : "";
     textEl.innerHTML = `<strong>Action Required — Remediation:</strong> ${escapeHtml(comp)}${escapeHtml(model)} was rejected${escapeHtml(reviewer)}${reason}. Click to load and correct.`;
     if (actionBtn) {
       actionBtn.style.display = "inline-flex";
       actionBtn.textContent = "Load to Correct";
+      actionBtn.style.background = "";
+      actionBtn.style.borderColor = "";
+      actionBtn.style.color = "";
       actionBtn.onclick = () => {
         loadAndScrollEvaluationForCorrection(evt.evaluationId);
         banner.style.display = "none";
@@ -3176,62 +3469,113 @@ function showStatusToast(evt) {
   const toastContainer = document.getElementById("status-toast-container");
   if (!toastContainer) return;
 
+  const isAssignment = evt.eventType === 'ASSIGNMENT' || evt.status === 'assigned' || evt.status === 'scheduled';
   const isApproved = evt.status === "approved";
   const comp = evt.companyName || "Evaluation";
   const model = evt.deviceModel ? ` - ${evt.deviceModel}` : "";
+  const evalId = evt.evaluationId || evt.id;
 
   const toast = document.createElement("div");
-  toast.className = `status-toast ${isApproved ? 'toast-approved' : 'toast-rejected'}`;
+  toast.className = `status-toast ${isAssignment ? 'assigned toast-assigned' : (isApproved ? 'toast-approved' : 'toast-rejected')}`;
 
-  let scoreDetailsHtml = "";
-  if (isApproved && evt.totalScore !== undefined) {
-    const maxScoreVal = evt.rubricVersion === '1.0' ? '43.00' : '5.00';
-    const stars = evt.starsCount ? "★".repeat(evt.starsCount) : "";
-    scoreDetailsHtml = `<div style="font-size: 11.5px; color: #166534; margin-top: 2px; font-weight: 600;">
-      Score: ${Number(evt.totalScore).toFixed(2)}/${maxScoreVal} pts • ${escapeHtml(evt.ratingLabel || 'Grade A')} ${stars}
-    </div>`;
-  }
-
-  toast.innerHTML = `
-    <div style="font-size: 20px;">${isApproved ? '✅' : '❌'}</div>
-    <div style="flex: 1; min-width: 0;">
-      <div style="font-weight: 700; font-size: 13px; color: #0F172A;">
-        Evaluation ${isApproved ? 'Approved & Certified' : 'Rejected (Action Required)'}
+  if (isAssignment) {
+    const manager = evt.actor || evt.assignedBy || "MIROS Manager";
+    toast.innerHTML = `
+      <div style="display: flex; align-items: flex-start; gap: 10px; width: 100%;">
+        <div style="font-size: 22px; line-height: 1;">🎯</div>
+        <div style="flex: 1; min-width: 0;">
+          <div style="font-weight: 700; font-size: 13px; color: #312E81; display: flex; align-items: center; gap: 6px;">
+            New Assessment Assigned!
+            <span style="font-size: 10px; background: #E0E7FF; color: #4338CA; padding: 1px 6px; border-radius: 4px; font-weight: 700;">MIROS</span>
+          </div>
+          <div style="font-size: 12.5px; font-weight: 600; color: #0F172A; margin-top: 2px;">
+            ${escapeHtml(comp)}${escapeHtml(model)}
+          </div>
+          <div style="font-size: 11.5px; color: #4338CA; margin-top: 2px;">
+            Assigned by ${escapeHtml(manager)}${evt.scheduledDate ? ' • Scheduled: ' + escapeHtml(evt.scheduledDate) : ''}
+          </div>
+          ${evt.assignmentInstructions ? `<div style="font-size: 11px; color: #475569; font-style: italic; margin-top: 3px; line-height: 1.3;">"${escapeHtml(evt.assignmentInstructions)}"</div>` : ''}
+        </div>
+        <button type="button" class="btn-toast-close" style="background: none; border: none; font-size: 18px; cursor: pointer; color: #94A3B8; padding: 0 4px; line-height: 1;">&times;</button>
       </div>
-      <div style="font-size: 12px; color: #475569; margin-top: 2px;">
-        ${escapeHtml(comp)}${escapeHtml(model)}
-        ${scoreDetailsHtml}
-        ${!isApproved && evt.rejectionReason ? `<div style="font-style: italic; color: #991B1B; margin-top: 2px;">"${escapeHtml(evt.rejectionReason)}"</div>` : ''}
+      <div style="display: flex; align-items: center; justify-content: flex-end; gap: 8px; margin-top: 6px; padding-top: 6px; border-top: 1px solid #E0E7FF;">
+        <button type="button" class="btn btn-secondary btn-sm btn-toast-details" style="font-size: 11px; padding: 4px 8px;">
+          View Details
+        </button>
+        <button type="button" class="btn btn-primary btn-sm btn-toast-start" style="font-size: 11.5px; padding: 4px 12px; font-weight: 700; background: #4F46E5; border-color: #4338CA; color: #FFFFFF; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 2px 5px rgba(79, 70, 229, 0.3);">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+          Start Assessment
+        </button>
       </div>
-    </div>
-    <div style="display: flex; align-items: center; gap: 6px;">
-      ${!isApproved ? `
-        <button type="button" class="btn btn-primary btn-sm btn-toast-correct" style="font-size: 11.5px; padding: 4px 8px; white-space: nowrap;">
-          Fix &amp; Resubmit
-        </button>
-      ` : `
-        <button type="button" class="btn btn-secondary btn-sm btn-toast-view" style="font-size: 11.5px; padding: 4px 8px; white-space: nowrap;">
-          View Feed
-        </button>
-      `}
-      <button type="button" class="btn-toast-close" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #94A3B8;">&times;</button>
-    </div>
-  `;
+    `;
 
-  toast.querySelector(".btn-toast-close")?.addEventListener("click", () => {
-    toast.remove();
-  });
+    toast.querySelector(".btn-toast-close")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toast.remove();
+    });
 
-  if (!isApproved) {
-    toast.querySelector(".btn-toast-correct")?.addEventListener("click", () => {
-      loadAndScrollEvaluationForCorrection(evt.evaluationId);
+    toast.querySelector(".btn-toast-details")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      showAssignmentModal(evt);
+      toast.remove();
+    });
+
+    toast.querySelector(".btn-toast-start")?.addEventListener("click", (e) => {
+      e.stopPropagation();
+      window.startAssignedEvaluation(evalId, evt.companyName, evt.deviceModel, evt.packageName);
       toast.remove();
     });
   } else {
-    toast.querySelector(".btn-toast-view")?.addEventListener("click", () => {
-      scrollToNotificationSection();
+    let scoreDetailsHtml = "";
+    if (isApproved && evt.totalScore !== undefined) {
+      const maxScoreVal = evt.rubricVersion === '1.0' ? '43.00' : '5.00';
+      const stars = evt.starsCount ? "★".repeat(evt.starsCount) : "";
+      scoreDetailsHtml = `<div style="font-size: 11.5px; color: #166534; margin-top: 2px; font-weight: 600;">
+        Score: ${Number(evt.totalScore).toFixed(2)}/${maxScoreVal} pts • ${escapeHtml(evt.ratingLabel || 'Grade A')} ${stars}
+      </div>`;
+    }
+
+    toast.innerHTML = `
+      <div style="font-size: 20px;">${isApproved ? '✅' : '❌'}</div>
+      <div style="flex: 1; min-width: 0;">
+        <div style="font-weight: 700; font-size: 13px; color: #0F172A;">
+          Evaluation ${isApproved ? 'Approved & Certified' : 'Rejected (Action Required)'}
+        </div>
+        <div style="font-size: 12px; color: #475569; margin-top: 2px;">
+          ${escapeHtml(comp)}${escapeHtml(model)}
+          ${scoreDetailsHtml}
+          ${!isApproved && evt.rejectionReason ? `<div style="font-style: italic; color: #991B1B; margin-top: 2px;">"${escapeHtml(evt.rejectionReason)}"</div>` : ''}
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        ${!isApproved ? `
+          <button type="button" class="btn btn-primary btn-sm btn-toast-correct" style="font-size: 11.5px; padding: 4px 8px; white-space: nowrap;">
+            Fix &amp; Resubmit
+          </button>
+        ` : `
+          <button type="button" class="btn btn-secondary btn-sm btn-toast-view" style="font-size: 11.5px; padding: 4px 8px; white-space: nowrap;">
+            View Feed
+          </button>
+        `}
+        <button type="button" class="btn-toast-close" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #94A3B8;">&times;</button>
+      </div>
+    `;
+
+    toast.querySelector(".btn-toast-close")?.addEventListener("click", () => {
       toast.remove();
     });
+
+    if (!isApproved) {
+      toast.querySelector(".btn-toast-correct")?.addEventListener("click", () => {
+        loadAndScrollEvaluationForCorrection(evt.evaluationId);
+        toast.remove();
+      });
+    } else {
+      toast.querySelector(".btn-toast-view")?.addEventListener("click", () => {
+        scrollToNotificationSection();
+        toast.remove();
+      });
+    }
   }
 
   toastContainer.appendChild(toast);
@@ -3243,17 +3587,23 @@ function showStatusToast(evt) {
       toast.style.transition = "all 0.3s ease";
       setTimeout(() => toast.remove(), 300);
     }
-  }, 10000);
+  }, 12000);
 }
 
 function handleIncomingStatusEvent(evt) {
-  if (!evt || (!evt.id && !evt.evaluationId) || !evt.status) return;
+  if (!evt || (!evt.id && !evt.evaluationId)) return;
+  evt.status = evt.status || evt.newStatus || (evt.eventType === 'ASSIGNMENT' ? 'assigned' : null);
+  if (!evt.status) return;
 
+  const isAssignment = evt.eventType === 'ASSIGNMENT' || evt.status === 'assigned' || evt.status === 'scheduled';
   const eventId = evt.id || `${evt.evaluationId}_${evt.status}_${evt.statusChangedAt || Date.now()}`;
   const seen = getSeenStatusEvents();
   if (!seen.includes(eventId)) {
     markStatusEventSeen(eventId);
     playNotificationChime();
+    if (isAssignment) {
+      showAssignmentModal(evt);
+    }
     showStatusBanner(evt);
     showStatusToast(evt);
   }
@@ -3303,13 +3653,17 @@ async function fetchNotificationsFeed() {
       const liveEvents = Array.isArray(json.recentLiveEvents) ? json.recentLiveEvents : [];
       const dbNotifs = Array.isArray(json.notifications) ? json.notifications : [];
 
-      // Check if any fresh events came in that need audio chime / toast
+      // Check if any fresh events came in that need audio chime / toast / modal
       liveEvents.forEach(evt => {
         if (evt && evt.id) {
           const seen = getSeenStatusEvents();
           if (!seen.includes(evt.id)) {
             markStatusEventSeen(evt.id);
             playNotificationChime();
+            const isAssignment = evt.eventType === 'ASSIGNMENT' || evt.status === 'assigned' || evt.status === 'scheduled';
+            if (isAssignment) {
+              showAssignmentModal(evt);
+            }
             showStatusBanner(evt);
             showStatusToast(evt);
           }
@@ -3363,13 +3717,16 @@ function updateNotificationBadges() {
   });
 
   const allCount = activeItems.length;
+  const assignedCount = activeItems.filter(it => it.status === "assigned" || it.eventType === "ASSIGNMENT" || it.status === "scheduled").length;
   const rejectedCount = activeItems.filter(it => it.status === "rejected").length;
   const approvedCount = activeItems.filter(it => it.status === "approved").length;
 
   const countAllEl = document.getElementById("notif-count-all");
+  const countAssignedEl = document.getElementById("notif-count-assigned");
   const countRejEl = document.getElementById("notif-count-rejected");
   const countAppEl = document.getElementById("notif-count-approved");
   if (countAllEl) countAllEl.textContent = allCount;
+  if (countAssignedEl) countAssignedEl.textContent = assignedCount;
   if (countRejEl) countRejEl.textContent = rejectedCount;
   if (countAppEl) countAppEl.textContent = approvedCount;
 
@@ -3379,7 +3736,11 @@ function updateNotificationBadges() {
 
   const navBadgeEl = document.getElementById("nav-notifications-badge");
   if (navBadgeEl) {
-    if (rejectedCount > 0) {
+    if (assignedCount > 0) {
+      navBadgeEl.style.display = "inline-flex";
+      navBadgeEl.style.background = "#4F46E5";
+      navBadgeEl.textContent = assignedCount;
+    } else if (rejectedCount > 0) {
       navBadgeEl.style.display = "inline-flex";
       navBadgeEl.style.background = "#DC2626";
       navBadgeEl.textContent = rejectedCount;
@@ -3395,11 +3756,24 @@ function updateNotificationBadges() {
   const actionPill = document.getElementById("notif-action-pill");
   const dotEl = document.getElementById("notif-unread-indicator-dot");
   if (actionPill) {
-    actionPill.style.display = rejectedCount > 0 ? "inline-flex" : "none";
-    actionPill.textContent = `${rejectedCount} Action${rejectedCount > 1 ? 's' : ''} Required`;
+    if (assignedCount > 0) {
+      actionPill.style.display = "inline-flex";
+      actionPill.style.background = "#EEF2FF";
+      actionPill.style.color = "#4338CA";
+      actionPill.style.borderColor = "#C7D2FE";
+      actionPill.textContent = `${assignedCount} New Task${assignedCount > 1 ? 's' : ''} Assigned`;
+    } else if (rejectedCount > 0) {
+      actionPill.style.display = "inline-flex";
+      actionPill.style.background = "#FEE2E2";
+      actionPill.style.color = "#991B1B";
+      actionPill.style.borderColor = "#FECACA";
+      actionPill.textContent = `${rejectedCount} Action${rejectedCount > 1 ? 's' : ''} Required`;
+    } else {
+      actionPill.style.display = "none";
+    }
   }
   if (dotEl) {
-    dotEl.style.display = (rejectedCount > 0 || allCount > 0) ? "block" : "none";
+    dotEl.style.display = (assignedCount > 0 || rejectedCount > 0 || allCount > 0) ? "block" : "none";
   }
 }
 
@@ -3415,6 +3789,7 @@ function renderNotificationCardsList() {
     const id = it.evaluationId || it.id;
     if (id && dismissed.includes(id)) return false;
 
+    if (filter === "assigned" && it.status !== "assigned" && it.eventType !== "ASSIGNMENT" && it.status !== "scheduled") return false;
     if (filter === "rejected" && it.status !== "rejected") return false;
     if (filter === "approved" && it.status !== "approved") return false;
 
@@ -3424,7 +3799,8 @@ function renderNotificationCardsList() {
       const aid = String(it.assessorId || "").toLowerCase();
       const aname = String(it.assessorName || "").toLowerCase();
       const reason = String(it.rejectionReason || "").toLowerCase();
-      if (!comp.includes(query) && !model.includes(query) && !aid.includes(query) && !aname.includes(query) && !reason.includes(query)) {
+      const instr = String(it.assignmentInstructions || "").toLowerCase();
+      if (!comp.includes(query) && !model.includes(query) && !aid.includes(query) && !aname.includes(query) && !reason.includes(query) && !instr.includes(query)) {
         return false;
       }
     }
@@ -3442,7 +3818,7 @@ function renderNotificationCardsList() {
         <div style="font-size: 12.5px; margin-top: 4px; max-width: 440px; margin-left: auto; margin-right: auto; line-height: 1.5;">
           ${isFiltered 
             ? 'Try clearing your search query or switching to another filter tab.'
-            : 'All evaluations are currently reviewed and in sync. When MIROS managers review your submissions, approvals and remediation requests will be delivered here instantly.'}
+            : 'All evaluations are currently in sync. When MIROS managers assign assessments or review your submissions, alerts will appear here instantly.'}
         </div>
       </div>
     `;
@@ -3452,14 +3828,59 @@ function renderNotificationCardsList() {
   let html = "";
   visibleItems.forEach(item => {
     const evalId = item.evaluationId || item.id || "";
+    const isAssignment = item.status === "assigned" || item.eventType === "ASSIGNMENT" || item.status === "scheduled";
     const isRejected = item.status === "rejected";
     const comp = item.companyName || "Untitled Company";
     const model = item.deviceModel || "Unspecified Model";
     const aid = item.assessorId || "";
-    const timestampStr = formatNotificationTime(item.statusChangedAt || item.rejectedAt || item.approvedAt || item.createdAt);
-    const reviewer = (isRejected ? (item.rejectedBy || item.reviewedBy) : (item.approvedBy || item.reviewedBy)) || "MIROS Manager";
+    const timestampStr = formatNotificationTime(item.statusChangedAt || item.assignedAt || item.rejectedAt || item.approvedAt || item.createdAt);
+    const reviewer = (isAssignment ? (item.actor || item.assignedBy) : (isRejected ? (item.rejectedBy || item.reviewedBy) : (item.approvedBy || item.reviewedBy))) || "MIROS Manager";
 
-    if (isRejected) {
+    if (isAssignment) {
+      html += `
+        <div class="notification-card-item is-assigned" id="notif-card-${escapeHtml(evalId)}">
+          <div class="notif-card-header">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <span class="notif-status-badge badge-assigned">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                New Assessment Assigned
+              </span>
+              <span class="notif-meta-text">
+                Assigned by <strong>${escapeHtml(reviewer)}</strong> • ${escapeHtml(timestampStr)}
+              </span>
+            </div>
+            <button type="button" class="btn-toast-close" title="Dismiss notification" onclick="dismissSingleNotification('${escapeHtml(evalId)}')" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #94A3B8; padding: 2px 6px;">&times;</button>
+          </div>
+
+          <div class="notif-card-title">
+            ${escapeHtml(comp)} — ${escapeHtml(model)}
+            ${aid ? `<span class="notif-assessor-badge" title="Assessor ID">Assessor: ${escapeHtml(aid)}</span>` : ''}
+          </div>
+
+          <div class="notif-assignment-callout">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 6px;">
+              <div><strong>Package:</strong> ${escapeHtml(item.packageName || 'Package 2: Comprehensive Assessment (RM 6,000)')}</div>
+              ${item.scheduledDate ? `<div style="font-weight: 600; color: #4338CA;">Scheduled: ${escapeHtml(item.scheduledDate)}</div>` : ''}
+            </div>
+            ${item.assignmentInstructions ? `<div style="margin-top: 4px; font-style: italic; color: #334155;">Manager Notes: "${escapeHtml(item.assignmentInstructions)}"</div>` : ''}
+            <div style="margin-top: 4px; font-size: 11.5px; color: #4F46E5; font-weight: 600;">Status: Ready for Evaluation</div>
+          </div>
+
+          <div class="notif-card-actions">
+            <div class="notif-actions-left">
+              <button type="button" class="btn btn-primary btn-sm" onclick="startAssignedEvaluation('${escapeHtml(evalId)}', '${escapeHtml(comp)}', '${escapeHtml(model)}', '${escapeHtml(item.packageName || '')}')" style="font-size: 12px; padding: 6px 14px; font-weight: 700; background: #4F46E5; border-color: #4338CA; color: #FFFFFF; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+                Start Assessment
+              </button>
+              <button type="button" class="btn btn-secondary btn-sm" onclick="showAssignmentModalFromFeed('${escapeHtml(evalId)}')" style="font-size: 12px; padding: 6px 12px;">
+                View Details
+              </button>
+            </div>
+            <span style="font-size: 11.5px; color: #4338CA; font-weight: 600;">1-Click Launch</span>
+          </div>
+        </div>
+      `;
+    } else if (isRejected) {
       html += `
         <div class="notification-card-item is-rejected" id="notif-card-${escapeHtml(evalId)}">
           <div class="notif-card-header">
@@ -3647,6 +4068,7 @@ function initNotificationSection() {
 
   // Filter tabs
   document.getElementById("notif-filter-all")?.addEventListener("click", () => setNotificationFilter("all"));
+  document.getElementById("notif-filter-assigned")?.addEventListener("click", () => setNotificationFilter("assigned"));
   document.getElementById("notif-filter-rejected")?.addEventListener("click", () => setNotificationFilter("rejected"));
   document.getElementById("notif-filter-approved")?.addEventListener("click", () => setNotificationFilter("approved"));
 
@@ -4133,6 +4555,60 @@ window.fetchAssessorSubmissions = async function(countOnly = false) {
   }
 };
 
+window.startAssignedEvaluation = function(id, company, device, pkg) {
+  // Hide assignment popup modal if active
+  const assignModal = document.getElementById("assignment-alert-modal");
+  if (assignModal) {
+    assignModal.style.display = "none";
+    assignModal.setAttribute("aria-hidden", "true");
+  }
+
+  if (typeof window.switchAssessorPortalTab === "function") {
+    window.switchAssessorPortalTab("matrix");
+  }
+  const companyInput = document.getElementById("companyName");
+  if (companyInput && company) {
+    companyInput.value = company;
+    companyInput.dispatchEvent(new Event("input", { bubbles: true }));
+    companyInput.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  const deviceInput = document.getElementById("deviceModel");
+  if (deviceInput && device) {
+    deviceInput.value = device;
+    deviceInput.dispatchEvent(new Event("input", { bubbles: true }));
+    deviceInput.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  const pkgSelect = document.getElementById("packageName");
+  if (pkgSelect && pkg) {
+    if (pkg.toLowerCase().includes("package 2") || pkg.toLowerCase().includes("comprehensive")) {
+      pkgSelect.value = "Package 2: Comprehensive Assessment (RM 6,000)";
+    } else if (pkg.toLowerCase().includes("package 1") || pkg.toLowerCase().includes("standard")) {
+      pkgSelect.value = "Package 1: Standard Assessment (RM 4,500)";
+    }
+    pkgSelect.dispatchEvent(new Event("change", { bubbles: true }));
+  }
+
+  // Store active assigned registration / task link
+  window._activeAssignedRegistrationId = id;
+
+  const metaCard = document.getElementById("card-metadata");
+  if (metaCard) {
+    metaCard.scrollIntoView({ behavior: "smooth", block: "start" });
+    metaCard.style.transition = "box-shadow 0.3s ease, border-color 0.3s ease";
+    metaCard.style.borderColor = "#4F46E5";
+    metaCard.style.boxShadow = "0 0 0 3px rgba(79, 70, 229, 0.3)";
+    setTimeout(() => {
+      metaCard.style.borderColor = "";
+      metaCard.style.boxShadow = "";
+    }, 2500);
+  }
+  if (typeof showToast === "function") {
+    showToast(`🎯 Assessment started for ${company || "Assigned Customer"} (${device || "Device"}) — Scoring form loaded`);
+  }
+};
+
 window.renderAssessorSubmissionsTable = function(records) {
   const tbody = document.getElementById("assessor-submissions-tbody");
   if (!tbody) return;
@@ -4174,20 +4650,28 @@ window.renderAssessorSubmissionsTable = function(records) {
     for (let s = 1; s <= 5; s++) starsStr += s <= starsCount ? "★" : "☆";
 
     const status = (r.status || "pending_review").toLowerCase();
+    const isAssigned = status === "registered" || status === "scheduled" || status === "assigned";
+    const isRejected = status === "rejected" || status === "remediation_required";
+
     let statusBadge = "";
-    if (status === "approved" || status === "completed") {
+    if (isAssigned) {
+      statusBadge = '<span class="status-badge" style="background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">🎯 Assigned by Manager</span>';
+    } else if (status === "approved" || status === "completed") {
       statusBadge = '<span class="status-badge" style="background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">✔ Approved &amp; Certified</span>';
-    } else if (status === "rejected" || status === "remediation_required") {
+    } else if (isRejected) {
       statusBadge = '<span class="status-badge" style="background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">⚠ Remediation Required</span>';
     } else if (status === "pre_final_sent") {
       statusBadge = '<span class="status-badge" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Pre-Final Issued</span>';
+    } else if (status === "certificate_issued") {
+      statusBadge = '<span class="status-badge" style="background: #F0FDF4; color: #166534; border: 1px solid #BBF7D0; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Certificate Issued</span>';
     } else if (status === "payment_confirmed") {
       statusBadge = '<span class="status-badge" style="background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Payment Confirmed</span>';
     } else {
       statusBadge = '<span class="status-badge" style="background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">⏳ Pending Manager Review</span>';
     }
 
-    const isRejected = status === "rejected" || status === "remediation_required";
+    const scoreCol = isAssigned ? '<span style="color: #64748B; font-weight: 500; font-size: 12px; font-style: italic;">Pending Eval</span>' : `${totalScore} / 5.00`;
+    const starsCol = isAssigned ? '<span style="color: #94A3B8;">-</span>' : starsStr;
 
     return `
       <tr style="background: ${idx % 2 === 0 ? '#FFFFFF' : '#F8FAFC'}; border-bottom: 1px solid #E2E8F0;">
@@ -4195,18 +4679,26 @@ window.renderAssessorSubmissionsTable = function(records) {
         <td style="padding: 10px 12px; font-weight: 600; color: #0F172A;">${comp}</td>
         <td style="padding: 10px 12px; color: #334155;">${model}</td>
         <td style="padding: 10px 12px; color: #64748B; font-size: 12px;">${pkg}</td>
-        <td style="padding: 10px 12px; text-align: center; font-weight: 700; color: #F58220;">${totalScore} / 5.00</td>
-        <td style="padding: 10px 12px; text-align: center; font-size: 12.5px; color: #EAB308; white-space: nowrap;" title="${starRating} Stars">${starsStr}</td>
+        <td style="padding: 10px 12px; text-align: center; font-weight: 700; color: #F58220;">${scoreCol}</td>
+        <td style="padding: 10px 12px; text-align: center; font-size: 12.5px; color: #EAB308; white-space: nowrap;" title="${starRating} Stars">${starsCol}</td>
         <td style="padding: 10px 12px; text-align: center;">${statusBadge}</td>
         <td style="padding: 10px 12px; text-align: right; white-space: nowrap;">
-          ${isRejected ? `
+          ${isAssigned ? `
+            <button type="button" class="btn btn-primary btn-sm" onclick="startAssignedEvaluation('${escapeHtml(id)}', '${escapeHtml(comp)}', '${escapeHtml(model)}', '${escapeHtml(pkg)}')" style="font-size: 11.5px; padding: 4px 10px; font-weight: 700; background: #4F46E5; border-color: #4338CA; color: #FFFFFF;">
+              Conduct Assessment
+            </button>
+          ` : (isRejected ? `
             <button type="button" class="btn btn-primary btn-sm" onclick="loadAndScrollEvaluationForCorrection('${escapeHtml(id)}')" style="font-size: 11.5px; padding: 4px 9px; font-weight: 700; margin-right: 6px;">
               Fix &amp; Resubmit
             </button>
-          ` : ''}
-          <button type="button" class="btn btn-secondary btn-sm" onclick="viewAssessorSubmissionReport('${escapeHtml(id)}')" style="font-size: 11.5px; padding: 4px 9px;">
-            View Report
-          </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="viewAssessorSubmissionReport('${escapeHtml(id)}')" style="font-size: 11.5px; padding: 4px 9px;">
+              View Report
+            </button>
+          ` : `
+            <button type="button" class="btn btn-secondary btn-sm" onclick="viewAssessorSubmissionReport('${escapeHtml(id)}')" style="font-size: 11.5px; padding: 4px 9px;">
+              View Report
+            </button>
+          `)}
         </td>
       </tr>
     `;
