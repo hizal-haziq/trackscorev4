@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="/style.css" />
     <script src="/api/config.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" defer></script>
+    <script src="/certificate-pdf.js" defer></script>
     <style>
       .pulse-dot {
         width: 8px;
@@ -1356,7 +1356,7 @@
               <line x1="20" y1="8" x2="20" y2="14"></line>
               <line x1="23" y1="11" x2="17" y2="11"></line>
             </svg>
-            Vendor Portal Setup Link Generated
+            Vendor Portal Credentials Generated
           </h3>
           <button type="button" class="modal-close-btn" onclick="closeVendorInviteModal()" aria-label="Close modal">&times;</button>
         </div>
@@ -1368,21 +1368,24 @@
             <div id="vendor-invite-email-status" style="margin-top: 8px; font-size: 12px; font-weight: 600; display: none;"></div>
           </div>
           <p style="font-size: 13px; color: #475569; margin-bottom: 12px;">
-            A secure, one-time onboarding link has been generated. Provide this link to the vendor so they can set their password and access their self-service portal.
+            These credentials are active immediately — no setup link required.
           </p>
           <div style="margin-bottom: 14px;">
             <label style="display: block; font-size: 11.5px; font-weight: 700; color: #64748B; margin-bottom: 4px; text-transform: uppercase;">
-              Setup URL (Valid for 7 days)
+              Generated Login Email
             </label>
             <div style="display: flex; gap: 8px;">
-              <input type="text" id="vendor-invite-link-input" readonly style="flex: 1; padding: 8px 10px; font-size: 12.5px; font-family: monospace; background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 4px;" />
-              <button type="button" class="btn btn-primary btn-sm" id="btn-copy-vendor-link" onclick="copyVendorInviteLink()" style="white-space: nowrap;">
-                📋 Copy Link
-              </button>
+              <div id="vendor-invite-login-email" style="font-family: monospace; font-size: 14px; font-weight: 700; color: #0F172A;"></div>
             </div>
-            <div id="vendor-copy-feedback" style="font-size: 12px; color: #16A34A; font-weight: 600; margin-top: 6px; display: none;">
-              ✓ Link copied to clipboard!
+            <div style="margin-bottom: 14px;">
+              <div style="font-size: 11.5px; font-weight: 700; color: #64748B; text-transform: uppercase;">Generated Password</div>
+              <div id="vendor-invite-password" style="font-family: monospace; font-size: 16px; font-weight: 700; color: #0F172A; margin-top: 4px;"></div>
             </div>
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="downloadVendorCredentials()">Download as .txt</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-send-vendor-whatsapp" onclick="sendVendorCredentialsViaWhatsApp()">Send via WhatsApp</button>
+            </div>
+            <div id="vendor-whatsapp-feedback" style="font-size: 12px; color: #64748B; margin-top: 8px;"></div>
           </div>
         </div>
         <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px;">
@@ -2428,7 +2431,7 @@
                   <button type="button" class="btn btn-xs" title="Assign or reassign an assessor for this evaluation" style="background: #4F46E5; border-color: #4338CA; color: #FFFFFF; font-weight: 600;" onclick="openAssignTaskModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.deviceModel || '')}', '${escapeHtml(currentAssessorName)}', '${escapeHtml(currentAssessorId)}', '${escapeHtml(item.scheduledDate || '')}', '${escapeHtml(currentInstructions)}')">
                     Assign
                   </button>
-                  <button type="button" class="btn btn-primary btn-xs" title="Generate one-time setup link for Vendor Portal" style="background: #F58220; border-color: #EA580C; color: #FFFFFF;" onclick="inviteCustomerToVendorPortal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.contactEmail || '')}')">
+                  <button type="button" class="btn btn-primary btn-xs" title="Generate active vendor credentials" style="background: #F58220; border-color: #EA580C; color: #FFFFFF;" onclick="inviteCustomerToVendorPortal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.contactEmail || '')}', '${escapeHtml(item.contactPhone || '')}')">
                     Invite Portal
                   </button>
                   <button type="button" class="btn btn-secondary btn-xs" title="Schedule or update assessment inspection date" onclick="openScheduleModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.scheduledDate || '')}', '${escapeHtml(item.deviceModel || '')}', '${escapeHtml(currentAssessorName)}', '${escapeHtml(currentAssessorId)}')">
@@ -3024,20 +3027,25 @@
       }
 
       // VENDOR PORTAL INVITATION
-      function openVendorInviteModal(company, email, setupToken, setupLink) {
+      let activeVendorCredentials = null;
+
+      function openVendorInviteModal(company, contactEmail, loginEmail, password, contactPhone) {
         const modal = document.getElementById("vendor-invite-modal");
         const companyEl = document.getElementById("vendor-invite-company");
         const emailEl = document.getElementById("vendor-invite-email");
-        const statusEl = document.getElementById("vendor-invite-email-status");
-        const linkInput = document.getElementById("vendor-invite-link-input");
-        const feedback = document.getElementById("vendor-copy-feedback");
+        const loginEmailEl = document.getElementById("vendor-invite-login-email");
+        const passwordEl = document.getElementById("vendor-invite-password");
+        const whatsappBtn = document.getElementById("btn-send-vendor-whatsapp");
+        const feedback = document.getElementById("vendor-whatsapp-feedback");
 
         if (companyEl) companyEl.textContent = company;
-        if (emailEl) emailEl.textContent = email;
-        const fullLink = setupLink ? (setupLink.startsWith('http') ? setupLink : (window.location.origin + setupLink)) : (window.location.origin + '/login.html?setupToken=' + setupToken);
-        if (linkInput) linkInput.value = fullLink;
-        if (feedback) feedback.style.display = "none";
-        if (statusEl) statusEl.style.display = "none";
+        if (emailEl) emailEl.textContent = contactEmail;
+        if (loginEmailEl) loginEmailEl.textContent = loginEmail;
+        if (passwordEl) passwordEl.textContent = password;
+        activeVendorCredentials = { company, contactEmail, loginEmail, password, contactPhone };
+        const digits = String(contactPhone || '').replace(/\D/g, '');
+        if (whatsappBtn) whatsappBtn.disabled = digits.length < 8;
+        if (feedback) feedback.textContent = digits.length < 8 ? "No phone number on file for this vendor." : "";
 
         if (modal) {
           modal.classList.add("active");
@@ -3053,40 +3061,45 @@
         }
       }
 
-      function copyVendorInviteLink() {
-        const linkInput = document.getElementById("vendor-invite-link-input");
-        const feedback = document.getElementById("vendor-copy-feedback");
-        if (!linkInput) return;
-        linkInput.select();
-        navigator.clipboard.writeText(linkInput.value).then(() => {
-          if (feedback) {
-            feedback.style.display = "block";
-            setTimeout(() => { feedback.style.display = "none"; }, 3000);
-          }
-        }).catch(() => {
-          document.execCommand('copy');
-          if (feedback) {
-            feedback.style.display = "block";
-            setTimeout(() => { feedback.style.display = "none"; }, 3000);
-          }
-        });
+      function vendorCredentialMessage() {
+        const c = activeVendorCredentials;
+        return `TrackScore Vendor Portal Access\nCompany: ${c.company}\nLogin Email: ${c.loginEmail}\nPassword: ${c.password}\nPortal Link: ${window.location.origin}/login.html`;
       }
 
-      async function inviteCustomerToVendorPortal(regId, companyName, contactEmail) {
+      function downloadVendorCredentials() {
+        if (!activeVendorCredentials) return;
+        const blob = new Blob([vendorCredentialMessage()], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = `TrackScore_Vendor_Credentials_${activeVendorCredentials.company.replace(/[^a-z0-9]+/gi, '_')}.txt`;
+        anchor.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function sendVendorCredentialsViaWhatsApp() {
+        if (!activeVendorCredentials) return;
+        const digits = String(activeVendorCredentials.contactPhone || '').replace(/\D/g, '');
+        if (digits.length < 8) return;
+        window.open(`https://wa.me/${digits}?text=${encodeURIComponent(vendorCredentialMessage())}`, '_blank', 'noopener');
+      }
+
+      async function inviteCustomerToVendorPortal(regId, companyName, contactEmail, contactPhone) {
         if (!contactEmail) {
           showToast("This customer does not have a contact email address registered.", true);
           return;
         }
 
         try {
-          showToast("Sending invitation email and generating portal access...");
+          showToast("Generating active vendor credentials...");
           const res = await fetch('/.netlify/functions/vendor-invite', {
             method: 'POST',
             headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({
               registrationId: regId,
               companyName: companyName,
-              contactEmail: contactEmail
+              contactEmail: contactEmail,
+              contactPhone: contactPhone || ''
             })
           });
 
@@ -3094,21 +3107,15 @@
 
           const data = await res.json().catch(() => ({}));
           if (!res.ok || !data.success) {
-            throw new Error(data.error || 'Failed to generate invitation link.');
-          }
-
-          if (data.emailDelivery?.sent) {
-            showToast("Invitation email sent successfully to " + contactEmail);
-          } else {
-            showToast("Portal link generated. Email fallback available in modal.");
+            throw new Error(data.error || 'Failed to generate vendor credentials.');
           }
 
           openVendorInviteModal(
             data.vendor?.companyName || companyName,
-            data.vendor?.email || contactEmail,
-            data.setupToken,
-            data.fullSetupUrl || data.setupLink,
-            data.emailDelivery
+            data.vendor?.contactEmail || contactEmail,
+            data.vendor?.loginEmail,
+            data.vendor?.password,
+            data.vendor?.contactPhone || contactPhone
           );
         } catch (err) {
           console.error("Vendor invite error:", err);
@@ -4627,8 +4634,13 @@
         const searchTerm = (document.getElementById("table-search")?.value || "").toLowerCase().trim();
         const ratingFilter = document.getElementById("rating-filter")?.value || "all";
         const statusFilter = (document.getElementById("status-filter")?.value || "all").toLowerCase().trim();
+        const tableRecords = records.filter(record => {
+          const recordStatus = String(record.status || "").toLowerCase();
+          const isPreEvaluationStatus = ["inquiry", "registered", "scheduled"].includes(recordStatus);
+          return !(isPreEvaluationStatus && record.linkedEvaluationId);
+        });
 
-        if (records.length === 0) {
+        if (tableRecords.length === 0) {
           tbody.innerHTML = `
             <tr>
               <td colspan="12">
@@ -4650,7 +4662,7 @@
           return;
         }
 
-        const filtered = records.filter(r => {
+        const filtered = tableRecords.filter(r => {
           const matchesSearch =
             (r.companyName || "").toLowerCase().includes(searchTerm) ||
             (r.officeAddress || "").toLowerCase().includes(searchTerm) ||
@@ -5338,6 +5350,12 @@
                 Lifecycle, Payment &amp; Certificate Operations
               </h4>
               <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                  ${cert.certificateNumber ? `
+                    <button type="button" class="btn btn-sm" ${cert.signedDate && cert.signedBy ? `onclick="downloadManagerCertificate('${recordId}')"` : 'disabled title="Certificate must be signed by an authorized signatory before it can be downloaded."'} style="background: #0F766E; color: #FFF; border: none; font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 4px; cursor: ${cert.signedDate && cert.signedBy ? 'pointer' : 'not-allowed'}; display: inline-flex; align-items: center; gap: 4px; white-space: nowrap; opacity: ${cert.signedDate && cert.signedBy ? '1' : '0.55'};" title="Download certificate PDF">
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                      Download Certificate PDF
+                    </button>
+                  ` : ''}
                 ${(status === 'pending_review' || status === 'submitted') ? `
                   <button type="button" class="btn btn-sm" onclick="openSendPreFinalModal('${recordId}')" style="background: #8B5CF6; color: #FFF; border: none; font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 4px;">
                     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
@@ -7401,6 +7419,39 @@
           "'": "&#039;"
         };
         return String(string).replace(/[&<>"']/g, m => map[m]);
+      }
+
+      async function downloadManagerCertificate(recordId) {
+        const record = evaluationsList.find(item => (item._id || item.id) === recordId);
+        if (!record || !record.certificate?.signedDate || !record.certificate?.signedBy) {
+          showToast("Certificate PDF is unavailable until the certificate has been signed by an authorized signatory.", true);
+          return;
+        }
+
+        const element = document.createElement('div');
+        element.style.position = 'fixed';
+        element.style.left = '-100000px';
+        element.style.top = '0';
+        element.setAttribute('aria-hidden', 'true');
+
+        try {
+          element.innerHTML = window.generateCertificateHtml(record);
+          document.body.appendChild(element);
+          await loadHtml2Pdf();
+          await window.html2pdf().set({
+            margin: 0,
+            filename: `TrackScore_Certificate_${String(record.certificate.certificateNumber || recordId).replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`,
+            image: { type: 'jpeg', quality: 0.98 },
+            html2canvas: { scale: 2, useCORS: true, logging: false },
+            jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait' }
+          }).from(element.firstElementChild).save();
+          showToast("Certificate PDF successfully downloaded!");
+        } catch (error) {
+          console.error("[Certificate PDF] Generation failed:", error);
+          showToast(`Certificate PDF generation failed: ${error.message}`, true);
+        } finally {
+          element.remove();
+        }
       }
 
       function showToast(message, isError = false) {

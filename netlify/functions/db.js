@@ -31,8 +31,17 @@ const VENDORS_FILE = path.join(FALLBACK_DIR, 'vendors.json');
 const INQUIRIES_FILE = path.join(FALLBACK_DIR, 'inquiries.json');
 
 let fallbackStoreEnsured = false;
+const isProductionEnvironment = process.env.NODE_ENV === 'production' || process.env.CONTEXT === 'production';
 
-// Ensure fallback store & seed initial accounts if empty
+class DatabaseUnavailableError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = 'DatabaseUnavailableError';
+    this.code = 'DATABASE_UNAVAILABLE';
+  }
+}
+
+// Ensure local development storage exists. User accounts must be created explicitly.
 function ensureFallbackStore() {
   if (fallbackStoreEnsured && fs.existsSync(FALLBACK_FILE) && fs.existsSync(USERS_FILE) && fs.existsSync(VENDORS_FILE)) {
     return;
@@ -46,46 +55,9 @@ function ensureFallbackStore() {
     fs.writeFileSync(FALLBACK_FILE, JSON.stringify([], null, 2), 'utf-8');
   }
 
-  // 2. Users Store (Manager & Assessor Accounts)
+  // 2. Users Store
   if (!fs.existsSync(USERS_FILE)) {
-    const salt = bcrypt.genSaltSync(10);
-    const initialUsers = [
-      {
-        _id: 'user_manager_001',
-        email: 'manager@trackscore.my',
-        passwordHash: bcrypt.hashSync('Manager2026!', salt),
-        name: 'Lead Operations Manager',
-        role: 'manager',
-        createdAt: new Date().toISOString()
-      },
-      {
-        _id: 'user_manager_002',
-        email: 'admin@trackscore.my',
-        passwordHash: bcrypt.hashSync('Manager@2026!', salt),
-        name: 'System Admin Manager',
-        role: 'manager',
-        createdAt: new Date().toISOString()
-      },
-      {
-        _id: 'user_assessor_001',
-        email: 'farhan@trackscore.my',
-        passwordHash: bcrypt.hashSync('Assessor2026!', salt),
-        name: 'Ts. Mohd Farhan',
-        role: 'assessor',
-        assessorId: 'AS-8812',
-        createdAt: new Date().toISOString()
-      },
-      {
-        _id: 'user_assessor_002',
-        email: 'assessor@trackscore.my',
-        passwordHash: bcrypt.hashSync('Assessor@2026!', salt),
-        name: 'Certified Assessor',
-        role: 'assessor',
-        assessorId: 'AS-9001',
-        createdAt: new Date().toISOString()
-      }
-    ];
-    fs.writeFileSync(USERS_FILE, JSON.stringify(initialUsers, null, 2), 'utf-8');
+    fs.writeFileSync(USERS_FILE, JSON.stringify([], null, 2), 'utf-8');
   }
 
   // 3. Vendors Store (External Client Accounts)
@@ -317,7 +289,7 @@ export async function ensureDatabaseIndexes(db) {
 
 export async function connectToDatabase() {
   let uri = process.env.MONGODB_URI;
-  if (!uri || uri.includes('<') || uri.includes('>')) {
+  if (!isProductionEnvironment && (!uri || uri.includes('<') || uri.includes('>'))) {
     try {
       const envPath = fs.existsSync(path.join(process.cwd(), '.env'))
         ? path.join(process.cwd(), '.env')
@@ -351,6 +323,9 @@ export async function connectToDatabase() {
     // Circuit breaker: If Atlas failed recently, bypass the 2.5s connection wait
     // and immediately serve via local fallback store with zero latency
     if (now - lastAtlasAttemptTime < ATLAS_RETRY_COOLDOWN_MS) {
+      if (isProductionEnvironment) {
+        throw new DatabaseUnavailableError('MongoDB is unavailable; authentication cannot safely proceed.');
+      }
       const fallback = createFallbackStoreInterface(true);
       return fallback;
     }
@@ -394,7 +369,15 @@ export async function connectToDatabase() {
         hasLoggedNotice = true;
         console.warn('MongoDB Atlas connection failed, falling back to local store:', err.message);
       }
+
+      if (isProductionEnvironment) {
+        throw new DatabaseUnavailableError('MongoDB is unavailable; authentication cannot safely proceed.');
+      }
     }
+  }
+
+  if (isProductionEnvironment) {
+    throw new DatabaseUnavailableError('MongoDB is not configured; authentication cannot safely proceed.');
   }
 
   const fallback = createFallbackStoreInterface(!!uri);
@@ -577,7 +560,10 @@ function createFallbackStoreInterface(hasAtlasUri = false) {
       ensureFallbackStore();
       const vendors = JSON.parse(fs.readFileSync(VENDORS_FILE, 'utf-8'));
       const clean = String(email || '').trim().toLowerCase();
-      return vendors.find(v => String(v.contactEmail || '').trim().toLowerCase() === clean) || null;
+      return vendors.find(v =>
+        String(v.loginEmail || '').trim().toLowerCase() === clean ||
+        String(v.contactEmail || '').trim().toLowerCase() === clean
+      ) || null;
     },
     async getVendorById(id) {
       ensureFallbackStore();
@@ -735,9 +721,20 @@ export async function findUserByEmail(connection, email) {
 export async function findVendorByEmail(connection, email) {
   const cleanEmail = String(email || '').trim().toLowerCase();
   if (connection.isMongoAtlas) {
-    return connection.db.collection(COLLECTION_VENDORS).findOne({ contactEmail: cleanEmail });
+    return connection.db.collection(COLLECTION_VENDORS).findOne({
+      $or: [{ loginEmail: cleanEmail }, { contactEmail: cleanEmail }]
+    });
   }
   return connection.getVendorByEmail(cleanEmail);
+}
+
+export async function findVendorByLoginEmail(connection, email) {
+  const cleanEmail = String(email || '').trim().toLowerCase();
+  if (connection.isMongoAtlas) {
+    return connection.db.collection(COLLECTION_VENDORS).findOne({ loginEmail: cleanEmail });
+  }
+  const vendors = await connection.getVendors();
+  return vendors.find(v => String(v.loginEmail || '').trim().toLowerCase() === cleanEmail) || null;
 }
 
 export async function findVendorById(connection, id) {
@@ -876,6 +873,7 @@ export default {
   updateUserRecord,
   deleteUserRecord,
   findVendorByEmail,
+  findVendorByLoginEmail,
   findVendorById,
   createVendorRecord,
   updateVendorRecord,

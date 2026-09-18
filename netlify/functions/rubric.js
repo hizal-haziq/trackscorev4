@@ -580,6 +580,22 @@ function recomputeScores(breakdown) {
   };
 }
 
+function validateBreakdownCriteria(breakdown) {
+  const expectedIds = new Set([
+    ...SECTION_A_CRITERIA.map(criteria => criteria.id),
+    ...SECTION_B_CRITERIA.map(criteria => criteria.id)
+  ]);
+
+  if (!Array.isArray(breakdown) || breakdown.length !== expectedIds.size) {
+    return false;
+  }
+
+  const submittedIds = breakdown.map(item => item?.id);
+  const uniqueIds = new Set(submittedIds);
+  return uniqueIds.size === expectedIds.size &&
+    submittedIds.every(id => expectedIds.has(id));
+}
+
 export {
   RUBRIC_VERSION,
   SECTION_A_CRITERIA,
@@ -594,7 +610,8 @@ export {
   MAX_RAW_SCORE_A,
   MAX_RAW_SCORE_B,
   MAX_RAW_TOTAL,
-  recomputeScores
+  recomputeScores,
+  validateBreakdownCriteria
 };
 
 export default {
@@ -611,5 +628,6 @@ export default {
   MAX_RAW_SCORE_A,
   MAX_RAW_SCORE_B,
   MAX_RAW_TOTAL,
-  recomputeScores
+  recomputeScores,
+  validateBreakdownCriteria
 };

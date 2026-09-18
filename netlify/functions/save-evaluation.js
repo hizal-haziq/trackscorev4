@@ -11,7 +11,12 @@
 
 import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js';
 import { validateRole, ROLE_ASSESSOR, authErrorResponse } from './auth.js';
-import { recomputeScores, RUBRIC_VERSION, MAX_TOTAL_SCORE } from './rubric.js';
+import {
+  recomputeScores,
+  validateBreakdownCriteria,
+  RUBRIC_VERSION,
+  MAX_TOTAL_SCORE
+} from './rubric.js';
 import { recordStatusEvent } from './status-bus.js';
 
 // === CONFIGURATION ===
@@ -94,6 +99,16 @@ export const handler = async (event, context) => {
         headers,
         body: JSON.stringify({
           error: 'Missing or empty evaluation breakdown array. Full 33-item evaluation matrix is required.'
+        })
+      };
+    }
+
+    if (!validateBreakdownCriteria(breakdown)) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({
+          error: 'Invalid submission: duplicate or missing criteria detected. Exactly one entry for each official 33-item criterion is required.'
         })
       };
     }

@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <script src="/certificate-pdf.js" defer></script>
   <style>
     :root {
       --primary: #F58220;
@@ -516,6 +517,24 @@
 
     const token = localStorage.getItem('trackscore_token');
     const userRole = localStorage.getItem('trackscore_user_role');
+    let html2pdfLoadingPromise = null;
+
+    function loadHtml2Pdf() {
+      if (window.html2pdf) return Promise.resolve(window.html2pdf);
+      if (html2pdfLoadingPromise) return html2pdfLoadingPromise;
+      html2pdfLoadingPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        script.async = true;
+        script.onload = () => resolve(window.html2pdf);
+        script.onerror = (error) => {
+          html2pdfLoadingPromise = null;
+          reject(error);
+        };
+        document.head.appendChild(script);
+      });
+      return html2pdfLoadingPromise;
+    }
 
     // Security check on mount: vendor token required
     if (!token || userRole !== 'vendor') {
@@ -604,6 +623,7 @@
         // Certificate Banner (if issued or completed)
         const cert = evalDoc.certificate || {};
         const isCertReady = ['certificate_issued', 'completed'].includes(status) && cert.certificateNumber;
+        const isCertSigned = Boolean(cert.signedDate && cert.signedBy);
         const certBannerHtml = isCertReady ? `
           <div class="cert-banner">
             <div class="cert-info">
@@ -611,7 +631,7 @@
               <h3>Certificate: ${escapeHtml(cert.certificateNumber)}</h3>
               <p>Endorsed by ${escapeHtml(cert.signedBy || 'Director General Office')} • Date: ${cert.signedDate ? new Date(cert.signedDate).toLocaleDateString() : 'Issued'}</p>
             </div>
-            <button type="button" class="btn-download-cert" onclick="downloadOfficialCertificate('${evalDoc._id}', '${escapeHtml(cert.certificateNumber)}')">
+            <button type="button" class="btn-download-cert" ${isCertSigned ? `onclick="downloadOfficialCertificate('${evalDoc._id}')"` : 'disabled title="Certificate must be signed by an authorized signatory before it can be downloaded."'}>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
               Download Certificate
             </button>
@@ -721,8 +741,43 @@
       });
     }
 
-    function downloadOfficialCertificate(evalId, certNum) {
-      alert(`Downloading Official MIROS Telematics Certificate #${certNum}.\n\nA digital copy has been endorsed and delivered for evaluation ID: ${evalId}.`);
+    async function downloadOfficialCertificate(evalId) {
+      const element = document.createElement('div');
+      element.style.position = 'fixed';
+      element.style.left = '-100000px';
+      element.style.top = '0';
+      element.setAttribute('aria-hidden', 'true');
+
+      try {
+        const res = await fetch(`/.netlify/functions/vendor-portal-data?id=${encodeURIComponent(evalId)}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success || !data.evaluation) {
+          throw new Error(data.error || 'Unable to load certificate data.');
+        }
+
+        const record = data.evaluation;
+        if (!record.certificate?.signedDate || !record.certificate?.signedBy) {
+          throw new Error('Certificate PDF is unavailable until the certificate has been signed by an authorized signatory.');
+        }
+
+        element.innerHTML = window.generateCertificateHtml(record);
+        document.body.appendChild(element);
+        await loadHtml2Pdf();
+        await window.html2pdf().set({
+          margin: 0,
+          filename: `TrackScore_Certificate_${String(record.certificate.certificateNumber || evalId).replace(/[^a-zA-Z0-9_-]/g, '_')}.pdf`,
+          image: { type: 'jpeg', quality: 0.98 },
+          html2canvas: { scale: 2, useCORS: true, logging: false },
+          jsPDF: { unit: 'px', format: [794, 1123], orientation: 'portrait' }
+        }).from(element.firstElementChild).save();
+      } catch (error) {
+        console.error('[Certificate PDF] Generation failed:', error);
+        alert(error.message || 'Certificate PDF generation failed.');
+      } finally {
+        element.remove();
+      }
     }
 
     // Connect to SSE live updates stream for instant notification of lifecycle changes

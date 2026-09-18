@@ -5,7 +5,11 @@
  */
 import { connectToDatabase, COLLECTION_NAME } from './db.js';
 import { getRecentStatusEvents } from './status-bus.js';
-import { validateRole, authErrorResponse } from './auth.js';
+import {
+  validateRole,
+  ROLE_ASSESSOR,
+  authErrorResponse
+} from './auth.js';
 
 export const handler = async (event, context) => {
   const headers = {
@@ -34,8 +38,16 @@ export const handler = async (event, context) => {
 
   try {
     const params = event.queryStringParameters || {};
-    const assessorId = (params.assessorName || params.assessorId || params.query || '').trim();
+    const requestedAssessorId = (params.assessorName || params.assessorId || params.query || '').trim();
+    let assessorId = requestedAssessorId;
     const since = params.since || null;
+
+    if (roleCheck.role === ROLE_ASSESSOR) {
+      assessorId = String(roleCheck.user?.assessorId || '').trim();
+      if (!assessorId) {
+        return authErrorResponse(headers, 403, 'Forbidden: Assessor identity is missing from the token.');
+      }
+    }
 
     // Check in-memory event bus first for any fresh status change events
     const busEvents = getRecentStatusEvents(assessorId, since);

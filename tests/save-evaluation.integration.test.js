@@ -13,7 +13,11 @@ import assert from 'node:assert/strict';
 import { handler } from '../netlify/functions/save-evaluation.js';
 import { generateToken, ROLE_ASSESSOR } from '../netlify/functions/auth.js';
 import { connectToDatabase, closeDatabaseConnection, COLLECTION_NAME } from '../netlify/functions/db.js';
-import { recomputeScores } from '../netlify/functions/rubric.js';
+import {
+  recomputeScores,
+  SECTION_A_CRITERIA,
+  SECTION_B_CRITERIA
+} from '../netlify/functions/rubric.js';
 
 describe('save-evaluation.js Integration Suite', () => {
   const assessorToken = generateToken({
@@ -38,10 +42,13 @@ describe('save-evaluation.js Integration Suite', () => {
   function createValidPayload(overrides = {}) {
     const timestamp = Date.now();
     const breakdown = [
-      { id: 'trip_history', selectedOption: '3mo', points: 1.0 },
-      { id: 'realtime_tracking', selectedOption: 'Available', points: 1.0 },
-      { id: 'geofence', selectedOption: 'Radius', points: 1.0 }
-    ];
+      ...SECTION_A_CRITERIA,
+      ...SECTION_B_CRITERIA
+    ].map(criteria => ({
+      id: criteria.id,
+      selectedOption: criteria.options[0].label,
+      points: criteria.options[0].points
+    }));
     const recomputed = recomputeScores(breakdown);
     return {
       companyName: `Test Fleet Corp ${timestamp}`,

@@ -148,15 +148,12 @@ export const handler = async (event) => {
     let records = [];
     if (connection.isMongoAtlas) {
       const col = connection.db.collection(COLLECTION_NAME);
-      const mongoFilters = linkedIds.map(id => {
-        try {
-          return buildMongoIdFilter(id)._id;
-        } catch {
-          return id;
-        }
+      const mongoFilters = linkedIds.flatMap(id => {
+        const filter = buildMongoIdFilter(id);
+        return Array.isArray(filter.$or) ? filter.$or : [filter];
       });
       records = await col.find({
-        _id: { $in: mongoFilters },
+        $or: mongoFilters,
         deletedAt: { $exists: false }
       }).sort({ createdAt: -1 }).toArray();
     } else {

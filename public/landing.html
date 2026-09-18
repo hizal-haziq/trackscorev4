@@ -1342,6 +1342,480 @@
         animation: none !important;
       }
     }
+
+    /* =========================================================
+       PRESENTATION REFINEMENT
+       Landing-page-only visual polish; content and behavior unchanged.
+       ========================================================= */
+    :root {
+      --landing-max-width: 1220px;
+      --landing-shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.06);
+      --landing-shadow-lg: 0 22px 56px rgba(15, 23, 42, 0.12);
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 84% 8%, rgba(2, 132, 199, 0.05), transparent 24rem),
+        radial-gradient(circle at 8% 6%, rgba(249, 115, 22, 0.07), transparent 28rem),
+        linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 52%, #F1F5F9 100%);
+    }
+
+    .container {
+      max-width: var(--landing-max-width);
+    }
+
+    .site-header {
+      background: rgba(255, 255, 255, 0.94);
+      border-bottom-color: rgba(148, 163, 184, 0.3);
+      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03), 0 8px 20px rgba(15, 23, 42, 0.035);
+    }
+
+    .header-inner {
+      height: 78px;
+    }
+
+    .brand-group {
+      gap: 14px;
+    }
+
+    .miros-logo-img {
+      height: 36px;
+    }
+
+    .ts-brand-title {
+      font-size: 19px;
+    }
+
+    .nav-menu {
+      gap: 6px;
+    }
+
+    .nav-menu .nav-link {
+      padding: 9px 11px;
+      border-radius: 7px;
+      font-size: 12.5px;
+    }
+
+    .nav-menu .nav-link:hover {
+      background: #F8FAFC;
+    }
+
+    .nav-menu .nav-link::after {
+      left: 11px;
+      right: 11px;
+      width: auto;
+      transform: scaleX(0);
+      transform-origin: center;
+    }
+
+    .nav-menu .nav-link:hover::after {
+      width: auto;
+      transform: scaleX(1);
+    }
+
+    .btn-nav-register,
+    .btn-nav-login {
+      min-height: 40px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 7px;
+    }
+
+    .btn-nav-login,
+    .btn-primary-cta {
+      background: var(--primary-orange);
+      background-image: none;
+    }
+
+    .btn-nav-login:hover,
+    .btn-primary-cta:hover {
+      background: #C2410C;
+      background-image: none;
+    }
+
+    .mobile-toggle {
+      min-width: 42px;
+      min-height: 42px;
+      transition: border-color 0.18s ease, background-color 0.18s ease;
+    }
+
+    .mobile-toggle:hover {
+      border-color: #F97316;
+      background: #FFF7ED;
+    }
+
+    .hero-section {
+      min-height: 690px;
+      padding: 86px 0 90px;
+      align-items: center;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(255,255,255,0.78), transparent 72%);
+      pointer-events: none;
+    }
+
+    .hero-grid {
+      grid-template-columns: minmax(0, 1fr) minmax(500px, 0.92fr);
+      gap: 72px;
+    }
+
+    .hero-left {
+      max-width: 620px;
+    }
+
+    .hero-badge {
+      margin-bottom: 22px;
+      background: #FFF7ED;
+      border-color: rgba(234, 88, 12, 0.25);
+      box-shadow: none;
+      color: #9A3412;
+    }
+
+    .hero-title {
+      max-width: 680px;
+      font-size: clamp(38px, 4.5vw, 58px);
+      line-height: 1.08;
+      letter-spacing: -1.8px;
+      margin-bottom: 24px;
+    }
+
+    .hero-desc {
+      max-width: 590px;
+      font-size: 16px;
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+
+    .hero-cta-group {
+      gap: 12px;
+    }
+
+    .btn-primary-cta,
+    .btn-secondary-cta {
+      min-height: 48px;
+      padding: 13px 20px;
+      border-radius: 8px;
+    }
+
+    .btn-primary-cta {
+      box-shadow: 0 8px 18px rgba(234, 88, 12, 0.2);
+    }
+
+    .btn-secondary-cta {
+      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
+    }
+
+    .hero-right {
+      padding: 14px 0 0;
+    }
+
+    .hero-right::before {
+      opacity: 0.8;
+      filter: blur(56px);
+    }
+
+    .assessment-card {
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: var(--landing-shadow-lg);
+      animation: none;
+    }
+
+    .assessment-card::after {
+      display: none;
+    }
+
+    .outcome-pipeline,
+    .rating-certification-box {
+      border-radius: 10px;
+    }
+
+    .compliance-pill-box {
+      border-radius: 7px;
+    }
+
+    .floating-accreditation-chip {
+      position: relative;
+      top: auto;
+      right: auto;
+      width: fit-content;
+      max-width: 100%;
+      margin: 0 0 12px auto;
+      padding: 6px 11px;
+      background: #FFF7ED;
+      border: 1px solid rgba(234, 88, 12, 0.22);
+      border-radius: 6px;
+      box-shadow: none;
+    }
+
+    .floating-accreditation-chip span.chip-text {
+      color: #9A3412;
+      letter-spacing: 0.45px;
+    }
+
+    .floating-accreditation-chip span.icon-check {
+      color: #059669;
+    }
+
+    .credibility-strip {
+      background: #FFFFFF;
+      padding: 22px 0;
+      margin-top: 0;
+      box-shadow: inset 0 1px 0 rgba(15, 23, 42, 0.02);
+    }
+
+    .credibility-inner {
+      max-width: 920px;
+      margin: 0 auto;
+      font-size: 11px;
+      letter-spacing: 0.4px;
+    }
+
+    .site-footer {
+      padding: 30px 0 24px;
+      background: #F8FAFC;
+    }
+
+    .footer-inner {
+      align-items: flex-start;
+      gap: 24px;
+    }
+
+    .footer-brand {
+      font-weight: 700;
+    }
+
+    .footer-links {
+      gap: 10px 18px;
+    }
+
+    .footer-links a {
+      padding: 4px 0;
+    }
+
+    .info-modal-backdrop {
+      background: rgba(15, 23, 42, 0.48);
+    }
+
+    .info-drawer {
+      max-width: 680px;
+      border-left-color: rgba(148, 163, 184, 0.28);
+    }
+
+    .drawer-header {
+      padding: 20px 26px;
+    }
+
+    .drawer-nav-tabs {
+      padding: 0 26px;
+      gap: 22px;
+    }
+
+    .drawer-body {
+      padding: 26px;
+    }
+
+    .drawer-card {
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.035);
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid rgba(234, 88, 12, 0.3);
+      outline-offset: 3px;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-grid {
+        grid-template-columns: minmax(0, 1fr) minmax(430px, 0.9fr);
+        gap: 42px;
+      }
+
+      .nav-menu {
+        gap: 0;
+      }
+
+      .nav-menu .nav-link {
+        padding-inline: 8px;
+      }
+    }
+
+    @media (max-width: 1024px) {
+      .hero-section {
+        min-height: auto;
+        padding: 68px 0 70px;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 50px;
+        min-width: 0;
+      }
+
+      .hero-grid > *,
+      .hero-left,
+      .hero-right,
+      .assessment-card {
+        min-width: 0;
+      }
+
+      .hero-left {
+        max-width: 760px;
+      }
+
+      .hero-right {
+        max-width: 720px;
+        width: 100%;
+        margin: 0 auto;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .header-inner {
+        height: 68px;
+      }
+
+      .hero-section {
+        padding: 54px 0 56px;
+      }
+
+      .hero-title {
+        font-size: clamp(34px, 8vw, 48px);
+        letter-spacing: -1.1px;
+      }
+
+      .hero-desc {
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .assessment-card {
+        padding: 18px;
+      }
+
+      .floating-accreditation-chip {
+        right: 12px;
+      }
+
+      .drawer-header,
+      .drawer-body {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .drawer-nav-tabs {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        padding-left: 18px;
+        padding-right: 18px;
+      }
+
+      .header-inner,
+      .brand-group,
+      .ts-brand-lockup {
+        min-width: 0;
+      }
+
+      .ts-brand-lockup {
+        overflow: hidden;
+      }
+
+      .brand-divider,
+      .ts-brand-subtitle {
+        display: none;
+      }
+
+      .brand-group {
+        gap: 10px;
+      }
+
+      .miros-logo-img {
+        height: 32px;
+      }
+
+      .ts-brand-title {
+        font-size: 18px;
+      }
+
+      .hero-title,
+      .hero-desc,
+      .hero-cta-group {
+        width: 100%;
+        max-width: 100%;
+      }
+
+      .hero-cta-group {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .btn-primary-cta,
+      .btn-secondary-cta {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .hero-right {
+        padding-top: 8px;
+      }
+
+      .floating-accreditation-chip {
+        top: auto;
+        right: auto;
+        margin: 0 0 10px auto;
+      }
+
+      .card-top-bar {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .card-status-badge {
+        align-self: flex-start;
+      }
+
+      .pipeline-header {
+        flex-wrap: wrap;
+        gap: 4px 10px;
+      }
+
+      .pipeline-steps {
+        min-width: 440px;
+      }
+
+      .outcome-pipeline {
+        overflow-x: auto;
+      }
+
+      .rating-certification-box {
+        padding: 16px;
+      }
+
+      .site-footer {
+        padding-top: 26px;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .assessment-card,
+      .status-dot-pulse,
+      .pipeline-track-fill,
+      .stream-line-path {
+        animation: none !important;
+      }
+    }
   </style>
 </head>
 <body>
