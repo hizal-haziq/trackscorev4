@@ -227,10 +227,20 @@ export const handler = async (event) => {
     };
   } catch (error) {
     console.error('[AUTH-LOGIN-ERROR]', error);
+    if (error?.code === 'DATABASE_UNAVAILABLE') {
+      return {
+        statusCode: 503,
+        headers,
+        body: JSON.stringify({
+          success: false,
+          error: 'Authentication is temporarily unavailable. Please try again later.'
+        })
+      };
+    }
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ success: false, error: error.message || 'Internal server authentication error' })
+      body: JSON.stringify({ success: false, error: 'Internal server authentication error' })
     };
   }
 };

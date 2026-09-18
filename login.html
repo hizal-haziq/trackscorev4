@@ -649,7 +649,6 @@
         localStorage.setItem('trackscore_user_role', role);
         localStorage.setItem('trackscore_user', JSON.stringify(data.user || {}));
         if (role === 'manager') {
-          localStorage.setItem('manager_api_key', 'trackscore-manager-key-2026');
           sessionStorage.setItem('manager_authenticated', 'true');
         }
 

@@ -1356,7 +1356,7 @@
               <line x1="20" y1="8" x2="20" y2="14"></line>
               <line x1="23" y1="11" x2="17" y2="11"></line>
             </svg>
-            Vendor Portal Setup Link Generated
+            Vendor Portal Credentials Generated
           </h3>
           <button type="button" class="modal-close-btn" onclick="closeVendorInviteModal()" aria-label="Close modal">&times;</button>
         </div>
@@ -1368,22 +1368,20 @@
             <div id="vendor-invite-email-status" style="margin-top: 8px; font-size: 12px; font-weight: 600; display: none;"></div>
           </div>
           <p style="font-size: 13px; color: #475569; margin-bottom: 12px;">
-            A secure, one-time onboarding link has been generated. Provide this link to the vendor so they can set their password and access their self-service portal.
+            These credentials are active immediately — no setup link required.
           </p>
           <div style="margin-bottom: 14px;">
-            <label style="display: block; font-size: 11.5px; font-weight: 700; color: #64748B; margin-bottom: 4px; text-transform: uppercase;">
-              Setup URL (Valid for 7 days)
-            </label>
-            <div style="display: flex; gap: 8px;">
-              <input type="text" id="vendor-invite-link-input" readonly style="flex: 1; padding: 8px 10px; font-size: 12.5px; font-family: monospace; background: #F8FAFC; border: 1px solid #CBD5E1; border-radius: 4px;" />
-              <button type="button" class="btn btn-primary btn-sm" id="btn-copy-vendor-link" onclick="copyVendorInviteLink()" style="white-space: nowrap;">
-                📋 Copy Link
-              </button>
-            </div>
-            <div id="vendor-copy-feedback" style="font-size: 12px; color: #16A34A; font-weight: 600; margin-top: 6px; display: none;">
-              ✓ Link copied to clipboard!
-            </div>
+            <div style="font-size: 11.5px; font-weight: 700; color: #64748B; text-transform: uppercase;">Generated Login Email</div>
+            <div id="vendor-invite-login-email" style="font-family: monospace; font-size: 14px; font-weight: 700; color: #0F172A; margin-top: 4px;"></div>
+            <div style="font-size: 11.5px; font-weight: 700; color: #64748B; text-transform: uppercase; margin-top: 12px;">Generated Password</div>
+            <div id="vendor-invite-password" style="font-family: monospace; font-size: 16px; font-weight: 700; color: #0F172A; margin-top: 4px;"></div>
           </div>
+          <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="downloadVendorCredentials()">Download as .txt</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-send-vendor-whatsapp" onclick="sendVendorCredentialsViaWhatsApp()">Send via WhatsApp</button>
+          </div>
+          <div id="vendor-whatsapp-feedback" style="font-size: 12px; color: #64748B; margin-top: 8px;">
+            </div>
         </div>
         <div class="modal-footer" style="display: flex; justify-content: flex-end; gap: 10px;">
           <button type="button" class="btn btn-secondary btn-sm" onclick="closeVendorInviteModal()">Close</button>
@@ -2428,7 +2426,7 @@
                   <button type="button" class="btn btn-xs" title="Assign or reassign an assessor for this evaluation" style="background: #4F46E5; border-color: #4338CA; color: #FFFFFF; font-weight: 600;" onclick="openAssignTaskModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.deviceModel || '')}', '${escapeHtml(currentAssessorName)}', '${escapeHtml(currentAssessorId)}', '${escapeHtml(item.scheduledDate || '')}', '${escapeHtml(currentInstructions)}')">
                     Assign
                   </button>
-                  <button type="button" class="btn btn-primary btn-xs" title="Generate one-time setup link for Vendor Portal" style="background: #F58220; border-color: #EA580C; color: #FFFFFF;" onclick="inviteCustomerToVendorPortal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.contactEmail || '')}')">
+                  <button type="button" class="btn btn-primary btn-xs" title="Generate active vendor credentials" style="background: #F58220; border-color: #EA580C; color: #FFFFFF;" onclick="inviteCustomerToVendorPortal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.contactEmail || '')}', '${escapeHtml(item.contactPhone || '')}')">
                     Invite Portal
                   </button>
                   <button type="button" class="btn btn-secondary btn-xs" title="Schedule or update assessment inspection date" onclick="openScheduleModal('${item._id}', '${escapeHtml(item.companyName)}', '${escapeHtml(item.scheduledDate || '')}', '${escapeHtml(item.deviceModel || '')}', '${escapeHtml(currentAssessorName)}', '${escapeHtml(currentAssessorId)}')">
@@ -3024,20 +3022,25 @@
       }
 
       // VENDOR PORTAL INVITATION
-      function openVendorInviteModal(company, email, setupToken, setupLink) {
+      let activeVendorCredentials = null;
+
+      function openVendorInviteModal(company, contactEmail, loginEmail, password, contactPhone) {
         const modal = document.getElementById("vendor-invite-modal");
         const companyEl = document.getElementById("vendor-invite-company");
         const emailEl = document.getElementById("vendor-invite-email");
-        const statusEl = document.getElementById("vendor-invite-email-status");
-        const linkInput = document.getElementById("vendor-invite-link-input");
-        const feedback = document.getElementById("vendor-copy-feedback");
+        const loginEmailEl = document.getElementById("vendor-invite-login-email");
+        const passwordEl = document.getElementById("vendor-invite-password");
+        const whatsappBtn = document.getElementById("btn-send-vendor-whatsapp");
+        const feedback = document.getElementById("vendor-whatsapp-feedback");
 
         if (companyEl) companyEl.textContent = company;
-        if (emailEl) emailEl.textContent = email;
-        const fullLink = setupLink ? (setupLink.startsWith('http') ? setupLink : (window.location.origin + setupLink)) : (window.location.origin + '/login.html?setupToken=' + setupToken);
-        if (linkInput) linkInput.value = fullLink;
-        if (feedback) feedback.style.display = "none";
-        if (statusEl) statusEl.style.display = "none";
+        if (emailEl) emailEl.textContent = contactEmail;
+        if (loginEmailEl) loginEmailEl.textContent = loginEmail;
+        if (passwordEl) passwordEl.textContent = password;
+        activeVendorCredentials = { company, contactEmail, loginEmail, password, contactPhone };
+        const digits = String(contactPhone || '').replace(/\D/g, '');
+        if (whatsappBtn) whatsappBtn.disabled = digits.length < 8;
+        if (feedback) feedback.textContent = digits.length < 8 ? "No phone number on file for this vendor." : "";
 
         if (modal) {
           modal.classList.add("active");
@@ -3053,40 +3056,45 @@
         }
       }
 
-      function copyVendorInviteLink() {
-        const linkInput = document.getElementById("vendor-invite-link-input");
-        const feedback = document.getElementById("vendor-copy-feedback");
-        if (!linkInput) return;
-        linkInput.select();
-        navigator.clipboard.writeText(linkInput.value).then(() => {
-          if (feedback) {
-            feedback.style.display = "block";
-            setTimeout(() => { feedback.style.display = "none"; }, 3000);
-          }
-        }).catch(() => {
-          document.execCommand('copy');
-          if (feedback) {
-            feedback.style.display = "block";
-            setTimeout(() => { feedback.style.display = "none"; }, 3000);
-          }
-        });
+      function vendorCredentialMessage() {
+        const c = activeVendorCredentials;
+        return `TrackScore Vendor Portal Access\nCompany: ${c.company}\nLogin Email: ${c.loginEmail}\nPassword: ${c.password}\nPortal Link: ${window.location.origin}/login.html`;
       }
 
-      async function inviteCustomerToVendorPortal(regId, companyName, contactEmail) {
+      function downloadVendorCredentials() {
+        if (!activeVendorCredentials) return;
+        const blob = new Blob([vendorCredentialMessage()], { type: 'text/plain;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const anchor = document.createElement('a');
+        anchor.href = url;
+        anchor.download = `TrackScore_Vendor_Credentials_${activeVendorCredentials.company.replace(/[^a-z0-9]+/gi, '_')}.txt`;
+        anchor.click();
+        URL.revokeObjectURL(url);
+      }
+
+      function sendVendorCredentialsViaWhatsApp() {
+        if (!activeVendorCredentials) return;
+        const digits = String(activeVendorCredentials.contactPhone || '').replace(/\D/g, '');
+        if (digits.length < 8) return;
+        window.open(`https://wa.me/${digits}?text=${encodeURIComponent(vendorCredentialMessage())}`, '_blank', 'noopener');
+      }
+
+      async function inviteCustomerToVendorPortal(regId, companyName, contactEmail, contactPhone) {
         if (!contactEmail) {
           showToast("This customer does not have a contact email address registered.", true);
           return;
         }
 
         try {
-          showToast("Sending invitation email and generating portal access...");
+          showToast("Generating active vendor credentials...");
           const res = await fetch('/.netlify/functions/vendor-invite', {
             method: 'POST',
             headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({
               registrationId: regId,
               companyName: companyName,
-              contactEmail: contactEmail
+              contactEmail: contactEmail,
+              contactPhone: contactPhone || ''
             })
           });
 
@@ -3094,21 +3102,15 @@
 
           const data = await res.json().catch(() => ({}));
           if (!res.ok || !data.success) {
-            throw new Error(data.error || 'Failed to generate invitation link.');
-          }
-
-          if (data.emailDelivery?.sent) {
-            showToast("Invitation email sent successfully to " + contactEmail);
-          } else {
-            showToast("Portal link generated. Email fallback available in modal.");
+            throw new Error(data.error || 'Failed to generate vendor credentials.');
           }
 
           openVendorInviteModal(
             data.vendor?.companyName || companyName,
-            data.vendor?.email || contactEmail,
-            data.setupToken,
-            data.fullSetupUrl || data.setupLink,
-            data.emailDelivery
+            data.vendor?.contactEmail || contactEmail,
+            data.vendor?.loginEmail,
+            data.vendor?.password,
+            data.vendor?.contactPhone || contactPhone
           );
         } catch (err) {
           console.error("Vendor invite error:", err);
@@ -4627,8 +4629,13 @@
         const searchTerm = (document.getElementById("table-search")?.value || "").toLowerCase().trim();
         const ratingFilter = document.getElementById("rating-filter")?.value || "all";
         const statusFilter = (document.getElementById("status-filter")?.value || "all").toLowerCase().trim();
+        const tableRecords = records.filter(record => {
+          const recordStatus = String(record.status || "").toLowerCase();
+          const isPreEvaluationStatus = ["inquiry", "registered", "scheduled"].includes(recordStatus);
+          return !(isPreEvaluationStatus && record.linkedEvaluationId);
+        });
 
-        if (records.length === 0) {
+        if (tableRecords.length === 0) {
           tbody.innerHTML = `
             <tr>
               <td colspan="12">
@@ -4650,7 +4657,7 @@
           return;
         }
 
-        const filtered = records.filter(r => {
+        const filtered = tableRecords.filter(r => {
           const matchesSearch =
             (r.companyName || "").toLowerCase().includes(searchTerm) ||
             (r.officeAddress || "").toLowerCase().includes(searchTerm) ||

@@ -82,19 +82,14 @@ app.get('/api/health', (req: Request, res: Response) => {
   });
 });
 
-// Client configuration endpoint providing active keys for frontend scripts
+// Client configuration endpoint providing non-secret frontend configuration
 app.get(['/api/config.js', '/config.js'], (req: Request, res: Response) => {
   res.type('application/javascript');
-  const managerKey = process.env.MANAGER_API_KEY || 'trackscore-manager-key-2026';
-  const assessorKey = process.env.ASSESSOR_API_KEY || 'trackscore-assessor-key-2026';
-  res.send(`window.MANAGER_API_KEY = ${JSON.stringify(managerKey)}; window.ASSESSOR_API_KEY = ${JSON.stringify(assessorKey)}; window.TRACKSCORE_API_KEY = ${JSON.stringify(managerKey)};`);
+  res.send('window.APP_CONFIG = {};');
 });
 
 app.get(['/api/config', '/.netlify/functions/config'], (req: Request, res: Response) => {
-  res.json({
-    managerKey: process.env.MANAGER_API_KEY || 'trackscore-manager-key-2026',
-    assessorKey: process.env.ASSESSOR_API_KEY || 'trackscore-assessor-key-2026'
-  });
+  res.json({});
 });
 
 // Netlify Functions routing
@@ -204,10 +199,11 @@ app.get(['/.netlify/functions/status-stream', '/api/status-stream'], (req: Reque
   });
 
   const assessorQuery = (req.query.assessorName as string || req.query.assessorId as string || req.query.assessor as string || '').trim().toLowerCase();
+  const normalizedAssessorQuery = assessorQuery || undefined;
   res.write(`: connected\n\n`);
 
   // Stream recent events
-  const recent = getRecentStatusEvents(assessorQuery);
+  const recent = getRecentStatusEvents(normalizedAssessorQuery as any);
   recent.forEach((e: any) => {
     res.write(`data: ${JSON.stringify(e)}\n\n`);
   });

@@ -5,7 +5,11 @@ import { handler as updateHandler } from '../netlify/functions/update-evaluation
 import { handler as saveHandler } from '../netlify/functions/save-evaluation.js';
 import { generateToken, ROLE_MANAGER, ROLE_ASSESSOR } from '../netlify/functions/auth.js';
 import { connectToDatabase, buildMongoIdFilter, COLLECTION_NAME, closeDatabaseConnection } from '../netlify/functions/db.js';
-import { recomputeScores } from '../netlify/functions/rubric.js';
+import {
+  recomputeScores,
+  SECTION_A_CRITERIA,
+  SECTION_B_CRITERIA
+} from '../netlify/functions/rubric.js';
 
 describe('Status Lifecycle & History Tracking Unit Tests', () => {
   const managerToken = generateToken({ role: ROLE_MANAGER, name: 'Lead Manager' });
@@ -24,10 +28,13 @@ describe('Status Lifecycle & History Tracking Unit Tests', () => {
   before(async () => {
     const timestamp = Date.now();
     const breakdown = [
-      { id: 'trip_history', selectedOption: '3mo', points: 1.0 },
-      { id: 'realtime_tracking', selectedOption: 'Available', points: 1.0 },
-      { id: 'geofence', selectedOption: 'Radius', points: 1.0 }
-    ];
+      ...SECTION_A_CRITERIA,
+      ...SECTION_B_CRITERIA
+    ].map(criteria => ({
+      id: criteria.id,
+      selectedOption: criteria.options[0].label,
+      points: criteria.options[0].points
+    }));
     const recomputed = recomputeScores(breakdown);
     const payload = {
       companyName: `Lifecycle Test Fleet ${timestamp}`,

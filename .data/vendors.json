@@ -1,1 +1,13 @@
-[]
+[
+  {
+    "_id": "vendor_1789690124632_pl6s",
+    "companyName": "Vendor A Logistics",
+    "contactEmail": "vendor-a-1789690124630@test.my",
+    "passwordHash": "hash",
+    "linkedRegistrationIds": [
+      "eval-vendor-a"
+    ],
+    "isActive": true,
+    "createdAt": "2026-09-18T00:08:44.632Z"
+  }
+]

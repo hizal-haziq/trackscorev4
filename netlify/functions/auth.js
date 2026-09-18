@@ -9,24 +9,38 @@
  */
 
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
+
+dotenv.config({ override: true });
 
 export const ROLE_ASSESSOR = 'assessor';
 export const ROLE_MANAGER = 'manager';
 export const ROLE_VENDOR = 'vendor';
 
-export const JWT_SECRET = process.env.JWT_SECRET || 'trackscore-miros-jwt-secret-key-2026-production';
+export const JWT_SECRET = process.env.JWT_SECRET;
+const MIN_JWT_SECRET_LENGTH = 32;
 
-export const DEFAULT_ASSESSOR_KEY = 'trackscore-assessor-key-2026';
-export const DEFAULT_MANAGER_KEY = 'trackscore-manager-key-2026';
-export const DEFAULT_LEGACY_KEY = 'trackscore-secret-key-2026';
+function getConfiguredJwtSecret() {
+  if (typeof JWT_SECRET !== 'string' || JWT_SECRET.trim().length === 0) {
+    throw new Error('JWT configuration error: JWT_SECRET must be set in the deployment environment.');
+  }
+
+  if (JWT_SECRET.length < MIN_JWT_SECRET_LENGTH) {
+    throw new Error(`JWT configuration error: JWT_SECRET must be at least ${MIN_JWT_SECRET_LENGTH} characters long.`);
+  }
+
+  return JWT_SECRET;
+}
 
 export function generateToken(payload, expiresIn = '24h') {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn });
+  return jwt.sign(payload, getConfiguredJwtSecret(), { expiresIn });
 }
 
 export function verifyToken(token) {
+  const secret = getConfiguredJwtSecret();
+
   try {
-    return jwt.verify(token, JWT_SECRET);
+    return jwt.verify(token, secret);
   } catch (err) {
     return null;
   }
@@ -173,11 +187,7 @@ export default {
   generateToken,
   verifyToken,
   getBearerToken,
-  DEFAULT_ASSESSOR_KEY,
-  DEFAULT_MANAGER_KEY,
-  DEFAULT_LEGACY_KEY,
   getClientApiKey,
   validateRole,
   authErrorResponse
 };
-

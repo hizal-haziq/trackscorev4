@@ -3,8 +3,7 @@
  * Run manually via CLI:
  *   node scripts/create-first-manager.js [email] [password] [name]
  *
- * Example:
- *   node scripts/create-first-manager.js admin@trackscore.my Manager@2026! "Chief Operations Manager"
+ * The password must be supplied as the second argument or FIRST_MANAGER_PASSWORD.
  */
 
 import bcrypt from 'bcryptjs';
@@ -28,7 +27,7 @@ import { ROLE_MANAGER } from '../netlify/functions/auth.js';
 async function bootstrapFirstManager() {
   const args = process.argv.slice(2);
   const email = (args[0] || process.env.FIRST_MANAGER_EMAIL || 'admin@trackscore.my').trim().toLowerCase();
-  const password = (args[1] || process.env.FIRST_MANAGER_PASSWORD || 'Manager@2026!').trim();
+  const password = (args[1] || process.env.FIRST_MANAGER_PASSWORD || '').trim();
   const name = (args[2] || process.env.FIRST_MANAGER_NAME || 'MIROS Lead Manager').trim();
 
   if (!email || !password) {

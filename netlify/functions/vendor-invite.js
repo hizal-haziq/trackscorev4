@@ -1,11 +1,10 @@
 /**
  * Netlify Serverless Function: vendor-invite
- * Manager-initiated vendor account invitation and one-time setup link provisioning.
+ * Manager-initiated vendor credential generation.
  *
  * Requirements:
- * - Generates a secure one-time setup-link token tied to a specific registration record.
- * - No raw password is ever transmitted by the manager or across the network.
- * - Vendors use the setup link to choose and set their own password securely.
+ * - Generates a unique login email and immediately usable random password.
+ * - Stores only the bcrypt password hash; plaintext is returned once to the manager.
  */
 
 import crypto from 'crypto';
@@ -13,13 +12,49 @@ import bcrypt from 'bcryptjs';
 import {
   connectToDatabase,
   findVendorByEmail,
+  findVendorByLoginEmail,
   createVendorRecord,
   updateVendorRecord,
   buildMongoIdFilter,
   COLLECTION_NAME,
   COLLECTION_VENDORS
 } from './db.js';
-import { validateRole, generateToken, ROLE_MANAGER, ROLE_VENDOR, authErrorResponse } from './auth.js';
+import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
+
+const LOGIN_EMAIL_DOMAIN = 'trackscore-vendor.my';
+const PASSWORD_WORDS = [
+  'Falcon', 'River', 'Cedar', 'Meadow', 'Harbor', 'Summit', 'Orbit', 'Willow',
+  'Comet', 'Maple', 'Anchor', 'Breeze', 'Canyon', 'Mango', 'Pioneer', 'Quartz',
+  'Rocket', 'Silver', 'Tiger', 'Valley', 'Voyage', 'Forest', 'Lantern', 'Nimbus'
+];
+
+function makeCompanySlug(companyName) {
+  return String(companyName || 'vendor')
+    .toLowerCase()
+    .replace(/[^a-z0-9]/g, '') || 'vendor';
+}
+
+function generateVendorPassword() {
+  const first = PASSWORD_WORDS[crypto.randomInt(PASSWORD_WORDS.length)];
+  let second = PASSWORD_WORDS[crypto.randomInt(PASSWORD_WORDS.length)];
+  while (second === first) {
+    second = PASSWORD_WORDS[crypto.randomInt(PASSWORD_WORDS.length)];
+  }
+  return `${first}-${second}-${String(crypto.randomInt(100)).padStart(2, '0')}`;
+}
+
+async function generateUniqueLoginEmail(connection, companyName, existingVendor = null) {
+  const slug = makeCompanySlug(companyName);
+  let suffix = 1;
+  while (true) {
+    const candidate = `${slug}${suffix === 1 ? '' : suffix}@${LOGIN_EMAIL_DOMAIN}`;
+    const collision = await findVendorByLoginEmail(connection, candidate);
+    if (!collision || (existingVendor && String(collision._id) === String(existingVendor._id))) {
+      return candidate;
+    }
+    suffix += 1;
+  }
+}
 
 export const handler = async (event) => {
   const headers = {
@@ -31,55 +66,6 @@ export const handler = async (event) => {
 
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers };
-  }
-
-  // Handle GET for setup token validation
-  if (event.httpMethod === 'GET') {
-    const setupToken = (event.queryStringParameters?.setupToken || '').trim();
-    if (!setupToken) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ success: false, error: 'Setup token parameter is required.' })
-      };
-    }
-
-    try {
-      const connection = await connectToDatabase();
-      const vendor = await findVendorBySetupToken(connection, setupToken);
-      if (!vendor) {
-        return {
-          statusCode: 404,
-          headers,
-          body: JSON.stringify({ success: false, error: 'Invalid or expired setup link token.' })
-        };
-      }
-
-      if (vendor.setupTokenExpiresAt && new Date() > new Date(vendor.setupTokenExpiresAt)) {
-        return {
-          statusCode: 410,
-          headers,
-          body: JSON.stringify({ success: false, error: 'Setup link has expired. Please request a new invitation.' })
-        };
-      }
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          success: true,
-          companyName: vendor.companyName,
-          email: vendor.contactEmail
-        })
-      };
-    } catch (err) {
-      console.error('[VENDOR-INVITE-VERIFY-ERROR]', err);
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ success: false, error: 'Internal server error validating setup token.' })
-      };
-    }
   }
 
   if (event.httpMethod !== 'POST') {
@@ -101,86 +87,7 @@ export const handler = async (event) => {
     };
   }
 
-  // 1. Completion Flow (Vendor sets their own password using setupToken)
-  if (body.action === 'complete_setup') {
-    const { setupToken, password } = body;
-    if (!setupToken || !password || password.trim().length < 6) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({ success: false, error: 'Setup token and a password of at least 6 characters are required.' })
-      };
-    }
-
-    try {
-      const connection = await connectToDatabase();
-      const vendor = await findVendorBySetupToken(connection, setupToken.trim());
-      if (!vendor) {
-        return {
-          statusCode: 404,
-          headers,
-          body: JSON.stringify({ success: false, error: 'Invalid or expired setup token.' })
-        };
-      }
-
-      if (vendor.setupTokenExpiresAt && new Date() > new Date(vendor.setupTokenExpiresAt)) {
-        return {
-          statusCode: 410,
-          headers,
-          body: JSON.stringify({ success: false, error: 'Setup link has expired. Please request a new invitation.' })
-        };
-      }
-
-      const salt = bcrypt.genSaltSync(10);
-      const passwordHash = bcrypt.hashSync(password.trim(), salt);
-
-      await updateVendorRecord(connection, vendor._id, {
-        passwordHash,
-        setupToken: null,
-        setupTokenExpiresAt: null,
-        isActive: true,
-        setupCompletedAt: new Date().toISOString()
-      });
-
-      const linkedRegistrationIds = Array.isArray(vendor.linkedRegistrationIds) ? vendor.linkedRegistrationIds.map(String) : [];
-
-      const tokenPayload = {
-        vendorId: String(vendor._id),
-        email: vendor.contactEmail,
-        companyName: vendor.companyName,
-        role: ROLE_VENDOR,
-        linkedRegistrationIds
-      };
-      const token = generateToken(tokenPayload, '24h');
-
-      return {
-        statusCode: 200,
-        headers,
-        body: JSON.stringify({
-          success: true,
-          message: 'Password set successfully. Welcome to your Vendor Portal!',
-          token,
-          role: ROLE_VENDOR,
-          redirectUrl: '/vendor-portal.html',
-          vendor: {
-            id: String(vendor._id),
-            email: vendor.contactEmail,
-            companyName: vendor.companyName,
-            role: ROLE_VENDOR
-          }
-        })
-      };
-    } catch (err) {
-      console.error('[VENDOR-COMPLETE-SETUP-ERROR]', err);
-      return {
-        statusCode: 500,
-        headers,
-        body: JSON.stringify({ success: false, error: 'Error completing account setup.' })
-      };
-    }
-  }
-
-  // 2. Manager-Initiated Invite Flow
+  // Manager-only credential generation flow
   const roleCheck = validateRole(event, ROLE_MANAGER);
   if (!roleCheck.authorized) {
     return authErrorResponse(headers, roleCheck.statusCode, roleCheck.error);
@@ -224,14 +131,9 @@ export const handler = async (event) => {
     const finalCompanyName = cleanCompany || evaluation?.companyName || 'Registered Vendor';
     const existingVendor = await findVendorByEmail(connection, cleanEmail);
 
-    // Generate secure one-time setup-link token (no raw password ever transmitted)
-    const setupToken = crypto.randomBytes(24).toString('hex');
-    const setupTokenExpiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days
-
-    // Determine public origin for full setup URL
-    const host = event.headers?.['x-forwarded-host'] || event.headers?.host || 'localhost:3000';
-    const proto = event.headers?.['x-forwarded-proto'] || (host.includes('localhost') ? 'http' : 'https');
-    const fullSetupUrl = `${proto}://${host}/login.html?setupToken=${setupToken}`;
+    const loginEmail = await generateUniqueLoginEmail(connection, finalCompanyName, existingVendor);
+    const generatedPassword = generateVendorPassword();
+    const passwordHash = bcrypt.hashSync(generatedPassword, bcrypt.genSaltSync(10));
 
     if (existingVendor) {
       const linked = Array.isArray(existingVendor.linkedRegistrationIds) ? [...existingVendor.linkedRegistrationIds] : [];
@@ -242,8 +144,9 @@ export const handler = async (event) => {
       await updateVendorRecord(connection, existingVendor._id, {
         companyName: finalCompanyName,
         linkedRegistrationIds: linked,
-        setupToken,
-        setupTokenExpiresAt,
+        loginEmail,
+        passwordHash,
+        contactPhone: contactPhone.trim(),
         isActive: true,
         lastInvitedAt: new Date().toISOString(),
         lastInvitedBy: managerName
@@ -254,13 +157,14 @@ export const handler = async (event) => {
         headers,
         body: JSON.stringify({
           success: true,
-          message: `Generated invitation setup link for ${cleanEmail}.`,
+          message: `Generated active vendor credentials for ${finalCompanyName}.`,
           isExistingAccount: true,
-          setupToken,
-          setupLink: `/login.html?setupToken=${setupToken}`,
-          fullSetupUrl,
           vendor: {
-            email: cleanEmail,
+            email: loginEmail,
+            loginEmail,
+            contactEmail: cleanEmail,
+            contactPhone: contactPhone.trim(),
+            password: generatedPassword,
             companyName: finalCompanyName,
             linkedRegistrationIds: linked
           }
@@ -268,14 +172,13 @@ export const handler = async (event) => {
       };
     }
 
-    // Create fresh vendor record with setupToken and no password
+    // Create fresh vendor record with immediately usable credentials
     const newVendorDoc = {
       companyName: finalCompanyName,
       contactEmail: cleanEmail,
+      loginEmail,
       contactPhone: contactPhone.trim(),
-      passwordHash: null,
-      setupToken,
-      setupTokenExpiresAt,
+      passwordHash,
       linkedRegistrationIds: targetId ? [String(targetId)] : [],
       isActive: true,
       invitedBy: managerName,
@@ -290,14 +193,15 @@ export const handler = async (event) => {
       headers,
       body: JSON.stringify({
         success: true,
-        message: `Vendor account created and setup link generated for ${cleanEmail}.`,
+        message: `Vendor account created with active credentials for ${finalCompanyName}.`,
         isExistingAccount: false,
-        setupToken,
-        setupLink: `/login.html?setupToken=${setupToken}`,
-        fullSetupUrl,
         vendor: {
           id: String(created._id),
-          email: cleanEmail,
+          email: loginEmail,
+          loginEmail,
+          contactEmail: cleanEmail,
+          contactPhone: contactPhone.trim(),
+          password: generatedPassword,
           companyName: finalCompanyName,
           linkedRegistrationIds: newVendorDoc.linkedRegistrationIds
         }
@@ -312,14 +216,5 @@ export const handler = async (event) => {
     };
   }
 };
-
-async function findVendorBySetupToken(connection, setupToken) {
-  if (!setupToken) return null;
-  if (connection.isMongoAtlas) {
-    return connection.db.collection(COLLECTION_VENDORS).findOne({ setupToken });
-  }
-  const all = await connection.getVendors();
-  return all.find(v => v.setupToken === setupToken) || null;
-}
 
 export default { handler };
