@@ -20,6 +20,7 @@ export default defineConfig(() => {
           login: path.resolve(__dirname, 'login.html'),
           vendorPortal: path.resolve(__dirname, 'vendor-portal.html'),
           requestAssessment: path.resolve(__dirname, 'request-assessment.html'),
+          changePassword: path.resolve(__dirname, 'change-password.html'),
         },
       },
     },

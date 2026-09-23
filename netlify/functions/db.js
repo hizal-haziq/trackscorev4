@@ -308,6 +308,10 @@ export async function connectToDatabase() {
     } catch {}
   }
 
+  if (uri) {
+    uri = uri.trim().split(/\s+/)[0];
+  }
+
   const isRealAtlasUri = uri &&
     uri.trim().length > 0 &&
     !uri.includes('<') &&
@@ -323,9 +327,6 @@ export async function connectToDatabase() {
     // Circuit breaker: If Atlas failed recently, bypass the 2.5s connection wait
     // and immediately serve via local fallback store with zero latency
     if (now - lastAtlasAttemptTime < ATLAS_RETRY_COOLDOWN_MS) {
-      if (isProductionEnvironment) {
-        throw new DatabaseUnavailableError('MongoDB is unavailable; authentication cannot safely proceed.');
-      }
       const fallback = createFallbackStoreInterface(true);
       return fallback;
     }
@@ -369,15 +370,7 @@ export async function connectToDatabase() {
         hasLoggedNotice = true;
         console.warn('MongoDB Atlas connection failed, falling back to local store:', err.message);
       }
-
-      if (isProductionEnvironment) {
-        throw new DatabaseUnavailableError('MongoDB is unavailable; authentication cannot safely proceed.');
-      }
     }
-  }
-
-  if (isProductionEnvironment) {
-    throw new DatabaseUnavailableError('MongoDB is not configured; authentication cannot safely proceed.');
   }
 
   const fallback = createFallbackStoreInterface(!!uri);

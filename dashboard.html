@@ -5388,7 +5388,7 @@
               <!-- Column 1: Pre-Final Status -->
               <div style="background: #FAF5FF; border: 1px solid #E9D5FF; border-radius: 6px; padding: 12px;">
                 <div style="font-weight: 700; color: #6B21A8; font-size: 11px; text-transform: uppercase; margin-bottom: 6px;">1. Pre-Final Result</div>
-                ${record.preFinalResult?.sent ? `
+                ${(record.preFinalResult?.sent || record.preFinalResult?.sentDate) ? `
                   <div style="color: #6B21A8; font-weight: 700; display: flex; align-items: center; gap: 6px;">
                     <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#9333EA;"></span>
                     Sent on ${new Date(record.preFinalResult.sentDate).toLocaleDateString('en-MY')}
@@ -5867,10 +5867,10 @@
                 id="btn-modal-approve"
                 style="background: #10B981; color: #FFFFFF; border: none; font-weight: 700; padding: 6px 14px; border-radius: 4px; cursor: pointer; display: inline-flex; align-items: center; gap: 5px;"
                 onclick="handleApproveEvaluation('${recordId}')"
-                title="Approve this submission directly"
+                title="${!isSkipped ? 'Approve assessor score and advance to pre-final notification' : 'Approve assessor score and proceed to payment verification'}"
               >
                 <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                Approve
+                ${!isSkipped ? 'Approve & Send Pre-Final' : 'Approve Score'}
               </button>
               <button
                 type="button"
@@ -5918,7 +5918,10 @@
             throw new Error(result.error || `Server responded with status ${response.status}`);
           }
 
-          showToast("Evaluation marked as Approved and locked for compliance.");
+          const msg = result.status === 'pre_final_sent'
+            ? "Assessor score approved! Record advanced to Pre-Final notification stage."
+            : (result.message || "Assessor evaluation approved successfully.");
+          showToast(msg);
           await fetchEvaluations(currentPage, currentLimit);
           openEvaluationDetails(recordId);
         } catch (err) {
@@ -5926,7 +5929,7 @@
           showToast("Approval Error: " + err.message, true);
           if (btn) {
             btn.disabled = false;
-            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Approve`;
+            btn.innerHTML = `<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"></polyline></svg> Approve & Send Pre-Final`;
           }
         }
       }

@@ -62,42 +62,11 @@ export const handler = async (event, context) => {
       };
     }
 
-    // Determine requested action: 'approved' | 'completed' | 'rejected' | or specific lifecycle status
-    const rawAction = String(payload.action || payload.status || '').trim().toLowerCase();
-    let targetStatus = null;
-    if (rawAction === 'approve' || rawAction === 'approved' || rawAction === 'completed') {
-      targetStatus = payload.targetStatus || 'completed';
-    } else if (rawAction === 'reject' || rawAction === 'rejected') {
-      targetStatus = 'rejected';
-    } else if (['registered', 'scheduled', 'submitted', 'pending_review', 'pre_final_sent', 'certificate_issued', 'completed'].includes(rawAction)) {
-      targetStatus = rawAction;
-    } else {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          error: `Invalid status or action "${rawAction}". Permitted values: "approved", "rejected", or a valid lifecycle stage.`
-        })
-      };
-    }
-
-    // Validate rejection reason when status is rejected
-    const rejectionReason = (payload.rejectionReason || payload.reason || '').trim();
-    if (targetStatus === 'rejected' && !rejectionReason) {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          error: 'Rejection reason is required when rejecting an evaluation.'
-        })
-      };
-    }
-
     const connection = await connectToDatabase();
     const nowIso = new Date().toISOString();
     const managerIdentifier = (payload.managerName || payload.approvedBy || payload.rejectedBy || roleCheck.user?.name || 'Operations Manager').trim();
 
-    // Fetch current document
+    // Fetch current document first
     let existing = null;
     let collection = null;
     let filter = null;
@@ -118,15 +87,114 @@ export const handler = async (event, context) => {
       };
     }
 
-    // Enforce lifecycle rule: rejection is only reachable from pending_review or pre_final_sent
+    const currentStatus = (existing.status || 'pending_review').toLowerCase();
+
+    // Check if pre-final should be skipped
+    const hasExplicitSkip = payload.preFinalSkipped !== undefined || payload.skipPreFinal !== undefined || payload.skip !== undefined;
+    const isPreFinalSkipped = hasExplicitSkip
+      ? Boolean(payload.preFinalSkipped || payload.skipPreFinal || payload.skip)
+      : Boolean(existing.preFinalSkipped || existing.preFinalResult?.isSkipped);
+
+    // Determine requested action: 'approved' | 'completed' | 'rejected' | or specific lifecycle status
+    const rawAction = String(payload.action || payload.status || '').trim().toLowerCase();
+    let targetStatus = payload.targetStatus || null;
+
+    if (!targetStatus) {
+      if (rawAction === 'approve' || rawAction === 'approved' || rawAction === '') {
+        if (currentStatus === 'pending_review' || currentStatus === 'submitted') {
+          // Approving assessor score advances pending_review/submitted records to 'pre_final_sent',
+          // or maintains 'pending_review' if pre-final is flagged as skipped
+          targetStatus = isPreFinalSkipped ? 'pending_review' : 'pre_final_sent';
+        } else if (currentStatus === 'certificate_issued') {
+          // If certificate is already issued and signed, approve can transition to completed
+          targetStatus = 'completed';
+        } else {
+          targetStatus = currentStatus;
+        }
+      } else if (rawAction === 'completed') {
+        // If current status is pending_review or submitted, it CANNOT jump directly to completed
+        if (currentStatus === 'pending_review' || currentStatus === 'submitted') {
+          targetStatus = isPreFinalSkipped ? 'pending_review' : 'pre_final_sent';
+        } else {
+          targetStatus = 'completed';
+        }
+      } else if (rawAction === 'reject' || rawAction === 'rejected') {
+        targetStatus = 'rejected';
+      } else if (['registered', 'scheduled', 'submitted', 'pending_review', 'pre_final_sent', 'payment_confirmed', 'certificate_issued', 'completed'].includes(rawAction)) {
+        targetStatus = rawAction;
+      } else {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            error: `Invalid status or action "${rawAction}". Permitted values: "approved", "rejected", or a valid lifecycle stage.`
+          })
+        };
+      }
+    } else {
+      // If targetStatus was explicitly provided but current status is pending_review or submitted and targetStatus is 'completed',
+      // prevent the premature jump to 'completed' and transition to 'pre_final_sent' (or 'pending_review' if pre-final is skipped)
+      if ((currentStatus === 'pending_review' || currentStatus === 'submitted') && targetStatus === 'completed') {
+        targetStatus = isPreFinalSkipped ? 'pending_review' : 'pre_final_sent';
+      }
+    }
+
+    // Validate rejection reason when status is rejected
+    const rejectionReason = (payload.rejectionReason || payload.reason || '').trim();
     if (targetStatus === 'rejected') {
-      const current = (existing.status || 'pending_review').toLowerCase();
-      if (current !== 'pending_review' && current !== 'pre_final_sent') {
+      if (!rejectionReason) {
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            error: 'Rejection reason is required when rejecting an evaluation.'
+          })
+        };
+      }
+      // Enforce lifecycle rule: rejection is only reachable from pending_review or pre_final_sent
+      if (currentStatus !== 'pending_review' && currentStatus !== 'pre_final_sent') {
         return {
           statusCode: 400,
           headers,
           body: JSON.stringify({
             error: `Rejection is only permitted for evaluations in "pending_review" or "pre_final_sent" status (current status: "${existing.status || 'pending_review'}").`
+          })
+        };
+      }
+    }
+
+    // STRICT BACKEND GUARD: Prevent premature jump to 'completed'
+    // An evaluation CANNOT be marked as completed unless:
+    // 1. payment.status === 'paid' (or 'waived')
+    // 2. certificate.signedDate exists
+    // 3. certificate.signedBy exists
+    if (targetStatus === 'completed') {
+      const isPaid = existing.payment && (existing.payment.status === 'paid' || existing.payment.status === 'waived');
+      const hasSignedCert = Boolean(
+        existing.certificate &&
+        existing.certificate.signedDate &&
+        existing.certificate.signedBy
+      );
+
+      if (!isPaid || !hasSignedCert) {
+        const missingReasons = [];
+        if (!isPaid) {
+          missingReasons.push(`payment must be verified as "paid" (current status: "${existing.payment?.status || 'unpaid'}")`);
+        }
+        if (!hasSignedCert) {
+          if (!existing.certificate) {
+            missingReasons.push('official certificate has not been prepared or issued');
+          } else {
+            if (!existing.certificate.signedDate) missingReasons.push('certificate lacks official signedDate');
+            if (!existing.certificate.signedBy) missingReasons.push('certificate lacks authorized signatory (signedBy)');
+          }
+        }
+        return {
+          statusCode: 400,
+          headers,
+          body: JSON.stringify({
+            success: false,
+            error: `Cannot mark evaluation as completed: ${missingReasons.join(' and ')}.`
           })
         };
       }
@@ -138,21 +206,54 @@ export const handler = async (event, context) => {
     let statusHistoryEntry = {};
 
     if (targetStatus !== 'rejected') {
+      const isAdvanceToPreFinal = targetStatus === 'pre_final_sent';
+
       updateFields = {
         status: targetStatus,
+        scoreApprovedBy: managerIdentifier,
+        scoreApprovedAt: nowIso,
         approvedBy: managerIdentifier,
         approvedAt: nowIso,
         statusChangedAt: nowIso,
+        preFinalSkipped: isPreFinalSkipped,
         rejectionReason: null,
         rejectedBy: null,
         rejectedAt: null
       };
 
+      if (isAdvanceToPreFinal) {
+        updateFields.preFinalResult = {
+          sent: true,
+          sentDate: nowIso,
+          recipientEmail: (payload.recipientEmail || existing.contactEmail || 'customer@telematics.com').trim(),
+          notes: payload.note || 'Assessor evaluation score approved by manager. Advanced to pre-final notification.',
+          sentBy: managerIdentifier,
+          isSkipped: false
+        };
+      } else if (isPreFinalSkipped) {
+        updateFields.preFinalResult = {
+          sent: false,
+          sentDate: null,
+          recipientEmail: (payload.recipientEmail || existing.contactEmail || 'customer@telematics.com').trim(),
+          notes: payload.note || 'Pre-final result review skipped by manager.',
+          sentBy: managerIdentifier,
+          skippedBy: managerIdentifier,
+          skippedAt: nowIso,
+          isSkipped: true
+        };
+      }
+
+      const defaultNote = isAdvanceToPreFinal
+        ? 'Assessor evaluation score approved by manager. Advanced to pre-final stage (pre_final_sent).'
+        : isPreFinalSkipped
+          ? 'Assessor evaluation score approved by manager (pre-final skipped, ready for payment verification).'
+          : (targetStatus === 'completed' ? 'Evaluation status moved to completed by manager.' : `Evaluation status moved to ${targetStatus} by manager.`);
+
       historyEntry = {
         action: targetStatus,
         timestamp: nowIso,
         changedBy: managerIdentifier,
-        note: payload.note || `Evaluation status moved to ${targetStatus} by manager`
+        note: payload.note || defaultNote
       };
 
       statusHistoryEntry = {
@@ -161,7 +262,7 @@ export const handler = async (event, context) => {
         changedBy: managerIdentifier,
         timestamp: nowIso,
         actor: managerIdentifier,
-        note: payload.note || `Evaluation status transitioned to ${targetStatus}`
+        note: payload.note || defaultNote
       };
     } else {
       updateFields = {
@@ -200,6 +301,22 @@ export const handler = async (event, context) => {
           statusHistory: statusHistoryEntry
         }
       });
+
+      // Synchronize linked registration record if present
+      const linkedRegId = existing.linkedRegistrationId || existing.registrationReferenceId;
+      if (linkedRegId) {
+        await collection.updateOne(buildMongoIdFilter(linkedRegId), {
+          $set: {
+            status: targetStatus,
+            preFinalSkipped: updateFields.preFinalSkipped,
+            preFinalResult: updateFields.preFinalResult,
+            approvedBy: updateFields.approvedBy,
+            approvedAt: updateFields.approvedAt,
+            statusChangedAt: nowIso
+          },
+          $push: { statusHistory: statusHistoryEntry }
+        });
+      }
     } else {
       await connection.updateEvaluation(id, updateFields, historyEntry, statusHistoryEntry);
     }
@@ -217,6 +334,7 @@ export const handler = async (event, context) => {
         ratingLabel: existing.ratingLabel || '',
         createdAt: existing.createdAt || null,
         status: targetStatus,
+        preFinalSkipped: updateFields.preFinalSkipped,
         rejectionReason: updateFields.rejectionReason || null,
         approvedBy: updateFields.approvedBy || null,
         approvedAt: updateFields.approvedAt || null,
@@ -236,14 +354,22 @@ export const handler = async (event, context) => {
         id,
         status: targetStatus,
         statusChangedAt: nowIso,
+        preFinalSkipped: updateFields.preFinalSkipped !== undefined ? updateFields.preFinalSkipped : isPreFinalSkipped,
+        preFinalResult: updateFields.preFinalResult || existing.preFinalResult || null,
         approvedBy: updateFields.approvedBy || null,
         approvedAt: updateFields.approvedAt || null,
         rejectedBy: updateFields.rejectedBy || null,
         rejectedAt: updateFields.rejectedAt || null,
         rejectionReason: updateFields.rejectionReason || null,
-        message: targetStatus === 'approved'
-          ? `Evaluation "${id}" approved successfully and locked against edits.`
-          : `Evaluation "${id}" rejected with reason recorded.`
+        message: targetStatus === 'rejected'
+          ? `Evaluation "${id}" rejected with reason recorded.`
+          : (targetStatus === 'pre_final_sent'
+            ? `Evaluation score for "${id}" approved successfully. Advanced to Pre-Final notification stage.`
+            : (isPreFinalSkipped
+              ? `Evaluation score for "${id}" approved with pre-final stage skipped. Ready for payment verification.`
+              : (targetStatus === 'completed'
+                ? `Evaluation "${id}" approved successfully and marked as completed.`
+                : `Evaluation "${id}" status updated to "${targetStatus}".`)))
       })
     };
   } catch (error) {

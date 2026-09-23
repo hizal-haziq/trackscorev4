@@ -4,7 +4,7 @@
  * Serves static frontend and mounts Netlify Serverless Functions
  */
 
-import express, { Request, Response } from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 dotenv.config({ override: true });
@@ -281,67 +281,91 @@ const rootDir = process.cwd();
 const distDir = path.join(rootDir, 'dist');
 const publicDir = path.join(rootDir, 'public');
 
+// Explicit security middleware to strictly block sensitive paths and internal project files
+app.use((req: Request, res: Response, next: NextFunction) => {
+  const p = req.path.toLowerCase();
+  if (
+    p.startsWith('/.') ||
+    p.includes('/.') ||
+    p === '/package.json' ||
+    p === '/bun.lock' ||
+    p === '/tsconfig.json' ||
+    p === '/server.ts' ||
+    p.startsWith('/scripts') ||
+    p.startsWith('/tests') ||
+    p.startsWith('/netlify') ||
+    p.startsWith('/node_modules') ||
+    p.startsWith('/src')
+  ) {
+    return res.status(404).send('Not Found');
+  }
+  next();
+});
+
 // Specific HTML route shortcuts
 app.get(['/', '/landing', '/landing.html'], (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'landing.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'landing.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'landing.html'));
 });
 
 app.get(['/index.html', '/evaluation', '/evaluation.html', '/eval', '/assessor', '/assessor.html', '/assessor-portal', '/assessor-portal.html'], (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'index.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'index.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'index.html'));
 });
 
 app.get(['/request-assessment', '/request-assessment.html'], (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'request-assessment.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'request-assessment.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'request-assessment.html'));
 });
 
 app.get('/dashboard', (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'dashboard.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'dashboard.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'dashboard.html'));
 });
 
 app.get('/dashboard.html', (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'dashboard.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'dashboard.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'dashboard.html'));
 });
 
 app.get('/login', (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'login.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'login.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'login.html'));
 });
 
 app.get('/login.html', (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'login.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'login.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'login.html'));
 });
 
 app.get('/vendor-portal', (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'vendor-portal.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'vendor-portal.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'vendor-portal.html'));
 });
 
 app.get('/vendor-portal.html', (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'vendor-portal.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'vendor-portal.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'vendor-portal.html'));
 });
 
 app.get(['/change-password', '/change-password.html'], (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'change-password.html');
-  res.sendFile(target && path.resolve(target) ? target : path.join(rootDir, 'change-password.html'));
+  res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'change-password.html'));
 });
 
-// Serve assets (public, dist, and root)
-app.use(express.static(publicDir));
-app.use(express.static(rootDir));
+// Serve ONLY explicitly allowed assets from publicDir (and distDir in production)
+// Do NOT serve rootDir!
+app.use(express.static(publicDir, { dotfiles: 'ignore', index: false }));
 if (isProduction) {
-  app.use(express.static(distDir));
+  app.use(express.static(distDir, { dotfiles: 'ignore', index: false }));
 }
 
-// Catch-all
+// Catch-all: block any missing file requests with an extension; otherwise serve landing.html
 app.get('*', (req: Request, res: Response) => {
-  res.sendFile(path.join(rootDir, 'index.html'));
+  if (path.extname(req.path)) {
+    return res.status(404).send('Not Found');
+  }
+  res.sendFile(path.join(publicDir, 'landing.html'));
 });
 
 app.listen(PORT, '0.0.0.0', () => {

@@ -1,1 +1,3654 @@
-[]
+[
+  {
+    "_id": "eval_1789714456231_c1o39",
+    "rubricVersion": "2.0",
+    "companyName": "Lifecycle Test Fleet 1789714456224",
+    "deviceModel": "TG-900-1789714456224",
+    "packageName": "Premium Enterprise",
+    "package": "package_1",
+    "packageDetails": null,
+    "invoice": null,
+    "payment": {
+      "status": "unpaid",
+      "amountReceived": 0,
+      "paymentDate": null,
+      "paymentMethod": null,
+      "verifiedBy": null
+    },
+    "officeAddress": "",
+    "state": "",
+    "contactPerson": null,
+    "contactEmail": null,
+    "contactPhone": null,
+    "registrationReferenceId": null,
+    "linkedRegistrationId": null,
+    "assessorName": "Assessor-1789714456224",
+    "assessorId": "TSA 1001",
+    "assessmentDate": "2026-03-15",
+    "sectionAScore": 0,
+    "sectionBScore": 0,
+    "totalScore": 0,
+    "starRating": 0,
+    "starsCount": 0,
+    "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)",
+    "maxPossibleScore": 5,
+    "breakdown": [
+      {
+        "section": "A",
+        "id": "trip_history",
+        "name": "Trip History Data",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "realtime_tracking",
+        "name": "Real-time Tracking",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "map_source",
+        "name": "Map",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence",
+        "name": "Geofence",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence_alert",
+        "name": "Geofence Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "vehicle_status",
+        "name": "Vehicle Status",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "engine_status",
+        "name": "Engine ON/OFF Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_detection",
+        "name": "Overspeed Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_alert",
+        "name": "Overspeed Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "offline_memory",
+        "name": "Built-in/Offline Memory",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "backup_battery",
+        "name": "Backup Battery",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "sim_network",
+        "name": "SIM Card Network",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "connectivity",
+        "name": "Device Connectivity Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "multilingual",
+        "name": "Device Multilingual Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "user_manual",
+        "name": "User Manual",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "warranty",
+        "name": "Warranty Period",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "customer_service",
+        "name": "Customer Service",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "os_compatibility",
+        "name": "OS Compatibility",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "trip_report",
+        "name": "Trip Report",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "data_interval",
+        "name": "Data Transmission Interval",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel",
+        "name": "Harsh Acceleration",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel_alert",
+        "name": "Harsh Acceleration Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking",
+        "name": "Harsh Braking/Crash Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking_alert",
+        "name": "Harsh Braking/Crash Detection Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tow_detection",
+        "name": "Tow Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "panic_button",
+        "name": "Panic/Emergency Button",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "mfa",
+        "name": "Apps Multifactor Authentication/Security",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "sop_tech_problems",
+        "name": "SOP on Technical Problem",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "service_records",
+        "name": "Device Service Records",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "driver_id",
+        "name": "Driver Identification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "certification",
+        "name": "Certification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "immobilizer",
+        "name": "Immobilizer",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tampered_alert",
+        "name": "Tampered Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      }
+    ],
+    "status": "completed",
+    "statusChangedAt": "2026-09-18T06:54:16.836Z",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedBy": "Lead Manager",
+    "rejectedAt": "2026-09-18T06:54:16.826Z",
+    "rejectionReason": "Specification documents incomplete",
+    "evaluationHistory": [
+      {
+        "editedAt": "2026-09-18T06:54:16.822Z",
+        "editedBy": "Manager",
+        "previousScores": {
+          "sectionAScore": 0,
+          "sectionBScore": 0,
+          "totalScore": 0,
+          "starRating": 0,
+          "starsCount": 0,
+          "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)"
+        },
+        "previousBreakdown": [
+          {
+            "section": "A",
+            "id": "trip_history",
+            "name": "Trip History Data",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "realtime_tracking",
+            "name": "Real-time Tracking",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "map_source",
+            "name": "Map",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence",
+            "name": "Geofence",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence_alert",
+            "name": "Geofence Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "vehicle_status",
+            "name": "Vehicle Status",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "engine_status",
+            "name": "Engine ON/OFF Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_detection",
+            "name": "Overspeed Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_alert",
+            "name": "Overspeed Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "offline_memory",
+            "name": "Built-in/Offline Memory",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "backup_battery",
+            "name": "Backup Battery",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "sim_network",
+            "name": "SIM Card Network",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "connectivity",
+            "name": "Device Connectivity Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "multilingual",
+            "name": "Device Multilingual Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "user_manual",
+            "name": "User Manual",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "warranty",
+            "name": "Warranty Period",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "customer_service",
+            "name": "Customer Service",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "os_compatibility",
+            "name": "OS Compatibility",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "trip_report",
+            "name": "Trip Report",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "data_interval",
+            "name": "Data Transmission Interval",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel",
+            "name": "Harsh Acceleration",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel_alert",
+            "name": "Harsh Acceleration Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking",
+            "name": "Harsh Braking/Crash Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking_alert",
+            "name": "Harsh Braking/Crash Detection Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tow_detection",
+            "name": "Tow Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "panic_button",
+            "name": "Panic/Emergency Button",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "mfa",
+            "name": "Apps Multifactor Authentication/Security",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "sop_tech_problems",
+            "name": "SOP on Technical Problem",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "service_records",
+            "name": "Device Service Records",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "driver_id",
+            "name": "Driver Identification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "certification",
+            "name": "Certification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "immobilizer",
+            "name": "Immobilizer",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tampered_alert",
+            "name": "Tampered Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          }
+        ]
+      },
+      {
+        "action": "rejected",
+        "timestamp": "2026-09-18T06:54:16.826Z",
+        "changedBy": "Lead Manager",
+        "rejectionReason": "Specification documents incomplete",
+        "note": "Evaluation rejected: Specification documents incomplete"
+      },
+      {
+        "editedAt": "2026-09-18T06:54:16.833Z",
+        "editedBy": "Manager",
+        "previousScores": {
+          "sectionAScore": 0,
+          "sectionBScore": 0,
+          "totalScore": 0,
+          "starRating": 0,
+          "starsCount": 0,
+          "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)"
+        },
+        "previousBreakdown": [
+          {
+            "section": "A",
+            "id": "trip_history",
+            "name": "Trip History Data",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "realtime_tracking",
+            "name": "Real-time Tracking",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "map_source",
+            "name": "Map",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence",
+            "name": "Geofence",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence_alert",
+            "name": "Geofence Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "vehicle_status",
+            "name": "Vehicle Status",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "engine_status",
+            "name": "Engine ON/OFF Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_detection",
+            "name": "Overspeed Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_alert",
+            "name": "Overspeed Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "offline_memory",
+            "name": "Built-in/Offline Memory",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "backup_battery",
+            "name": "Backup Battery",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "sim_network",
+            "name": "SIM Card Network",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "connectivity",
+            "name": "Device Connectivity Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "multilingual",
+            "name": "Device Multilingual Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "user_manual",
+            "name": "User Manual",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "warranty",
+            "name": "Warranty Period",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "customer_service",
+            "name": "Customer Service",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "os_compatibility",
+            "name": "OS Compatibility",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "trip_report",
+            "name": "Trip Report",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "data_interval",
+            "name": "Data Transmission Interval",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel",
+            "name": "Harsh Acceleration",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel_alert",
+            "name": "Harsh Acceleration Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking",
+            "name": "Harsh Braking/Crash Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking_alert",
+            "name": "Harsh Braking/Crash Detection Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tow_detection",
+            "name": "Tow Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "panic_button",
+            "name": "Panic/Emergency Button",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "mfa",
+            "name": "Apps Multifactor Authentication/Security",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "sop_tech_problems",
+            "name": "SOP on Technical Problem",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "service_records",
+            "name": "Device Service Records",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "driver_id",
+            "name": "Driver Identification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "certification",
+            "name": "Certification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "immobilizer",
+            "name": "Immobilizer",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tampered_alert",
+            "name": "Tampered Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          }
+        ]
+      },
+      {
+        "editedAt": "2026-09-18T06:54:16.836Z",
+        "editedBy": "Manager",
+        "previousScores": {
+          "sectionAScore": 0,
+          "sectionBScore": 0,
+          "totalScore": 0,
+          "starRating": 0,
+          "starsCount": 0,
+          "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)"
+        },
+        "previousBreakdown": [
+          {
+            "section": "A",
+            "id": "trip_history",
+            "name": "Trip History Data",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "realtime_tracking",
+            "name": "Real-time Tracking",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "map_source",
+            "name": "Map",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence",
+            "name": "Geofence",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence_alert",
+            "name": "Geofence Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "vehicle_status",
+            "name": "Vehicle Status",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "engine_status",
+            "name": "Engine ON/OFF Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_detection",
+            "name": "Overspeed Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_alert",
+            "name": "Overspeed Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "offline_memory",
+            "name": "Built-in/Offline Memory",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "backup_battery",
+            "name": "Backup Battery",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "sim_network",
+            "name": "SIM Card Network",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "connectivity",
+            "name": "Device Connectivity Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "multilingual",
+            "name": "Device Multilingual Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "user_manual",
+            "name": "User Manual",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "warranty",
+            "name": "Warranty Period",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "customer_service",
+            "name": "Customer Service",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "os_compatibility",
+            "name": "OS Compatibility",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "trip_report",
+            "name": "Trip Report",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "data_interval",
+            "name": "Data Transmission Interval",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel",
+            "name": "Harsh Acceleration",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel_alert",
+            "name": "Harsh Acceleration Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking",
+            "name": "Harsh Braking/Crash Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking_alert",
+            "name": "Harsh Braking/Crash Detection Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tow_detection",
+            "name": "Tow Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "panic_button",
+            "name": "Panic/Emergency Button",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "mfa",
+            "name": "Apps Multifactor Authentication/Security",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "sop_tech_problems",
+            "name": "SOP on Technical Problem",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "service_records",
+            "name": "Device Service Records",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "driver_id",
+            "name": "Driver Identification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "certification",
+            "name": "Certification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "immobilizer",
+            "name": "Immobilizer",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tampered_alert",
+            "name": "Tampered Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          }
+        ]
+      },
+      {
+        "action": "soft_deleted",
+        "timestamp": "2026-09-18T06:54:16.838Z",
+        "deletedBy": "Manager",
+        "note": "Evaluation record archived / soft-deleted for compliance"
+      }
+    ],
+    "statusHistory": [
+      {
+        "status": "pending_review",
+        "timestamp": "2026-09-18T06:54:16.230Z",
+        "actor": "Assessor-1789714456224 (TSA 1001)",
+        "note": "Initial evaluation submitted by assessor. Ready for managerial review."
+      },
+      {
+        "status": "pre_final_sent",
+        "changedAt": "2026-09-18T06:54:16.822Z",
+        "changedBy": "Lead Manager"
+      },
+      {
+        "status": "rejected",
+        "changedAt": "2026-09-18T06:54:16.826Z",
+        "changedBy": "Lead Manager",
+        "timestamp": "2026-09-18T06:54:16.826Z",
+        "actor": "Lead Manager",
+        "reason": "Specification documents incomplete",
+        "note": "Evaluation returned for corrections: Specification documents incomplete"
+      },
+      {
+        "status": "submitted",
+        "changedAt": "2026-09-18T06:54:16.833Z",
+        "changedBy": "Lead Manager"
+      },
+      {
+        "status": "completed",
+        "changedAt": "2026-09-18T06:54:16.836Z",
+        "changedBy": "Lead Manager"
+      }
+    ],
+    "createdAt": "2026-09-18T06:54:16.230Z",
+    "updatedAt": "2026-09-18T06:54:16.836Z",
+    "deletedAt": "2026-09-18T06:54:16.838Z",
+    "deletedBy": "Manager"
+  },
+  {
+    "_id": "eval_1789714455150_sjoh2",
+    "rubricVersion": "2.0",
+    "companyName": "DuplicateCorp-1789714455148",
+    "deviceModel": "Tracker-X-1789714455148",
+    "packageName": "Premium Enterprise",
+    "package": "package_1",
+    "packageDetails": null,
+    "invoice": null,
+    "payment": {
+      "status": "unpaid",
+      "amountReceived": 0,
+      "paymentDate": null,
+      "paymentMethod": null,
+      "verifiedBy": null
+    },
+    "officeAddress": "",
+    "state": "",
+    "contactPerson": null,
+    "contactEmail": null,
+    "contactPhone": null,
+    "registrationReferenceId": null,
+    "linkedRegistrationId": null,
+    "assessorName": "Lead Assessor Rizal",
+    "assessorId": "MKA 9006",
+    "assessmentDate": "2026-03-20",
+    "sectionAScore": 0,
+    "sectionBScore": 0,
+    "totalScore": 0,
+    "starRating": 0,
+    "starsCount": 0,
+    "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)",
+    "maxPossibleScore": 5,
+    "breakdown": [
+      {
+        "section": "A",
+        "id": "trip_history",
+        "name": "Trip History Data",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "realtime_tracking",
+        "name": "Real-time Tracking",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "map_source",
+        "name": "Map",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence",
+        "name": "Geofence",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence_alert",
+        "name": "Geofence Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "vehicle_status",
+        "name": "Vehicle Status",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "engine_status",
+        "name": "Engine ON/OFF Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_detection",
+        "name": "Overspeed Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_alert",
+        "name": "Overspeed Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "offline_memory",
+        "name": "Built-in/Offline Memory",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "backup_battery",
+        "name": "Backup Battery",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "sim_network",
+        "name": "SIM Card Network",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "connectivity",
+        "name": "Device Connectivity Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "multilingual",
+        "name": "Device Multilingual Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "user_manual",
+        "name": "User Manual",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "warranty",
+        "name": "Warranty Period",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "customer_service",
+        "name": "Customer Service",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "os_compatibility",
+        "name": "OS Compatibility",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "trip_report",
+        "name": "Trip Report",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "data_interval",
+        "name": "Data Transmission Interval",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel",
+        "name": "Harsh Acceleration",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel_alert",
+        "name": "Harsh Acceleration Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking",
+        "name": "Harsh Braking/Crash Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking_alert",
+        "name": "Harsh Braking/Crash Detection Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tow_detection",
+        "name": "Tow Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "panic_button",
+        "name": "Panic/Emergency Button",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "mfa",
+        "name": "Apps Multifactor Authentication/Security",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "sop_tech_problems",
+        "name": "SOP on Technical Problem",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "service_records",
+        "name": "Device Service Records",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "driver_id",
+        "name": "Driver Identification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "certification",
+        "name": "Certification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "immobilizer",
+        "name": "Immobilizer",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tampered_alert",
+        "name": "Tampered Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      }
+    ],
+    "status": "pending_review",
+    "statusChangedAt": "2026-09-18T06:54:15.150Z",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedBy": null,
+    "rejectedAt": null,
+    "rejectionReason": null,
+    "evaluationHistory": [],
+    "statusHistory": [
+      {
+        "status": "pending_review",
+        "timestamp": "2026-09-18T06:54:15.150Z",
+        "actor": "Lead Assessor Rizal (MKA 9006)",
+        "note": "Initial evaluation submitted by assessor. Ready for managerial review."
+      }
+    ],
+    "createdAt": "2026-09-18T06:54:15.150Z"
+  },
+  {
+    "_id": "eval_1789714454507_757td",
+    "rubricVersion": "2.0",
+    "companyName": "Test Fleet Corp 1789714454502",
+    "deviceModel": "TG-800-1789714454502",
+    "packageName": "Premium Enterprise",
+    "package": "package_1",
+    "packageDetails": null,
+    "invoice": null,
+    "payment": {
+      "status": "unpaid",
+      "amountReceived": 0,
+      "paymentDate": null,
+      "paymentMethod": null,
+      "verifiedBy": null
+    },
+    "officeAddress": "",
+    "state": "",
+    "contactPerson": null,
+    "contactEmail": null,
+    "contactPhone": null,
+    "registrationReferenceId": null,
+    "linkedRegistrationId": null,
+    "assessorName": "Assessor-1789714454502",
+    "assessorId": "MKA 9006",
+    "assessmentDate": "2026-03-15",
+    "sectionAScore": 0,
+    "sectionBScore": 0,
+    "totalScore": 0,
+    "starRating": 0,
+    "starsCount": 0,
+    "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)",
+    "maxPossibleScore": 5,
+    "breakdown": [
+      {
+        "section": "A",
+        "id": "trip_history",
+        "name": "Trip History Data",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "realtime_tracking",
+        "name": "Real-time Tracking",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "map_source",
+        "name": "Map",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence",
+        "name": "Geofence",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence_alert",
+        "name": "Geofence Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "vehicle_status",
+        "name": "Vehicle Status",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "engine_status",
+        "name": "Engine ON/OFF Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_detection",
+        "name": "Overspeed Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_alert",
+        "name": "Overspeed Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "offline_memory",
+        "name": "Built-in/Offline Memory",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "backup_battery",
+        "name": "Backup Battery",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "sim_network",
+        "name": "SIM Card Network",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "connectivity",
+        "name": "Device Connectivity Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "multilingual",
+        "name": "Device Multilingual Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "user_manual",
+        "name": "User Manual",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "warranty",
+        "name": "Warranty Period",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "customer_service",
+        "name": "Customer Service",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "os_compatibility",
+        "name": "OS Compatibility",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "trip_report",
+        "name": "Trip Report",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "data_interval",
+        "name": "Data Transmission Interval",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel",
+        "name": "Harsh Acceleration",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel_alert",
+        "name": "Harsh Acceleration Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking",
+        "name": "Harsh Braking/Crash Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking_alert",
+        "name": "Harsh Braking/Crash Detection Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tow_detection",
+        "name": "Tow Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "panic_button",
+        "name": "Panic/Emergency Button",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "mfa",
+        "name": "Apps Multifactor Authentication/Security",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "sop_tech_problems",
+        "name": "SOP on Technical Problem",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "service_records",
+        "name": "Device Service Records",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "driver_id",
+        "name": "Driver Identification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "certification",
+        "name": "Certification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "immobilizer",
+        "name": "Immobilizer",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tampered_alert",
+        "name": "Tampered Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      }
+    ],
+    "status": "pending_review",
+    "statusChangedAt": "2026-09-18T06:54:14.506Z",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedBy": null,
+    "rejectedAt": null,
+    "rejectionReason": null,
+    "evaluationHistory": [],
+    "statusHistory": [
+      {
+        "status": "pending_review",
+        "timestamp": "2026-09-18T06:54:14.506Z",
+        "actor": "Assessor-1789714454502 (MKA 9006)",
+        "note": "Initial evaluation submitted by assessor. Ready for managerial review."
+      }
+    ],
+    "createdAt": "2026-09-18T06:54:14.506Z"
+  },
+  {
+    "_id": "eval_1789714320495_4x878",
+    "rubricVersion": "2.0",
+    "companyName": "Lifecycle Test Fleet 1789714320489",
+    "deviceModel": "TG-900-1789714320489",
+    "packageName": "Premium Enterprise",
+    "package": "package_1",
+    "packageDetails": null,
+    "invoice": null,
+    "payment": {
+      "status": "unpaid",
+      "amountReceived": 0,
+      "paymentDate": null,
+      "paymentMethod": null,
+      "verifiedBy": null
+    },
+    "officeAddress": "",
+    "state": "",
+    "contactPerson": null,
+    "contactEmail": null,
+    "contactPhone": null,
+    "registrationReferenceId": null,
+    "linkedRegistrationId": null,
+    "assessorName": "Assessor-1789714320489",
+    "assessorId": "TSA 1001",
+    "assessmentDate": "2026-03-15",
+    "sectionAScore": 0,
+    "sectionBScore": 0,
+    "totalScore": 0,
+    "starRating": 0,
+    "starsCount": 0,
+    "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)",
+    "maxPossibleScore": 5,
+    "breakdown": [
+      {
+        "section": "A",
+        "id": "trip_history",
+        "name": "Trip History Data",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "realtime_tracking",
+        "name": "Real-time Tracking",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "map_source",
+        "name": "Map",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence",
+        "name": "Geofence",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence_alert",
+        "name": "Geofence Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "vehicle_status",
+        "name": "Vehicle Status",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "engine_status",
+        "name": "Engine ON/OFF Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_detection",
+        "name": "Overspeed Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_alert",
+        "name": "Overspeed Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "offline_memory",
+        "name": "Built-in/Offline Memory",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "backup_battery",
+        "name": "Backup Battery",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "sim_network",
+        "name": "SIM Card Network",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "connectivity",
+        "name": "Device Connectivity Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "multilingual",
+        "name": "Device Multilingual Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "user_manual",
+        "name": "User Manual",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "warranty",
+        "name": "Warranty Period",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "customer_service",
+        "name": "Customer Service",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "os_compatibility",
+        "name": "OS Compatibility",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "trip_report",
+        "name": "Trip Report",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "data_interval",
+        "name": "Data Transmission Interval",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel",
+        "name": "Harsh Acceleration",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel_alert",
+        "name": "Harsh Acceleration Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking",
+        "name": "Harsh Braking/Crash Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking_alert",
+        "name": "Harsh Braking/Crash Detection Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tow_detection",
+        "name": "Tow Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "panic_button",
+        "name": "Panic/Emergency Button",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "mfa",
+        "name": "Apps Multifactor Authentication/Security",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "sop_tech_problems",
+        "name": "SOP on Technical Problem",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "service_records",
+        "name": "Device Service Records",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "driver_id",
+        "name": "Driver Identification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "certification",
+        "name": "Certification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "immobilizer",
+        "name": "Immobilizer",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tampered_alert",
+        "name": "Tampered Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      }
+    ],
+    "status": "completed",
+    "statusChangedAt": "2026-09-18T06:52:01.092Z",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedBy": "Lead Manager",
+    "rejectedAt": "2026-09-18T06:52:01.087Z",
+    "rejectionReason": "Specification documents incomplete",
+    "evaluationHistory": [
+      {
+        "editedAt": "2026-09-18T06:52:01.085Z",
+        "editedBy": "Manager",
+        "previousScores": {
+          "sectionAScore": 0,
+          "sectionBScore": 0,
+          "totalScore": 0,
+          "starRating": 0,
+          "starsCount": 0,
+          "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)"
+        },
+        "previousBreakdown": [
+          {
+            "section": "A",
+            "id": "trip_history",
+            "name": "Trip History Data",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "realtime_tracking",
+            "name": "Real-time Tracking",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "map_source",
+            "name": "Map",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence",
+            "name": "Geofence",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence_alert",
+            "name": "Geofence Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "vehicle_status",
+            "name": "Vehicle Status",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "engine_status",
+            "name": "Engine ON/OFF Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_detection",
+            "name": "Overspeed Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_alert",
+            "name": "Overspeed Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "offline_memory",
+            "name": "Built-in/Offline Memory",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "backup_battery",
+            "name": "Backup Battery",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "sim_network",
+            "name": "SIM Card Network",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "connectivity",
+            "name": "Device Connectivity Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "multilingual",
+            "name": "Device Multilingual Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "user_manual",
+            "name": "User Manual",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "warranty",
+            "name": "Warranty Period",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "customer_service",
+            "name": "Customer Service",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "os_compatibility",
+            "name": "OS Compatibility",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "trip_report",
+            "name": "Trip Report",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "data_interval",
+            "name": "Data Transmission Interval",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel",
+            "name": "Harsh Acceleration",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel_alert",
+            "name": "Harsh Acceleration Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking",
+            "name": "Harsh Braking/Crash Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking_alert",
+            "name": "Harsh Braking/Crash Detection Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tow_detection",
+            "name": "Tow Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "panic_button",
+            "name": "Panic/Emergency Button",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "mfa",
+            "name": "Apps Multifactor Authentication/Security",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "sop_tech_problems",
+            "name": "SOP on Technical Problem",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "service_records",
+            "name": "Device Service Records",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "driver_id",
+            "name": "Driver Identification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "certification",
+            "name": "Certification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "immobilizer",
+            "name": "Immobilizer",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tampered_alert",
+            "name": "Tampered Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          }
+        ]
+      },
+      {
+        "action": "rejected",
+        "timestamp": "2026-09-18T06:52:01.087Z",
+        "changedBy": "Lead Manager",
+        "rejectionReason": "Specification documents incomplete",
+        "note": "Evaluation rejected: Specification documents incomplete"
+      },
+      {
+        "editedAt": "2026-09-18T06:52:01.090Z",
+        "editedBy": "Manager",
+        "previousScores": {
+          "sectionAScore": 0,
+          "sectionBScore": 0,
+          "totalScore": 0,
+          "starRating": 0,
+          "starsCount": 0,
+          "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)"
+        },
+        "previousBreakdown": [
+          {
+            "section": "A",
+            "id": "trip_history",
+            "name": "Trip History Data",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "realtime_tracking",
+            "name": "Real-time Tracking",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "map_source",
+            "name": "Map",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence",
+            "name": "Geofence",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence_alert",
+            "name": "Geofence Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "vehicle_status",
+            "name": "Vehicle Status",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "engine_status",
+            "name": "Engine ON/OFF Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_detection",
+            "name": "Overspeed Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_alert",
+            "name": "Overspeed Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "offline_memory",
+            "name": "Built-in/Offline Memory",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "backup_battery",
+            "name": "Backup Battery",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "sim_network",
+            "name": "SIM Card Network",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "connectivity",
+            "name": "Device Connectivity Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "multilingual",
+            "name": "Device Multilingual Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "user_manual",
+            "name": "User Manual",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "warranty",
+            "name": "Warranty Period",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "customer_service",
+            "name": "Customer Service",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "os_compatibility",
+            "name": "OS Compatibility",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "trip_report",
+            "name": "Trip Report",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "data_interval",
+            "name": "Data Transmission Interval",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel",
+            "name": "Harsh Acceleration",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel_alert",
+            "name": "Harsh Acceleration Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking",
+            "name": "Harsh Braking/Crash Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking_alert",
+            "name": "Harsh Braking/Crash Detection Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tow_detection",
+            "name": "Tow Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "panic_button",
+            "name": "Panic/Emergency Button",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "mfa",
+            "name": "Apps Multifactor Authentication/Security",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "sop_tech_problems",
+            "name": "SOP on Technical Problem",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "service_records",
+            "name": "Device Service Records",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "driver_id",
+            "name": "Driver Identification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "certification",
+            "name": "Certification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "immobilizer",
+            "name": "Immobilizer",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tampered_alert",
+            "name": "Tampered Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          }
+        ]
+      },
+      {
+        "editedAt": "2026-09-18T06:52:01.092Z",
+        "editedBy": "Manager",
+        "previousScores": {
+          "sectionAScore": 0,
+          "sectionBScore": 0,
+          "totalScore": 0,
+          "starRating": 0,
+          "starsCount": 0,
+          "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)"
+        },
+        "previousBreakdown": [
+          {
+            "section": "A",
+            "id": "trip_history",
+            "name": "Trip History Data",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "realtime_tracking",
+            "name": "Real-time Tracking",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "map_source",
+            "name": "Map",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence",
+            "name": "Geofence",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "geofence_alert",
+            "name": "Geofence Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "vehicle_status",
+            "name": "Vehicle Status",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "engine_status",
+            "name": "Engine ON/OFF Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_detection",
+            "name": "Overspeed Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "overspeed_alert",
+            "name": "Overspeed Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "offline_memory",
+            "name": "Built-in/Offline Memory",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "backup_battery",
+            "name": "Backup Battery",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "sim_network",
+            "name": "SIM Card Network",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "connectivity",
+            "name": "Device Connectivity Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "multilingual",
+            "name": "Device Multilingual Support",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "user_manual",
+            "name": "User Manual",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "warranty",
+            "name": "Warranty Period",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "customer_service",
+            "name": "Customer Service",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "os_compatibility",
+            "name": "OS Compatibility",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "trip_report",
+            "name": "Trip Report",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "data_interval",
+            "name": "Data Transmission Interval",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel",
+            "name": "Harsh Acceleration",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_accel_alert",
+            "name": "Harsh Acceleration Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking",
+            "name": "Harsh Braking/Crash Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "A",
+            "id": "harsh_braking_alert",
+            "name": "Harsh Braking/Crash Detection Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tow_detection",
+            "name": "Tow Detection",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "panic_button",
+            "name": "Panic/Emergency Button",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "mfa",
+            "name": "Apps Multifactor Authentication/Security",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "sop_tech_problems",
+            "name": "SOP on Technical Problem",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "service_records",
+            "name": "Device Service Records",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "driver_id",
+            "name": "Driver Identification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "certification",
+            "name": "Certification",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "immobilizer",
+            "name": "Immobilizer",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          },
+          {
+            "section": "B",
+            "id": "tampered_alert",
+            "name": "Tampered Alert",
+            "selectedOption": "None (0)",
+            "tierPoints": 0,
+            "points": 0
+          }
+        ]
+      },
+      {
+        "action": "soft_deleted",
+        "timestamp": "2026-09-18T06:52:01.094Z",
+        "deletedBy": "Manager",
+        "note": "Evaluation record archived / soft-deleted for compliance"
+      }
+    ],
+    "statusHistory": [
+      {
+        "status": "pending_review",
+        "timestamp": "2026-09-18T06:52:00.495Z",
+        "actor": "Assessor-1789714320489 (TSA 1001)",
+        "note": "Initial evaluation submitted by assessor. Ready for managerial review."
+      },
+      {
+        "status": "pre_final_sent",
+        "changedAt": "2026-09-18T06:52:01.085Z",
+        "changedBy": "Lead Manager"
+      },
+      {
+        "status": "rejected",
+        "changedAt": "2026-09-18T06:52:01.087Z",
+        "changedBy": "Lead Manager",
+        "timestamp": "2026-09-18T06:52:01.087Z",
+        "actor": "Lead Manager",
+        "reason": "Specification documents incomplete",
+        "note": "Evaluation returned for corrections: Specification documents incomplete"
+      },
+      {
+        "status": "submitted",
+        "changedAt": "2026-09-18T06:52:01.090Z",
+        "changedBy": "Lead Manager"
+      },
+      {
+        "status": "completed",
+        "changedAt": "2026-09-18T06:52:01.092Z",
+        "changedBy": "Lead Manager"
+      }
+    ],
+    "createdAt": "2026-09-18T06:52:00.495Z",
+    "updatedAt": "2026-09-18T06:52:01.092Z",
+    "deletedAt": "2026-09-18T06:52:01.094Z",
+    "deletedBy": "Manager"
+  },
+  {
+    "_id": "eval_1789714319444_jloe3",
+    "rubricVersion": "2.0",
+    "companyName": "DuplicateCorp-1789714319443",
+    "deviceModel": "Tracker-X-1789714319443",
+    "packageName": "Premium Enterprise",
+    "package": "package_1",
+    "packageDetails": null,
+    "invoice": null,
+    "payment": {
+      "status": "unpaid",
+      "amountReceived": 0,
+      "paymentDate": null,
+      "paymentMethod": null,
+      "verifiedBy": null
+    },
+    "officeAddress": "",
+    "state": "",
+    "contactPerson": null,
+    "contactEmail": null,
+    "contactPhone": null,
+    "registrationReferenceId": null,
+    "linkedRegistrationId": null,
+    "assessorName": "Lead Assessor Rizal",
+    "assessorId": "MKA 9006",
+    "assessmentDate": "2026-03-20",
+    "sectionAScore": 0,
+    "sectionBScore": 0,
+    "totalScore": 0,
+    "starRating": 0,
+    "starsCount": 0,
+    "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)",
+    "maxPossibleScore": 5,
+    "breakdown": [
+      {
+        "section": "A",
+        "id": "trip_history",
+        "name": "Trip History Data",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "realtime_tracking",
+        "name": "Real-time Tracking",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "map_source",
+        "name": "Map",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence",
+        "name": "Geofence",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence_alert",
+        "name": "Geofence Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "vehicle_status",
+        "name": "Vehicle Status",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "engine_status",
+        "name": "Engine ON/OFF Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_detection",
+        "name": "Overspeed Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_alert",
+        "name": "Overspeed Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "offline_memory",
+        "name": "Built-in/Offline Memory",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "backup_battery",
+        "name": "Backup Battery",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "sim_network",
+        "name": "SIM Card Network",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "connectivity",
+        "name": "Device Connectivity Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "multilingual",
+        "name": "Device Multilingual Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "user_manual",
+        "name": "User Manual",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "warranty",
+        "name": "Warranty Period",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "customer_service",
+        "name": "Customer Service",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "os_compatibility",
+        "name": "OS Compatibility",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "trip_report",
+        "name": "Trip Report",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "data_interval",
+        "name": "Data Transmission Interval",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel",
+        "name": "Harsh Acceleration",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel_alert",
+        "name": "Harsh Acceleration Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking",
+        "name": "Harsh Braking/Crash Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking_alert",
+        "name": "Harsh Braking/Crash Detection Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tow_detection",
+        "name": "Tow Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "panic_button",
+        "name": "Panic/Emergency Button",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "mfa",
+        "name": "Apps Multifactor Authentication/Security",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "sop_tech_problems",
+        "name": "SOP on Technical Problem",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "service_records",
+        "name": "Device Service Records",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "driver_id",
+        "name": "Driver Identification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "certification",
+        "name": "Certification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "immobilizer",
+        "name": "Immobilizer",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tampered_alert",
+        "name": "Tampered Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      }
+    ],
+    "status": "pending_review",
+    "statusChangedAt": "2026-09-18T06:51:59.444Z",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedBy": null,
+    "rejectedAt": null,
+    "rejectionReason": null,
+    "evaluationHistory": [],
+    "statusHistory": [
+      {
+        "status": "pending_review",
+        "timestamp": "2026-09-18T06:51:59.444Z",
+        "actor": "Lead Assessor Rizal (MKA 9006)",
+        "note": "Initial evaluation submitted by assessor. Ready for managerial review."
+      }
+    ],
+    "createdAt": "2026-09-18T06:51:59.444Z"
+  },
+  {
+    "_id": "eval_1789714318709_f8cm5",
+    "rubricVersion": "2.0",
+    "companyName": "Test Fleet Corp 1789714318705",
+    "deviceModel": "TG-800-1789714318705",
+    "packageName": "Premium Enterprise",
+    "package": "package_1",
+    "packageDetails": null,
+    "invoice": null,
+    "payment": {
+      "status": "unpaid",
+      "amountReceived": 0,
+      "paymentDate": null,
+      "paymentMethod": null,
+      "verifiedBy": null
+    },
+    "officeAddress": "",
+    "state": "",
+    "contactPerson": null,
+    "contactEmail": null,
+    "contactPhone": null,
+    "registrationReferenceId": null,
+    "linkedRegistrationId": null,
+    "assessorName": "Assessor-1789714318705",
+    "assessorId": "MKA 9006",
+    "assessmentDate": "2026-03-15",
+    "sectionAScore": 0,
+    "sectionBScore": 0,
+    "totalScore": 0,
+    "starRating": 0,
+    "starsCount": 0,
+    "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)",
+    "maxPossibleScore": 5,
+    "breakdown": [
+      {
+        "section": "A",
+        "id": "trip_history",
+        "name": "Trip History Data",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "realtime_tracking",
+        "name": "Real-time Tracking",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "map_source",
+        "name": "Map",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence",
+        "name": "Geofence",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "geofence_alert",
+        "name": "Geofence Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "vehicle_status",
+        "name": "Vehicle Status",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "engine_status",
+        "name": "Engine ON/OFF Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_detection",
+        "name": "Overspeed Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "overspeed_alert",
+        "name": "Overspeed Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "offline_memory",
+        "name": "Built-in/Offline Memory",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "backup_battery",
+        "name": "Backup Battery",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "sim_network",
+        "name": "SIM Card Network",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "connectivity",
+        "name": "Device Connectivity Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "multilingual",
+        "name": "Device Multilingual Support",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "user_manual",
+        "name": "User Manual",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "warranty",
+        "name": "Warranty Period",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "customer_service",
+        "name": "Customer Service",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "os_compatibility",
+        "name": "OS Compatibility",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "trip_report",
+        "name": "Trip Report",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "data_interval",
+        "name": "Data Transmission Interval",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel",
+        "name": "Harsh Acceleration",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_accel_alert",
+        "name": "Harsh Acceleration Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking",
+        "name": "Harsh Braking/Crash Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "A",
+        "id": "harsh_braking_alert",
+        "name": "Harsh Braking/Crash Detection Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tow_detection",
+        "name": "Tow Detection",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "panic_button",
+        "name": "Panic/Emergency Button",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "mfa",
+        "name": "Apps Multifactor Authentication/Security",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "sop_tech_problems",
+        "name": "SOP on Technical Problem",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "service_records",
+        "name": "Device Service Records",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "driver_id",
+        "name": "Driver Identification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "certification",
+        "name": "Certification",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "immobilizer",
+        "name": "Immobilizer",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      },
+      {
+        "section": "B",
+        "id": "tampered_alert",
+        "name": "Tampered Alert",
+        "selectedOption": "None (0)",
+        "tierPoints": 0,
+        "points": 0
+      }
+    ],
+    "status": "pending_review",
+    "statusChangedAt": "2026-09-18T06:51:58.708Z",
+    "approvedBy": null,
+    "approvedAt": null,
+    "rejectedBy": null,
+    "rejectedAt": null,
+    "rejectionReason": null,
+    "evaluationHistory": [],
+    "statusHistory": [
+      {
+        "status": "pending_review",
+        "timestamp": "2026-09-18T06:51:58.708Z",
+        "actor": "Assessor-1789714318705 (MKA 9006)",
+        "note": "Initial evaluation submitted by assessor. Ready for managerial review."
+      }
+    ],
+    "createdAt": "2026-09-18T06:51:58.708Z"
+  }
+]

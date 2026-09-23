@@ -19,10 +19,6 @@ import {
 } from './rubric.js';
 import { recordStatusEvent } from './status-bus.js';
 
-// === CONFIGURATION ===
-// Paste your Make.com Webhook URL here
-const MAKE_WEBHOOK_URL = "https://hook.eu1.make.com/gayv3o78cvcz4cnu7gpyjp4c8udjrpig"; 
-
 export const handler = async (event, context) => {
   // CORS Headers
   const headers = {
@@ -142,32 +138,6 @@ export const handler = async (event, context) => {
 
     const connection = await connectToDatabase();
 
-    // Helper Function: Send Data to Make.com
-    const syncToWebhook = async (recordData, isResubmission = false) => {
-      if (process.env.NODE_ENV === 'test') return;
-      if (MAKE_WEBHOOK_URL && MAKE_WEBHOOK_URL !== "YOUR_MAKE_WEBHOOK_URL_HERE") {
-        try {
-          await fetch(MAKE_WEBHOOK_URL, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            signal: AbortSignal.timeout(3000),
-            body: JSON.stringify({
-              companyName: recordData.companyName,
-              deviceModel: recordData.deviceModel,
-              assessorId: recordData.assessorId,
-              assessorName: recordData.assessorName,
-              score: recordData.totalScore,
-              status: recordData.status,
-              isResubmission: isResubmission,
-              date: new Date().toISOString()
-            })
-          });
-        } catch (webhookError) {
-          console.error("Make.com Webhook Sync Failed:", webhookError.message || webhookError);
-        }
-      }
-    };
-
     // 4. Handle Re-submission of Rejected Records
     if (resubmitRecordId) {
       let existingToResubmit = null;
@@ -253,9 +223,6 @@ export const handler = async (event, context) => {
           actor: cleanAssessorName,
           note: 'Evaluation resubmitted after corrections'
         });
-
-        // Trigger Webhook for Resubmission
-        await syncToWebhook(updateFields, true);
 
         return {
           statusCode: 200,
@@ -494,9 +461,6 @@ export const handler = async (event, context) => {
       actor: cleanAssessorName,
       note: 'New evaluation submitted'
     });
-
-    // 8. Trigger Webhook for New Submission
-    await syncToWebhook(evaluationRecord, false);
 
     return {
       statusCode: 200,

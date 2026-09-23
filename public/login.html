@@ -258,75 +258,6 @@
       margin-top: 4px;
     }
 
-    .demo-creds-box {
-      margin-top: 24px;
-      padding: 14px;
-      background: var(--surface-subtle);
-      border: 1px dashed var(--border-color);
-      border-radius: 8px;
-      font-size: 12px;
-      color: #475569;
-    }
-
-    .demo-creds-title {
-      font-weight: 700;
-      color: #1E293B;
-      margin-bottom: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .demo-btn {
-      background: #E2E8F0;
-      border: none;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 11px;
-      font-weight: 600;
-      cursor: pointer;
-      color: #334155;
-      transition: background 0.15s ease;
-    }
-
-    .demo-btn:hover {
-      background: #CBD5E1;
-    }
-
-    .demo-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 6px;
-      margin-top: 8px;
-    }
-
-    .demo-card {
-      padding: 8px;
-      background: #FFFFFF;
-      border: 1px solid #E2E8F0;
-      border-radius: 6px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-
-    .demo-card:hover {
-      border-color: var(--primary);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    .demo-card strong {
-      display: block;
-      color: #0F172A;
-      font-size: 11px;
-    }
-
-    .demo-card span {
-      display: block;
-      color: var(--text-muted);
-      font-size: 10px;
-    }
-
     .footer-links {
       margin-top: 20px;
       text-align: center;
@@ -426,28 +357,6 @@
         </div>
       </form>
 
-      <!-- Quick Demo Access (for development / staging only) -->
-      <div id="demo-creds-container" class="demo-creds-box" style="display: none;">
-        <div class="demo-creds-title">
-          <span>Quick Demo Roles (Dev/Staging)</span>
-          <span style="font-weight: 500; font-size: 11px;">Click to auto-fill</span>
-        </div>
-        <div class="demo-grid">
-          <div class="demo-card" onclick="fillDemoCreds('assessor@trackscore.my', 'Asr_jBte-EKkG09Q!', 'assessor')">
-            <strong>Assessor Portal</strong>
-            <span>Inspection Matrix &amp; Submissions</span>
-          </div>
-          <div class="demo-card" onclick="fillDemoCreds('admin@trackscore.my', 'Mgr_I8bNjBLdEx7Y!', 'manager')">
-            <strong>Manager Dashboard</strong>
-            <span>Executive Operations &amp; Reviews</span>
-          </div>
-          <div class="demo-card" onclick="fillDemoCreds('vendor@fleetmatics.com', 'Vnd_sBcOvXlg_ESo!', 'vendor')">
-            <strong>Vendor Portal</strong>
-            <span>Inquiries &amp; Certificates</span>
-          </div>
-        </div>
-      </div>
-
       <div style="margin-top: 20px; padding: 12px 14px; background: #FFF7ED; border: 1px solid #FFEDD5; border-radius: 8px; text-align: center; font-size: 13px;">
         <span style="color: #9A3412;">Not a registered vendor yet?</span>
         <br />
@@ -497,20 +406,6 @@
       if (emailLabel) emailLabel.textContent = config.label;
       if (emailInput) emailInput.placeholder = config.placeholder;
       if (roleHint) roleHint.textContent = config.hint;
-    }
-
-    // Check environment / hostname to conditionally render demo credentials panel
-    // Only rendered in local development or preview environments, NEVER on production domains
-    function initDemoCredentialsVisibility() {
-      const hostname = window.location.hostname || '';
-      const isLocalhost = hostname === 'localhost' || hostname === '127.0.0.1';
-      const isStagingOrDev = hostname.includes('ais-dev-') || hostname.includes('staging') || hostname.includes('preview');
-      const queryOverride = new URLSearchParams(window.location.search).get('demo') === '1';
-
-      const demoContainer = document.getElementById('demo-creds-container');
-      if (demoContainer && (isLocalhost || isStagingOrDev || queryOverride)) {
-        demoContainer.style.display = 'block';
-      }
     }
 
     // Session-expiry check: Show banner if redirected due to expired token
@@ -565,19 +460,6 @@
         hideAlert();
       });
     });
-
-    function fillDemoCreds(email, password, role) {
-      document.getElementById('login-email').value = email;
-      document.getElementById('login-password').value = password;
-      const tab = document.querySelector(`.role-tab[data-role="${role}"]`);
-      if (tab) {
-        document.querySelectorAll('.role-tab').forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-        selectedRoleConstraint = role;
-        updateRoleInputConfig(selectedRoleConstraint);
-      }
-      hideAlert();
-    }
 
     function showAlert(message, type = 'error') {
       const alertBox = document.getElementById('alert-box');
@@ -681,7 +563,6 @@
 
     // Initialize on page load
     initRoleFromUrl();
-    initDemoCredentialsVisibility();
     checkSessionExpiryParam();
   </script>
 </body>

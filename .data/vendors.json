@@ -3,11 +3,56 @@
     "_id": "vendor_1789690124632_pl6s",
     "companyName": "Vendor A Logistics",
     "contactEmail": "vendor-a-1789690124630@test.my",
-    "passwordHash": "hash",
+    "passwordHash": "$2b$12$SzNO4N4xGanSVV.A37YmM.8HCzUbAtumETpKu53qbDBfeNHBUt0Ge",
     "linkedRegistrationIds": [
       "eval-vendor-a"
     ],
     "isActive": true,
-    "createdAt": "2026-09-18T00:08:44.632Z"
+    "createdAt": "2026-09-18T00:08:44.632Z",
+    "passwordUpdatedAt": "2026-09-23T02:21:05.040Z"
+  },
+  {
+    "_id": "vendor_1789714318386_2eh3",
+    "companyName": "Vendor A Logistics",
+    "contactEmail": "vendor-a-1789714318385@test.my",
+    "passwordHash": "$2b$12$Qtgw5/wL/GRnkoIK53RExuOjobfkQaOMUYMp.fJ5TEovGMt8sYyKC",
+    "linkedRegistrationIds": [
+      "eval-vendor-a"
+    ],
+    "isActive": true,
+    "createdAt": "2026-09-18T06:51:58.386Z",
+    "passwordUpdatedAt": "2026-09-23T02:21:05.389Z"
+  },
+  {
+    "_id": "vendor_fleetmatics_001",
+    "companyName": "Fleetmatics Telematics Sdn Bhd",
+    "contactEmail": "vendor@fleetmatics.com",
+    "passwordHash": "$2b$12$tOBdB.fYftE7UpusO1JNUe5mG4bSRTZPKg56oGLXDdMmp8lAND3Py",
+    "linkedRegistrationIds": [],
+    "isActive": true,
+    "createdAt": "2026-09-18T06:54:00.385Z",
+    "passwordUpdatedAt": "2026-09-23T02:21:05.714Z"
+  },
+  {
+    "_id": "vendor_apex_001",
+    "companyName": "Apex Telematics Solutions",
+    "contactEmail": "vendor@apex.com",
+    "passwordHash": "$2b$12$CEHd7K4iF1K0o4JUnFlPC.nznw82/AV2rgrV/fqYHzGdLNTpZJoMG",
+    "linkedRegistrationIds": [],
+    "isActive": true,
+    "createdAt": "2026-09-18T06:54:00.742Z",
+    "passwordUpdatedAt": "2026-09-23T02:21:06.022Z"
+  },
+  {
+    "_id": "vendor_1789714454204_zznw",
+    "companyName": "Vendor A Logistics",
+    "contactEmail": "vendor-a-1789714454204@test.my",
+    "passwordHash": "$2b$12$q/r.D9M1l2lViZE/2a6xP.5tKbciOBUkldDWOBdOl1zTDdGn2KHcS",
+    "linkedRegistrationIds": [
+      "eval-vendor-a"
+    ],
+    "isActive": true,
+    "createdAt": "2026-09-18T06:54:14.204Z",
+    "passwordUpdatedAt": "2026-09-23T02:21:06.346Z"
   }
 ]
