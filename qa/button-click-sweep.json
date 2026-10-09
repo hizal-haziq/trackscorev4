@@ -1,0 +1,1267 @@
+{
+  "generatedAt": "2026-10-01T02:23:06.365Z",
+  "method": "Native click probes with synthetic visibility and empty-form validation, separate from complete workflow assertions",
+  "results": [
+    {
+      "key": "landing.html:9",
+      "status": "native click probe passed",
+      "label": "",
+      "inline": ""
+    },
+    {
+      "key": "landing.html:23",
+      "status": "native click probe passed",
+      "label": "",
+      "inline": ""
+    },
+    {
+      "key": "landing.html:24",
+      "status": "native click probe passed",
+      "label": "Rating Standard",
+      "inline": ""
+    },
+    {
+      "key": "landing.html:25",
+      "status": "native click probe passed",
+      "label": "Evaluation Matrix",
+      "inline": ""
+    },
+    {
+      "key": "landing.html:26",
+      "status": "native click probe passed",
+      "label": "Packages",
+      "inline": ""
+    },
+    {
+      "key": "landing.html:27",
+      "status": "native click probe passed",
+      "label": "Process",
+      "inline": ""
+    },
+    {
+      "key": "landing.html:28",
+      "status": "native click probe passed",
+      "label": "Portals",
+      "inline": ""
+    },
+    {
+      "key": "login.html:1",
+      "status": "native click probe passed",
+      "label": "Assessor",
+      "inline": ""
+    },
+    {
+      "key": "login.html:2",
+      "status": "native click probe passed",
+      "label": "Manager",
+      "inline": ""
+    },
+    {
+      "key": "login.html:3",
+      "status": "native click probe passed",
+      "label": "Vendor",
+      "inline": ""
+    },
+    {
+      "key": "login.html:6",
+      "status": "native click probe passed",
+      "label": "",
+      "inline": ""
+    },
+    {
+      "key": "login.html:7",
+      "status": "native click probe passed",
+      "label": "Sign In",
+      "inline": ""
+    },
+    {
+      "key": "change-password.html:2",
+      "status": "native click probe passed",
+      "label": "👁️",
+      "inline": "togglePasswordVisibility('new-password', this)"
+    },
+    {
+      "key": "change-password.html:4",
+      "status": "native click probe passed",
+      "label": "👁️",
+      "inline": "togglePasswordVisibility('confirm-password', this)"
+    },
+    {
+      "key": "change-password.html:5",
+      "status": "native click probe passed",
+      "label": "Save Password & Continue",
+      "inline": ""
+    },
+    {
+      "key": "request-assessment.html:14",
+      "status": "native click probe passed",
+      "label": "Submit Assessment Inquiry •••",
+      "inline": ""
+    },
+    {
+      "key": "verify-certificate.html:5",
+      "status": "native click probe passed",
+      "label": "Verify",
+      "inline": ""
+    },
+    {
+      "key": "index.html:3",
+      "status": "native click probe passed",
+      "label": "Assessment Form",
+      "inline": "switchAssessorPortalTab('matrix')"
+    },
+    {
+      "key": "index.html:4",
+      "status": "native click probe passed",
+      "label": "My Submissions 0",
+      "inline": "switchAssessorPortalTab('submissions')"
+    },
+    {
+      "key": "index.html:5",
+      "status": "native click probe passed",
+      "label": "Peer Reviews",
+      "inline": "switchAssessorPortalTab('peer-review')"
+    },
+    {
+      "key": "index.html:6",
+      "status": "native click probe passed",
+      "label": "Drafts (0/3)",
+      "inline": ""
+    },
+    {
+      "key": "index.html:7",
+      "status": "native click probe passed",
+      "label": "Alerts 0",
+      "inline": "switchAssessorPortalTab('notifications')"
+    },
+    {
+      "key": "index.html:10",
+      "status": "native click probe passed",
+      "label": "Assessment Form (33 Items)",
+      "inline": "switchAssessorPortalTab('matrix')"
+    },
+    {
+      "key": "index.html:11",
+      "status": "native click probe passed",
+      "label": "My Submissions (0)",
+      "inline": "switchAssessorPortalTab('submissions')"
+    },
+    {
+      "key": "index.html:12",
+      "status": "native click probe passed",
+      "label": "Peer Reviews",
+      "inline": "switchAssessorPortalTab('peer-review')"
+    },
+    {
+      "key": "index.html:13",
+      "status": "native click probe passed",
+      "label": "Updates & Alerts 0",
+      "inline": "switchAssessorPortalTab('notifications')"
+    },
+    {
+      "key": "index.html:15",
+      "status": "native click probe passed",
+      "label": "New Assessment",
+      "inline": ""
+    },
+    {
+      "key": "index.html:16",
+      "status": "native click probe passed",
+      "label": "Save Draft",
+      "inline": ""
+    },
+    {
+      "key": "index.html:17",
+      "status": "native click probe passed",
+      "label": "Drafts (0/3)",
+      "inline": ""
+    },
+    {
+      "key": "index.html:18",
+      "status": "native click probe passed",
+      "label": "Clear Form",
+      "inline": ""
+    },
+    {
+      "key": "index.html:19",
+      "status": "native click probe passed",
+      "label": "Action",
+      "inline": ""
+    },
+    {
+      "key": "index.html:20",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "index.html:21",
+      "status": "native click probe passed",
+      "label": "All (0)",
+      "inline": ""
+    },
+    {
+      "key": "index.html:22",
+      "status": "native click probe passed",
+      "label": "Assigned (0)",
+      "inline": ""
+    },
+    {
+      "key": "index.html:23",
+      "status": "native click probe passed",
+      "label": "Changes Needed (0)",
+      "inline": ""
+    },
+    {
+      "key": "index.html:24",
+      "status": "native click probe passed",
+      "label": "Approved (0)",
+      "inline": ""
+    },
+    {
+      "key": "index.html:25",
+      "status": "native click probe passed",
+      "label": "Refresh",
+      "inline": ""
+    },
+    {
+      "key": "index.html:26",
+      "status": "native click probe passed",
+      "label": "Collapse",
+      "inline": ""
+    },
+    {
+      "key": "index.html:28",
+      "status": "native click probe passed",
+      "label": "Mark All Read",
+      "inline": ""
+    },
+    {
+      "key": "index.html:30",
+      "status": "native click probe passed",
+      "label": "Refresh",
+      "inline": "fetchAssessorSubmissions()"
+    },
+    {
+      "key": "index.html:31",
+      "status": "native click probe passed",
+      "label": "New Assessment",
+      "inline": "switchAssessorPortalTab('matrix')"
+    },
+    {
+      "key": "index.html:33",
+      "status": "native click probe passed",
+      "label": "Refresh",
+      "inline": "fetchPeerEvaluations()"
+    },
+    {
+      "key": "index.html:38",
+      "status": "native click probe passed",
+      "label": "Open Draft",
+      "inline": ""
+    },
+    {
+      "key": "index.html:39",
+      "status": "native click probe passed",
+      "label": "Delete Draft",
+      "inline": ""
+    },
+    {
+      "key": "index.html:40",
+      "status": "native click probe passed",
+      "label": "Dismiss",
+      "inline": ""
+    },
+    {
+      "key": "index.html:41",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "dismissFormAlert()"
+    },
+    {
+      "key": "index.html:49",
+      "status": "native click probe passed",
+      "label": "Save Draft",
+      "inline": ""
+    },
+    {
+      "key": "index.html:50",
+      "status": "native click probe passed",
+      "label": "Download PDF",
+      "inline": ""
+    },
+    {
+      "key": "index.html:51",
+      "status": "native click probe passed",
+      "label": "Submit Assessment",
+      "inline": ""
+    },
+    {
+      "key": "index.html:52",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "index.html:53",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": ""
+    },
+    {
+      "key": "index.html:54",
+      "status": "native click probe passed",
+      "label": "Submit Assessment",
+      "inline": ""
+    },
+    {
+      "key": "index.html:55",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "index.html:56",
+      "status": "native click probe passed",
+      "label": "➕ Start New Assessment",
+      "inline": ""
+    },
+    {
+      "key": "index.html:57",
+      "status": "native click probe passed",
+      "label": "💾 Save as New Draft",
+      "inline": ""
+    },
+    {
+      "key": "index.html:58",
+      "status": "native click probe passed",
+      "label": "📥 Download Drafts Backup",
+      "inline": ""
+    },
+    {
+      "key": "index.html:59",
+      "status": "native click probe passed",
+      "label": "📤 Restore Drafts Backup",
+      "inline": ""
+    },
+    {
+      "key": "index.html:61",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": ""
+    },
+    {
+      "key": "index.html:62",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "index.html:64",
+      "status": "native click probe passed",
+      "label": "Search",
+      "inline": ""
+    },
+    {
+      "key": "index.html:65",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": ""
+    },
+    {
+      "key": "index.html:66",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closePeerReviewModal()"
+    },
+    {
+      "key": "index.html:67",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closePeerReviewModal()"
+    },
+    {
+      "key": "index.html:68",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeAssessorOwnCommentsModal()"
+    },
+    {
+      "key": "index.html:69",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeAssessorOwnCommentsModal()"
+    },
+    {
+      "key": "index.html:70",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "index.html:71",
+      "status": "native click probe passed",
+      "label": "Print Report",
+      "inline": ""
+    },
+    {
+      "key": "index.html:72",
+      "status": "native click probe passed",
+      "label": "Download PDF",
+      "inline": ""
+    },
+    {
+      "key": "index.html:73",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": ""
+    },
+    {
+      "key": "index.html:74",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "index.html:75",
+      "status": "native click probe passed",
+      "label": "Dismiss for Now",
+      "inline": ""
+    },
+    {
+      "key": "index.html:76",
+      "status": "native click probe passed",
+      "label": "Start Assessment Now",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:5",
+      "status": "native click probe passed",
+      "label": "Sign Out",
+      "inline": "handleDashboardLogout()"
+    },
+    {
+      "key": "dashboard.html:6",
+      "status": "native click probe passed",
+      "label": "Team Accounts",
+      "inline": "openUserManagementModal()"
+    },
+    {
+      "key": "dashboard.html:12",
+      "status": "native click probe passed",
+      "label": "Try Again",
+      "inline": "fetchEvaluations()"
+    },
+    {
+      "key": "dashboard.html:13",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "dismissDashboardBanner()"
+    },
+    {
+      "key": "dashboard.html:14",
+      "status": "native click probe passed",
+      "label": "All Assessments 0",
+      "inline": "switchDashboardTab('evaluations')"
+    },
+    {
+      "key": "dashboard.html:15",
+      "status": "native click probe passed",
+      "label": "Companies & Assignments 0",
+      "inline": "switchDashboardTab('registered_customers')"
+    },
+    {
+      "key": "dashboard.html:16",
+      "status": "native click probe passed",
+      "label": "Applications & Inquiries 0",
+      "inline": "switchDashboardTab('inquiries')"
+    },
+    {
+      "key": "dashboard.html:17",
+      "status": "native click probe passed",
+      "label": "Assessor Workload 0",
+      "inline": "switchDashboardTab('workload')"
+    },
+    {
+      "key": "dashboard.html:25",
+      "status": "native click probe passed",
+      "label": "Refresh",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:27",
+      "status": "native click probe passed",
+      "label": "Download as CSV",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:28",
+      "status": "native click probe passed",
+      "label": "Download All as PDF",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:29",
+      "status": "native click probe passed",
+      "label": "Create Vendor Login",
+      "inline": "openDirectVendorCredentialModal()"
+    },
+    {
+      "key": "dashboard.html:30",
+      "status": "native click probe passed",
+      "label": "← Previous",
+      "inline": "goToPage(currentPage - 1)"
+    },
+    {
+      "key": "dashboard.html:31",
+      "status": "native click probe passed",
+      "label": "Next →",
+      "inline": "goToPage(currentPage + 1)"
+    },
+    {
+      "key": "dashboard.html:35",
+      "status": "native click probe passed",
+      "label": "Refresh",
+      "inline": "fetchRegisteredCustomers()"
+    },
+    {
+      "key": "dashboard.html:36",
+      "status": "native click probe passed",
+      "label": "Register Customer",
+      "inline": "openRegisterCustomerModal()"
+    },
+    {
+      "key": "dashboard.html:37",
+      "status": "native click probe passed",
+      "label": "Generate Vendor Credentials",
+      "inline": "openDirectVendorCredentialModal()"
+    },
+    {
+      "key": "dashboard.html:40",
+      "status": "native click probe passed",
+      "label": "Refresh",
+      "inline": "fetchInquiries()"
+    },
+    {
+      "key": "dashboard.html:45",
+      "status": "native click probe passed",
+      "label": "Refresh Workloads",
+      "inline": "fetchAssessorWorkload(false)"
+    },
+    {
+      "key": "dashboard.html:46",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:47",
+      "status": "native click probe passed",
+      "label": "Audit & Review",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:48",
+      "status": "native click probe passed",
+      "label": "Print Report",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:49",
+      "status": "native click probe passed",
+      "label": "Download Report (PDF)",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:50",
+      "status": "native click probe passed",
+      "label": "Close Viewer",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:51",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:52",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:53",
+      "status": "native click probe passed",
+      "label": "Version History",
+      "inline": "openAssessmentHistoryModal()"
+    },
+    {
+      "key": "dashboard.html:54",
+      "status": "native click probe passed",
+      "label": "Risk Signals",
+      "inline": "openRiskDetailsModal()"
+    },
+    {
+      "key": "dashboard.html:55",
+      "status": "native click probe passed",
+      "label": "Vendor Credentials (.txt / .tst)",
+      "inline": "if (activeEvaluation) openVendorCredentialForRecord(activeEvaluation._id || activeEvaluation.id, activeEvaluation.companyName, activeEvaluation.contactEmail, activeEvaluation.contactPhone)"
+    },
+    {
+      "key": "dashboard.html:56",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeAssessmentHistoryModal()"
+    },
+    {
+      "key": "dashboard.html:57",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeAssessmentHistoryModal()"
+    },
+    {
+      "key": "dashboard.html:58",
+      "status": "native click probe passed",
+      "label": "← Back",
+      "inline": "closeVersionDetailModal(); openAssessmentHistoryModal();"
+    },
+    {
+      "key": "dashboard.html:59",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeVersionDetailModal()"
+    },
+    {
+      "key": "dashboard.html:60",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeVersionDetailModal()"
+    },
+    {
+      "key": "dashboard.html:61",
+      "status": "native click probe passed",
+      "label": "← Back",
+      "inline": "closeVersionDiffModal(); openAssessmentHistoryModal();"
+    },
+    {
+      "key": "dashboard.html:62",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeVersionDiffModal()"
+    },
+    {
+      "key": "dashboard.html:64",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeVersionDiffModal()"
+    },
+    {
+      "key": "dashboard.html:65",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeRiskModal()"
+    },
+    {
+      "key": "dashboard.html:66",
+      "status": "native click probe passed",
+      "label": "Re-evaluate Risk",
+      "inline": "recalculateCurrentRisk()"
+    },
+    {
+      "key": "dashboard.html:67",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeRiskModal()"
+    },
+    {
+      "key": "dashboard.html:68",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:69",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "document.getElementById('edit-form-alert').style.display='none'"
+    },
+    {
+      "key": "dashboard.html:79",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:80",
+      "status": "native click probe passed",
+      "label": "Save Changes",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:81",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:82",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:83",
+      "status": "native click probe passed",
+      "label": "Archive Record",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:84",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeApproveConfirmModal()"
+    },
+    {
+      "key": "dashboard.html:86",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeApproveConfirmModal()"
+    },
+    {
+      "key": "dashboard.html:87",
+      "status": "native click probe passed",
+      "label": "Confirm & Approve",
+      "inline": "executeConfirmedApproval()"
+    },
+    {
+      "key": "dashboard.html:88",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeRejectionModal()"
+    },
+    {
+      "key": "dashboard.html:90",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeRejectionModal()"
+    },
+    {
+      "key": "dashboard.html:91",
+      "status": "native click probe passed",
+      "label": "Confirm & Return for Revision",
+      "inline": "executeRejection()"
+    },
+    {
+      "key": "dashboard.html:92",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeConvertInquiryModal()"
+    },
+    {
+      "key": "dashboard.html:97",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeConvertInquiryModal()"
+    },
+    {
+      "key": "dashboard.html:98",
+      "status": "native click probe passed",
+      "label": "✓ Convert to Registered Customer",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:99",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeDismissInquiryModal()"
+    },
+    {
+      "key": "dashboard.html:101",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeDismissInquiryModal()"
+    },
+    {
+      "key": "dashboard.html:102",
+      "status": "native click probe passed",
+      "label": "Confirm Dismissal",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:103",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeRegisterCustomerModal()"
+    },
+    {
+      "key": "dashboard.html:114",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeRegisterCustomerModal()"
+    },
+    {
+      "key": "dashboard.html:115",
+      "status": "native click probe passed",
+      "label": "Create Registration",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:116",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeScheduleModal()"
+    },
+    {
+      "key": "dashboard.html:121",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeScheduleModal()"
+    },
+    {
+      "key": "dashboard.html:122",
+      "status": "native click probe passed",
+      "label": "Confirm Schedule",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:123",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeAssignTaskModal()"
+    },
+    {
+      "key": "dashboard.html:128",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeAssignTaskModal()"
+    },
+    {
+      "key": "dashboard.html:129",
+      "status": "native click probe passed",
+      "label": "Assign Task to Assessor",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:130",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeAssessorDetailModal()"
+    },
+    {
+      "key": "dashboard.html:131",
+      "status": "native click probe passed",
+      "label": "Filter in Evaluations Repository",
+      "inline": "viewAssessorInEvaluations()"
+    },
+    {
+      "key": "dashboard.html:132",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeAssessorDetailModal()"
+    },
+    {
+      "key": "dashboard.html:133",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeManageInvoiceModal()"
+    },
+    {
+      "key": "dashboard.html:139",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeManageInvoiceModal()"
+    },
+    {
+      "key": "dashboard.html:140",
+      "status": "native click probe passed",
+      "label": "Save Invoice Details",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:141",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeDirectVendorCredentialModal()"
+    },
+    {
+      "key": "dashboard.html:146",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeDirectVendorCredentialModal()"
+    },
+    {
+      "key": "dashboard.html:147",
+      "status": "native click probe passed",
+      "label": "Generate Credentials (.txt / .tst) →",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:148",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeVendorInviteModal()"
+    },
+    {
+      "key": "dashboard.html:149",
+      "status": "native click probe passed",
+      "label": "Copy",
+      "inline": "copyLoginEmail()"
+    },
+    {
+      "key": "dashboard.html:150",
+      "status": "native click probe passed",
+      "label": "Copy",
+      "inline": "copyLoginPassword()"
+    },
+    {
+      "key": "dashboard.html:151",
+      "status": "native click probe passed",
+      "label": "Download as .txt",
+      "inline": "downloadVendorCredentials('txt')"
+    },
+    {
+      "key": "dashboard.html:152",
+      "status": "native click probe passed",
+      "label": "Download as .tst",
+      "inline": "downloadVendorCredentials('tst')"
+    },
+    {
+      "key": "dashboard.html:153",
+      "status": "native click probe passed",
+      "label": "Copy All to Clipboard",
+      "inline": "copyVendorCredentialsToClipboard()"
+    },
+    {
+      "key": "dashboard.html:154",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeVendorInviteModal()"
+    },
+    {
+      "key": "dashboard.html:155",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeSendPreFinalModal()"
+    },
+    {
+      "key": "dashboard.html:159",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeSendPreFinalModal()"
+    },
+    {
+      "key": "dashboard.html:160",
+      "status": "native click probe passed",
+      "label": "Send Pre-Final Result",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:161",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeVerifyPaymentModal()"
+    },
+    {
+      "key": "dashboard.html:168",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeVerifyPaymentModal()"
+    },
+    {
+      "key": "dashboard.html:169",
+      "status": "native click probe passed",
+      "label": "Confirm Payment Verification",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:170",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closePreFinalEmailViewModal()"
+    },
+    {
+      "key": "dashboard.html:171",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closePreFinalEmailViewModal()"
+    },
+    {
+      "key": "dashboard.html:172",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeCertificateModal()"
+    },
+    {
+      "key": "dashboard.html:182",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeCertificateModal()"
+    },
+    {
+      "key": "dashboard.html:183",
+      "status": "native click probe passed",
+      "label": "Confirm Step",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:184",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeUserManagementModal()"
+    },
+    {
+      "key": "dashboard.html:186",
+      "status": "native click probe passed",
+      "label": "",
+      "inline": "toggleBannerPasswordMask()"
+    },
+    {
+      "key": "dashboard.html:187",
+      "status": "native click probe passed",
+      "label": "Copy PW",
+      "inline": "copyNewUserTempPassword()"
+    },
+    {
+      "key": "dashboard.html:188",
+      "status": "native click probe passed",
+      "label": "Send via WhatsApp",
+      "inline": "shareCredentialsViaWhatsApp()"
+    },
+    {
+      "key": "dashboard.html:189",
+      "status": "native click probe passed",
+      "label": "Send via Email",
+      "inline": "shareCredentialsViaEmail()"
+    },
+    {
+      "key": "dashboard.html:190",
+      "status": "native click probe passed",
+      "label": "Copy Full Message",
+      "inline": "copyFullCredentialsMessage()"
+    },
+    {
+      "key": "dashboard.html:195",
+      "status": "native click probe passed",
+      "label": "Suggest Password",
+      "inline": "generateAndSetPassword()"
+    },
+    {
+      "key": "dashboard.html:197",
+      "status": "native click probe passed",
+      "label": "",
+      "inline": "togglePasswordVisibility('staff-password-input', 'icon-pw-eye')"
+    },
+    {
+      "key": "dashboard.html:199",
+      "status": "native click probe passed",
+      "label": "+ Create Account & Share",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:200",
+      "status": "native click probe passed",
+      "label": "Refresh List",
+      "inline": "loadStaffUsersList()"
+    },
+    {
+      "key": "dashboard.html:201",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeUserManagementModal()"
+    },
+    {
+      "key": "dashboard.html:202",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeResetPasswordModal()"
+    },
+    {
+      "key": "dashboard.html:203",
+      "status": "native click probe passed",
+      "label": "Suggest Password",
+      "inline": "generateResetModalPassword()"
+    },
+    {
+      "key": "dashboard.html:205",
+      "status": "native click probe passed",
+      "label": "",
+      "inline": "togglePasswordVisibility('reset-password-input', 'icon-reset-eye')"
+    },
+    {
+      "key": "dashboard.html:207",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeResetPasswordModal()"
+    },
+    {
+      "key": "dashboard.html:208",
+      "status": "native click probe passed",
+      "label": "Update & Share Credentials",
+      "inline": ""
+    },
+    {
+      "key": "dashboard.html:209",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeDeleteUserModal()"
+    },
+    {
+      "key": "dashboard.html:210",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeDeleteUserModal()"
+    },
+    {
+      "key": "dashboard.html:211",
+      "status": "native click probe passed",
+      "label": "Delete Account",
+      "inline": "executeDeleteUser()"
+    },
+    {
+      "key": "vendor-portal.html:2",
+      "status": "native click probe passed",
+      "label": "📊 Assessments",
+      "inline": "switchMainTab('evaluations')"
+    },
+    {
+      "key": "vendor-portal.html:3",
+      "status": "native click probe passed",
+      "label": "👤 Company Profile",
+      "inline": "openProfileModal()"
+    },
+    {
+      "key": "vendor-portal.html:4",
+      "status": "native click probe passed",
+      "label": "🔔 0",
+      "inline": "openNotificationsModal()"
+    },
+    {
+      "key": "vendor-portal.html:5",
+      "status": "native click probe passed",
+      "label": "Sign Out",
+      "inline": "handleVendorLogout()"
+    },
+    {
+      "key": "vendor-portal.html:6",
+      "status": "native click probe passed",
+      "label": "Return to Sign In",
+      "inline": "window.location.href='/login.html'"
+    },
+    {
+      "key": "vendor-portal.html:7",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeModal('modal-history')"
+    },
+    {
+      "key": "vendor-portal.html:8",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeModal('modal-history')"
+    },
+    {
+      "key": "vendor-portal.html:9",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeModal('modal-documents')"
+    },
+    {
+      "key": "vendor-portal.html:13",
+      "status": "native click probe passed",
+      "label": "Upload Document",
+      "inline": ""
+    },
+    {
+      "key": "vendor-portal.html:14",
+      "status": "native click probe passed",
+      "label": "Done",
+      "inline": "closeModal('modal-documents')"
+    },
+    {
+      "key": "vendor-portal.html:15",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeModal('modal-resubmit')"
+    },
+    {
+      "key": "vendor-portal.html:18",
+      "status": "native click probe passed",
+      "label": "Submit Revision & Queue for Inspection",
+      "inline": ""
+    },
+    {
+      "key": "vendor-portal.html:19",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeModal('modal-resubmit')"
+    },
+    {
+      "key": "vendor-portal.html:20",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeModal('modal-payment')"
+    },
+    {
+      "key": "vendor-portal.html:26",
+      "status": "native click probe passed",
+      "label": "Submit Payment Details for Verification",
+      "inline": ""
+    },
+    {
+      "key": "vendor-portal.html:27",
+      "status": "native click probe passed",
+      "label": "Cancel",
+      "inline": "closeModal('modal-payment')"
+    },
+    {
+      "key": "vendor-portal.html:28",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeModal('modal-profile')"
+    },
+    {
+      "key": "vendor-portal.html:29",
+      "status": "native click probe passed",
+      "label": "Company Information",
+      "inline": "switchProfileTab('info')"
+    },
+    {
+      "key": "vendor-portal.html:30",
+      "status": "native click probe passed",
+      "label": "Change Password",
+      "inline": "switchProfileTab('pwd')"
+    },
+    {
+      "key": "vendor-portal.html:37",
+      "status": "native click probe passed",
+      "label": "Save Profile Changes",
+      "inline": ""
+    },
+    {
+      "key": "vendor-portal.html:41",
+      "status": "native click probe passed",
+      "label": "Update Password",
+      "inline": ""
+    },
+    {
+      "key": "vendor-portal.html:42",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeModal('modal-profile')"
+    },
+    {
+      "key": "vendor-portal.html:43",
+      "status": "native click probe passed",
+      "label": "×",
+      "inline": "closeModal('modal-notifications')"
+    },
+    {
+      "key": "vendor-portal.html:44",
+      "status": "native click probe passed",
+      "label": "Close",
+      "inline": "closeModal('modal-notifications')"
+    }
+  ],
+  "errors": []
+}

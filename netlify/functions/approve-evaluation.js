@@ -8,9 +8,10 @@
  * - Appends audit action to evaluationHistory
  */
 
-import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js';
+import { connectToDatabase, COLLECTION_NAME, COLLECTION_VERSIONS, buildMongoIdFilter, findAssessmentVersion } from './db.js';
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { recordStatusEvent } from './status-bus.js';
+import { calculateAssessmentSla } from './sla.js';
 
 export const handler = async (event, context) => {
   const headers = {
@@ -62,6 +63,15 @@ export const handler = async (event, context) => {
       };
     }
 
+    const submittedReviewComment = payload.managerReviewComment ?? payload.reviewComment;
+    if (submittedReviewComment !== undefined && (typeof submittedReviewComment !== 'string' || submittedReviewComment.length > 2000)) {
+      return {
+        statusCode: 400,
+        headers,
+        body: JSON.stringify({ success: false, error: 'Manager review comment must be text of at most 2000 characters.' })
+      };
+    }
+
     const connection = await connectToDatabase();
     const nowIso = new Date().toISOString();
     const managerIdentifier = (payload.managerName || payload.approvedBy || payload.rejectedBy || roleCheck.user?.name || 'Operations Manager').trim();
@@ -79,7 +89,7 @@ export const handler = async (event, context) => {
       existing = await connection.getEvaluationById(id);
     }
 
-    if (!existing) {
+    if (!existing || existing.deletedAt) {
       return {
         statusCode: 404,
         headers,
@@ -89,55 +99,21 @@ export const handler = async (event, context) => {
 
     const currentStatus = (existing.status || 'pending_review').toLowerCase();
 
-    // Check if pre-final should be skipped
-    const hasExplicitSkip = payload.preFinalSkipped !== undefined || payload.skipPreFinal !== undefined || payload.skip !== undefined;
-    const isPreFinalSkipped = hasExplicitSkip
-      ? Boolean(payload.preFinalSkipped || payload.skipPreFinal || payload.skip)
-      : Boolean(existing.preFinalSkipped || existing.preFinalResult?.isSkipped);
-
-    // Determine requested action: 'approved' | 'completed' | 'rejected' | or specific lifecycle status
-    const rawAction = String(payload.action || payload.status || '').trim().toLowerCase();
-    let targetStatus = payload.targetStatus || null;
-
-    if (!targetStatus) {
-      if (rawAction === 'approve' || rawAction === 'approved' || rawAction === '') {
-        if (currentStatus === 'pending_review' || currentStatus === 'submitted') {
-          // Approving assessor score advances pending_review/submitted records to 'pre_final_sent',
-          // or maintains 'pending_review' if pre-final is flagged as skipped
-          targetStatus = isPreFinalSkipped ? 'pending_review' : 'pre_final_sent';
-        } else if (currentStatus === 'certificate_issued') {
-          // If certificate is already issued and signed, approve can transition to completed
-          targetStatus = 'completed';
-        } else {
-          targetStatus = currentStatus;
-        }
-      } else if (rawAction === 'completed') {
-        // If current status is pending_review or submitted, it CANNOT jump directly to completed
-        if (currentStatus === 'pending_review' || currentStatus === 'submitted') {
-          targetStatus = isPreFinalSkipped ? 'pending_review' : 'pre_final_sent';
-        } else {
-          targetStatus = 'completed';
-        }
-      } else if (rawAction === 'reject' || rawAction === 'rejected') {
-        targetStatus = 'rejected';
-      } else if (['registered', 'scheduled', 'submitted', 'pending_review', 'pre_final_sent', 'payment_confirmed', 'certificate_issued', 'completed'].includes(rawAction)) {
-        targetStatus = rawAction;
-      } else {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({
-            error: `Invalid status or action "${rawAction}". Permitted values: "approved", "rejected", or a valid lifecycle stage.`
-          })
-        };
+    const rawAction = String(payload.action || payload.status || 'approve').trim().toLowerCase();
+    let targetStatus;
+    if (['approve', 'approved'].includes(rawAction)) {
+      if (!['pending_review', 'submitted'].includes(currentStatus)) {
+        return { statusCode: 400, headers, body: JSON.stringify({ error: 'Only a submitted assessment awaiting review can be approved.' }) };
       }
-    } else {
-      // If targetStatus was explicitly provided but current status is pending_review or submitted and targetStatus is 'completed',
-      // prevent the premature jump to 'completed' and transition to 'pre_final_sent' (or 'pending_review' if pre-final is skipped)
-      if ((currentStatus === 'pending_review' || currentStatus === 'submitted') && targetStatus === 'completed') {
-        targetStatus = isPreFinalSkipped ? 'pending_review' : 'pre_final_sent';
+      targetStatus = 'approved';
+      const version = Number(existing.currentVersion);
+      const snapshot = Number.isInteger(version) && version > 0
+        ? await findAssessmentVersion(connection, id, version) : null;
+      if (!snapshot || !Array.isArray(snapshot.breakdown) || snapshot.breakdown.length !== 33) {
+        return { statusCode: 400, headers, body: JSON.stringify({ error: 'A complete assessment version is required before approval.' }) };
       }
-    }
+    } else if (['reject', 'rejected'].includes(rawAction)) targetStatus = 'rejected';
+    else return { statusCode: 400, headers, body: JSON.stringify({ error: 'Use approve or reject. Certificate steps are managed separately.' }) };
 
     // Validate rejection reason when status is rejected
     const rejectionReason = (payload.rejectionReason || payload.reason || '').trim();
@@ -151,50 +127,13 @@ export const handler = async (event, context) => {
           })
         };
       }
-      // Enforce lifecycle rule: rejection is only reachable from pending_review or pre_final_sent
-      if (currentStatus !== 'pending_review' && currentStatus !== 'pre_final_sent') {
+      // Requests for changes apply to submitted assessments awaiting review.
+      if (!['pending_review', 'submitted'].includes(currentStatus)) {
         return {
           statusCode: 400,
           headers,
           body: JSON.stringify({
-            error: `Rejection is only permitted for evaluations in "pending_review" or "pre_final_sent" status (current status: "${existing.status || 'pending_review'}").`
-          })
-        };
-      }
-    }
-
-    // STRICT BACKEND GUARD: Prevent premature jump to 'completed'
-    // An evaluation CANNOT be marked as completed unless:
-    // 1. payment.status === 'paid' (or 'waived')
-    // 2. certificate.signedDate exists
-    // 3. certificate.signedBy exists
-    if (targetStatus === 'completed') {
-      const isPaid = existing.payment && (existing.payment.status === 'paid' || existing.payment.status === 'waived');
-      const hasSignedCert = Boolean(
-        existing.certificate &&
-        existing.certificate.signedDate &&
-        existing.certificate.signedBy
-      );
-
-      if (!isPaid || !hasSignedCert) {
-        const missingReasons = [];
-        if (!isPaid) {
-          missingReasons.push(`payment must be verified as "paid" (current status: "${existing.payment?.status || 'unpaid'}")`);
-        }
-        if (!hasSignedCert) {
-          if (!existing.certificate) {
-            missingReasons.push('official certificate has not been prepared or issued');
-          } else {
-            if (!existing.certificate.signedDate) missingReasons.push('certificate lacks official signedDate');
-            if (!existing.certificate.signedBy) missingReasons.push('certificate lacks authorized signatory (signedBy)');
-          }
-        }
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({
-            success: false,
-            error: `Cannot mark evaluation as completed: ${missingReasons.join(' and ')}.`
+            error: `Rejection is only permitted for evaluations awaiting review (current status: "${existing.status}").`
           })
         };
       }
@@ -206,52 +145,27 @@ export const handler = async (event, context) => {
     let statusHistoryEntry = {};
 
     if (targetStatus !== 'rejected') {
-      const isAdvanceToPreFinal = targetStatus === 'pre_final_sent';
+      const approvedVersionNumber = Number(existing.currentVersion);
 
       updateFields = {
         status: targetStatus,
+        approvedVersion: approvedVersionNumber,
         scoreApprovedBy: managerIdentifier,
         scoreApprovedAt: nowIso,
         approvedBy: managerIdentifier,
         approvedAt: nowIso,
         statusChangedAt: nowIso,
-        preFinalSkipped: isPreFinalSkipped,
         rejectionReason: null,
         rejectedBy: null,
         rejectedAt: null
       };
 
-      if (isAdvanceToPreFinal) {
-        updateFields.preFinalResult = {
-          sent: true,
-          sentDate: nowIso,
-          recipientEmail: (payload.recipientEmail || existing.contactEmail || 'customer@telematics.com').trim(),
-          notes: payload.note || 'Assessor evaluation score approved by manager. Advanced to pre-final notification.',
-          sentBy: managerIdentifier,
-          isSkipped: false
-        };
-      } else if (isPreFinalSkipped) {
-        updateFields.preFinalResult = {
-          sent: false,
-          sentDate: null,
-          recipientEmail: (payload.recipientEmail || existing.contactEmail || 'customer@telematics.com').trim(),
-          notes: payload.note || 'Pre-final result review skipped by manager.',
-          sentBy: managerIdentifier,
-          skippedBy: managerIdentifier,
-          skippedAt: nowIso,
-          isSkipped: true
-        };
-      }
-
-      const defaultNote = isAdvanceToPreFinal
-        ? 'Assessor evaluation score approved by manager. Advanced to pre-final stage (pre_final_sent).'
-        : isPreFinalSkipped
-          ? 'Assessor evaluation score approved by manager (pre-final skipped, ready for payment verification).'
-          : (targetStatus === 'completed' ? 'Evaluation status moved to completed by manager.' : `Evaluation status moved to ${targetStatus} by manager.`);
+      const defaultNote = `Assessment version ${approvedVersionNumber} approved by Manager. Ready for certificate preparation.`;
 
       historyEntry = {
         action: targetStatus,
         timestamp: nowIso,
+        version: approvedVersionNumber,
         changedBy: managerIdentifier,
         note: payload.note || defaultNote
       };
@@ -292,6 +206,19 @@ export const handler = async (event, context) => {
       };
     }
 
+    // Keep managerial review separate from the immutable technical assessment.
+    // Vendor responses use explicit allowlists and do not expose this field.
+    if (submittedReviewComment !== undefined) {
+      updateFields.managerReviewComment = submittedReviewComment.trim();
+      historyEntry.managerReviewComment = updateFields.managerReviewComment;
+    }
+
+    // Compute updated SLA state
+    const mergedDoc = { ...existing, ...updateFields };
+    const sla = calculateAssessmentSla(mergedDoc);
+    updateFields.slaStatus = sla.status;
+    updateFields.slaDeadline = existing.slaDeadline || sla.deadline;
+
     // Apply update to persistent storage
     if (connection.isMongoAtlas) {
       await collection.updateOne(filter, {
@@ -308,8 +235,8 @@ export const handler = async (event, context) => {
         await collection.updateOne(buildMongoIdFilter(linkedRegId), {
           $set: {
             status: targetStatus,
-            preFinalSkipped: updateFields.preFinalSkipped,
-            preFinalResult: updateFields.preFinalResult,
+            slaStatus: updateFields.slaStatus,
+            slaDeadline: updateFields.slaDeadline,
             approvedBy: updateFields.approvedBy,
             approvedAt: updateFields.approvedAt,
             statusChangedAt: nowIso
@@ -319,6 +246,28 @@ export const handler = async (event, context) => {
       }
     } else {
       await connection.updateEvaluation(id, updateFields, historyEntry, statusHistoryEntry);
+    }
+
+    if (targetStatus !== 'rejected' && updateFields.approvedVersion) {
+      try {
+        if (connection.isMongoAtlas) {
+          await connection.db.collection(COLLECTION_VERSIONS).updateOne(
+            { evaluationId: String(id), versionNumber: Number(updateFields.approvedVersion) },
+            { $set: { isApprovedVersion: true, approvedAt: nowIso, approvedBy: managerIdentifier } }
+          );
+        } else {
+          // If local store has versions
+          const versions = await connection.getAssessmentVersions?.(id) || [];
+          const targetV = versions.find(v => Number(v.versionNumber) === Number(updateFields.approvedVersion));
+          if (targetV) {
+            targetV.isApprovedVersion = true;
+            targetV.approvedAt = nowIso;
+            targetV.approvedBy = managerIdentifier;
+          }
+        }
+      } catch (verErr) {
+        console.warn('Failed to tag version document as approved:', verErr.message);
+      }
     }
 
     // Broadcast status change event for SSE streams and polling listeners
@@ -334,10 +283,18 @@ export const handler = async (event, context) => {
         ratingLabel: existing.ratingLabel || '',
         createdAt: existing.createdAt || null,
         status: targetStatus,
-        preFinalSkipped: updateFields.preFinalSkipped,
+        slaStatus: sla.status,
+        sla: {
+          status: sla.status,
+          label: sla.label,
+          deadline: sla.deadline,
+          remainingFormatted: sla.remainingFormatted,
+          isCompleted: sla.isCompleted
+        },
         rejectionReason: updateFields.rejectionReason || null,
         approvedBy: updateFields.approvedBy || null,
         approvedAt: updateFields.approvedAt || null,
+        approvedVersion: updateFields.approvedVersion || null,
         rejectedBy: updateFields.rejectedBy || null,
         rejectedAt: updateFields.rejectedAt || null,
         statusChangedAt: nowIso
@@ -353,23 +310,17 @@ export const handler = async (event, context) => {
         success: true,
         id,
         status: targetStatus,
+        approvedVersion: updateFields.approvedVersion || null,
+        sla,
         statusChangedAt: nowIso,
-        preFinalSkipped: updateFields.preFinalSkipped !== undefined ? updateFields.preFinalSkipped : isPreFinalSkipped,
-        preFinalResult: updateFields.preFinalResult || existing.preFinalResult || null,
         approvedBy: updateFields.approvedBy || null,
         approvedAt: updateFields.approvedAt || null,
         rejectedBy: updateFields.rejectedBy || null,
         rejectedAt: updateFields.rejectedAt || null,
         rejectionReason: updateFields.rejectionReason || null,
         message: targetStatus === 'rejected'
-          ? `Evaluation "${id}" rejected with reason recorded.`
-          : (targetStatus === 'pre_final_sent'
-            ? `Evaluation score for "${id}" approved successfully. Advanced to Pre-Final notification stage.`
-            : (isPreFinalSkipped
-              ? `Evaluation score for "${id}" approved with pre-final stage skipped. Ready for payment verification.`
-              : (targetStatus === 'completed'
-                ? `Evaluation "${id}" approved successfully and marked as completed.`
-                : `Evaluation "${id}" status updated to "${targetStatus}".`)))
+          ? 'Changes requested from the Assessor.'
+          : 'Assessment approved. Ready for certificate preparation.'
       })
     };
   } catch (error) {
@@ -379,7 +330,7 @@ export const handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: false,
-        error: error.message || 'Internal Server Error during evaluation status update'
+        error: 'Internal Server Error during evaluation status update'
       })
     };
   }

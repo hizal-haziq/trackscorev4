@@ -1,0 +1,54 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { pathToFileURL } from 'node:url';
+
+const root = path.resolve(import.meta.dirname, '..');
+const state = JSON.parse(fs.readFileSync(path.join(root, 'qa/full-system-state.json')));
+const base = `http://127.0.0.1:${state.port}`;
+const evalFile = path.join(state.sandbox, '.data/evaluations.json');
+const rows = JSON.parse(fs.readFileSync(evalFile, 'utf8'));
+const id = 'dddddddddddddddddddddddd';
+const source = rows.find(record => record.status === 'completed');
+assert.ok(source);
+fs.writeFileSync(evalFile, JSON.stringify([...rows.filter(record => record._id !== id), { ...source, _id: id, companyName: 'Email Simulation QA', contactEmail: 'email-simulation@audit.test', status: 'pending_review', certificate: undefined, payment: { status: 'unpaid' }, preFinalResult: undefined }], null, 2));
+
+const { chromium } = await import(pathToFileURL(path.join(os.tmpdir(), 'trackscore-audit-tools/node_modules/playwright-core/index.mjs')));
+const browser = await chromium.launch({ executablePath: 'C:/Program Files/Google/Chrome/Application/chrome.exe', headless: true });
+const page = await browser.newPage();
+const errors = [], failed = [];
+page.on('pageerror', error => errors.push(error.message));
+page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
+page.on('response', response => { if (response.status() >= 400) failed.push({ status: response.status(), path: new URL(response.url()).pathname }); });
+try {
+  await page.goto(`${base}/login.html?role=manager`);
+  await page.locator('#login-email').fill('workflow-manager@audit.test');
+  await page.locator('#login-password').fill('WorkflowValidation42!');
+  await page.locator('#btn-login-submit').click();
+  await page.waitForURL('**/dashboard.html');
+  const token = await page.evaluate(() => localStorage.getItem('trackscore_token'));
+  const invalidResponse = await page.request.post(`${base}/.netlify/functions/send-pre-final`, { headers: { Authorization: `Bearer ${token}` }, data: { id, recipientEmail: 'invalid-recipient' } });
+  const invalidBody = await invalidResponse.json();
+  assert.equal(invalidResponse.status(), 400);
+  assert.match(invalidBody.error, /valid recipient email/i);
+  assert.equal(JSON.parse(fs.readFileSync(evalFile, 'utf8')).find(record => record._id === id).status, 'pending_review');
+  await page.locator('#tab-btn-evaluations').click();
+  await page.evaluate(id => eval(`evaluationsList.push({ _id: '${id}', companyName: 'Email Simulation QA', deviceModel: 'Simulation Gateway', totalScore: 4, starsCount: 4, ratingLabel: 'Compliant', status: 'pending_review', contactEmail: 'email-simulation@audit.test' })`), id);
+  await page.evaluate(id => openSendPreFinalModal(id), id);
+  await page.locator('#send-pre-final-modal').waitFor({ state: 'visible' });
+  await page.locator('#pre-final-email-input').fill('email-simulation@audit.test');
+  const responseWait = page.waitForResponse(response => response.url().includes('/send-pre-final') && response.request().method() === 'POST');
+  await page.locator('#btn-submit-pre-final').click();
+  const response = await responseWait;
+  const result = await response.json();
+  assert.ok(response.ok());
+  assert.match(result.message, /simulation only; no email was sent/i);
+  assert.equal(result.simulatedEmail.to, 'email-simulation@audit.test');
+  assert.match(result.simulatedEmail.body, /email-simulation@audit\.test/);
+  assert.ok(!JSON.stringify(result).includes('WorkflowValidation42!'));
+  await page.getByText('Pre-final notice prepared. No email was sent.').waitFor();
+  assert.deepEqual(errors, []);
+  assert.deepEqual(failed, []);
+  console.log(JSON.stringify({ invalidRecipientStatus: invalidResponse.status(), invalidRecipientLeftRecordUnchanged: true, httpStatus: response.status(), saysNoEmailSent: true, recipientCorrect: true, templateGenerated: !!result.simulatedEmail.body, passwordLeaked: false, managerToastTruthful: true, errors, failedResponses: failed }, null, 2));
+} finally { await browser.close(); }

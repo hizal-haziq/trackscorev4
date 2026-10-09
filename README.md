@@ -36,7 +36,27 @@ APP_URL="http://localhost:3000"
 
 ### 2. Local Development
 
-You can run TrackScore locally via either `netlify dev` or the Express development server:
+Use Node.js 22.12 or newer. From the project directory, install dependencies on
+the operating system where you will run the app:
+
+```bash
+cd trackscorev4
+npm ci --include=optional
+npm run dev
+```
+
+Open `http://localhost:3000` in your browser. TrackScore needs the Node server
+for its API routes; opening `index.html` directly or using an HTML-only Live
+Server does not start the backend.
+
+If you moved the project from Windows to Ubuntu, run `npm ci --include=optional`
+again on Ubuntu. This replaces `node_modules` with Linux dependencies while
+preserving `.env` and `.data`. Copied Windows dependencies cause errors such as
+`@esbuild/win32-x64 ... needs @esbuild/linux-x64`, a missing Rollup native module,
+or a Tailwind native binding failure. Keep `package-lock.json`; dependencies
+must be installed separately on each operating system.
+
+You can also run TrackScore locally via either `netlify dev` or the Express development server:
 
 #### Option A: Using Netlify CLI
 ```bash
@@ -108,4 +128,4 @@ To bundle the application for production:
 npm run build
 npm start
 ```
-`npm run build` compiles Vite frontend assets into `dist/` and bundles `server.ts` into `dist/server.cjs` via `esbuild`.
+`npm run build` compiles Vite frontend assets into `dist/` and bundles `server.ts` into `build/server.cjs` (outside the published static folder) via `esbuild`.

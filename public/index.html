@@ -14,7 +14,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css" />
-    <script src="/api/config.js"></script>
+    <script src="/peer-comments.js"></script>
   </head>
   <body>
     <!-- Site Header: Enterprise Solid Black & Refined Vibrant Orange -->
@@ -25,20 +25,23 @@
           <img src="/TrackScore_TS_Icon.svg" alt="TrackScore" class="brand-logo-mobile" width="32" height="32" />
           <div class="brand-details">
             <span class="brand-badge" id="header-brand-badge">Assessor Portal</span>
-            <p class="brand-subtitle" id="header-brand-subtitle">Inspection Matrix &amp; Submissions</p>
+            <p class="brand-subtitle" id="header-brand-subtitle">Assessments &amp; Submissions</p>
           </div>
         </a>
 
         <nav class="nav-links" id="main-nav">
           <a href="/landing.html" class="nav-btn" id="nav-landing">Home</a>
-          <button type="button" class="nav-btn active" id="nav-eval-form" onclick="switchAssessorPortalTab('matrix')" title="Evaluation Rubric Matrix">Evaluation</button>
+          <button type="button" class="nav-btn active" id="nav-eval-form" onclick="switchAssessorPortalTab('matrix')" title="Fill in the device assessment form">Assessment Form</button>
           <button type="button" class="nav-btn" id="nav-my-submissions" onclick="switchAssessorPortalTab('submissions')" title="View your submitted evaluations and review status">
             My Submissions <span id="nav-submissions-badge" class="badge-counter" style="background: #3B82F6; color: #FFF; font-size: 11px; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: 4px;">0</span>
           </button>
-          <button type="button" class="nav-btn" id="btn-my-drafts" title="Manage your in-progress evaluation drafts">
+          <button type="button" class="nav-btn" id="nav-peer-review" onclick="switchAssessorPortalTab('peer-review')" title="Browse and comment on peer evaluations">
+            Peer Reviews
+          </button>
+          <button type="button" class="nav-btn" id="btn-my-drafts" title="View and open your saved drafts">
             Drafts (<span id="header-drafts-count">0</span>/3)
           </button>
-          <button type="button" class="nav-btn" id="btn-nav-notifications" onclick="switchAssessorPortalTab('notifications')" title="View manager review notifications and remediation alerts">
+          <button type="button" class="nav-btn" id="btn-nav-notifications" onclick="switchAssessorPortalTab('notifications')" title="View updates and messages from managers">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: -2px; margin-right: 3px;">
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
               <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
@@ -58,26 +61,30 @@
       <div class="assessor-portal-tabs" id="assessor-portal-tabs" role="tablist" style="display: flex; gap: 8px; margin: 18px 0 16px 0; border-bottom: 2px solid #E2E8F0; padding-bottom: 8px; flex-wrap: wrap;">
         <button type="button" class="portal-tab-btn active" id="tab-btn-matrix" onclick="switchAssessorPortalTab('matrix')" role="tab" aria-selected="true" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-size: 14px; font-weight: 700; border-radius: 6px; border: 1px solid #F58220; background: #F58220; color: #FFFFFF; cursor: pointer; transition: all 0.15s ease;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line></svg>
-          Evaluation Form (33 Criteria)
+          Assessment Form (33 Items)
         </button>
         <button type="button" class="portal-tab-btn" id="tab-btn-submissions" onclick="switchAssessorPortalTab('submissions')" role="tab" aria-selected="false" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-size: 14px; font-weight: 600; border-radius: 6px; border: 1px solid #CBD5E1; background: #FFFFFF; color: #475569; cursor: pointer; transition: all 0.15s ease;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
           My Submissions (<span id="assessor-submissions-count">0</span>)
         </button>
+        <button type="button" class="portal-tab-btn" id="tab-btn-peer-review" onclick="switchAssessorPortalTab('peer-review')" role="tab" aria-selected="false" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-size: 14px; font-weight: 600; border-radius: 6px; border: 1px solid #CBD5E1; background: #FFFFFF; color: #475569; cursor: pointer; transition: all 0.15s ease;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          Peer Reviews
+        </button>
         <button type="button" class="portal-tab-btn" id="tab-btn-notifications" onclick="switchAssessorPortalTab('notifications')" role="tab" aria-selected="false" style="display: inline-flex; align-items: center; gap: 8px; padding: 10px 18px; font-size: 14px; font-weight: 600; border-radius: 6px; border: 1px solid #CBD5E1; background: #FFFFFF; color: #475569; cursor: pointer; transition: all 0.15s ease;">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-          Review &amp; Remediation Alerts <span id="portal-tab-notif-badge" class="badge-counter" style="display: none; background: #DC2626; color: #FFF; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 10px; margin-left: 4px;">0</span>
+          Updates &amp; Alerts <span id="portal-tab-notif-badge" class="badge-counter" style="display: none; background: #DC2626; color: #FFF; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 10px; margin-left: 4px;">0</span>
         </button>
       </div>
 
-      <!-- Manager Audit Mode Banner (only shown if a Manager is viewing this Assessor tool) -->
+      <!-- Manager Review Mode Banner (only shown if a Manager is viewing this Assessor tool) -->
       <div id="manager-viewing-assessor-banner" style="display: none; background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 8px; padding: 12px 18px; margin-bottom: 18px; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap;">
         <div style="display: flex; align-items: center; gap: 10px; font-size: 13.5px; color: #1E40AF;">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-          <span><strong>Manager Audit Mode:</strong> You are viewing the Assessor Evaluation Tool. To review evaluations, manage customer accounts, and issue certificates, visit your Executive Operations Portal.</span>
+          <span><strong>Manager Review Workflow:</strong> Assessors complete the 33-criterion technical assessment and comments. As a Manager, review completed evaluations, request revisions, or approve assessments in your dedicated review dashboard.</span>
         </div>
         <a href="/dashboard.html" class="btn btn-primary btn-sm" style="background: #1D4ED8; border-color: #1D4ED8; white-space: nowrap;">
-          Go to Manager Dashboard &rarr;
+          Open Assessment Review Dashboard &rarr;
         </a>
       </div>
 
@@ -85,15 +92,15 @@
       <div class="page-title-bar" id="page-title-bar">
         <div>
           <div class="page-title-row">
-            <h2>Assessor Evaluation Matrix</h2>
+            <h2>Device Assessment Form</h2>
             <span class="compliance-badge">MIROS Telematics</span>
           </div>
-          <p class="page-subtitle">Complete the assessment criteria below to verify hardware and software compliance.</p>
+          <p class="page-subtitle">Check each item below and select the result. You can save your progress at any time.</p>
         </div>
         <div class="page-actions-group">
           <button type="button" class="btn btn-primary" id="btn-start-new-eval" title="Start a fresh evaluation form (up to 3 drafts in progress)">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-            New Evaluation
+            New Assessment
           </button>
           <button type="button" class="btn btn-secondary" id="btn-save-draft-top" title="Save current progress as a draft">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -103,7 +110,7 @@
             </svg>
             Save Draft
           </button>
-          <button type="button" class="btn btn-secondary" id="btn-my-drafts-top" title="View and resume saved drafts">
+          <button type="button" class="btn btn-secondary" id="btn-my-drafts-top" title="View and open your saved drafts">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
@@ -112,20 +119,8 @@
             </svg>
             Drafts (<span id="header-drafts-count-top">0</span>/3)
           </button>
-          <button type="button" class="btn btn-secondary" id="btn-toggle-notification-section" onclick="switchAssessorPortalTab('notifications')" title="View manager review notifications & remediation alerts">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
-              <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
-            </svg>
-            Notifications (<span id="header-notifications-count">0</span>)
-          </button>
-          <button type="button" class="btn btn-secondary" id="btn-lookup-rejections" onclick="switchAssessorPortalTab('submissions')" title="Lookup your submissions and check review status">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            My Submissions
-          </button>
           <div class="actions-secondary-group">
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-demo-data" title="Load sample dataset for verification">Load Sample Data</button>
-            <button type="button" class="btn btn-subtle-danger btn-sm" id="btn-reset-form" title="Reset assessment form">Reset Assessment</button>
+            <button type="button" class="btn btn-subtle-danger btn-sm" id="btn-reset-form" title="Clear all entered answers and start over">Clear Form</button>
           </div>
         </div>
       </div>
@@ -160,11 +155,11 @@
             </div>
             <div>
               <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
-                <h3 class="card-title" id="notif-section-heading" style="margin: 0; font-size: 15px;">Review &amp; Remediation Notifications</h3>
-                <span id="notif-action-pill" class="notif-action-pill" style="display: none;">Action Required</span>
+                <h3 class="card-title" id="notif-section-heading" style="margin: 0; font-size: 15px;">Messages &amp; Updates from MIROS</h3>
+                <span id="notif-action-pill" class="notif-action-pill" style="display: none;">Changes Needed</span>
               </div>
               <p class="card-desc" style="margin: 2px 0 0; font-size: 12.5px;">
-                Real-time review decisions from MIROS. View approved certifications or 1-click fix and resubmit rejected evaluations.
+                Review updates from MIROS. See approved assessments or fix items that need changes.
               </p>
             </div>
           </div>
@@ -179,7 +174,7 @@
                 Assigned (<span id="notif-count-assigned">0</span>)
               </button>
               <button type="button" class="notif-filter-btn filter-rejected" data-filter="rejected" id="notif-filter-rejected">
-                Action Required (<span id="notif-count-rejected">0</span>)
+                Changes Needed (<span id="notif-count-rejected">0</span>)
               </button>
               <button type="button" class="notif-filter-btn filter-approved" data-filter="approved" id="notif-filter-approved">
                 Approved (<span id="notif-count-approved">0</span>)
@@ -213,13 +208,13 @@
                 <circle cx="11" cy="11" r="8"></circle>
                 <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
               </svg>
-              <input type="text" id="notif-search-input" placeholder="Filter by company, device model, or Assessor ID..." aria-label="Filter notifications" />
+              <input type="text" id="notif-search-input" placeholder="Search by company, device model, or Assessor ID..." aria-label="Filter notifications" />
             </div>
 
             <div class="notif-subbar-right">
               <span id="notif-sync-status" class="notif-sync-status">
                 <span class="pulse-dot" style="display: inline-block; width: 6px; height: 6px; background: #10B981; border-radius: 50%; margin-right: 4px;"></span>
-                Live Connected
+                Connected
               </span>
               <button type="button" class="btn btn-text btn-sm" id="btn-clear-all-notifs" style="color: #64748B; font-size: 12px; font-weight: 600;" title="Clear all seen notifications">
                 Mark All Read
@@ -230,7 +225,7 @@
           <!-- Notification Items List -->
           <div id="notification-cards-list" class="notification-cards-list">
             <div style="padding: 24px; text-align: center; color: #64748B; font-size: 13px;">
-              Loading review notifications...
+              Loading updates...
             </div>
           </div>
         </div>
@@ -242,11 +237,11 @@
           <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid #F1F5F9;">
             <div>
               <div style="display: flex; align-items: center; gap: 10px;">
-                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin: 0;">My Evaluated Submissions</h3>
-                <span class="compliance-badge" style="background: #E0F2FE; color: #0369A1; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700;">Assessor Repository</span>
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin: 0;">My Submitted Assessments</h3>
+                <span class="compliance-badge" style="background: #E0F2FE; color: #0369A1; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700;">My Submissions</span>
               </div>
               <p style="font-size: 13px; color: #64748B; margin: 4px 0 0 0;">
-                All telematics device evaluations submitted under your assessor credentials. Monitor real-time manager review outcomes, remediation requests, and download official evaluation reports.
+                All assessments you have submitted. Track review status, view feedback, and download PDF reports.
               </p>
             </div>
             <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
@@ -265,16 +260,22 @@
           <!-- Quick Stats Pill Bar -->
           <div style="display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap;">
             <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #334155;">
-              Total Submissions: <strong id="assessor-stat-total" style="color: #0F172A; font-weight: 700;">0</strong>
+              Total Assessments: <strong id="assessor-stat-total" style="color: #0F172A; font-weight: 700;">0</strong>
             </div>
             <div style="background: #FEF3C7; border: 1px solid #FDE68A; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #92400E;">
               Under Review: <strong id="assessor-stat-pending" style="font-weight: 700;">0</strong>
             </div>
             <div style="background: #ECFDF5; border: 1px solid #A7F3D0; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #065F46;">
-              Approved / Certified: <strong id="assessor-stat-approved" style="font-weight: 700;">0</strong>
+              Approved: <strong id="assessor-stat-approved" style="font-weight: 700;">0</strong>
             </div>
             <div style="background: #FEE2E2; border: 1px solid #FECACA; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #991B1B;">
-              Remediation Required: <strong id="assessor-stat-rejected" style="font-weight: 700;">0</strong>
+              Changes Needed: <strong id="assessor-stat-rejected" style="font-weight: 700;">0</strong>
+            </div>
+            <div style="background: #F0FDF4; border: 1px solid #BBF7D0; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #166534;">
+              On Time: <strong id="assessor-stat-ontrack" style="font-weight: 700;">0</strong>
+            </div>
+            <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 6px; padding: 6px 12px; font-size: 12.5px; color: #991B1B;">
+              Overdue: <strong id="assessor-stat-overdue" style="font-weight: 700;">0</strong>
             </div>
           </div>
 
@@ -282,20 +283,71 @@
             <table class="data-table" id="assessor-submissions-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
               <thead>
                 <tr style="background: #0F172A; color: #FFFFFF; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em;">
-                  <th style="padding: 10px 12px; text-align: left;">Submission Date</th>
+                  <th style="padding: 10px 12px; text-align: left;">Date Submitted</th>
                   <th style="padding: 10px 12px; text-align: left;">Company</th>
                   <th style="padding: 10px 12px; text-align: left;">Device Model</th>
                   <th style="padding: 10px 12px; text-align: left;">Package</th>
+                  <th style="padding: 10px 12px; text-align: left;">Target Date</th>
+                  <th style="padding: 10px 12px; text-align: center;">Deadline Status</th>
                   <th style="padding: 10px 12px; text-align: center;">Score</th>
                   <th style="padding: 10px 12px; text-align: center;">Rating</th>
-                  <th style="padding: 10px 12px; text-align: center;">Lifecycle Status</th>
+                  <th style="padding: 10px 12px; text-align: center;">Status</th>
                   <th style="padding: 10px 12px; text-align: right;">Actions</th>
                 </tr>
               </thead>
               <tbody id="assessor-submissions-tbody">
                 <tr>
-                  <td colspan="8" style="text-align: center; padding: 32px; color: #64748B;">
+                  <td colspan="10" style="text-align: center; padding: 32px; color: #64748B;">
                     Loading your submissions...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- Assessor Peer Review View (Cross-Assessor Quality Assurance & AI Summaries) -->
+      <section id="assessor-peer-review-view" style="display: none; margin-bottom: 30px;">
+        <div class="card" style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 22px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid #F1F5F9;">
+            <div>
+              <div style="display: flex; align-items: center; gap: 10px;">
+                <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin: 0;">Peer Reviews &amp; Feedback</h3>
+                <span class="compliance-badge" style="background: #EEF2FF; color: #4338CA; font-size: 11px; padding: 2px 8px; border-radius: 4px; font-weight: 700;">Peer Reviews</span>
+              </div>
+              <p style="font-size: 13px; color: #64748B; margin: 4px 0 0 0;">
+                Review assessments completed by other assessors and leave helpful feedback or comments.
+              </p>
+            </div>
+            <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+              <input type="text" id="peer-evaluations-search" placeholder="Search peer, company or device..." style="padding: 7px 12px; font-size: 13px; border: 1px solid #CBD5E1; border-radius: 6px; width: 240px; outline: none;" />
+              <button type="button" class="btn btn-secondary btn-sm" id="btn-refresh-peer-evaluations" onclick="fetchPeerEvaluations()" style="display: inline-flex; align-items: center; gap: 6px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                Refresh
+              </button>
+            </div>
+          </div>
+
+          <div class="table-responsive" style="overflow-x: auto; border: 1px solid #E2E8F0; border-radius: 6px;">
+            <table class="data-table" id="peer-evaluations-table" style="width: 100%; border-collapse: collapse; font-size: 13px;">
+              <thead>
+                <tr style="background: #0F172A; color: #FFFFFF; font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.03em;">
+                  <th style="padding: 10px 12px; text-align: left;">Date</th>
+                  <th style="padding: 10px 12px; text-align: left;">Company</th>
+                  <th style="padding: 10px 12px; text-align: left;">Device Model</th>
+                  <th style="padding: 10px 12px; text-align: left;">Package</th>
+                  <th style="padding: 10px 12px; text-align: left;">Assessor</th>
+                  <th style="padding: 10px 12px; text-align: center;">Score</th>
+                  <th style="padding: 10px 12px; text-align: center;">Status</th>
+                  <th style="padding: 10px 12px; text-align: center;">Comments</th>
+                  <th style="padding: 10px 12px; text-align: right;">Action</th>
+                </tr>
+              </thead>
+              <tbody id="peer-evaluations-tbody">
+                <tr>
+                  <td colspan="9" style="text-align: center; padding: 32px; color: #64748B;">
+                    Loading peer submissions...
                   </td>
                 </tr>
               </tbody>
@@ -315,7 +367,7 @@
                   <path d="M9 11l3 3L22 4"></path>
                   <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
                 </svg>
-                ASSESSMENT PROGRESS
+                YOUR PROGRESS
               </h4>
               <span id="overall-progress-pct" class="progress-pct-badge">0%</span>
             </div>
@@ -324,7 +376,7 @@
             <div class="sidebar-progress-summary">
               <div class="progress-counts">
                 <span class="count-big"><span id="overall-count-num">0</span> / 33</span>
-                <span class="count-label">Criteria completed</span>
+                <span class="count-label">items completed</span>
               </div>
             </div>
 
@@ -356,12 +408,12 @@
                 </div>
                 <span id="sec-a-status-badge" class="nav-status-badge pending">In Progress</span>
               </div>
-              <div class="nav-card-desc">Basic Telematics Features</div>
+              <div class="nav-card-desc">Basic Features</div>
               <div class="progress-track-bg">
                 <div id="sec-a-progress-fill" class="progress-bar-fill" style="width: 0%;"></div>
               </div>
               <div class="nav-card-counts">
-                <span><strong id="sec-a-count">0</strong> / 24 criteria completed</span>
+                <span><strong id="sec-a-count">0</strong> / 24 items completed</span>
                 <span id="sec-a-pct">0%</span>
               </div>
             </div>
@@ -375,12 +427,12 @@
                 </div>
                 <span id="sec-b-status-badge" class="nav-status-badge pending">In Progress</span>
               </div>
-              <div class="nav-card-desc">Additional &amp; Advanced Features</div>
+              <div class="nav-card-desc">Advanced Features</div>
               <div class="progress-track-bg">
                 <div id="sec-b-progress-fill" class="progress-bar-fill" style="width: 0%;"></div>
               </div>
               <div class="nav-card-counts">
-                <span><strong id="sec-b-count">0</strong> / 9 criteria completed</span>
+                <span><strong id="sec-b-count">0</strong> / 9 items completed</span>
                 <span id="sec-b-pct">0%</span>
               </div>
             </div>
@@ -390,7 +442,7 @@
           <div id="sidebar-incomplete-alert" style="display: none;" class="sidebar-missing-alert">
             <div class="sidebar-missing-title">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#DC2626" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
-              Incomplete Criteria (<span id="missing-count">0</span>):
+              Unfinished Items (<span id="missing-count">0</span>):
             </div>
             <div id="sidebar-missing-list" class="sidebar-missing-items"></div>
           </div>
@@ -411,8 +463,8 @@
                 <a href="javascript:void(0)" id="link-view-all-drafts" style="color: #B45309; text-decoration: underline; font-weight: 600; margin-left: 4px;">View all drafts</a>
               </div>
               <div style="display: flex; gap: 8px;">
-                <button type="button" class="btn btn-primary btn-sm" id="btn-resume-draft">Resume</button>
-                <button type="button" class="btn btn-secondary btn-sm" id="btn-discard-draft">Discard</button>
+                <button type="button" class="btn btn-primary btn-sm" id="btn-resume-draft">Open Draft</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="btn-discard-draft">Delete Draft</button>
               </div>
             </div>
 
@@ -443,7 +495,7 @@
           <div class="card-header">
             <div>
               <h3 class="card-title">Assessment Details</h3>
-              <p class="card-desc">Specify vehicle, device, and assessor identifiers for compliance audit.</p>
+              <p class="card-desc">Enter the company, device, and assessor information.</p>
             </div>
             <span class="required-legend">* Required field</span>
           </div>
@@ -497,7 +549,7 @@
                 style="display: none; margin-top: 8px;"
               />
               <div id="packageName-hint" class="field-hint" style="color: #64748B; font-size: 11.5px; margin-top: 4px;">
-                Select official MIROS assessment package tier
+                Choose the MIROS assessment package
               </div>
             </div>
 
@@ -535,7 +587,7 @@
 
             <div class="form-group">
               <label for="assessmentDate" class="form-label">
-                Evaluation Date
+                Assessment Date
               </label>
               <input
                 type="date"
@@ -624,16 +676,16 @@
             </svg>
             Save Draft
           </button>
-          <button type="button" class="btn btn-secondary" id="btn-pdf-report" title="Generate compliance report">
+          <button type="button" class="btn btn-secondary" id="btn-pdf-report" title="Download assessment report as PDF">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
               <polyline points="14 2 14 8 20 8"></polyline>
               <line x1="16" y1="13" x2="8" y2="13"></line>
               <line x1="16" y1="17" x2="8" y2="17"></line>
             </svg>
-            Generate PDF
+            Download PDF
           </button>
-          <button type="button" class="btn btn-primary" id="btn-save-evaluation" title="Submit completed evaluation for review">
+          <button type="button" class="btn btn-primary" id="btn-save-evaluation" title="Submit completed assessment for review">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
               <line x1="22" y1="2" x2="11" y2="13"></line>
               <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -722,14 +774,14 @@
               <polyline points="17 21 17 13 7 13 7 21"></polyline>
               <polyline points="7 3 7 8 15 8"></polyline>
             </svg>
-            <h3 style="margin: 0; font-size: 16px;">Saved Evaluation Drafts (<span id="modal-drafts-count">0</span>/3)</h3>
+            <h3 style="margin: 0; font-size: 16px;">Your Saved Drafts (<span id="modal-drafts-count">0</span>/3)</h3>
           </div>
           <button type="button" class="modal-close-btn" id="drafts-modal-close" aria-label="Close drafts">&times;</button>
         </div>
 
         <div class="modal-body" style="padding: 20px;">
           <p style="font-size: 13px; color: #64748B; margin-top: 0; margin-bottom: 14px;">
-            TrackScore supports up to 3 concurrent in-progress evaluations. Select a draft to resume, discard completed or unused drafts, or start a new evaluation.
+            You can keep up to 3 saved drafts at a time. Pick a draft to continue working, start a new one, or delete drafts you no longer need.
           </p>
 
           <div id="drafts-modal-warning" style="display: none; background: #FFFBEB; border: 1px solid #FDE68A; color: #92400E; padding: 10px 14px; border-radius: 6px; font-size: 13px; margin-bottom: 14px;"></div>
@@ -742,16 +794,16 @@
         <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
           <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
             <button type="button" class="btn btn-primary btn-sm" id="btn-modal-new-eval">
-              ➕ Start New Evaluation
+              ➕ Start New Assessment
             </button>
             <button type="button" class="btn btn-secondary btn-sm" id="btn-save-as-new-modal" title="Save current active form as a new separate draft">
-              💾 Save Form as New Draft
+              💾 Save as New Draft
             </button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-export-drafts" title="Export all drafts to a downloadable JSON file">
-              📥 Export Drafts (JSON)
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-export-drafts" title="Download all drafts as a file">
+              📥 Download Drafts Backup
             </button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btn-import-drafts" title="Import drafts from a JSON file (max 3 drafts cap enforced)">
-              📤 Import Drafts
+            <button type="button" class="btn btn-secondary btn-sm" id="btn-import-drafts" title="Restore drafts from a file">
+              📤 Restore Drafts Backup
             </button>
             <input type="file" id="input-import-drafts" accept=".json,application/json" style="display: none;" />
           </div>
@@ -769,18 +821,18 @@
               <circle cx="11" cy="11" r="8"></circle>
               <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
             </svg>
-            <h3 style="margin: 0; font-size: 16px;">Assessor Submissions & Status Lookup</h3>
+            <h3 style="margin: 0; font-size: 16px;">Look Up Your Submissions</h3>
           </div>
           <button type="button" class="modal-close-btn" id="lookup-modal-close" aria-label="Close lookup">&times;</button>
         </div>
 
         <div class="modal-body" style="padding: 20px;">
           <p style="font-size: 13px; color: #64748B; margin-top: 0; margin-bottom: 14px;">
-            Search evaluations submitted under your Assessor ID (e.g. MKA 9006) or Assessor Name to view review status, approvals, or detailed rejection reasons.
+            Search by your Assessor ID or name to check the status of your past submissions.
           </p>
           <div style="display: flex; gap: 10px; margin-bottom: 16px;">
             <input type="text" id="lookup-assessor-input" class="form-control" placeholder="Enter Assessor ID (e.g. MKA 9006) or Name..." style="flex: 1; padding: 8px 12px; font-size: 14px;" />
-            <button type="button" class="btn btn-primary btn-sm" id="btn-do-lookup" style="white-space: nowrap;">Search Records</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btn-do-lookup" style="white-space: nowrap;">Search</button>
           </div>
 
           <div id="lookup-results-container">
@@ -790,6 +842,52 @@
 
         <div class="modal-footer" style="display: flex; justify-content: flex-end;">
           <button type="button" class="btn btn-secondary btn-sm" id="btn-close-lookup">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Peer Review & Technical Commentary Modal -->
+    <div class="modal-overlay" id="peer-review-modal" aria-hidden="true">
+      <div class="modal-container" style="max-width: 820px; width: 95%; max-height: 90vh;">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <h3 id="peer-review-modal-title" style="margin: 0; font-size: 16.5px; font-weight: 700;">Peer Review &amp; Comments</h3>
+          </div>
+          <button type="button" class="modal-close-btn" onclick="closePeerReviewModal()" aria-label="Close peer review">&times;</button>
+        </div>
+
+        <div class="modal-body" id="peer-review-modal-body" style="padding: 20px; overflow-y: auto;">
+          <!-- Dynamically injected peer evaluation details, scores, and comment thread -->
+        </div>
+
+        <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closePeerReviewModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Assessor Own Submissions Comments Modal (Read-Only) -->
+    <div class="modal-overlay" id="assessor-own-comments-modal" aria-hidden="true">
+      <div class="modal-container" style="max-width: 780px; width: 95%; max-height: 90vh;">
+        <div class="modal-header">
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#3B82F6" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <h3 id="own-comments-modal-title" style="margin: 0; font-size: 16.5px; font-weight: 700;">Comments &amp; Feedback</h3>
+          </div>
+          <button type="button" class="modal-close-btn" onclick="closeAssessorOwnCommentsModal()" aria-label="Close comments">&times;</button>
+        </div>
+
+        <div class="modal-body" id="own-comments-modal-body" style="padding: 20px; overflow-y: auto;">
+          <!-- Dynamically injected comments thread in read-only mode -->
+        </div>
+
+        <div class="modal-footer" style="display: flex; justify-content: flex-end;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="closeAssessorOwnCommentsModal()">Close</button>
         </div>
       </div>
     </div>
@@ -807,7 +905,7 @@
               <polyline points="10 9 9 9 8 9"></polyline>
             </svg>
             <h3 id="report-modal-title" style="margin: 0; font-size: 17px; font-weight: 700;">
-              Generated TrackScore Assessment Report
+              Assessment Report
             </h3>
           </div>
           <button type="button" class="modal-close-btn" id="report-modal-close" aria-label="Close report preview">&times;</button>
@@ -817,7 +915,7 @@
         <div style="background: #F1F5F9; padding: 10px 24px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #E2E8F0; flex-wrap: wrap; gap: 10px;">
           <div style="display: flex; align-items: center; gap: 8px; font-size: 13px; color: #334155;">
             <span style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #10B981;"></span>
-            <span id="report-status-badge" style="font-weight: 600;">Report generated and displayed on evaluation page</span>
+            <span id="report-status-badge" style="font-weight: 600;">Report is ready</span>
           </div>
           <div style="display: flex; align-items: center; gap: 10px;">
             <button type="button" class="btn btn-secondary btn-sm" id="btn-print-report" title="Print document">
@@ -834,7 +932,7 @@
                 <polyline points="7 10 12 15 17 10"></polyline>
                 <line x1="12" y1="15" x2="12" y2="3"></line>
               </svg>
-              <span id="btn-download-modal-text">Download PDF File</span>
+              <span id="btn-download-modal-text">Download PDF</span>
             </button>
           </div>
         </div>
@@ -848,10 +946,10 @@
 
         <div class="modal-footer">
           <div style="font-size: 12px; color: #64748B;" id="report-modal-meta">
-            Official MIROS Verification Standard • 33 Criteria Full Audit Breakdown
+            Official MIROS Telematics Assessment Report • 33 Items
           </div>
           <button type="button" class="btn btn-secondary btn-sm" id="btn-close-report-modal">
-            Close Viewer
+            Close
           </button>
         </div>
       </div>
@@ -866,7 +964,7 @@
               🎯
             </div>
             <div>
-              <div style="font-size: 11px; font-weight: 700; color: #4F46E5; text-transform: uppercase; letter-spacing: 0.5px;">MIROS Task Assignment</div>
+              <div style="font-size: 11px; font-weight: 700; color: #4F46E5; text-transform: uppercase; letter-spacing: 0.5px;">MIROS Assignment</div>
               <h3 id="assign-modal-title" style="margin: 2px 0 0; font-size: 17px; font-weight: 700; color: #0F172A;">New Assessment Assigned</h3>
             </div>
           </div>
@@ -874,7 +972,7 @@
         </div>
         <div class="modal-body" style="padding: 20px 22px; display: flex; flex-direction: column; gap: 14px;">
           <p style="margin: 0; font-size: 13.5px; color: #334155; line-height: 1.5;">
-            You have received a new customer telematics assessment assignment. Review details below and start scoring directly:
+            A new assessment has been assigned to you. Review the details below to get started:
           </p>
 
           <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 14px 16px; display: flex; flex-direction: column; gap: 10px;">
@@ -887,7 +985,7 @@
               <span id="assign-modal-device" style="font-size: 13px; color: #1E293B; font-weight: 600;">—</span>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #CBD5E1; padding-bottom: 8px;">
-              <span style="font-size: 12px; color: #64748B; font-weight: 600;">Evaluation Package</span>
+              <span style="font-size: 12px; color: #64748B; font-weight: 600;">Assessment Package</span>
               <span id="assign-modal-package" style="font-size: 12px; color: #4338CA; font-weight: 600;">—</span>
             </div>
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px dashed #CBD5E1; padding-bottom: 8px;">

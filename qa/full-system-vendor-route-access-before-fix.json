@@ -1,0 +1,43 @@
+[
+  {
+    "endpoint": "get-notifications",
+    "status": 200,
+    "notificationCount": 4,
+    "liveEventCount": 6,
+    "success": true
+  },
+  {
+    "endpoint": "get-evaluations",
+    "status": 403,
+    "success": false
+  },
+  {
+    "endpoint": "get-assessor-workload",
+    "status": 403,
+    "success": false
+  },
+  {
+    "endpoint": "get-assessment-risk",
+    "status": 403,
+    "success": false
+  },
+  {
+    "endpoint": "manage-users",
+    "status": 403,
+    "success": false
+  },
+  {
+    "endpoint": "manage-inquiries",
+    "status": 403,
+    "success": false
+  },
+  {
+    "endpoint": "get-packages",
+    "status": 404
+  },
+  {
+    "endpoint": "vendor-portal-data",
+    "status": 200,
+    "success": true
+  }
+]

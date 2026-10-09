@@ -1,0 +1,19 @@
+{
+  "statuses": [
+    {
+      "ep": "update-evaluation",
+      "status": 200
+    },
+    {
+      "ep": "approve-evaluation",
+      "status": 200
+    },
+    {
+      "ep": "manage-certificate",
+      "status": 200
+    }
+  ],
+  "currentVersion": 1,
+  "approvedVersion": 1,
+  "prepared": true
+}

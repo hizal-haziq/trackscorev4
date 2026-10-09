@@ -1,0 +1,386 @@
+{
+  "results": [
+    {
+      "name": "Authentication rejects incorrect, absent and expired credentials",
+      "passed": true,
+      "evidence": {
+        "invalidPassword": 401,
+        "missingJWT": 401,
+        "expiredJWT": 401
+      }
+    },
+    {
+      "name": "Vendor and Assessor cannot execute Manager-only operations",
+      "passed": true,
+      "evidence": {
+        "deniedRequests": 11
+      }
+    },
+    {
+      "name": "Internal notifications deny Vendors and preserve Manager and Assessor access",
+      "passed": true,
+      "evidence": {
+        "vendor": 403,
+        "unrelatedVendor": 403,
+        "manager": 200,
+        "assessor": 200
+      }
+    },
+    {
+      "name": "Document upload persists and download returns identical original bytes",
+      "passed": true,
+      "evidence": {
+        "uploadStatus": 201,
+        "documentStored": true,
+        "downloadStatus": 200,
+        "expectedBytes": 50,
+        "actualBytes": 50,
+        "byteExact": true
+      }
+    },
+    {
+      "name": "Documents reject unsupported MIME types",
+      "passed": true,
+      "evidence": {
+        "status": 400
+      }
+    },
+    {
+      "name": "Oversized HTTP upload is rejected without storing it",
+      "passed": true,
+      "evidence": {
+        "status": 413,
+        "stored": false
+      }
+    },
+    {
+      "name": "Cross-Vendor documents, payment and revisions are denied",
+      "passed": true,
+      "evidence": [
+        {
+          "endpoint": "vendor-documents",
+          "status": 403
+        },
+        {
+          "endpoint": "vendor-documents",
+          "status": 403
+        },
+        {
+          "endpoint": "vendor-submit-payment",
+          "status": 403
+        },
+        {
+          "endpoint": "vendor-resubmit",
+          "status": 403
+        }
+      ]
+    },
+    {
+      "name": "Vendor portal excludes internal assessment comments and unrelated records",
+      "passed": true,
+      "evidence": {
+        "internalCommentsAbsent": true,
+        "unrelatedAssessmentAbsent": true
+      }
+    },
+    {
+      "name": "Express SSE rejects Assessor token without identity and mismatched scope",
+      "passed": true,
+      "evidence": {
+        "missingIdentity": 403,
+        "mismatchedScope": 403,
+        "unauthenticated": 401
+      }
+    },
+    {
+      "name": "SSE history is scoped, sanitized and reconnects after disconnect",
+      "passed": true,
+      "evidence": {
+        "managerEvents": 14,
+        "vendorEvents": 14,
+        "outsiderEvents": 0,
+        "assessorEvents": 1,
+        "reconnected": true
+      }
+    },
+    {
+      "name": "Excel export returns a genuine readable workbook and correct rows",
+      "passed": true,
+      "evidence": {
+        "status": 200,
+        "bytes": 7418,
+        "rows": 2,
+        "worksheets": 1
+      }
+    },
+    {
+      "name": "Public certificate API handles valid, invalid and missing identifiers",
+      "passed": true,
+      "evidence": {
+        "valid": 200,
+        "invalid": 404,
+        "missing": 400
+      }
+    },
+    {
+      "name": "Assessment report PDF and Excel download through Manager controls",
+      "passed": true,
+      "evidence": {
+        "pdfDownloaded": true,
+        "excelDownloaded": true,
+        "filenameExtension": ".xlsx",
+        "exceptions": 0
+      }
+    },
+    {
+      "name": "Eight pages tested at all five requested viewport sizes",
+      "passed": true,
+      "evidence": {
+        "checked": 40
+      }
+    }
+  ],
+  "responsive": [
+    {
+      "page": "landing.html",
+      "width": 1920,
+      "height": 1080,
+      "overflow": false
+    },
+    {
+      "page": "landing.html",
+      "width": 1366,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "landing.html",
+      "width": 1024,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "landing.html",
+      "width": 768,
+      "height": 1024,
+      "overflow": false
+    },
+    {
+      "page": "landing.html",
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "page": "login.html",
+      "width": 1920,
+      "height": 1080,
+      "overflow": false
+    },
+    {
+      "page": "login.html",
+      "width": 1366,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "login.html",
+      "width": 1024,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "login.html",
+      "width": 768,
+      "height": 1024,
+      "overflow": false
+    },
+    {
+      "page": "login.html",
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "page": "request-assessment.html",
+      "width": 1920,
+      "height": 1080,
+      "overflow": false
+    },
+    {
+      "page": "request-assessment.html",
+      "width": 1366,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "request-assessment.html",
+      "width": 1024,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "request-assessment.html",
+      "width": 768,
+      "height": 1024,
+      "overflow": false
+    },
+    {
+      "page": "request-assessment.html",
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "page": "verify-certificate.html",
+      "width": 1920,
+      "height": 1080,
+      "overflow": false
+    },
+    {
+      "page": "verify-certificate.html",
+      "width": 1366,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "verify-certificate.html",
+      "width": 1024,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "verify-certificate.html",
+      "width": 768,
+      "height": 1024,
+      "overflow": false
+    },
+    {
+      "page": "verify-certificate.html",
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "page": "change-password.html",
+      "width": 1920,
+      "height": 1080,
+      "overflow": false
+    },
+    {
+      "page": "change-password.html",
+      "width": 1366,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "change-password.html",
+      "width": 1024,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "change-password.html",
+      "width": 768,
+      "height": 1024,
+      "overflow": false
+    },
+    {
+      "page": "change-password.html",
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "page": "dashboard.html",
+      "width": 1920,
+      "height": 1080,
+      "overflow": false
+    },
+    {
+      "page": "dashboard.html",
+      "width": 1366,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "dashboard.html",
+      "width": 1024,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "dashboard.html",
+      "width": 768,
+      "height": 1024,
+      "overflow": false
+    },
+    {
+      "page": "dashboard.html",
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "page": "index.html",
+      "width": 1920,
+      "height": 1080,
+      "overflow": false
+    },
+    {
+      "page": "index.html",
+      "width": 1366,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "index.html",
+      "width": 1024,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "index.html",
+      "width": 768,
+      "height": 1024,
+      "overflow": false
+    },
+    {
+      "page": "index.html",
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    },
+    {
+      "page": "vendor-portal.html",
+      "width": 1920,
+      "height": 1080,
+      "overflow": false
+    },
+    {
+      "page": "vendor-portal.html",
+      "width": 1366,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "vendor-portal.html",
+      "width": 1024,
+      "height": 768,
+      "overflow": false
+    },
+    {
+      "page": "vendor-portal.html",
+      "width": 768,
+      "height": 1024,
+      "overflow": false
+    },
+    {
+      "page": "vendor-portal.html",
+      "width": 390,
+      "height": 844,
+      "overflow": false
+    }
+  ],
+  "errors": []
+}

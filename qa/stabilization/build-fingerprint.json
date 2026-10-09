@@ -1,0 +1,25 @@
+{
+  "versions": {
+    "vite": "6.4.3",
+    "esbuild": "0.25.12",
+    "typescript": "5.8.3",
+    "express": "4.22.3",
+    "mongodb": "7.6.0",
+    "tsx": "4.23.15"
+  },
+  "sha256": {
+    "package.json": "4a27b84c63e1302e65d143b0e3eba190faf1d2b3c301a3554f6ea6bd6521ff79",
+    "package-lock.json": "17f2b7a1819de1c6bdb85bffdb1883e680a20b2adfa2ef3c93ab9d51e1dece73",
+    "server.ts": "e216518ca0fad3a554ec226f61552a8b0aa8af4a531114ed81c795d6ee91d68e",
+    "app.js": "5109945706a8370157996c7ff55717cbe3fe9d791cf07a980d08fbc8b2ebbd89",
+    "dashboard.html": "725870b1c08a7b0b6b3438ee706da0806ac247b2d18f7ea09b1992561c3211e9",
+    "vendor-portal.html": "0cd8d0c6111c1e32432a31c384885139625a9a1e046a125ddefdd5edd1ac20a9",
+    "style.css": "b8b7c898bb8cd3a77e451bbc70ae5d076ddb81c2e05618253cca53cc3ffee9cf",
+    "netlify/functions/db.js": "5e445887159b1688589128bc9ce840c75ed69c8767376797056a0067bfb7f3af",
+    "netlify/functions/save-evaluation.js": "6b8365f6bf363ae1dd0163f3f32cdc169eb82afb556491ef56754d21631047f4",
+    "netlify/functions/update-evaluation.js": "15c3f4a9521f77fa7e93a0c86ca9bb9d2bc7e6d4e8c7d5d95e53497ad2720c22",
+    "netlify/functions/get-notifications.js": "78e95640c59304c4a1e79877a9798a01a38b6a7875f5aa41a347e62e0379b1e7",
+    "netlify/functions/issue-certificate.js": "844ee027772a96da2c3f5d6a02fcea8e3e56599abd920ee5e5f261515b919849",
+    "build/server.cjs": "cb07ad38b7278ffbb989d8db688e8945d8083fbefae5d60969dfb264f37ae678"
+  }
+}

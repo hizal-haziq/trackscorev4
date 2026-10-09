@@ -1,0 +1,90 @@
+{
+  "generatedAt": "2026-10-08T02:01:30.983Z",
+  "results": [
+    {
+      "file": "certificate-short.pdf",
+      "pages": 1,
+      "bytes": 377372,
+      "sha256": "82efa69023c09e0389ff38ff6f74cce257f05810e0b75b3a9c161036c6a27d45",
+      "qr": "http://127.0.0.1:33861/verify-certificate.html?cert=TS-STAB-PDF-0",
+      "publicVerification": {
+        "valid": true,
+        "certificate": {
+          "certificateNumber": "TS-STAB-PDF-0",
+          "status": "OFFICIALLY VERIFIED & ACTIVE",
+          "companyName": "ABC Sdn. Bhd.",
+          "deviceModel": "Stability Gateway completed",
+          "packageName": "Package 1: Standard Assessment (RM 4,500)",
+          "starRating": 5,
+          "ratingLabel": "5 Stars - Outstanding (MIROS Certified Grade A)",
+          "totalScore": 5,
+          "signedBy": "Stability Signatory",
+          "signedDate": "2026-10-08",
+          "deliveryDate": "2026-10-08",
+          "issuingAuthority": "Malaysian Institute of Road Safety Research (MIROS)"
+        }
+      }
+    },
+    {
+      "file": "certificate-long.pdf",
+      "pages": 1,
+      "bytes": 408385,
+      "sha256": "a0450e487e8cdac8a134a9149df69f8d085546515db01e774cebfcfb2283ca2f",
+      "qr": "http://127.0.0.1:33861/verify-certificate.html?cert=TS-STAB-PDF-1",
+      "publicVerification": {
+        "valid": true,
+        "certificate": {
+          "certificateNumber": "TS-STAB-PDF-1",
+          "status": "OFFICIALLY VERIFIED & ACTIVE",
+          "companyName": "Very Long Commercial Vehicle Telematics Technology Sdn. Bhd.",
+          "deviceModel": "Stability Gateway completed",
+          "packageName": "Package 1: Standard Assessment (RM 4,500)",
+          "starRating": 5,
+          "ratingLabel": "5 Stars - Outstanding (MIROS Certified Grade A)",
+          "totalScore": 5,
+          "signedBy": "Stability Signatory",
+          "signedDate": "2026-10-08",
+          "deliveryDate": "2026-10-08",
+          "issuingAuthority": "Malaysian Institute of Road Safety Research (MIROS)"
+        }
+      }
+    },
+    {
+      "file": "assessment-report.pdf",
+      "pages": 1,
+      "bytes": 526939,
+      "sha256": "87a867a78150c5a605bd2c4f39b6a66a3681aa678e9469672d9abae4410fe15d"
+    },
+    {
+      "file": "combined-report.pdf",
+      "pages": 4,
+      "bytes": 1504317,
+      "sha256": "6b55bbbd57e270bdd5dda5cfec84368f27d8902515a7b08772ccc8517b9073a0"
+    },
+    {
+      "file": "report-print-view.pdf",
+      "pages": 1,
+      "bytes": 72442,
+      "sha256": "a7946323c8b57cb20dd550a47aba6c3ee03135c2aa842ab1405967d977dd3230",
+      "printOnlySelectedReport": true
+    },
+    {
+      "file": "assessor-report.pdf",
+      "pages": 1,
+      "bytes": 568659,
+      "sha256": "b6fcf2526d1c033479aaea683ad8a52be1dff47a11e25686cd99757bd6318673"
+    },
+    {
+      "file": "assessor-form-report.pdf",
+      "pages": 1,
+      "bytes": 634920,
+      "sha256": "1ec2f2b21883f904126a691b2c35c63d1abc5126b2b0d6472bafa6c35d2cbccc"
+    },
+    {
+      "file": "details-report.pdf",
+      "pages": 1,
+      "bytes": 526958,
+      "sha256": "c57c4b35239dc38407979ee61dea1bb1899dfdf14f6acfb83e603980ab792d13"
+    }
+  ]
+}

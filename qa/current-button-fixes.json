@@ -1,0 +1,52 @@
+[
+  {
+    "page": "landing.html",
+    "button": "Information drawer tabs",
+    "expected": "Each tab is visible and clickable",
+    "actual": "Portals content shrank the tab bar to 1px; content intercepted native clicks",
+    "rootCause": "Flex children were allowed to shrink in the scrolling drawer",
+    "fix": "Prevent header/tab-bar shrinking",
+    "retest": "Public mobile navigation, drawer tabs and close; Public layouts and drawer tabs reachable at all five requested sizes",
+    "status": "VERIFIED WORKING"
+  },
+  {
+    "page": "dashboard.html",
+    "button": "Edit record → Save Changes",
+    "expected": "Save allowed registration metadata before assessment",
+    "actual": "Browser validation blocked the request because assessor name was empty",
+    "rootCause": "Assessor Name was unconditionally required for unassessed registrations",
+    "fix": "Require assessor name only when a technical breakdown exists",
+    "retest": "Manager edit allowed registration details and cancel",
+    "status": "VERIFIED WORKING"
+  },
+  {
+    "page": "vendor-portal.html",
+    "button": "Document Download",
+    "expected": "Download uploaded file bytes",
+    "actual": "A new window opened an unauthenticated API request (token in query string is rejected)",
+    "rootCause": "The frontend URL did not send the required Authorization header",
+    "fix": "Fetch with Bearer header; download the response blob; report API failures",
+    "retest": "Vendor documents upload, download and delete persist",
+    "status": "VERIFIED WORKING"
+  },
+  {
+    "page": "vendor-portal.html",
+    "button": "Navigation/profile/modal controls at phone width",
+    "expected": "Keep existing actions reachable at 390×844",
+    "actual": "The fixed-width navigation overflowed the viewport",
+    "rootCause": "No narrow-screen wrapping rules",
+    "fix": "Wrap existing navigation/user controls and contain table/modal widths",
+    "retest": "Responsive important pages and modal controls at five sizes",
+    "status": "VERIFIED WORKING"
+  },
+  {
+    "page": "dashboard.html",
+    "button": "Clear Filters after zero-result search/filter",
+    "expected": "Show the matching-results empty state and restore records on Clear Filters",
+    "actual": "Server-filtered empty responses used the unfiltered No Evaluations Recorded Yet message and omitted Clear Filters",
+    "rootCause": "The early zero-record branch bypassed the matching-results recovery action",
+    "fix": "Reuse the existing matching-results markup when any search/filter/queue is active",
+    "retest": "Manager quality summary cards apply each filter",
+    "status": "VERIFIED WORKING"
+  }
+]

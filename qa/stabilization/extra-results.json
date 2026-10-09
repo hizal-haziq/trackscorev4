@@ -1,0 +1,1972 @@
+{
+  "generatedAt": "2026-10-08T01:56:31.697Z",
+  "results": [
+    {
+      "name": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+          "type": "click",
+          "tag": "a",
+          "id": "brand-link",
+          "label": "Manager Portal Review assessments, assign assessors, and issue certificates",
+          "inline": "",
+          "href": "/dashboard.html",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+          "type": "click",
+          "tag": "a",
+          "id": "nav-landing",
+          "label": "Home",
+          "inline": "",
+          "href": "/landing.html",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+          "type": "click",
+          "tag": "a",
+          "id": "nav-dashboard",
+          "label": "Dashboard",
+          "inline": "",
+          "href": "/dashboard.html",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+          "type": "click",
+          "tag": "a",
+          "id": "nav-audit-matrix",
+          "label": "Assessment Form",
+          "inline": "",
+          "href": "/index.html",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Registered credential generator phone field and row credential controls produce usable files",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-registered",
+          "label": "Companies & Assignments 3",
+          "inline": "switchDashboardTab('registered_customers')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-registered-generate-vendor-cred",
+          "label": "Generate Vendor Credentials",
+          "inline": "openDirectVendorCredentialModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "input",
+          "tag": "select",
+          "id": "gen-cred-company-select",
+          "label": "-- Choose Company from Repository or Type Below --Pagination Fleet 10 (vendor@stability.test)Pagination Fleet 11 (vendor@stability.test)Pagination Fleet 12 (vendor@stability.test)P",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "change",
+          "tag": "select",
+          "id": "gen-cred-company-select",
+          "label": "-- Choose Company from Repository or Type Below --Pagination Fleet 10 (vendor@stability.test)Pagination Fleet 11 (vendor@stability.test)Pagination Fleet 12 (vendor@stability.test)P",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "input",
+          "tag": "input",
+          "id": "gen-cred-contact-phone",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "change",
+          "tag": "input",
+          "id": "gen-cred-contact-phone",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-gen-cred",
+          "label": "Generate Credentials (.txt / .tst) →",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Download as .txt",
+          "inline": "downloadVendorCredentials('txt')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "",
+          "inline": "",
+          "href": "blob:http://127.0.0.1:33861/e63ce1ab-5bc8-46d3-b2ab-c980b3428f0a",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "×",
+          "inline": "closeVendorInviteModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "🔑 Credentials (.txt/.tst)",
+          "inline": "inviteCustomerToVendorPortal('eval_1791424463842_wczbr', 'Supplemental QA Fleet', 'supplement@stability.test', '0123451234')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Download as .tst",
+          "inline": "downloadVendorCredentials('tst')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "",
+          "inline": "",
+          "href": "blob:http://127.0.0.1:33861/ff0ab048-4fc3-4add-be9e-ef9cc342290f",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "×",
+          "inline": "closeVendorInviteModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-evaluations",
+          "label": "All Assessments 44",
+          "inline": "switchDashboardTab('evaluations')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "input",
+          "tag": "select",
+          "id": "select-limit",
+          "label": "25 50 100",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "change",
+          "tag": "select",
+          "id": "select-limit",
+          "label": "25 50 100",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('eval_1791424463842_wczbr')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered credential generator phone field and row credential controls produce usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-vendor-cred",
+          "label": "Vendor Credentials (.txt / .tst)",
+          "inline": "if (activeEvaluation) openVendorCredentialForRecord(activeEvaluation._id || activeEvaluation.id, activeEvaluation.companyName, activeEvaluation.contactEmail, activeEvaluation.contactPhone)",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-evaluations",
+          "label": "All Assessments 45",
+          "inline": "switchDashboardTab('evaluations')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "input",
+          "tag": "select",
+          "id": "select-limit",
+          "label": "25 50 100",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "change",
+          "tag": "select",
+          "id": "select-limit",
+          "label": "25 50 100",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('extra-version-diff')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-view-history",
+          "label": "Version History",
+          "inline": "openAssessmentHistoryModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Compare with v1",
+          "inline": "openVersionDiffModal('extra-version-diff', 1, 2)",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "click",
+          "tag": "input",
+          "id": "diff-filter-changes-only",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "input",
+          "tag": "input",
+          "id": "diff-filter-changes-only",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "change",
+          "tag": "input",
+          "id": "diff-filter-changes-only",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "click",
+          "tag": "input",
+          "id": "diff-filter-changes-only",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "input",
+          "tag": "input",
+          "id": "diff-filter-changes-only",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+          "type": "change",
+          "tag": "input",
+          "id": "diff-filter-changes-only",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-submitted')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Reject",
+          "inline": "closeReportModal(); openRejectionModal('stab-submitted')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "click",
+          "tag": "button",
+          "id": "reject-modal-cancel",
+          "label": "Cancel",
+          "inline": "closeRejectionModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-submitted')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Approve",
+          "inline": "closeReportModal(); openApproveConfirmModal('stab-submitted')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "input",
+          "tag": "textarea",
+          "id": "approve-modal-comment-preview",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "change",
+          "tag": "textarea",
+          "id": "approve-modal-comment-preview",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "click",
+          "tag": "button",
+          "id": "approve-confirm-modal-close",
+          "label": "×",
+          "inline": "closeApproveConfirmModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-submitted')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Approve",
+          "inline": "closeReportModal(); openApproveConfirmModal('stab-submitted')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "input",
+          "tag": "textarea",
+          "id": "approve-modal-comment-preview",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "change",
+          "tag": "textarea",
+          "id": "approve-modal-comment-preview",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-execute-approve-confirm",
+          "label": "Confirm & Approve",
+          "inline": "executeConfirmedApproval()",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Quality Check modal and details Report download remain reachable for approved records",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Quality Check modal and details Report download remain reachable for approved records",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Quality Check",
+          "inline": "openRiskDetailsModal('stab-completed')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quality Check modal and details Report download remain reachable for approved records",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "×",
+          "inline": "closeRiskModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quality Check modal and details Report download remain reachable for approved records",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-completed')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quality Check modal and details Report download remain reachable for approved records",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-footer-download-report",
+          "label": "Download Report (PDF)",
+          "inline": "viewEvaluationReport('stab-completed')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quality Check modal and details Report download remain reachable for approved records",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-download-pdf-modal",
+          "label": "Download PDF File",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/index.html",
+          "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-matrix",
+          "label": "Assessment Form (33 Items)",
+          "inline": "switchAssessorPortalTab('matrix')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+          "type": "input",
+          "tag": "input",
+          "id": "assessorName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+          "type": "input",
+          "tag": "input",
+          "id": "assessorId",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+          "type": "input",
+          "tag": "select",
+          "id": "packageName",
+          "label": "-- Select Assessment Package -- Package 1: Standard Assessment (RM 4,500 • 2-Year Validity, 1 Free Reassessment) Package 2: Comprehensive Assessment (RM 6,000 • 3-Year Validity, 2 ",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+          "type": "change",
+          "tag": "select",
+          "id": "packageName",
+          "label": "-- Select Assessment Package -- Package 1: Standard Assessment (RM 4,500 • 2-Year Validity, 1 Free Reassessment) Package 2: Comprehensive Assessment (RM 6,000 • 3-Year Validity, 2 ",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+          "type": "input",
+          "tag": "input",
+          "id": "packageNameCustom",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+          "type": "change",
+          "tag": "input",
+          "id": "packageNameCustom",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-save-draft-top",
+          "label": "Save Draft",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Assessor criterion outline links scroll to the actual criterion",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/index.html",
+          "test": "Assessor criterion outline links scroll to the actual criterion",
+          "type": "input",
+          "tag": "input",
+          "id": "companyName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor criterion outline links scroll to the actual criterion",
+          "type": "change",
+          "tag": "input",
+          "id": "companyName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor criterion outline links scroll to the actual criterion",
+          "type": "input",
+          "tag": "input",
+          "id": "deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor criterion outline links scroll to the actual criterion",
+          "type": "change",
+          "tag": "input",
+          "id": "deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor criterion outline links scroll to the actual criterion",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-save-evaluation",
+          "label": "Submit Assessment",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor criterion outline links scroll to the actual criterion",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-execute-submit",
+          "label": "Submit Assessment",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor criterion outline links scroll to the actual criterion",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "A1. Trip History Data",
+          "inline": "scrollToCriterion('trip_history')",
+          "href": "javascript:void(0)",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/index.html",
+          "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+          "type": "click",
+          "tag": "a",
+          "id": "brand-link",
+          "label": "Assessor Portal Assessments & Submissions",
+          "inline": "",
+          "href": "/index.html",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+          "type": "click",
+          "tag": "a",
+          "id": "nav-landing",
+          "label": "Home",
+          "inline": "",
+          "href": "/landing.html",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Vendor brand returns to the existing portal without changing account identity",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor brand returns to the existing portal without changing account identity",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "TrackScore Vendor Portal",
+          "inline": "",
+          "href": "/vendor-portal.html",
+          "action": ""
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "setup",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 44",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "setup",
+      "type": "input",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "setup",
+      "type": "change",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "setup",
+      "type": "input",
+      "tag": "select",
+      "id": "auto-refresh-select",
+      "label": "Off 15s 30s 60s",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "setup",
+      "type": "change",
+      "tag": "select",
+      "id": "auto-refresh-select",
+      "label": "Off 15s 30s 60s",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+      "type": "click",
+      "tag": "a",
+      "id": "brand-link",
+      "label": "Manager Portal Review assessments, assign assessors, and issue certificates",
+      "inline": "",
+      "href": "/dashboard.html",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+      "type": "click",
+      "tag": "a",
+      "id": "nav-landing",
+      "label": "Home",
+      "inline": "",
+      "href": "/landing.html",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+      "type": "click",
+      "tag": "a",
+      "id": "nav-dashboard",
+      "label": "Dashboard",
+      "inline": "",
+      "href": "/dashboard.html",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+      "type": "click",
+      "tag": "a",
+      "id": "nav-audit-matrix",
+      "label": "Assessment Form",
+      "inline": "",
+      "href": "/index.html",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-registered",
+      "label": "Companies & Assignments 3",
+      "inline": "switchDashboardTab('registered_customers')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-registered-generate-vendor-cred",
+      "label": "Generate Vendor Credentials",
+      "inline": "openDirectVendorCredentialModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "input",
+      "tag": "select",
+      "id": "gen-cred-company-select",
+      "label": "-- Choose Company from Repository or Type Below --Pagination Fleet 10 (vendor@stability.test)Pagination Fleet 11 (vendor@stability.test)Pagination Fleet 12 (vendor@stability.test)P",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "change",
+      "tag": "select",
+      "id": "gen-cred-company-select",
+      "label": "-- Choose Company from Repository or Type Below --Pagination Fleet 10 (vendor@stability.test)Pagination Fleet 11 (vendor@stability.test)Pagination Fleet 12 (vendor@stability.test)P",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "input",
+      "tag": "input",
+      "id": "gen-cred-contact-phone",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "change",
+      "tag": "input",
+      "id": "gen-cred-contact-phone",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-gen-cred",
+      "label": "Generate Credentials (.txt / .tst) →",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Download as .txt",
+      "inline": "downloadVendorCredentials('txt')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "",
+      "inline": "",
+      "href": "blob:http://127.0.0.1:33861/e63ce1ab-5bc8-46d3-b2ab-c980b3428f0a",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "×",
+      "inline": "closeVendorInviteModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "🔑 Credentials (.txt/.tst)",
+      "inline": "inviteCustomerToVendorPortal('eval_1791424463842_wczbr', 'Supplemental QA Fleet', 'supplement@stability.test', '0123451234')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Download as .tst",
+      "inline": "downloadVendorCredentials('tst')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "",
+      "inline": "",
+      "href": "blob:http://127.0.0.1:33861/ff0ab048-4fc3-4add-be9e-ef9cc342290f",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "×",
+      "inline": "closeVendorInviteModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 44",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "input",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "change",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('eval_1791424463842_wczbr')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-vendor-cred",
+      "label": "Vendor Credentials (.txt / .tst)",
+      "inline": "if (activeEvaluation) openVendorCredentialForRecord(activeEvaluation._id || activeEvaluation.id, activeEvaluation.companyName, activeEvaluation.contactEmail, activeEvaluation.contactPhone)",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 45",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "input",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "change",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('extra-version-diff')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-view-history",
+      "label": "Version History",
+      "inline": "openAssessmentHistoryModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Compare with v1",
+      "inline": "openVersionDiffModal('extra-version-diff', 1, 2)",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "click",
+      "tag": "input",
+      "id": "diff-filter-changes-only",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "input",
+      "tag": "input",
+      "id": "diff-filter-changes-only",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "change",
+      "tag": "input",
+      "id": "diff-filter-changes-only",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "click",
+      "tag": "input",
+      "id": "diff-filter-changes-only",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "input",
+      "tag": "input",
+      "id": "diff-filter-changes-only",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "change",
+      "tag": "input",
+      "id": "diff-filter-changes-only",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "×",
+      "inline": "closeVersionDiffModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-submitted')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Reject",
+      "inline": "closeReportModal(); openRejectionModal('stab-submitted')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "reject-modal-cancel",
+      "label": "Cancel",
+      "inline": "closeRejectionModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-submitted')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Approve",
+      "inline": "closeReportModal(); openApproveConfirmModal('stab-submitted')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "input",
+      "tag": "textarea",
+      "id": "approve-modal-comment-preview",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "change",
+      "tag": "textarea",
+      "id": "approve-modal-comment-preview",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "approve-confirm-modal-close",
+      "label": "×",
+      "inline": "closeApproveConfirmModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-submitted')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Approve",
+      "inline": "closeReportModal(); openApproveConfirmModal('stab-submitted')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "input",
+      "tag": "textarea",
+      "id": "approve-modal-comment-preview",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "change",
+      "tag": "textarea",
+      "id": "approve-modal-comment-preview",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-execute-approve-confirm",
+      "label": "Confirm & Approve",
+      "inline": "executeConfirmedApproval()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Quality Check",
+      "inline": "openRiskDetailsModal('stab-completed')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "×",
+      "inline": "closeRiskModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-completed')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-footer-download-report",
+      "label": "Download Report (PDF)",
+      "inline": "viewEvaluationReport('stab-completed')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-download-pdf-modal",
+      "label": "Download PDF File",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-matrix",
+      "label": "Assessment Form (33 Items)",
+      "inline": "switchAssessorPortalTab('matrix')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "type": "input",
+      "tag": "input",
+      "id": "assessorName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "type": "input",
+      "tag": "input",
+      "id": "assessorId",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "type": "input",
+      "tag": "select",
+      "id": "packageName",
+      "label": "-- Select Assessment Package -- Package 1: Standard Assessment (RM 4,500 • 2-Year Validity, 1 Free Reassessment) Package 2: Comprehensive Assessment (RM 6,000 • 3-Year Validity, 2 ",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "type": "change",
+      "tag": "select",
+      "id": "packageName",
+      "label": "-- Select Assessment Package -- Package 1: Standard Assessment (RM 4,500 • 2-Year Validity, 1 Free Reassessment) Package 2: Comprehensive Assessment (RM 6,000 • 3-Year Validity, 2 ",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "type": "input",
+      "tag": "input",
+      "id": "packageNameCustom",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "type": "change",
+      "tag": "input",
+      "id": "packageNameCustom",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-save-draft-top",
+      "label": "Save Draft",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor criterion outline links scroll to the actual criterion",
+      "type": "input",
+      "tag": "input",
+      "id": "companyName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor criterion outline links scroll to the actual criterion",
+      "type": "change",
+      "tag": "input",
+      "id": "companyName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor criterion outline links scroll to the actual criterion",
+      "type": "input",
+      "tag": "input",
+      "id": "deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor criterion outline links scroll to the actual criterion",
+      "type": "change",
+      "tag": "input",
+      "id": "deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor criterion outline links scroll to the actual criterion",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-save-evaluation",
+      "label": "Submit Assessment",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor criterion outline links scroll to the actual criterion",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-execute-submit",
+      "label": "Submit Assessment",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor criterion outline links scroll to the actual criterion",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "A1. Trip History Data",
+      "inline": "scrollToCriterion('trip_history')",
+      "href": "javascript:void(0)",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+      "type": "click",
+      "tag": "a",
+      "id": "brand-link",
+      "label": "Assessor Portal Assessments & Submissions",
+      "inline": "",
+      "href": "/index.html",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+      "type": "click",
+      "tag": "a",
+      "id": "nav-landing",
+      "label": "Home",
+      "inline": "",
+      "href": "/landing.html",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor brand returns to the existing portal without changing account identity",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "TrackScore Vendor Portal",
+      "inline": "",
+      "href": "/vendor-portal.html",
+      "action": ""
+    }
+  ],
+  "errors": [],
+  "network": [
+    {
+      "test": "setup",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+    },
+    {
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+    }
+  ],
+  "downloads": [
+    {
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "file": "supplement-credentials.txt",
+      "bytes": 1594
+    },
+    {
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "file": "supplement-credentials.tst",
+      "bytes": 1590
+    },
+    {
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "file": "details-report.pdf",
+      "bytes": 526958
+    }
+  ],
+  "metrics": [
+    {
+      "test": "Manager brand, Home, Dashboard and protected Assessment Form links navigate correctly",
+      "longTasks": []
+    },
+    {
+      "test": "Registered credential generator phone field and row credential controls produce usable files",
+      "longTasks": []
+    },
+    {
+      "test": "Assessment-version diff toggles retain all 33 immutable criterion comparisons",
+      "longTasks": []
+    },
+    {
+      "test": "Report Reject and Approve open correct confirmation modals; preview notes persist on approval",
+      "longTasks": []
+    },
+    {
+      "test": "Quality Check modal and details Report download remain reachable for approved records",
+      "longTasks": [
+        743,
+        177,
+        189
+      ]
+    },
+    {
+      "test": "Assessor custom package entry and authenticated name/ID controls preserve their intended values",
+      "longTasks": []
+    },
+    {
+      "test": "Assessor criterion outline links scroll to the actual criterion",
+      "longTasks": []
+    },
+    {
+      "test": "Assessor brand, Home, Sign In and protected Manager links retain authorization",
+      "longTasks": []
+    },
+    {
+      "test": "Vendor brand returns to the existing portal without changing account identity",
+      "longTasks": []
+    }
+  ]
+}

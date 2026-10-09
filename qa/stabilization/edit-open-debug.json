@@ -1,0 +1,96 @@
+{
+  "id": "eval_1791424354859_k0cfu",
+  "record": {
+    "_id": "eval_1791424354859_k0cfu",
+    "recordType": "registration",
+    "companyName": "O'Brien & Fleet \"QA\" '); window.__xssRan=true; //",
+    "officeAddress": "",
+    "state": "",
+    "deviceModel": "Model O'Brien",
+    "contactPerson": "QA Contact",
+    "contactEmail": "quoted@stability.test",
+    "contactPhone": "0123456789",
+    "package": "package_1",
+    "packageName": "Package 1",
+    "packageDetails": {
+      "packageId": "package_1",
+      "name": "Package 1",
+      "price": 4500,
+      "currency": "MYR",
+      "formattedPrice": "RM4,500",
+      "validityYears": 2,
+      "freeReassessments": 1,
+      "slaDays": 7
+    },
+    "scheduledDate": "2026-10-10",
+    "notes": "",
+    "status": "scheduled",
+    "statusChangedAt": "2026-10-08T01:52:36.732Z",
+    "slaStartAt": "2026-10-08T01:52:34.857Z",
+    "slaDeadline": "2026-10-15T01:52:34.857Z",
+    "slaDurationDays": 7,
+    "invoice": {
+      "invoiceNumber": "INV-2026-5874",
+      "amount": 4500,
+      "issuedDate": "2026-10-08",
+      "dueDate": "2026-10-22",
+      "status": "draft",
+      "isConfirmed": false,
+      "isDraftStub": true
+    },
+    "createdAt": "2026-10-08T01:52:34.857Z",
+    "scheduledBy": "Stability Manager",
+    "scheduledAt": "2026-10-08T01:52:36.732Z",
+    "assignedAssessor": "Other Assessor",
+    "assignedAssessorName": "Other Assessor",
+    "assignedAssessorId": "stability-assessor2",
+    "assignedAssessorEmail": "assessor2@stability.test",
+    "assignedAt": "2026-10-08T01:52:36.732Z",
+    "assignedBy": "Stability Manager",
+    "schedulingNotes": "Stability assignment instructions",
+    "updatedAt": "2026-10-08T01:52:36.733Z",
+    "assignmentInstructions": "Stability assignment instructions",
+    "sla": {
+      "startAt": "2026-10-08T01:52:34.857Z",
+      "deadline": "2026-10-15T01:52:34.857Z",
+      "durationDays": 7,
+      "completedAt": null,
+      "isCompleted": false,
+      "status": "ON_TRACK",
+      "label": "On Track",
+      "badgeClass": "badge-sla-on-track",
+      "color": "#059669",
+      "bgColor": "#ECFDF5",
+      "borderColor": "#A7F3D0",
+      "icon": "check-circle",
+      "remainingSeconds": 604797,
+      "remainingFormatted": "6 days remaining",
+      "overdueSeconds": 0,
+      "overdueFormatted": "None",
+      "dueSoonThresholdHours": 48
+    },
+    "risk": {
+      "riskLevel": "NORMAL",
+      "riskScore": 0,
+      "dataConfidence": "HIGH",
+      "signalsCount": 0,
+      "signals": []
+    }
+  },
+  "modal": "modal-overlay active",
+  "buttons": [
+    {
+      "html": "<button type=\"button\" class=\"btn btn-secondary btn-sm\" onclick=\"openEditModal('eval_1791424354859_k0cfu')\" title=\"Edit company and assessment details\">\n                        Edit\n                      </button>",
+      "rect": {
+        "x": 1212.515625,
+        "y": 365.015625,
+        "width": 41,
+        "height": 38,
+        "top": 365.015625,
+        "right": 1253.515625,
+        "bottom": 403.015625,
+        "left": 1212.515625
+      }
+    }
+  ]
+}

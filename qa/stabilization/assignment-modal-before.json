@@ -1,0 +1,3690 @@
+{
+  "generatedAt": "2026-10-08T01:46:42.582Z",
+  "results": [
+    {
+      "name": "Remaining Public portal links navigate to their declared destinations",
+      "passed": true,
+      "evidence": {
+        "links": 5
+      },
+      "interactions": [
+        {
+          "page": "/landing.html",
+          "test": "Remaining Public portal links navigate to their declared destinations",
+          "type": "click",
+          "tag": "a",
+          "id": "hero-cta-register",
+          "label": "Register Company →",
+          "inline": "",
+          "href": "/request-assessment.html",
+          "action": ""
+        },
+        {
+          "page": "/landing.html",
+          "test": "Remaining Public portal links navigate to their declared destinations",
+          "type": "click",
+          "tag": "a",
+          "id": "hero-cta-login",
+          "label": "Sign In to Portal",
+          "inline": "",
+          "href": "/login.html",
+          "action": ""
+        },
+        {
+          "page": "/landing.html",
+          "test": "Remaining Public portal links navigate to their declared destinations",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "Sign In as Vendor →",
+          "inline": "",
+          "href": "/login.html?role=vendor",
+          "action": ""
+        },
+        {
+          "page": "/landing.html",
+          "test": "Remaining Public portal links navigate to their declared destinations",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "Sign In as Assessor →",
+          "inline": "",
+          "href": "/login.html?role=assessor",
+          "action": ""
+        },
+        {
+          "page": "/landing.html",
+          "test": "Remaining Public portal links navigate to their declared destinations",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "Sign In as Manager →",
+          "inline": "",
+          "href": "/login.html?role=manager",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Public package selection persists and external contact links expose valid handoff targets",
+      "passed": true,
+      "evidence": {
+        "protocolTargets": [
+          "mailto:admin@miros.gov.my",
+          "tel:+60389249200",
+          "mailto:admin@miros.gov.my?subject=TrackScore%20Password%20Reset%20Request",
+          "mailto:admin@miros.gov.my"
+        ],
+        "delivery": "Protocol syntax/native click only; external client delivery BLOCKED"
+      },
+      "interactions": [
+        {
+          "page": "/request-assessment.html",
+          "test": "Public package selection persists and external contact links expose valid handoff targets",
+          "type": "input",
+          "tag": "select",
+          "id": "packageInterest",
+          "label": "Package 1: Standard Assessment (RM 4,500 • Section A & B Audit) Package 2: Comprehensive Assessment (RM 6,000 • Full Compliance & On-Site) Enterprise / Multi-Device Fleet Assessmen",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/request-assessment.html",
+          "test": "Public package selection persists and external contact links expose valid handoff targets",
+          "type": "change",
+          "tag": "select",
+          "id": "packageInterest",
+          "label": "Package 1: Standard Assessment (RM 4,500 • Section A & B Audit) Package 2: Comprehensive Assessment (RM 6,000 • Full Compliance & On-Site) Enterprise / Multi-Device Fleet Assessmen",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/landing.html",
+          "test": "Public package selection persists and external contact links expose valid handoff targets",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "admin@miros.gov.my",
+          "inline": "",
+          "href": "mailto:admin@miros.gov.my",
+          "action": ""
+        },
+        {
+          "page": "/landing.html",
+          "test": "Public package selection persists and external contact links expose valid handoff targets",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "+603-8924 9200",
+          "inline": "",
+          "href": "tel:+60389249200",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Public package selection persists and external contact links expose valid handoff targets",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "Contact MIROS Telematics Operations",
+          "inline": "",
+          "href": "mailto:admin@miros.gov.my?subject=TrackScore%20Password%20Reset%20Request",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Public package selection persists and external contact links expose valid handoff targets",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "MIROS Telematics Operations",
+          "inline": "",
+          "href": "mailto:admin@miros.gov.my",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Registered-customer refresh and optional intake fields persist with one submission",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-registered",
+          "label": "Companies & Assignments 2",
+          "inline": "switchDashboardTab('registered_customers')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-refresh-registered",
+          "label": "Refresh",
+          "inline": "fetchRegisteredCustomers()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "click",
+          "tag": "button",
+          "id": "overview-new-registration",
+          "label": "+ New Registration",
+          "inline": "openRegisterCustomerModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-companyName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-companyName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-contactPerson",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-contactPerson",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-contactEmail",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-contactEmail",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-contactPhone",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-contactPhone",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-scheduledDate",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-scheduledDate",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "input",
+          "tag": "select",
+          "id": "reg-requestedPackage",
+          "label": "Package 1 — RM 4,500 (2-Year Validity, 1 Free Reassessment) Package 2 — RM 6,000 (3-Year Validity, 2 Free Reassessments)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "change",
+          "tag": "select",
+          "id": "reg-requestedPackage",
+          "label": "Package 1 — RM 4,500 (2-Year Validity, 1 Free Reassessment) Package 2 — RM 6,000 (3-Year Validity, 2 Free Reassessments)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "input",
+          "tag": "select",
+          "id": "reg-assessor-select",
+          "label": "-- Unassigned (Assign Later) --Stability Assessor (stability-assessor) — [11 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "change",
+          "tag": "select",
+          "id": "reg-assessor-select",
+          "label": "-- Unassigned (Assign Later) --Stability Assessor (stability-assessor) — [11 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Registered-customer refresh and optional intake fields persist with one submission",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-register",
+          "label": "Create Registration",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Invoice package and date fields persist through the retained invoice action",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-registered",
+          "label": "Companies & Assignments 3",
+          "inline": "switchDashboardTab('registered_customers')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review & Confirm",
+          "inline": "openManageInvoiceModal('eval_1791423966502_qq2cn', 'Supplemental QA Fleet', 'Package 2', {\"invoiceNumber\":\"INV-2026-5675\",\"amount\":6000,\"issuedDate\":\"2026-10-08\",\"dueDate\":\"2026-10-22\",\"status\":\"draft\",\"isConfirmed\":false,\"isDraftStub\":true})",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "input",
+          "tag": "select",
+          "id": "inv-package-select",
+          "label": "Package 1 — RM 4,500 (2-Year Validity, 1 Free Reassessment) Package 2 — RM 6,000 (3-Year Validity, 2 Free Reassessments)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "change",
+          "tag": "select",
+          "id": "inv-package-select",
+          "label": "Package 1 — RM 4,500 (2-Year Validity, 1 Free Reassessment) Package 2 — RM 6,000 (3-Year Validity, 2 Free Reassessments)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "input",
+          "tag": "input",
+          "id": "inv-number-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "change",
+          "tag": "input",
+          "id": "inv-number-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "input",
+          "tag": "input",
+          "id": "inv-issued-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "change",
+          "tag": "input",
+          "id": "inv-issued-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "input",
+          "tag": "input",
+          "id": "inv-due-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "change",
+          "tag": "input",
+          "id": "inv-due-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Invoice package and date fields persist through the retained invoice action",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-invoice",
+          "label": "Confirm Package & Finalize Invoice",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-workload",
+          "label": "Assessor Workload 13",
+          "inline": "switchDashboardTab('workload')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "input",
+          "id": "wl-search-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "input",
+          "id": "wl-search-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "input",
+          "id": "wl-search-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-filter-select",
+          "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "input",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "change",
+          "tag": "select",
+          "id": "wl-sort-select",
+          "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "",
+          "inline": "filterRegistryByAssessor('Stability Assessor')",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-inquiries",
+          "label": "Applications & Inquiries 5",
+          "inline": "switchDashboardTab('inquiries')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "input",
+          "tag": "input",
+          "id": "inq-table-search",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "input",
+          "tag": "input",
+          "id": "inq-table-search",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "input",
+          "tag": "input",
+          "id": "inq-table-search",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "input",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "change",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "input",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "change",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "input",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "change",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "input",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "change",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "input",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+          "type": "change",
+          "tag": "select",
+          "id": "inq-status-filter",
+          "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-evaluations",
+          "label": "All Assessments 43",
+          "inline": "switchDashboardTab('evaluations')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "select",
+          "id": "status-filter",
+          "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "select",
+          "id": "status-filter",
+          "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-refresh",
+          "label": "Refresh",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "select",
+          "id": "select-limit",
+          "label": "25 50 100",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "select",
+          "id": "select-limit",
+          "label": "25 50 100",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('supplement-cert')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-footer-prepare-cert",
+          "label": "Prepare Certificate",
+          "inline": "openCertificateModal('supplement-cert', 'prepare')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "input",
+          "id": "cert-prep-number",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "input",
+          "id": "cert-prep-number",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "input",
+          "id": "cert-prep-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "input",
+          "id": "cert-prep-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-certificate-action",
+          "label": "Confirm Preparation",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('supplement-cert')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-footer-print-cert",
+          "label": "Print Certificate",
+          "inline": "openCertificateModal('supplement-cert', 'print')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "input",
+          "id": "cert-print-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "input",
+          "id": "cert-print-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-certificate-action",
+          "label": "Confirm Physical Print",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('supplement-cert')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-footer-sign-cert",
+          "label": "Record Signature",
+          "inline": "openCertificateModal('supplement-cert', 'sign')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "input",
+          "id": "cert-sign-name",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "input",
+          "id": "cert-sign-name",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "input",
+          "id": "cert-sign-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "input",
+          "id": "cert-sign-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-certificate-action",
+          "label": "Record DGO Signature",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('supplement-cert')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Deliver",
+          "inline": "openCertificateModal('supplement-cert', 'deliver')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "select",
+          "id": "cert-deliver-method",
+          "label": "Official Email & Physical Courier Registered Post (Pos Laju) Direct In-Person Collection at MIROS Secure PDF Email Dispatch",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "select",
+          "id": "cert-deliver-method",
+          "label": "Official Email & Physical Courier Registered Post (Pos Laju) Direct In-Person Collection at MIROS Secure PDF Email Dispatch",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "input",
+          "id": "cert-deliver-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "input",
+          "id": "cert-deliver-date",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "input",
+          "tag": "input",
+          "id": "cert-deliver-notes",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "change",
+          "tag": "input",
+          "id": "cert-deliver-notes",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-certificate-action",
+          "label": "Confirm Delivery to Customer",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Assessor assignment modal close, dismiss and Start controls preserve the exact owned company",
+      "passed": false,
+      "error": "locator.click: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#btn-close-assignment-modal')\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"button\" class=\"modal-close-btn\" aria-label=\"Close dialog\" id=\"btn-close-assignment-modal\">×</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"notif-card-actions\">…</div> from <main class=\"container\" id=\"main-content\">…</main> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <div class=\"notif-card-actions\">…</div> from <main class=\"container\" id=\"main-content\">…</main> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    23 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <div class=\"notif-card-actions\">…</div> from <main class=\"container\" id=\"main-content\">…</main> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+      "interactions": [
+        {
+          "page": "/index.html",
+          "test": "Assessor assignment modal close, dismiss and Start controls preserve the exact owned company",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-notifications",
+          "label": "Updates & Alerts 0",
+          "inline": "switchAssessorPortalTab('notifications')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor assignment modal close, dismiss and Start controls preserve the exact owned company",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "View Details",
+          "inline": "showAssignmentModalFromFeed('quoted-assessor-assignment')",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Assessor notification and peer searches show genuine empty results",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/index.html",
+          "test": "Assessor notification and peer searches show genuine empty results",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-notifications",
+          "label": "Updates & Alerts 0",
+          "inline": "switchAssessorPortalTab('notifications')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification and peer searches show genuine empty results",
+          "type": "input",
+          "tag": "input",
+          "id": "notif-search-input",
+          "label": "Filter notifications",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification and peer searches show genuine empty results",
+          "type": "input",
+          "tag": "input",
+          "id": "notif-search-input",
+          "label": "Filter notifications",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification and peer searches show genuine empty results",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-peer-review",
+          "label": "Peer Reviews",
+          "inline": "switchAssessorPortalTab('peer-review')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification and peer searches show genuine empty results",
+          "type": "input",
+          "tag": "input",
+          "id": "peer-evaluations-search",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification and peer searches show genuine empty results",
+          "type": "input",
+          "tag": "input",
+          "id": "peer-evaluations-search",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Assessor report PDF button and print view download the selected owned assessment",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/index.html",
+          "test": "Assessor report PDF button and print view download the selected owned assessment",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-submissions",
+          "label": "My Submissions (44)",
+          "inline": "switchAssessorPortalTab('submissions')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor report PDF button and print view download the selected owned assessment",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "View Report",
+          "inline": "viewAssessorSubmissionReport('stab-completed')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor report PDF button and print view download the selected owned assessment",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-print-report",
+          "label": "Print Report",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor report PDF button and print view download the selected owned assessment",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-download-pdf-modal",
+          "label": "Download PDF",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Change-password Sign Out clears authentication and returns to Login",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/change-password.html",
+          "test": "Change-password Sign Out clears authentication and returns to Login",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "Sign Out & Return to Login",
+          "inline": "handleSignOut()",
+          "href": "javascript:void(0)",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "passed": true,
+      "evidence": [
+        {
+          "role": "manager",
+          "refreshes": 1,
+          "toasts": 1
+        },
+        {
+          "role": "vendor",
+          "refreshes": 2,
+          "toasts": 1
+        }
+      ],
+      "interactions": [
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "input",
+          "tag": "input",
+          "id": "login-email",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "change",
+          "tag": "input",
+          "id": "login-email",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "input",
+          "tag": "input",
+          "id": "login-password",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "change",
+          "tag": "input",
+          "id": "login-password",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-login-submit",
+          "label": "Sign In",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-evaluations",
+          "label": "All Assessments 44",
+          "inline": "switchDashboardTab('evaluations')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "input",
+          "tag": "select",
+          "id": "select-limit",
+          "label": "25 50 100",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "change",
+          "tag": "select",
+          "id": "select-limit",
+          "label": "25 50 100",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "input",
+          "tag": "select",
+          "id": "auto-refresh-select",
+          "label": "Off 15s 30s 60s",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "change",
+          "tag": "select",
+          "id": "auto-refresh-select",
+          "label": "Off 15s 30s 60s",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "input",
+          "tag": "input",
+          "id": "login-email",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "change",
+          "tag": "input",
+          "id": "login-email",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "input",
+          "tag": "input",
+          "id": "login-password",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "change",
+          "tag": "input",
+          "id": "login-password",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-login-submit",
+          "label": "Sign In",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "page": "/landing.html",
+      "test": "Remaining Public portal links navigate to their declared destinations",
+      "type": "click",
+      "tag": "a",
+      "id": "hero-cta-register",
+      "label": "Register Company →",
+      "inline": "",
+      "href": "/request-assessment.html",
+      "action": ""
+    },
+    {
+      "page": "/landing.html",
+      "test": "Remaining Public portal links navigate to their declared destinations",
+      "type": "click",
+      "tag": "a",
+      "id": "hero-cta-login",
+      "label": "Sign In to Portal",
+      "inline": "",
+      "href": "/login.html",
+      "action": ""
+    },
+    {
+      "page": "/landing.html",
+      "test": "Remaining Public portal links navigate to their declared destinations",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "Sign In as Vendor →",
+      "inline": "",
+      "href": "/login.html?role=vendor",
+      "action": ""
+    },
+    {
+      "page": "/landing.html",
+      "test": "Remaining Public portal links navigate to their declared destinations",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "Sign In as Assessor →",
+      "inline": "",
+      "href": "/login.html?role=assessor",
+      "action": ""
+    },
+    {
+      "page": "/landing.html",
+      "test": "Remaining Public portal links navigate to their declared destinations",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "Sign In as Manager →",
+      "inline": "",
+      "href": "/login.html?role=manager",
+      "action": ""
+    },
+    {
+      "page": "/request-assessment.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "input",
+      "tag": "select",
+      "id": "packageInterest",
+      "label": "Package 1: Standard Assessment (RM 4,500 • Section A & B Audit) Package 2: Comprehensive Assessment (RM 6,000 • Full Compliance & On-Site) Enterprise / Multi-Device Fleet Assessmen",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/request-assessment.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "change",
+      "tag": "select",
+      "id": "packageInterest",
+      "label": "Package 1: Standard Assessment (RM 4,500 • Section A & B Audit) Package 2: Comprehensive Assessment (RM 6,000 • Full Compliance & On-Site) Enterprise / Multi-Device Fleet Assessmen",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/landing.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "admin@miros.gov.my",
+      "inline": "",
+      "href": "mailto:admin@miros.gov.my",
+      "action": ""
+    },
+    {
+      "page": "/landing.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "+603-8924 9200",
+      "inline": "",
+      "href": "tel:+60389249200",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "Contact MIROS Telematics Operations",
+      "inline": "",
+      "href": "mailto:admin@miros.gov.my?subject=TrackScore%20Password%20Reset%20Request",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "MIROS Telematics Operations",
+      "inline": "",
+      "href": "mailto:admin@miros.gov.my",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 42",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "input",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "change",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "input",
+      "tag": "select",
+      "id": "auto-refresh-select",
+      "label": "Off 15s 30s 60s",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "type": "change",
+      "tag": "select",
+      "id": "auto-refresh-select",
+      "label": "Off 15s 30s 60s",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-registered",
+      "label": "Companies & Assignments 2",
+      "inline": "switchDashboardTab('registered_customers')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-refresh-registered",
+      "label": "Refresh",
+      "inline": "fetchRegisteredCustomers()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "click",
+      "tag": "button",
+      "id": "overview-new-registration",
+      "label": "+ New Registration",
+      "inline": "openRegisterCustomerModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-companyName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-companyName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-contactPerson",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-contactPerson",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-contactEmail",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-contactEmail",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-contactPhone",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-contactPhone",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-scheduledDate",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-scheduledDate",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "input",
+      "tag": "select",
+      "id": "reg-requestedPackage",
+      "label": "Package 1 — RM 4,500 (2-Year Validity, 1 Free Reassessment) Package 2 — RM 6,000 (3-Year Validity, 2 Free Reassessments)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "change",
+      "tag": "select",
+      "id": "reg-requestedPackage",
+      "label": "Package 1 — RM 4,500 (2-Year Validity, 1 Free Reassessment) Package 2 — RM 6,000 (3-Year Validity, 2 Free Reassessments)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "input",
+      "tag": "select",
+      "id": "reg-assessor-select",
+      "label": "-- Unassigned (Assign Later) --Stability Assessor (stability-assessor) — [11 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "change",
+      "tag": "select",
+      "id": "reg-assessor-select",
+      "label": "-- Unassigned (Assign Later) --Stability Assessor (stability-assessor) — [11 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-register",
+      "label": "Create Registration",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-registered",
+      "label": "Companies & Assignments 3",
+      "inline": "switchDashboardTab('registered_customers')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review & Confirm",
+      "inline": "openManageInvoiceModal('eval_1791423966502_qq2cn', 'Supplemental QA Fleet', 'Package 2', {\"invoiceNumber\":\"INV-2026-5675\",\"amount\":6000,\"issuedDate\":\"2026-10-08\",\"dueDate\":\"2026-10-22\",\"status\":\"draft\",\"isConfirmed\":false,\"isDraftStub\":true})",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "input",
+      "tag": "select",
+      "id": "inv-package-select",
+      "label": "Package 1 — RM 4,500 (2-Year Validity, 1 Free Reassessment) Package 2 — RM 6,000 (3-Year Validity, 2 Free Reassessments)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "change",
+      "tag": "select",
+      "id": "inv-package-select",
+      "label": "Package 1 — RM 4,500 (2-Year Validity, 1 Free Reassessment) Package 2 — RM 6,000 (3-Year Validity, 2 Free Reassessments)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "input",
+      "tag": "input",
+      "id": "inv-number-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "change",
+      "tag": "input",
+      "id": "inv-number-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "input",
+      "tag": "input",
+      "id": "inv-issued-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "change",
+      "tag": "input",
+      "id": "inv-issued-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "input",
+      "tag": "input",
+      "id": "inv-due-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "change",
+      "tag": "input",
+      "id": "inv-due-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-invoice",
+      "label": "Confirm Package & Finalize Invoice",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-workload",
+      "label": "Assessor Workload 13",
+      "inline": "switchDashboardTab('workload')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "input",
+      "id": "wl-search-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "input",
+      "id": "wl-search-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "input",
+      "id": "wl-search-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-filter-select",
+      "label": "All Capacity Statuses Available (0 Active) Optimal (1 - 4 Active) At Capacity (5 Active) Overloaded (> 5 Active) Has Overdue Tasks",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "input",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "change",
+      "tag": "select",
+      "id": "wl-sort-select",
+      "label": "Active Tasks (High → Low) Active Tasks (Low → High) Overdue Tasks (High → Low) Name (A → Z)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "",
+      "inline": "filterRegistryByAssessor('Stability Assessor')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-inquiries",
+      "label": "Applications & Inquiries 5",
+      "inline": "switchDashboardTab('inquiries')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "input",
+      "tag": "input",
+      "id": "inq-table-search",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "input",
+      "tag": "input",
+      "id": "inq-table-search",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "input",
+      "tag": "input",
+      "id": "inq-table-search",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "input",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "change",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "input",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "change",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "input",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "change",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "input",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "change",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "input",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "type": "change",
+      "tag": "select",
+      "id": "inq-status-filter",
+      "label": "Active Inquiries (Review Queue) Converted to Registration Dismissed / Spam All Inquiries History",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 43",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "select",
+      "id": "status-filter",
+      "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "select",
+      "id": "status-filter",
+      "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-refresh",
+      "label": "Refresh",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('supplement-cert')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-footer-prepare-cert",
+      "label": "Prepare Certificate",
+      "inline": "openCertificateModal('supplement-cert', 'prepare')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "input",
+      "id": "cert-prep-number",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "input",
+      "id": "cert-prep-number",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "input",
+      "id": "cert-prep-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "input",
+      "id": "cert-prep-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-certificate-action",
+      "label": "Confirm Preparation",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('supplement-cert')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-footer-print-cert",
+      "label": "Print Certificate",
+      "inline": "openCertificateModal('supplement-cert', 'print')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "input",
+      "id": "cert-print-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "input",
+      "id": "cert-print-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-certificate-action",
+      "label": "Confirm Physical Print",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('supplement-cert')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-footer-sign-cert",
+      "label": "Record Signature",
+      "inline": "openCertificateModal('supplement-cert', 'sign')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "input",
+      "id": "cert-sign-name",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "input",
+      "id": "cert-sign-name",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "input",
+      "id": "cert-sign-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "input",
+      "id": "cert-sign-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-certificate-action",
+      "label": "Record DGO Signature",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('supplement-cert')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Deliver",
+      "inline": "openCertificateModal('supplement-cert', 'deliver')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "select",
+      "id": "cert-deliver-method",
+      "label": "Official Email & Physical Courier Registered Post (Pos Laju) Direct In-Person Collection at MIROS Secure PDF Email Dispatch",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "select",
+      "id": "cert-deliver-method",
+      "label": "Official Email & Physical Courier Registered Post (Pos Laju) Direct In-Person Collection at MIROS Secure PDF Email Dispatch",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "input",
+      "id": "cert-deliver-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "input",
+      "id": "cert-deliver-date",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "input",
+      "id": "cert-deliver-notes",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "input",
+      "id": "cert-deliver-notes",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-certificate-action",
+      "label": "Confirm Delivery to Customer",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor assignment modal close, dismiss and Start controls preserve the exact owned company",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-notifications",
+      "label": "Updates & Alerts 0",
+      "inline": "switchAssessorPortalTab('notifications')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor assignment modal close, dismiss and Start controls preserve the exact owned company",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "View Details",
+      "inline": "showAssignmentModalFromFeed('quoted-assessor-assignment')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification and peer searches show genuine empty results",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-notifications",
+      "label": "Updates & Alerts 0",
+      "inline": "switchAssessorPortalTab('notifications')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification and peer searches show genuine empty results",
+      "type": "input",
+      "tag": "input",
+      "id": "notif-search-input",
+      "label": "Filter notifications",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification and peer searches show genuine empty results",
+      "type": "input",
+      "tag": "input",
+      "id": "notif-search-input",
+      "label": "Filter notifications",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification and peer searches show genuine empty results",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-peer-review",
+      "label": "Peer Reviews",
+      "inline": "switchAssessorPortalTab('peer-review')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification and peer searches show genuine empty results",
+      "type": "input",
+      "tag": "input",
+      "id": "peer-evaluations-search",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification and peer searches show genuine empty results",
+      "type": "input",
+      "tag": "input",
+      "id": "peer-evaluations-search",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor report PDF button and print view download the selected owned assessment",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-submissions",
+      "label": "My Submissions (44)",
+      "inline": "switchAssessorPortalTab('submissions')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor report PDF button and print view download the selected owned assessment",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "View Report",
+      "inline": "viewAssessorSubmissionReport('stab-completed')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor report PDF button and print view download the selected owned assessment",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-print-report",
+      "label": "Print Report",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor report PDF button and print view download the selected owned assessment",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-download-pdf-modal",
+      "label": "Download PDF",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor report PDF button and print view download the selected owned assessment",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/change-password.html",
+      "test": "Change-password Sign Out clears authentication and returns to Login",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "Sign Out & Return to Login",
+      "inline": "handleSignOut()",
+      "href": "javascript:void(0)",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 44",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "input",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "change",
+      "tag": "select",
+      "id": "select-limit",
+      "label": "25 50 100",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "input",
+      "tag": "select",
+      "id": "auto-refresh-select",
+      "label": "Off 15s 30s 60s",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "change",
+      "tag": "select",
+      "id": "auto-refresh-select",
+      "label": "Off 15s 30s 60s",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    }
+  ],
+  "errors": [],
+  "network": [
+    {
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:40777/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+    },
+    {
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:40777/.netlify/functions/get-evaluations?page=1&limit=100&includeDeleted=false&sortBy=createdAt"
+    },
+    {
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:40777/.netlify/functions/get-evaluations?page=1&limit=100&includeDeleted=false&sortBy=createdAt"
+    },
+    {
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:40777/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+    }
+  ],
+  "downloads": [
+    {
+      "test": "Assessor report PDF button and print view download the selected owned assessment",
+      "file": "assessor-report.pdf",
+      "bytes": 552698
+    }
+  ],
+  "metrics": [
+    {
+      "test": "Remaining Public portal links navigate to their declared destinations",
+      "longTasks": []
+    },
+    {
+      "test": "Public package selection persists and external contact links expose valid handoff targets",
+      "longTasks": []
+    },
+    {
+      "test": "Registered-customer refresh and optional intake fields persist with one submission",
+      "longTasks": []
+    },
+    {
+      "test": "Invoice package and date fields persist through the retained invoice action",
+      "longTasks": []
+    },
+    {
+      "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
+      "longTasks": []
+    },
+    {
+      "test": "Inquiry search, status filter and retained Public Form link respond correctly",
+      "longTasks": []
+    },
+    {
+      "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
+      "longTasks": []
+    },
+    {
+      "test": "Assessor assignment modal close, dismiss and Start controls preserve the exact owned company",
+      "longTasks": []
+    },
+    {
+      "test": "Assessor notification and peer searches show genuine empty results",
+      "longTasks": []
+    },
+    {
+      "test": "Assessor report PDF button and print view download the selected owned assessment",
+      "longTasks": [
+        505,
+        83,
+        70
+      ]
+    },
+    {
+      "test": "Change-password Sign Out clears authentication and returns to Login",
+      "longTasks": []
+    },
+    {
+      "test": "Replayed SSE event bursts produce one refresh and one toast per role",
+      "longTasks": []
+    }
+  ]
+}

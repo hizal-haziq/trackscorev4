@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/TrackScore_TS_Icon.svg">
+  <title>TrackScore - Certificate Verification</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #F58220;
+      --primary-hover: #E06F12;
+      --navy: #0F172A;
+      --surface: #FFFFFF;
+      --border: #E2E8F0;
+      --text: #0F172A;
+      --text-muted: #64748B;
+      --success: #10B981;
+      --danger: #EF4444;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', sans-serif; }
+    body { background: #F8FAFC; color: var(--text); min-height: 100vh; display: flex; flex-direction: column; }
+
+    .navbar {
+      background: #111827;
+      color: #FFFFFF;
+      border-bottom: 3px solid var(--primary);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-badge {
+      background: rgba(245, 130, 32, 0.15);
+      border: 1px solid rgba(245, 130, 32, 0.3);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+    }
+
+    .nav-links a {
+      color: #94A3B8;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      margin-left: 20px;
+      transition: color 0.15s;
+    }
+    .nav-links a:hover { color: #FFFFFF; }
+
+    .hero-container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 0 20px;
+      width: 100%;
+      flex: 1;
+    }
+
+    .search-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      text-align: center;
+    }
+
+    .search-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+
+    .search-subtitle {
+      font-size: 14px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      max-width: 540px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .search-form {
+      display: flex;
+      gap: 10px;
+      max-width: 520px;
+      margin: 0 auto;
+    }
+
+    .search-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1.5px solid var(--border);
+      border-radius: 8px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.15s;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .search-input:focus { border-color: var(--primary); }
+
+    .btn-search {
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .btn-search:hover { background: var(--primary-hover); }
+
+    /* Results */
+    .result-card {
+      margin-top: 24px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 32px;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+      display: none;
+    }
+
+    .valid-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .invalid-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #FEF2F2;
+      color: #991B1B;
+      border: 1px solid #FECACA;
+      padding: 6px 16px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .cert-meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+      text-align: left;
+    }
+
+    .meta-box {
+      background: #F8FAFC;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+    }
+
+    .meta-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+
+    .meta-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--navy);
+    }
+
+    .stars-display {
+      color: #F59E0B;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 12px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+      background: #FFFFFF;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <a href="/landing.html" class="brand-title">
+      TrackScore <span class="brand-badge">Verification</span>
+    </a>
+    <div class="nav-links">
+      <a href="/vendor-portal.html">Vendor Portal</a>
+      <a href="/login.html">Sign In</a>
+    </div>
+  </nav>
+
+  <main class="hero-container">
+    <div class="search-card">
+      <h1 class="search-title">Official Certificate Verification</h1>
+      <p class="search-subtitle">
+        Validate the authenticity of official MIROS TrackScore telematics evaluation certificates issued to commercial telematics hardware vendors.
+      </p>
+
+      <form id="verify-form" class="search-form">
+        <input
+          type="text"
+          id="cert-number-input"
+          class="search-input"
+          placeholder="e.g. TS-CERT-2026-1234"
+          required
+          autocomplete="off"
+        />
+        <button type="submit" id="btn-submit" class="btn-search">Verify</button>
+      </form>
+    </div>
+
+    <!-- Verified Valid Result -->
+    <div id="valid-result" class="result-card">
+      <div style="text-align: center;">
+        <div class="valid-badge">
+          <span>✓</span> Officially Verified & Active
+        </div>
+        <h2 id="res-company" style="font-size: 22px; font-weight: 800; color: #0F172A;"></h2>
+        <div id="res-device" style="font-size: 14px; color: #475569; margin-top: 4px; font-weight: 600;"></div>
+      </div>
+
+      <div class="cert-meta-grid">
+        <div class="meta-box">
+          <div class="meta-label">Certificate Number</div>
+          <div id="res-cert-number" class="meta-value" style="color: var(--primary);"></div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Evaluation Package</div>
+          <div id="res-package" class="meta-value"></div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Accreditation Rating</div>
+          <div id="res-stars" class="stars-display"></div>
+          <div id="res-label" style="font-size: 11px; color: #64748B; margin-top: 2px;"></div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Authorized Signatory</div>
+          <div id="res-signed-by" class="meta-value"></div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Endorsement Date</div>
+          <div id="res-signed-date" class="meta-value"></div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-label">Issuing Authority</div>
+          <div class="meta-value" style="font-size: 12px; color: #0F172A;">Malaysian Institute of Road Safety Research (MIROS)</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Invalid Result -->
+    <div id="invalid-result" class="result-card" style="text-align: center;">
+      <div class="invalid-badge">
+        <span>✕</span> Unverified / Not Found
+      </div>
+      <h3 style="font-size: 18px; font-weight: 700; color: #0F172A; margin-bottom: 8px;">Certificate Record Not Found</h3>
+      <p id="invalid-message" style="font-size: 13px; color: #64748B; max-width: 480px; margin: 0 auto;"></p>
+    </div>
+  </main>
+
+  <footer class="footer">
+    &copy; 2026 Malaysian Institute of Road Safety Research (MIROS). Official Commercial Telematics Evaluation Platform.
+  </footer>
+
+  <script>
+    const form = document.getElementById('verify-form');
+    const input = document.getElementById('cert-number-input');
+    const validCard = document.getElementById('valid-result');
+    const invalidCard = document.getElementById('invalid-result');
+    const submitBtn = document.getElementById('btn-submit');
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+    }
+
+    async function verifyCertificate(number) {
+      const clean = String(number || '').trim();
+      if (!clean) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Verifying...';
+      validCard.style.display = 'none';
+      invalidCard.style.display = 'none';
+
+      try {
+        const res = await fetch(`/.netlify/functions/verify-certificate?certificateNumber=${encodeURIComponent(clean)}`);
+        const data = await res.json();
+
+        if (res.ok && data.valid && data.certificate) {
+          const c = data.certificate;
+          document.getElementById('res-company').textContent = c.companyName || 'Verified Company';
+          document.getElementById('res-device').textContent = `Device Model: ${c.deviceModel}`;
+          document.getElementById('res-cert-number').textContent = c.certificateNumber;
+          document.getElementById('res-package').textContent = c.packageName;
+          
+          const stars = c.starRating || 0;
+          document.getElementById('res-stars').textContent = `${'★'.repeat(stars)}${'☆'.repeat(Math.max(0, 5 - stars))} (${stars} Stars)`;
+          document.getElementById('res-label').textContent = c.ratingLabel || 'Compliant with MIROS safety standards';
+          document.getElementById('res-signed-by').textContent = c.signedBy || 'Director General Office';
+          document.getElementById('res-signed-date').textContent = c.signedDate ? new Date(c.signedDate).toLocaleDateString('en-MY', { day: 'numeric', month: 'short', year: 'numeric' }) : 'Endorsed';
+          
+          validCard.style.display = 'block';
+        } else {
+          document.getElementById('invalid-message').textContent = data.message || `No active certificate was found for reference "${clean}". Please verify the certificate number and try again.`;
+          invalidCard.style.display = 'block';
+        }
+      } catch (err) {
+        document.getElementById('invalid-message').textContent = 'Unable to connect to the verification registry. Please check your network connection and try again.';
+        invalidCard.style.display = 'block';
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Verify';
+      }
+    }
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      verifyCertificate(input.value);
+    });
+
+    // Auto-verify if query parameter is present (e.g. ?cert=TS-CERT-...)
+    const urlParams = new URLSearchParams(window.location.search);
+    const queryCert = urlParams.get('cert') || urlParams.get('certificateNumber') || urlParams.get('number');
+    if (queryCert) {
+      input.value = queryCert;
+      verifyCertificate(queryCert);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+[
+  {
+    "name": "short",
+    "decoded": "http://127.0.0.1:45133/verify-certificate.html?cert=TS-STAB-PDF-0"
+  },
+  {
+    "name": "long",
+    "decoded": "http://127.0.0.1:45133/verify-certificate.html?cert=TS-STAB-PDF-1"
+  }
+]

@@ -9,9 +9,10 @@
  *   even with a valid JWT.
  * - Prevents ID substitution attacks between vendors.
  * - Strips all internal assessment criteria/rubric details, exposing only client-facing
- *   lifecycle, package, invoice, payment, and certificate data.
+ *   lifecycle, package, invoice, and certificate data.
  */
 
+import { omitRetiredWorkflow } from './retired-workflow.js';
 import {
   connectToDatabase,
   findVendorById,
@@ -20,6 +21,7 @@ import {
   buildMongoIdFilter
 } from './db.js';
 import { verifyToken, getBearerToken, ROLE_VENDOR } from './auth.js';
+import { calculateAssessmentSla } from './sla.js';
 
 export const handler = async (event) => {
   const headers = {
@@ -173,9 +175,12 @@ export const handler = async (event) => {
           id: String(vendor._id),
           companyName: vendor.companyName,
           contactEmail: vendor.contactEmail,
-          contactPhone: vendor.contactPhone,
+          loginEmail: vendor.loginEmail || vendor.contactEmail,
+          contactPhone: vendor.contactPhone || '',
+          contactPerson: vendor.contactPerson || '',
           officeAddress: vendor.officeAddress || primaryRecord.officeAddress || '',
-          state: vendor.state || primaryRecord.state || ''
+          state: vendor.state || primaryRecord.state || '',
+          registrationNumber: vendor.registrationNumber || ''
         },
         evaluations: sanitized
       })
@@ -185,7 +190,7 @@ export const handler = async (event) => {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ success: false, error: error.message || 'Error fetching vendor portal data.' })
+      body: JSON.stringify({ success: false, error: 'Error fetching vendor portal data.' })
     };
   }
 };
@@ -193,6 +198,8 @@ export const handler = async (event) => {
 // Strips out internal assessor scoring rubrics and returns clean vendor presentation data
 function sanitizeVendorRecord(doc) {
   if (!doc) return null;
+  doc = omitRetiredWorkflow(doc);
+  const sla = calculateAssessmentSla(doc);
   return {
     _id: String(doc._id || doc.id),
     companyName: doc.companyName,
@@ -203,21 +210,36 @@ function sanitizeVendorRecord(doc) {
     packageName: doc.packageName || 'Standard Assessment',
     packageDetails: doc.packageDetails || null,
     status: doc.status || 'registered',
+    currentVersion: Number(doc.currentVersion || 1),
+    approvedVersion: doc.approvedVersion || null,
     scheduledDate: doc.scheduledDate || null,
     assessmentDate: doc.assessmentDate || null,
+    rejectionReason: doc.rejectionReason || null,
+    vendorRevisionResponse: doc.vendorRevisionResponse || null,
+    documents: Array.isArray(doc.documents)
+      ? doc.documents.filter(d => d.category !== 'payment_proof').map(({ fileData, ...meta }) => meta)
+      : [],
+    sla: {
+      targetDeadline: sla.deadline,
+      status: sla.status,
+      label: sla.label,
+      badgeClass: sla.badgeClass,
+      color: sla.color,
+      bgColor: sla.bgColor,
+      borderColor: sla.borderColor,
+      remainingFormatted: sla.isCompleted
+        ? (sla.status === 'COMPLETED_ON_TIME' ? 'Completed within service target' : 'Completed')
+        : sla.remainingFormatted,
+      isCompleted: sla.isCompleted
+    },
     totalScore: doc.totalScore !== undefined ? doc.totalScore : null,
     starsCount: doc.starsCount !== undefined ? doc.starsCount : null,
     ratingLabel: doc.ratingLabel || null,
-    invoice: doc.invoice || null,
-    payment: doc.payment || null,
+    invoice: omitRetiredWorkflow(doc).invoice || null,
     certificate: doc.certificate || null,
-    preFinalResult: doc.preFinalResult ? {
-      sentDate: doc.preFinalResult.sentDate,
-      notes: doc.preFinalResult.notes
-    } : null,
-    statusHistory: Array.isArray(doc.statusHistory) ? doc.statusHistory.map(h => ({
+    statusHistory: Array.isArray(doc.statusHistory) ? doc.statusHistory.filter(h => !/payment|pending_verification/i.test(String(h.status) + " " + String(h.note || ""))).map(h => ({
       status: h.status,
-      timestamp: h.timestamp,
+      timestamp: h.timestamp || h.changedAt || h.createdAt || null,
       note: h.note
     })) : [],
     createdAt: doc.createdAt,

@@ -1,0 +1,17 @@
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import crypto from 'node:crypto';
+const root = path.resolve(import.meta.dirname, '..');
+const sandbox = fs.mkdtempSync(path.join(os.tmpdir(), 'trackscore-full-system-'));
+for (const name of ['public', 'netlify', 'dist', 'build']) fs.cpSync(path.join(root, name), path.join(sandbox, name), { recursive: true });
+fs.mkdirSync(path.join(sandbox, 'scripts'));
+fs.copyFileSync(path.join(root, 'scripts/create-first-manager.js'), path.join(sandbox, 'scripts/create-first-manager.js'));
+fs.copyFileSync(path.join(root, 'package.json'), path.join(sandbox, 'package.json'));
+fs.symlinkSync(path.join(root, 'node_modules'), path.join(sandbox, 'node_modules'), 'junction');
+fs.mkdirSync(path.join(sandbox, '.data'));
+for (const name of ['users', 'vendors', 'evaluations', 'inquiries', 'assessment_versions', 'assessment_risk']) fs.writeFileSync(path.join(sandbox, '.data', `${name}.json`), '[]\n');
+fs.writeFileSync(path.join(sandbox, '.env'), `JWT_SECRET=${crypto.randomBytes(32).toString('hex')}\nMONGODB_URI=\nPORT=3012\nRESEND_API_KEY=\nAUTO_SEED_DEFAULT_USERS=true\n`);
+const state = { sandbox, port: 3012, createdAt: new Date().toISOString() };
+fs.writeFileSync(path.join(root, 'qa/full-system-state.json'), JSON.stringify(state, null, 2));
+console.log(JSON.stringify(state));

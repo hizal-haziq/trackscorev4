@@ -1,0 +1,28 @@
+[
+  {
+    "file": "full-system-workflow-workflow-certificate.pdf",
+    "pages": 1,
+    "pageDetails": [
+      {
+        "page": 1,
+        "width": 595.280029296875,
+        "height": 841.8900146484375,
+        "text": "",
+        "image": "qa\\full-system-workflow-workflow-certificate-page-1.png"
+      }
+    ]
+  },
+  {
+    "file": "full-system-assessment-report.pdf",
+    "pages": 1,
+    "pageDetails": [
+      {
+        "page": 1,
+        "width": 595.280029296875,
+        "height": 841.8900146484375,
+        "text": "",
+        "image": "qa\\full-system-assessment-report-page-1.png"
+      }
+    ]
+  }
+]

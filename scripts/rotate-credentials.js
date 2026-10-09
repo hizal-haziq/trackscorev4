@@ -1,5 +1,6 @@
 /**
- * Script to rotate all seeded account passwords with cryptographically secure, high-entropy passwords.
+ * Manual password rotation for explicitly selected existing accounts.
+ * Usage: node scripts/rotate-credentials.js user:email vendor:email
  * Updates live MongoDB Atlas cluster and local fallback store.
  */
 
@@ -17,7 +18,9 @@ if (!process.env.MONGODB_URI || process.env.MONGODB_URI.includes('<username>')) 
 import {
   connectToDatabase,
   COLLECTION_USERS,
-  COLLECTION_VENDORS
+  COLLECTION_VENDORS,
+  findUserByEmail,
+  findVendorByEmail
 } from '../netlify/functions/db.js';
 
 function generateSecurePassword(prefix = 'TS') {
@@ -26,19 +29,24 @@ function generateSecurePassword(prefix = 'TS') {
 }
 
 async function rotate() {
+  const requested = process.argv.slice(2).map(target => {
+    const split = target.indexOf(':');
+    const type = target.slice(0, split);
+    const email = target.slice(split + 1).trim().toLowerCase();
+    if (split < 0 || !['user', 'vendor'].includes(type) || !email.includes('@')) throw new Error('Usage: node scripts/rotate-credentials.js user:email vendor:email');
+    return { type, email };
+  });
+  if (!requested.length) throw new Error('Specify existing accounts as user:email or vendor:email. No passwords changed.');
   console.log('[ROTATE] Connecting to database...');
   const conn = await connectToDatabase();
   console.log('[ROTATE] Connected. isMongoAtlas:', conn.isMongoAtlas);
 
-  const rotations = [
-    { email: 'admin@trackscore.my', type: 'user', newPass: generateSecurePassword('Mgr') },
-    { email: 'manager@trackscore.my', type: 'user', newPass: generateSecurePassword('Mgr') },
-    { email: 'haziq.hizal9006@gmail.com', type: 'user', newPass: generateSecurePassword('Lead') },
-    { email: 'assessor@trackscore.my', type: 'user', newPass: generateSecurePassword('Asr') },
-    { email: 'farhan@trackscore.my', type: 'user', newPass: generateSecurePassword('Asr') },
-    { email: 'vendor@fleetmatics.com', type: 'vendor', newPass: generateSecurePassword('Vnd') },
-    { email: 'vendor@apex.com', type: 'vendor', newPass: generateSecurePassword('Vnd') }
-  ];
+  const rotations = [];
+  for (const item of requested) {
+    const account = item.type === 'user' ? await findUserByEmail(conn, item.email) : await findVendorByEmail(conn, item.email);
+    if (!account) throw new Error('Account not found: ' + item.email + '. No passwords changed.');
+    rotations.push({ ...item, newPass: generateSecurePassword() });
+  }
 
   const credentialsLog = [];
 
@@ -76,7 +84,7 @@ async function rotate() {
   if (fs.existsSync(usersFile)) {
     const localUsers = JSON.parse(fs.readFileSync(usersFile, 'utf-8'));
     for (const u of localUsers) {
-      const match = rotations.find(r => r.email === u.email);
+      const match = rotations.find(r => r.type === 'user' && r.email === u.email);
       if (match) {
         u.passwordHash = bcrypt.hashSync(match.newPass, 12);
         u.updatedAt = new Date().toISOString();
@@ -89,7 +97,7 @@ async function rotate() {
   if (fs.existsSync(vendorsFile)) {
     const localVendors = JSON.parse(fs.readFileSync(vendorsFile, 'utf-8'));
     for (const v of localVendors) {
-      const match = rotations.find(r => r.email === v.contactEmail);
+      const match = rotations.find(r => r.type === 'vendor' && r.email === v.contactEmail);
       if (match) {
         v.passwordHash = bcrypt.hashSync(match.newPass, 12);
         v.updatedAt = new Date().toISOString();

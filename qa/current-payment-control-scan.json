@@ -1,0 +1,24 @@
+{
+  "generatedAt": "2026-10-05T03:53:12.089Z",
+  "files": [
+    "landing.html",
+    "login.html",
+    "change-password.html",
+    "request-assessment.html",
+    "verify-certificate.html",
+    "index.html",
+    "dashboard.html",
+    "vendor-portal.html",
+    "app.js",
+    "manager-overview.js",
+    "peer-comments.js",
+    "certificate-pdf.js",
+    "summary-worker.js"
+  ],
+  "activeMatches": [],
+  "historicalStatusAliasesAllowed": [
+    "payment_confirmed",
+    "pre_final_sent"
+  ],
+  "retiredEndpoints": "410 responses and unchanged storage tested in current-button-workflow-results.json"
+}

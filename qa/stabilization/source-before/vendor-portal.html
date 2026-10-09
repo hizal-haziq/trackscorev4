@@ -1,0 +1,2018 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/svg+xml" href="/TrackScore_TS_Icon.svg">
+  <title>TrackScore - Vendor Evaluation Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <script src="/certificate-pdf.js" defer></script>
+  <script>
+    function handleVendorLogout() {
+      try { if (typeof cleanupLifecycle === 'function') cleanupLifecycle(); } catch (e) {}
+      localStorage.removeItem('trackscore_token');
+      localStorage.removeItem('trackscore_user_role');
+      localStorage.removeItem('trackscore_user');
+      sessionStorage.clear();
+      window.location.href = '/login.html';
+    }
+    window.handleVendorLogout = handleVendorLogout;
+  </script>
+  <style>
+    :root {
+      --primary: #F58220;
+      --primary-hover: #E06F12;
+      --primary-subtle: #FFF7ED;
+      --navy: #0F172A;
+      --navy-card: #1E293B;
+      --surface: #FFFFFF;
+      --surface-subtle: #F8FAFC;
+      --border-color: #E2E8F0;
+      --text-main: #0F172A;
+      --text-muted: #64748B;
+      --success: #10B981;
+      --success-bg: #ECFDF5;
+      --warning: #F59E0B;
+      --warning-bg: #FEF3C7;
+      --danger: #EF4444;
+      --danger-bg: #FEF2F2;
+      --info: #3B82F6;
+      --info-bg: #EFF6FF;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    body {
+      background: #F1F5F9;
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Top Navigation Bar */
+    .navbar {
+      background: #111827;
+      color: #FFFFFF;
+      border-bottom: 3px solid var(--primary);
+      padding: 12px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
+    }
+
+    .nav-left {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .brand-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #FFFFFF;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-badge {
+      background: rgba(245, 130, 32, 0.15);
+      border: 1px solid rgba(245, 130, 32, 0.3);
+      color: var(--primary);
+      font-size: 11px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 6px;
+    }
+
+    .nav-tab {
+      background: transparent;
+      border: none;
+      color: #94A3B8;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .nav-tab:hover {
+      color: #FFFFFF;
+      background: rgba(255,255,255,0.05);
+    }
+    .nav-tab.active {
+      color: #FFFFFF;
+      background: #1E293B;
+    }
+
+    .nav-user {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .user-info {
+      text-align: right;
+    }
+
+    .user-name {
+      font-size: 13px;
+      font-weight: 700;
+      color: #FFFFFF;
+    }
+
+    .user-email {
+      font-size: 11px;
+      color: #94A3B8;
+    }
+
+    .btn-icon {
+      background: #1E293B;
+      color: #94A3B8;
+      border: 1px solid #334155;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      cursor: pointer;
+      position: relative;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-icon:hover { color: #FFFFFF; background: #334155; }
+
+    .badge-count {
+      position: absolute;
+      top: -4px;
+      right: -4px;
+      background: var(--primary);
+      color: #FFFFFF;
+      font-size: 10px;
+      font-weight: 800;
+      padding: 1px 5px;
+      border-radius: 10px;
+    }
+
+    .btn-logout {
+      background: #334155;
+      color: #FFFFFF;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+    .btn-logout:hover { background: #475569; }
+
+    /* Main Container */
+    .container {
+      max-width: 1160px;
+      margin: 28px auto;
+      padding: 0 20px;
+      width: 100%;
+      flex: 1;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .header-title {
+      font-size: 24px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    .header-subtitle {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: #ECFDF5;
+      color: #065F46;
+      border: 1px solid #A7F3D0;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background: #10B981;
+      border-radius: 50%;
+      animation: pulse 1.8s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.3); opacity: 0.6; }
+    }
+
+    /* KPI Summary Stats */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 16px 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+    .kpi-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+    .kpi-value {
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .kpi-subtext {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Action Banners */
+    .action-banner {
+      border-radius: 10px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .action-banner.banner-danger {
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
+      color: #991B1B;
+    }
+    .action-banner.banner-warning {
+      background: #FFFBEB;
+      border: 1px solid #FDE68A;
+      color: #92400E;
+    }
+    .action-banner.banner-success {
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #065F46;
+    }
+
+    .btn-action-primary {
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.15s;
+    }
+    .btn-action-primary:hover { background: var(--primary-hover); }
+
+    .btn-action-outline {
+      background: transparent;
+      border: 1.5px solid currentColor;
+      color: inherit;
+      padding: 7px 14px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .btn-action-outline:hover { background: rgba(0,0,0,0.05); }
+
+    /* Cards */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-color);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .card-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: #0F172A;
+    }
+
+    /* Lifecycle Stepper */
+    .lifecycle-stepper {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+      margin: 24px 0 28px 0;
+    }
+
+    .step-line {
+      position: absolute;
+      top: 14px;
+      left: 20px;
+      right: 20px;
+      height: 3px;
+      background: #E2E8F0;
+      z-index: 1;
+    }
+
+    .step-line-progress {
+      height: 100%;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .step-item {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .step-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #E2E8F0;
+      color: #64748B;
+      font-size: 12px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 8px;
+      transition: all 0.2s;
+    }
+
+    .step-item.completed .step-icon {
+      background: var(--primary);
+      color: #FFFFFF;
+    }
+
+    .step-item.current .step-icon {
+      background: var(--navy);
+      color: #FFFFFF;
+      box-shadow: 0 0 0 4px rgba(245, 130, 32, 0.25);
+    }
+
+    .step-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    .step-item.current .step-label {
+      color: var(--navy);
+      font-weight: 800;
+    }
+
+    /* Certificate Banner */
+    .cert-banner {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      color: #FFFFFF;
+      border: 1px solid rgba(245, 130, 32, 0.4);
+      border-radius: 8px;
+      padding: 16px 20px;
+      margin-bottom: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .cert-info h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #FFFFFF;
+      margin: 2px 0;
+    }
+    .cert-info p {
+      font-size: 12px;
+      color: #94A3B8;
+    }
+
+    .cert-actions {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn-download-cert {
+      background: var(--primary);
+      color: #FFFFFF;
+      border: none;
+      padding: 9px 16px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s;
+    }
+    .btn-download-cert:hover { background: var(--primary-hover); }
+    .btn-download-cert:disabled {
+      background: #475569;
+      cursor: not-allowed;
+      opacity: 0.7;
+    }
+
+    .btn-verify-cert {
+      background: rgba(255,255,255,0.1);
+      color: #FFFFFF;
+      border: 1px solid rgba(255,255,255,0.2);
+      padding: 9px 14px;
+      border-radius: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .btn-verify-cert:hover { background: rgba(255,255,255,0.2); }
+
+    /* Details Grid */
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+      margin-top: 20px;
+    }
+
+    .info-box {
+      background: var(--surface-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      position: relative;
+    }
+
+    .info-label {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .info-value {
+      font-size: 14px;
+      font-weight: 700;
+      color: #0F172A;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .badge-approved { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+    .badge-rejected { background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; }
+    .badge-submitted { background: #EFF6FF; color: #1E40AF; border: 1px solid #BFDBFE; }
+    .badge-registered { background: #F1F5F9; color: #475569; border: 1px solid #CBD5E1; }
+    .badge-scheduled { background: #F3E8FF; color: #6B21A8; border: 1px solid #E9D5FF; }
+    .badge-completed { background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; }
+
+    /* Card Action Toolbar */
+    .card-actions-bar {
+      margin-top: 20px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn-secondary {
+      background: #F8FAFC;
+      border: 1.5px solid var(--border-color);
+      color: #334155;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.15s;
+    }
+    .btn-secondary:hover {
+      background: #F1F5F9;
+      border-color: #CBD5E1;
+      color: #0F172A;
+    }
+
+    /* Timeline */
+    .timeline {
+      margin-top: 16px;
+      position: relative;
+      padding-left: 20px;
+      border-left: 2px solid #E2E8F0;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 16px;
+    }
+    .timeline-item:last-child { margin-bottom: 0; }
+
+    .timeline-dot {
+      position: absolute;
+      left: -26px;
+      top: 3px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--primary);
+      border: 2px solid #FFFFFF;
+    }
+
+    .timeline-content {
+      font-size: 13px;
+      color: #334155;
+    }
+
+    .timeline-date {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    /* Modals & Drawers */
+    .modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(15, 23, 42, 0.6);
+      backdrop-filter: blur(2px);
+      z-index: 200;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-box {
+      background: #FFFFFF;
+      border-radius: 12px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+      overflow: hidden;
+    }
+
+    .modal-header {
+      padding: 18px 24px;
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-title {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--navy);
+    }
+    .btn-close {
+      background: transparent;
+      border: none;
+      font-size: 20px;
+      color: #94A3B8;
+      cursor: pointer;
+    }
+    .btn-close:hover { color: #0F172A; }
+
+    .modal-body {
+      padding: 24px;
+      overflow-y: auto;
+      flex: 1;
+    }
+
+    .modal-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border-color);
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+      background: #F8FAFC;
+    }
+
+    /* Forms */
+    .form-group {
+      margin-bottom: 16px;
+    }
+    .form-label {
+      display: block;
+      font-size: 12px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+    }
+    .form-input, .form-textarea, .form-select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1.5px solid var(--border-color);
+      border-radius: 6px;
+      font-size: 13.5px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-input:focus, .form-textarea:focus, .form-select:focus {
+      border-color: var(--primary);
+    }
+    .form-input[readonly] {
+      background: #F1F5F9;
+      color: #64748B;
+      cursor: not-allowed;
+    }
+
+    /* Documents Table */
+    .doc-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      margin-top: 12px;
+    }
+    .doc-table th {
+      text-align: left;
+      padding: 8px 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border-bottom: 1px solid var(--border-color);
+      background: #F8FAFC;
+    }
+    .doc-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    /* Version History Cards */
+    .version-item {
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 14px;
+      margin-bottom: 12px;
+      background: #F8FAFC;
+      transition: all 0.15s;
+    }
+    .version-item.approved {
+      border-left: 4px solid var(--success);
+      background: #FFFFFF;
+    }
+    .version-item.certified {
+      border-left: 4px solid var(--primary);
+      background: #FFFFFF;
+    }
+
+    /* Toast Notifications */
+    .toast-container {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 300;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast {
+      background: #1E293B;
+      color: #FFFFFF;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      box-shadow: 0 10px 15px -3px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideUp 0.3s ease;
+      max-width: 360px;
+    }
+    @keyframes slideUp {
+      from { transform: translateY(100%); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Empty State */
+    .empty-state {
+      text-align: center;
+      padding: 48px 24px;
+      color: var(--text-muted);
+    }
+    .empty-state h3 {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--navy);
+      margin-bottom: 8px;
+    }
+    /* Keep existing portal controls reachable on tablet and phone screens. */
+    @media (max-width: 1024px) {
+      .navbar, .nav-left { flex-wrap: wrap; gap: 12px; }
+      .nav-left, .nav-user { min-width: 0; max-width: 100%; }
+      .nav-menu { flex-wrap: wrap; }
+      .nav-user { flex: 1; justify-content: flex-end; }
+      .user-info { min-width: 0; overflow-wrap: anywhere; }
+    }
+    @media (max-width: 600px) {
+      .navbar { padding: 12px; }
+      .nav-left, .nav-user { width: 100%; }
+      .nav-user .user-info { flex: 1; }
+      .container { padding: 0 12px; }
+      .card, .page-header { padding: 16px; }
+      .card-title { overflow-wrap: anywhere; }
+      .lifecycle-stepper { gap: 8px; overflow-x: auto; }
+      .step-item { flex-shrink: 0; }
+      .modal-box { max-width: calc(100vw - 24px); }
+      .modal-body { overflow-x: auto; }
+      .doc-table { min-width: 480px; }
+      .toast-container { right: 12px; left: 12px; }
+      .toast { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Navigation -->
+  <nav class="navbar">
+    <div class="nav-left">
+      <a href="/vendor-portal.html" class="brand-title">
+        TrackScore <span class="brand-badge">Vendor Portal</span>
+      </a>
+      <div class="nav-menu">
+        <button type="button" class="nav-tab active" onclick="switchMainTab('evaluations')">
+          <span>📊</span> Assessments
+        </button>
+        <button type="button" class="nav-tab" onclick="openProfileModal()">
+          <span>👤</span> Company Profile
+        </button>
+      </div>
+    </div>
+
+    <div class="nav-user">
+      <button type="button" class="btn-icon" id="btn-notifications" onclick="openNotificationsModal()" title="View Notifications">
+        <span>🔔</span>
+        <span class="badge-count" id="notif-count" style="display: none;">0</span>
+      </button>
+
+      <div class="user-info">
+        <div class="user-name" id="user-display-name">Loading...</div>
+        <div class="user-email" id="user-display-email">Synchronizing...</div>
+      </div>
+      <button type="button" id="btn-logout" class="btn-logout" onclick="handleVendorLogout()">Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- Main Container -->
+  <main class="container">
+    <!-- Header -->
+    <div class="page-header">
+      <div>
+        <h1 class="header-title">Commercial Vehicle Telematics Registry</h1>
+        <p class="header-subtitle">Official MIROS tracking, compliance verification, and certificate self-service repository.</p>
+      </div>
+      <div class="live-indicator">
+        <span class="pulse-dot"></span>
+        <span id="sse-status-label">Live Status Active</span>
+      </div>
+    </div>
+
+    <!-- KPI Summary Grid -->
+    <div class="kpi-grid" id="kpi-summary-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Active Submissions</div>
+        <div class="kpi-value" id="kpi-active-count">0</div>
+        <div class="kpi-subtext">Registered telematics units</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">SLA Commitment</div>
+        <div class="kpi-value" id="kpi-sla-status" style="font-size: 16px; color: var(--success);">ON TRACK</div>
+        <div class="kpi-subtext" id="kpi-sla-subtext">Within certification target</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Assessment Status</div>
+        <div class="kpi-value" id="kpi-assessment-status" style="font-size: 16px;">PENDING</div>
+        <div class="kpi-subtext" id="kpi-assessment-subtext">Assessment progress</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Accreditation</div>
+        <div class="kpi-value" id="kpi-cert-status" style="font-size: 16px; color: var(--primary);">PENDING</div>
+        <div class="kpi-subtext" id="kpi-cert-subtext">Official MIROS endorsement</div>
+      </div>
+    </div>
+
+    <!-- Priority Alerts Area -->
+    <div id="priority-alerts-area"></div>
+
+    <!-- Loading State -->
+    <div id="loading-view" class="card" style="text-align: center; padding: 48px 24px;">
+      <div style="font-size: 28px; margin-bottom: 12px; animation: spin 1s infinite linear;">⏳</div>
+      <h3 style="font-size: 18px; font-weight: 700; color: #0F172A;">Synchronizing Evaluation Records</h3>
+      <p style="font-size: 13px; color: #64748B; margin-top: 4px;">Connecting to MIROS TrackScore encrypted registry...</p>
+    </div>
+
+    <!-- Error State -->
+    <div id="error-view" class="card" style="display: none; text-align: center; padding: 48px 24px; border-color: #FECACA; background: #FEF2F2;">
+      <h3 style="font-size: 18px; font-weight: 800; color: #991B1B;">Access Denied or Session Expired</h3>
+      <p id="error-message" style="font-size: 13px; color: #7F1D1D; margin-top: 6px;"></p>
+      <button type="button" class="btn-action-primary" style="margin-top: 18px;" onclick="window.location.href='/login.html'">Return to Sign In</button>
+    </div>
+
+    <!-- Main Evaluations List View -->
+    <div id="records-view" style="display: none;"></div>
+  </main>
+
+  <!-- Version History Modal -->
+  <div class="modal-backdrop" id="modal-history">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Assessment Version History</h3>
+        <button type="button" class="btn-close" onclick="closeModal('modal-history')">&times;</button>
+      </div>
+      <div class="modal-body" id="history-modal-body">
+        <div style="text-align: center; padding: 24px; color: var(--text-muted);">Loading version history...</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('modal-history')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Documents & Evidence Management Modal -->
+  <div class="modal-backdrop" id="modal-documents">
+    <div class="modal-box" style="max-width: 760px;">
+      <div class="modal-header">
+        <h3 class="modal-title">Documents &amp; Evidence Repository</h3>
+        <button type="button" class="btn-close" onclick="closeModal('modal-documents')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: var(--surface-subtle); border: 1px solid var(--border-color); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
+          <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 12px; color: var(--navy);">Upload Supporting Documentation</h4>
+          <form id="form-upload-doc">
+            <input type="hidden" id="upload-eval-id">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px;">
+              <div>
+                <label class="form-label">Document Category</label>
+                <select id="doc-category" class="form-select" required>
+                  <option value="device_spec">Device Technical Specification</option>
+                  <option value="test_report">Lab / Calibration Test Report</option>
+                  <option value="compliance_cert">Declaration of Conformity / Cert</option>
+                  <option value="installation_guide">Installation Manual</option>
+                  <option value="other">Other Supporting Evidence</option>
+                </select>
+              </div>
+              <div>
+                <label class="form-label">Select File (PDF, PNG, JPG, DOCX - Max 10MB)</label>
+                <input type="file" id="doc-file" class="form-input" required accept=".pdf,.png,.jpg,.jpeg,.docx,.txt">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="form-label">Document Notes (Optional)</label>
+              <input type="text" id="doc-notes" class="form-input" placeholder="e.g. Revised wiring diagram addressing section A-4">
+            </div>
+            <button type="submit" id="btn-upload-submit" class="btn-action-primary">Upload Document</button>
+          </form>
+        </div>
+
+        <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 8px; color: var(--navy);">Attached Files</h4>
+        <div id="documents-table-container">
+          <div style="text-align: center; padding: 16px; color: var(--text-muted);">No documents uploaded yet.</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('modal-documents')">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Revision Response & Resubmission Modal -->
+  <div class="modal-backdrop" id="modal-resubmit">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Respond to Revision &amp; Resubmit</h3>
+        <button type="button" class="btn-close" onclick="closeModal('modal-resubmit')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="background: #FEF2F2; border: 1px solid #FECACA; border-radius: 8px; padding: 14px; margin-bottom: 16px;">
+          <div style="font-size: 11px; font-weight: 800; color: #991B1B; text-transform: uppercase;">Manager Feedback / Revision Note:</div>
+          <div id="resubmit-reason-text" style="font-size: 13.5px; color: #7F1D1D; margin-top: 4px; font-weight: 600;"></div>
+        </div>
+
+        <form id="form-resubmit">
+          <input type="hidden" id="resubmit-eval-id">
+          <div class="form-group">
+            <label class="form-label">Hardware Device Model (Verify / Correct if required)</label>
+            <input type="text" id="resubmit-device-model" class="form-input">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vendor Remediation Notes / Corrections Made *</label>
+            <textarea id="resubmit-notes" class="form-textarea" rows="4" required placeholder="Detail the corrections made, replacement evidence attached, or technical clarifications for the assessor..."></textarea>
+          </div>
+          <p style="font-size: 11.5px; color: var(--text-muted); margin-bottom: 16px;">
+            Submitting this response will increment the assessment version and queue your submission for assessor re-evaluation.
+          </p>
+          <button type="submit" id="btn-submit-resubmit" class="btn-action-primary" style="width: 100%; justify-content: center;">
+            Submit Revision &amp; Queue for Inspection
+          </button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('modal-resubmit')">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Profile & Password Modal -->
+  <div class="modal-backdrop" id="modal-profile">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Company Profile &amp; Security</h3>
+        <button type="button" class="btn-close" onclick="closeModal('modal-profile')">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div style="display: flex; gap: 10px; margin-bottom: 18px; border-bottom: 1px solid var(--border-color); padding-bottom: 8px;">
+          <button type="button" class="nav-tab active" id="tab-profile-info" onclick="switchProfileTab('info')">Company Information</button>
+          <button type="button" class="nav-tab" id="tab-profile-pwd" onclick="switchProfileTab('pwd')">Change Password</button>
+        </div>
+
+        <!-- Tab 1: Profile Info -->
+        <form id="form-profile-info">
+          <div class="form-group">
+            <label class="form-label">Company Name (Registered)</label>
+            <input type="text" id="prof-company" class="form-input" readonly>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Vendor Contact Email (Primary Identity)</label>
+            <input type="email" id="prof-email" class="form-input" readonly>
+          </div>
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+            <div class="form-group">
+              <label class="form-label">Contact Person</label>
+              <input type="text" id="prof-person" class="form-input" placeholder="Full Name">
+            </div>
+            <div class="form-group">
+              <label class="form-label">Contact Phone</label>
+              <input type="tel" id="prof-phone" class="form-input" placeholder="+60 12-345 6789">
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Office Address</label>
+            <input type="text" id="prof-address" class="form-input" placeholder="Unit, Street, City">
+          </div>
+          <div class="form-group">
+            <label class="form-label">State / Federal Territory</label>
+            <input type="text" id="prof-state" class="form-input" placeholder="e.g. Selangor, Kuala Lumpur">
+          </div>
+          <button type="submit" id="btn-save-profile" class="btn-action-primary">Save Profile Changes</button>
+        </form>
+
+        <!-- Tab 2: Change Password -->
+        <form id="form-profile-pwd" style="display: none;">
+          <div class="form-group">
+            <label class="form-label">Current Password *</label>
+            <input type="password" id="pwd-current" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">New Password (Min 8 Characters) *</label>
+            <input type="password" id="pwd-new" class="form-input" required minlength="8">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Confirm New Password *</label>
+            <input type="password" id="pwd-confirm" class="form-input" required minlength="8">
+          </div>
+          <button type="submit" id="btn-save-pwd" class="btn-action-primary">Update Password</button>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('modal-profile')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Notifications Modal -->
+  <div class="modal-backdrop" id="modal-notifications">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="modal-title">Vendor Notification Center</h3>
+        <button type="button" class="btn-close" onclick="closeModal('modal-notifications')">&times;</button>
+      </div>
+      <div class="modal-body" id="notifications-modal-body">
+        <div style="text-align: center; padding: 24px; color: var(--text-muted);">No activity notifications recorded yet.</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" onclick="closeModal('modal-notifications')">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- JavaScript -->
+  <script>
+    const LIFECYCLE_STAGES = [
+      { key: 'registered', label: 'Application Registered' },
+      { key: 'scheduled', label: 'Assessment Scheduled' },
+      { key: 'in_progress', label: 'Assessment In Progress' },
+      { key: 'pending_review', label: 'Assessment Under Review' },
+      { key: 'approved', label: 'Assessment Approved' },
+      { key: 'certificate_preparation', label: 'Certificate In Preparation' },
+      { key: 'certificate_issued', label: 'Certificate Available' },
+      { key: 'completed', label: 'Completed' }
+    ];
+
+    const token = localStorage.getItem('trackscore_token');
+    const userRole = localStorage.getItem('trackscore_user_role');
+    let currentVendorData = null;
+    let cachedEvaluations = [];
+    let html2pdfLoadingPromise = null;
+    let activeEventSource = null;
+    let notificationsList = [];
+    let currentAbortController = null;
+
+    // Security check on mount: vendor token required
+    if (!token || userRole !== 'vendor') {
+      window.location.href = '/login.html';
+    }
+
+    // Helper: Toast notification
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `<span>${type === 'success' ? '✓' : (type === 'warning' ? '⚠️' : 'ℹ️')}</span> <span>${escapeHtml(message)}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transition = 'opacity 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str).replace(/[&<>"']/g, m => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
+      })[m]);
+    }
+
+    function formatStatusName(status) {
+      if (!status) return 'Registered';
+      if (['pre_final_sent', 'payment_confirmed'].includes(status)) return 'APPROVED';
+      if (status === 'rejected') return 'REVISION REQUIRED';
+      return String(status).replace(/_/g, ' ').toUpperCase();
+    }
+
+    function closeModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'none';
+    }
+
+    function openModal(id) {
+      const el = document.getElementById(id);
+      if (el) el.style.display = 'flex';
+    }
+
+    // Navigation Tab Switching
+    function switchMainTab(tab) {
+      document.querySelectorAll('.nav-menu .nav-tab').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      const activeBtn = document.querySelector(`.nav-menu .nav-tab[onclick*="${tab}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (tab === 'evaluations') {
+        document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (tab === 'profile') {
+        openProfileModal();
+      }
+    }
+    window.switchMainTab = switchMainTab;
+
+    // Navigation Tab Switching
+    function switchMainTab(tab) {
+      document.querySelectorAll('.nav-menu .nav-tab').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      const activeBtn = document.querySelector(`.nav-menu .nav-tab[onclick*="${tab}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (tab === 'evaluations') {
+        document.querySelectorAll('.modal-backdrop').forEach(m => m.style.display = 'none');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (tab === 'profile') {
+        openProfileModal();
+      }
+    }
+    window.switchMainTab = switchMainTab;
+
+    // Sign out button
+    function handleVendorLogout() {
+      try { cleanupLifecycle(); } catch (e) {}
+      localStorage.removeItem('trackscore_token');
+      localStorage.removeItem('trackscore_user_role');
+      localStorage.removeItem('trackscore_user');
+      sessionStorage.clear();
+      window.location.href = '/login.html';
+    }
+    window.handleVendorLogout = handleVendorLogout;
+    document.getElementById('btn-logout')?.addEventListener('click', handleVendorLogout);
+
+    // Lazy load html2pdf.js
+    function loadHtml2Pdf() {
+      if (window.html2pdf) return Promise.resolve(window.html2pdf);
+      if (html2pdfLoadingPromise) return html2pdfLoadingPromise;
+      html2pdfLoadingPromise = new Promise((resolve, reject) => {
+        const script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        script.async = true;
+        script.onload = () => resolve(window.html2pdf);
+        script.onerror = (err) => {
+          html2pdfLoadingPromise = null;
+          reject(err);
+        };
+        document.head.appendChild(script);
+      });
+      return html2pdfLoadingPromise;
+    }
+
+    // Load Vendor Portal Data
+    async function loadVendorData() {
+      if (currentAbortController) {
+        currentAbortController.abort();
+      }
+      currentAbortController = new AbortController();
+
+      try {
+        const res = await fetch('/.netlify/functions/vendor-portal-data', {
+          headers: { 'Authorization': `Bearer ${token}` },
+          signal: currentAbortController.signal
+        });
+
+        if (res.status === 401 || res.status === 403) {
+          throw new Error('Your session has expired or is unauthorized. Please log in again.');
+        }
+
+        const data = await res.json();
+        if (!data.success) {
+          throw new Error(data.error || 'Failed to retrieve vendor data.');
+        }
+
+        currentVendorData = data.vendor || {};
+        cachedEvaluations = data.evaluations || [];
+
+        document.getElementById('loading-view').style.display = 'none';
+        document.getElementById('error-view').style.display = 'none';
+
+        // Update header user display
+        document.getElementById('user-display-name').textContent = currentVendorData.companyName || 'Authorized Vendor';
+        const emailLoc = [currentVendorData.contactEmail, currentVendorData.state].filter(Boolean).join(' • ');
+        document.getElementById('user-display-email').textContent = emailLoc;
+
+        renderKPIs(cachedEvaluations);
+        renderPriorityAlerts(cachedEvaluations);
+        renderEvaluations(cachedEvaluations);
+        buildNotificationsFromEvaluations(cachedEvaluations);
+      } catch (err) {
+        if (err.name === 'AbortError') return;
+        document.getElementById('loading-view').style.display = 'none';
+        document.getElementById('error-view').style.display = 'block';
+        document.getElementById('error-message').textContent = err.message || 'Error communicating with server.';
+      }
+    }
+
+    // Render Summary KPIs
+    function renderKPIs(evals) {
+      document.getElementById('kpi-active-count').textContent = evals.length;
+
+      if (evals.length === 0) {
+        document.getElementById('kpi-sla-status').textContent = 'N/A';
+        document.getElementById('kpi-assessment-status').textContent = 'N/A';
+        document.getElementById('kpi-cert-status').textContent = 'N/A';
+        return;
+      }
+
+      const primary = evals[0];
+      const sla = primary.sla || {};
+      document.getElementById('kpi-sla-status').textContent = sla.label || 'Not scheduled';
+      document.getElementById('kpi-sla-status').style.color = sla.color || 'var(--success)';
+      document.getElementById('kpi-sla-subtext').textContent = sla.remainingFormatted || 'No deadline recorded';
+
+      document.getElementById('kpi-assessment-status').textContent = formatStatusName(primary.status);
+
+      const isCertReady = ['certificate_issued', 'completed'].includes(primary.status) && primary.certificate?.certificateNumber;
+      document.getElementById('kpi-cert-status').textContent = isCertReady ? 'ISSUED' : 'IN PROGRESS';
+      document.getElementById('kpi-cert-status').style.color = isCertReady ? 'var(--primary)' : 'var(--navy)';
+    }
+
+    // Render Priority Action Banners
+    function renderPriorityAlerts(evals) {
+      const area = document.getElementById('priority-alerts-area');
+      area.innerHTML = '';
+
+      evals.forEach(ev => {
+        // Revision Required banner
+        if (ev.status === 'rejected' || ev.rejectionReason) {
+          const banner = document.createElement('div');
+          banner.className = 'action-banner banner-danger';
+          banner.innerHTML = `
+            <div>
+              <div style="font-size: 11px; font-weight: 800; text-transform: uppercase;">⚠️ Action Required: Revisions Requested</div>
+              <strong style="font-size: 14px;">${escapeHtml(ev.deviceModel || ev.companyName)}:</strong>
+              <span style="font-size: 13px;">${escapeHtml(ev.rejectionReason || 'Please review required adjustments and resubmit.')}</span>
+            </div>
+            <button type="button" class="btn-action-primary" onclick="openResubmitModal('${ev._id}')">
+              Respond to Revision
+            </button>
+          `;
+          area.appendChild(banner);
+        }
+
+      });
+    }
+
+    // Render Main Evaluations List
+    function renderEvaluations(evaluations) {
+      const recordsView = document.getElementById('records-view');
+      recordsView.innerHTML = '';
+      recordsView.style.display = 'block';
+
+      if (evaluations.length === 0) {
+        recordsView.innerHTML = `
+          <div class="card empty-state">
+            <div style="font-size: 36px; margin-bottom: 12px;">📋</div>
+            <h3>No Evaluation Records Linked</h3>
+            <p style="margin-top: 8px; max-width: 520px; margin-left: auto; margin-right: auto;">
+              No commercial telematics hardware evaluations are currently registered for your company account. Once MIROS schedules your inspection, your evaluation progress and certificate will appear here.
+            </p>
+          </div>
+        `;
+        return;
+      }
+
+      evaluations.forEach((evalDoc) => {
+        const cardEl = document.createElement('div');
+        cardEl.className = 'card';
+
+        const status = evalDoc.certificate?.preparedDate && ['approved', 'pre_final_sent', 'payment_confirmed'].includes(evalDoc.status) ? 'certificate_preparation' : ['pre_final_sent', 'payment_confirmed'].includes(evalDoc.status) ? 'approved' : evalDoc.status || 'registered';
+        const stages = [...LIFECYCLE_STAGES];
+        if (status === 'rejected') stages.splice(4, 0, { key: 'rejected', label: 'Changes Requested' });
+        const milestone = status === 'submitted' ? 'pending_review' : status === 'assigned' ? 'scheduled' : status;
+        const currentIdx = stages.findIndex(s => s.key === milestone);
+        const progressPercent = currentIdx >= 0 ? (currentIdx / (stages.length - 1)) * 100 : 0;
+
+        // Stepper HTML
+        const stepsHtml = stages.map((s, idx) => {
+          let stateClass = '';
+          if (idx < currentIdx) stateClass = 'completed';
+          else if (idx === currentIdx) stateClass = 'current';
+
+          return `
+            <div class="step-item ${stateClass}">
+              <div class="step-icon">${idx < currentIdx ? '✓' : (idx + 1)}</div>
+              <div class="step-label">${s.label}</div>
+            </div>
+          `;
+        }).join('');
+
+        // Certificate Banner (if ready)
+        const cert = evalDoc.certificate || {};
+        const isCertReady = ['certificate_issued', 'completed'].includes(status) && cert.certificateNumber;
+        const isCertSigned = Boolean(cert.signedDate && cert.signedBy);
+        const certBannerHtml = isCertReady ? `
+          <div class="cert-banner">
+            <div class="cert-info">
+              <div style="font-size: 11px; font-weight: 700; color: #F58220; text-transform: uppercase;">Official MIROS Endorsement Ready</div>
+              <h3>Certificate: ${escapeHtml(cert.certificateNumber)}</h3>
+              <p>Endorsed by ${escapeHtml(cert.signedBy || 'Not recorded')} • Date: ${cert.signedDate ? new Date(cert.signedDate).toLocaleDateString('en-MY') : 'Not recorded'}</p>
+            </div>
+            <div class="cert-actions">
+              <button type="button" class="btn-download-cert" ${isCertSigned ? `onclick="downloadOfficialCertificate('${evalDoc._id}')"` : 'disabled title="Certificate must be signed before downloading."'}>
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+                Download PDF
+              </button>
+              <a href="/verify-certificate.html?cert=${encodeURIComponent(cert.certificateNumber)}" target="_blank" class="btn-verify-cert">
+                Verify Online ↗
+              </a>
+            </div>
+          </div>
+        ` : '';
+
+        // Timeline items
+        const timelineList = Array.isArray(evalDoc.statusHistory) && evalDoc.statusHistory.length > 0
+          ? evalDoc.statusHistory.map(h => `
+              <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                  <strong>${formatStatusName(h.status)}</strong>: ${escapeHtml(h.note || 'Status updated')}
+                </div>
+                <div class="timeline-date">${new Date(h.timestamp).toLocaleString()}</div>
+              </div>
+            `).join('')
+          : `<div style="font-size: 12px; color: #94A3B8;">Initial registration confirmed. Pending further lifecycle updates.</div>`;
+
+        const docCount = Array.isArray(evalDoc.documents) ? evalDoc.documents.length : 0;
+
+        cardEl.innerHTML = `
+          <div class="card-header">
+            <div>
+              <div style="font-size: 11px; font-weight: 700; color: var(--primary); text-transform: uppercase;">
+                Evaluation Registry Record (v${evalDoc.currentVersion || 1})
+              </div>
+              <h2 class="card-title">${escapeHtml(evalDoc.companyName || 'Telematics Customer')}</h2>
+              ${(evalDoc.officeAddress || evalDoc.state) ? `
+                <div style="font-size: 12px; color: #64748B; margin-top: 2px;">
+                  📍 ${escapeHtml(evalDoc.officeAddress || '')}${evalDoc.officeAddress && evalDoc.state ? ', ' : ''}<strong>${escapeHtml(evalDoc.state || '')}</strong>
+                </div>
+              ` : ''}
+              <div style="font-size: 13px; color: #475569; font-weight: 600; margin-top: 4px;">
+                Hardware Model: <strong style="color: #0F172A;">${escapeHtml(evalDoc.deviceModel || 'N/A')}</strong> &bull; 
+                Package: <span style="color: #0F172A;">${escapeHtml(evalDoc.packageName || 'Standard Evaluation')}</span>
+              </div>
+            </div>
+            <div style="text-align: right;">
+              <div style="font-size: 11px; color: var(--text-muted); margin-bottom: 4px;">Status</div>
+              <span class="badge badge-${status.replace('_', '-')}">${formatStatusName(status)}</span>
+            </div>
+          </div>
+
+          <!-- Lifecycle Stepper -->
+          <div class="lifecycle-stepper">
+            <div class="step-line">
+              <div class="step-line-progress" style="width: ${progressPercent}%;"></div>
+            </div>
+            ${stepsHtml}
+          </div>
+
+          ${certBannerHtml}
+
+          <!-- Details Grid -->
+          <div class="details-grid">
+            <div class="info-box">
+              <div class="info-label">Invoice</div>
+              <div class="info-value">${escapeHtml(evalDoc.invoice?.invoiceNumber || 'Not assigned')}</div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-label">Assessment Schedule</div>
+              <div class="info-value">${evalDoc.scheduledDate ? new Date(evalDoc.scheduledDate).toLocaleDateString('en-MY') : 'Date Pending'}</div>
+              <div style="font-size: 11px; color: #64748B; margin-top: 4px;">
+                ${evalDoc.assessmentDate ? `Evaluated on ${evalDoc.assessmentDate}` : 'Conducted by certified MIROS assessor'}
+              </div>
+            </div>
+
+            <div class="info-box">
+              <div class="info-label">Accreditation Result</div>
+              <div class="info-value">
+                ${evalDoc.starsCount ? `${'★'.repeat(evalDoc.starsCount)}${'☆'.repeat(5 - evalDoc.starsCount)} (${evalDoc.starsCount} Stars)` : 'Awaiting Completion'}
+              </div>
+              <div style="font-size: 11px; color: #64748B; margin-top: 4px;">
+                ${evalDoc.ratingLabel ? escapeHtml(evalDoc.ratingLabel) : 'Compliant with MIROS safety standards'}
+              </div>
+            </div>
+
+            <div class="info-box" style="border-left: 3px solid ${evalDoc.sla?.status === 'OVERDUE' ? '#EF4444' : (evalDoc.sla?.status === 'DUE_SOON' ? '#F59E0B' : '#10B981')};">
+              <div class="info-label">Service Level Commitment</div>
+              <div class="info-value" style="font-size: 13.5px; font-weight: 700; color: #0F172A;">
+                ${evalDoc.sla?.targetDeadline ? new Date(evalDoc.sla.targetDeadline).toLocaleDateString('en-MY', { day: '2-digit', month: 'short', year: 'numeric' }) : 'Under Scheduling'}
+              </div>
+              <div style="margin-top: 6px;">
+                <span class="badge" style="background: ${evalDoc.sla?.bgColor || '#F0FDF4'}; color: ${evalDoc.sla?.color || '#15803D'}; border: 1px solid ${evalDoc.sla?.borderColor || '#BBF7D0'}; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 9999px;">
+                  ${escapeHtml(evalDoc.sla?.label || 'ON TRACK')}
+                </span>
+                <div style="font-size: 11px; color: #64748B; margin-top: 4px;">
+                  ${escapeHtml(evalDoc.sla?.remainingFormatted || '7-day standard certification target')}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Toolbar -->
+          <div class="card-actions-bar">
+            <button type="button" class="btn-secondary" onclick="openHistoryModal('${evalDoc._id}')">
+              <span>📜</span> Assessment History (v${evalDoc.currentVersion || 1})
+            </button>
+            <button type="button" class="btn-secondary" onclick="openDocumentsModal('${evalDoc._id}')">
+              <span>📁</span> Documents &amp; Evidence (${docCount})
+            </button>
+            ${(status === 'rejected' || evalDoc.rejectionReason) ? `
+              <button type="button" class="btn-action-primary" onclick="openResubmitModal('${evalDoc._id}')">
+                <span>⚠️</span> Respond to Revision
+              </button>
+            ` : ''}
+          </div>
+
+          <!-- Timeline -->
+          <div style="margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border-color);">
+            <div style="font-size: 13px; font-weight: 700; color: #1E293B; margin-bottom: 12px;">Evaluation Activity History</div>
+            <div class="timeline">
+              ${timelineList}
+            </div>
+          </div>
+        `;
+
+        recordsView.appendChild(cardEl);
+      });
+    }
+
+    // Build notifications list from evaluation statusHistory
+    function buildNotificationsFromEvaluations(evals) {
+      notificationsList = [];
+      evals.forEach(ev => {
+        if (Array.isArray(ev.statusHistory)) {
+          ev.statusHistory.forEach(h => {
+            notificationsList.push({
+              evaluationId: ev._id,
+              companyName: ev.companyName,
+              status: h.status,
+              note: h.note,
+              timestamp: h.timestamp
+            });
+          });
+        }
+      });
+
+      notificationsList.sort((a,b) => new Date(b.timestamp) - new Date(a.timestamp));
+      const badge = document.getElementById('notif-count');
+      if (notificationsList.length > 0) {
+        badge.textContent = Math.min(notificationsList.length, 9);
+        badge.style.display = 'inline-block';
+      } else {
+        badge.style.display = 'none';
+      }
+    }
+
+    // Modal: Open History
+    async function openHistoryModal(evalId) {
+      openModal('modal-history');
+      const body = document.getElementById('history-modal-body');
+      body.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--text-muted);">Loading version history...</div>';
+
+      try {
+        const res = await fetch(`/.netlify/functions/get-assessment-history?evaluationId=${encodeURIComponent(evalId)}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Failed to load history.');
+
+        const versions = data.history || [];
+        if (versions.length === 0) {
+          body.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--text-muted);">No prior version snapshots recorded.</div>';
+          return;
+        }
+
+        body.innerHTML = versions.map(v => `
+          <div class="version-item ${v.isApprovedVersion ? 'approved' : ''} ${v.isCertifiedVersion ? 'certified' : ''}">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px;">
+              <div>
+                <strong style="font-size: 15px; color: var(--navy);">Version ${v.versionNumber}</strong>
+                <span style="font-size: 11px; background: #E2E8F0; padding: 2px 6px; border-radius: 4px; margin-left: 6px; font-weight: 700;">
+                  ${escapeHtml(v.action || 'SUBMISSION')}
+                </span>
+                ${v.isApprovedVersion ? '<span class="badge badge-approved" style="margin-left: 6px;">APPROVED VERSION</span>' : ''}
+                ${v.isCertifiedVersion ? '<span class="badge" style="background:#FFF7ED; color:#EA580C; border:1px solid #FFEDD5; margin-left: 6px;">CERTIFIED</span>' : ''}
+              </div>
+              <div style="font-size: 11.5px; color: var(--text-muted);">${new Date(v.createdAt).toLocaleString()}</div>
+            </div>
+            ${v.changeReason ? `<div style="font-size: 12.5px; color: #475569; margin-top: 4px;"><strong>Revision Note:</strong> ${escapeHtml(v.changeReason)}</div>` : ''}
+            <div style="display: flex; gap: 16px; margin-top: 8px; font-size: 12px; color: #64748B;">
+              <div>Rating: <strong>${v.scores?.starsCount ? '★'.repeat(v.scores.starsCount) : 'Pending'}</strong></div>
+              <div>Result: <strong>${escapeHtml(v.scores?.ratingLabel || 'In Progress')}</strong></div>
+            </div>
+          </div>
+        `).join('');
+      } catch (err) {
+        body.innerHTML = `<div style="color: var(--danger); text-align: center; padding: 20px;">${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    // Modal: Open Documents
+    async function openDocumentsModal(evalId) {
+      document.getElementById('upload-eval-id').value = evalId;
+      openModal('modal-documents');
+      loadDocumentsTable(evalId);
+    }
+
+    async function loadDocumentsTable(evalId) {
+      const container = document.getElementById('documents-table-container');
+      container.innerHTML = '<div style="text-align: center; padding: 16px; color: var(--text-muted);">Loading attached files...</div>';
+
+      try {
+        const res = await fetch(`/.netlify/functions/vendor-documents?evaluationId=${encodeURIComponent(evalId)}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Failed to load documents.');
+
+        const docs = data.documents || [];
+        if (docs.length === 0) {
+          container.innerHTML = '<div style="text-align: center; padding: 16px; color: var(--text-muted);">No documents uploaded yet. Upload your device specifications or test reports above.</div>';
+          return;
+        }
+
+        container.innerHTML = `
+          <table class="doc-table">
+            <thead>
+              <tr>
+                <th>Document Name</th>
+                <th>Category</th>
+                <th>Uploaded</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${docs.map(d => `
+                <tr>
+                  <td><strong>${escapeHtml(d.name)}</strong></td>
+                  <td><span style="font-size: 11px; color: #475569;">${escapeHtml(d.categoryLabel || d.category)}</span></td>
+                  <td style="font-size: 11px; color: #64748B;">${new Date(d.uploadedAt).toLocaleDateString()}</td>
+                  <td><span class="badge badge-${d.status === 'accepted' ? 'paid' : (d.status === 'rejected' ? 'rejected' : 'submitted')}">${formatStatusName(d.status)}</span></td>
+                  <td>
+                    <button type="button" class="btn-secondary" style="padding: 4px 8px; font-size: 11px;" onclick="downloadDocument('${evalId}', '${d.id}')">Download</button>
+                    ${d.status !== 'accepted' ? `
+                      <button type="button" class="btn-secondary" style="padding: 4px 8px; font-size: 11px; color: var(--danger); margin-left: 4px;" onclick="deleteDocument('${evalId}', '${d.id}')">Delete</button>
+                    ` : ''}
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        `;
+      } catch (err) {
+        container.innerHTML = `<div style="color: var(--danger); text-align: center; padding: 16px;">${escapeHtml(err.message)}</div>`;
+      }
+    }
+
+    // Document Upload Form Handler
+    document.getElementById('form-upload-doc').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const evalId = document.getElementById('upload-eval-id').value;
+      const fileInput = document.getElementById('doc-file');
+      const category = document.getElementById('doc-category').value;
+      const notes = document.getElementById('doc-notes').value;
+      const submitBtn = document.getElementById('btn-upload-submit');
+
+      if (!fileInput.files || fileInput.files.length === 0) {
+        alert('Please select a file to upload.');
+        return;
+      }
+
+      const file = fileInput.files[0];
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Uploading...';
+
+      try {
+        const reader = new FileReader();
+        reader.onload = async () => {
+          const base64Data = reader.result;
+          try {
+            const res = await fetch('/.netlify/functions/vendor-documents', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({
+                action: 'upload',
+                evaluationId: evalId,
+                name: file.name,
+                category,
+                fileType: file.type || 'application/octet-stream',
+                fileData: base64Data,
+                notes
+              })
+            });
+
+            const data = await res.json();
+            if (!data.success) throw new Error(data.error || 'Failed to upload document.');
+
+            showToast('Document uploaded successfully!', 'success');
+            fileInput.value = '';
+            document.getElementById('doc-notes').value = '';
+            loadDocumentsTable(evalId);
+            loadVendorData();
+          } catch (err) {
+            alert(err.message || 'Upload failed.');
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = 'Upload Document';
+          }
+        };
+        reader.readAsDataURL(file);
+      } catch (err) {
+        alert('Error reading local file.');
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Upload Document';
+      }
+    });
+
+    // Download Document
+    async function downloadDocument(evalId, docId) {
+      try {
+        const res = await fetch(`/.netlify/functions/vendor-documents?action=download&evaluationId=${encodeURIComponent(evalId)}&docId=${encodeURIComponent(docId)}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!res.ok) {
+          const error = await res.json().catch(() => ({}));
+          throw new Error(error.error || 'Unable to download this document.');
+        }
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        const filename = /filename="([^"]+)"/i.exec(res.headers.get('Content-Disposition') || '');
+        link.href = url;
+        link.download = filename ? filename[1] : 'document';
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+      } catch (err) {
+        showToast(err.message || 'Document download failed.', 'error');
+      }
+    }
+
+    // Delete Document
+    async function deleteDocument(evalId, docId) {
+      if (!confirm('Are you sure you want to remove this document?')) return;
+
+      try {
+        const res = await fetch('/.netlify/functions/vendor-documents', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'delete',
+            evaluationId: evalId,
+            docId
+          })
+        });
+
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Delete failed.');
+
+        showToast('Document deleted.', 'info');
+        loadDocumentsTable(evalId);
+        loadVendorData();
+      } catch (err) {
+        alert(err.message || 'Delete failed.');
+      }
+    }
+
+    // Modal: Open Resubmit
+    function openResubmitModal(evalId) {
+      const target = cachedEvaluations.find(e => e._id === evalId);
+      if (!target) return;
+
+      document.getElementById('resubmit-eval-id').value = evalId;
+      document.getElementById('resubmit-device-model').value = target.deviceModel || '';
+      document.getElementById('resubmit-reason-text').textContent = target.rejectionReason || 'Corrections requested by inspection committee.';
+      document.getElementById('resubmit-notes').value = '';
+      openModal('modal-resubmit');
+    }
+
+    // Form: Submit Resubmit
+    document.getElementById('form-resubmit').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const evalId = document.getElementById('resubmit-eval-id').value;
+      const deviceModel = document.getElementById('resubmit-device-model').value;
+      const notes = document.getElementById('resubmit-notes').value;
+      const btn = document.getElementById('btn-submit-resubmit');
+
+      btn.disabled = true;
+      btn.textContent = 'Submitting Revision...';
+
+      try {
+        const res = await fetch('/.netlify/functions/vendor-resubmit', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            evaluationId: evalId,
+            deviceModel,
+            responseNotes: notes
+          })
+        });
+
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Resubmission failed.');
+
+        showToast(`Revision (v${data.version}) submitted successfully!`, 'success');
+        closeModal('modal-resubmit');
+        loadVendorData();
+      } catch (err) {
+        alert(err.message || 'Resubmission failed.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Submit Revision & Queue for Inspection';
+      }
+    });
+
+    // Modal: Open Profile
+    function openProfileModal() {
+      if (currentVendorData) {
+        document.getElementById('prof-company').value = currentVendorData.companyName || '';
+        document.getElementById('prof-email').value = currentVendorData.contactEmail || '';
+        document.getElementById('prof-person').value = currentVendorData.contactPerson || '';
+        document.getElementById('prof-phone').value = currentVendorData.contactPhone || '';
+        document.getElementById('prof-address').value = currentVendorData.officeAddress || '';
+        document.getElementById('prof-state').value = currentVendorData.state || '';
+      }
+      switchProfileTab('info');
+      openModal('modal-profile');
+    }
+
+    function switchProfileTab(tab) {
+      if (tab === 'info') {
+        document.getElementById('form-profile-info').style.display = 'block';
+        document.getElementById('form-profile-pwd').style.display = 'none';
+        document.getElementById('tab-profile-info').className = 'nav-tab active';
+        document.getElementById('tab-profile-pwd').className = 'nav-tab';
+      } else {
+        document.getElementById('form-profile-info').style.display = 'none';
+        document.getElementById('form-profile-pwd').style.display = 'block';
+        document.getElementById('tab-profile-info').className = 'nav-tab';
+        document.getElementById('tab-profile-pwd').className = 'nav-tab active';
+      }
+    }
+
+    // Form: Save Profile Info
+    document.getElementById('form-profile-info').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('btn-save-profile');
+      btn.disabled = true;
+      btn.textContent = 'Saving...';
+
+      try {
+        const res = await fetch('/.netlify/functions/vendor-profile', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'update_profile',
+            contactPerson: document.getElementById('prof-person').value,
+            contactPhone: document.getElementById('prof-phone').value,
+            officeAddress: document.getElementById('prof-address').value,
+            state: document.getElementById('prof-state').value
+          })
+        });
+
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Failed to update profile.');
+
+        showToast('Profile updated successfully.', 'success');
+        loadVendorData();
+      } catch (err) {
+        alert(err.message || 'Profile update failed.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Save Profile Changes';
+      }
+    });
+
+    // Form: Change Password
+    document.getElementById('form-profile-pwd').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const currentPassword = document.getElementById('pwd-current').value;
+      const newPassword = document.getElementById('pwd-new').value;
+      const confirmPassword = document.getElementById('pwd-confirm').value;
+      const btn = document.getElementById('btn-save-pwd');
+
+      if (newPassword !== confirmPassword) {
+        alert('New password and confirmation do not match.');
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'Updating Password...';
+
+      try {
+        const res = await fetch('/.netlify/functions/vendor-profile', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            action: 'change_password',
+            currentPassword,
+            newPassword,
+            confirmPassword
+          })
+        });
+
+        const data = await res.json();
+        if (!data.success) throw new Error(data.error || 'Password change failed.');
+
+        showToast('Password changed successfully!', 'success');
+        document.getElementById('pwd-current').value = '';
+        document.getElementById('pwd-new').value = '';
+        document.getElementById('pwd-confirm').value = '';
+        switchProfileTab('info');
+      } catch (err) {
+        alert(err.message || 'Password change failed.');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Update Password';
+      }
+    });
+
+    // Modal: Open Notifications
+    function openNotificationsModal() {
+      openModal('modal-notifications');
+      const body = document.getElementById('notifications-modal-body');
+      if (notificationsList.length === 0) {
+        body.innerHTML = '<div style="text-align: center; padding: 24px; color: var(--text-muted);">No activity notifications recorded yet.</div>';
+        return;
+      }
+
+      body.innerHTML = notificationsList.map(n => `
+        <div style="padding: 12px 14px; border-bottom: 1px solid var(--border-color); background: #F8FAFC; border-radius: 6px; margin-bottom: 8px;">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <strong style="font-size: 13px; color: var(--navy);">${formatStatusName(n.status)}</strong>
+            <span style="font-size: 11px; color: var(--text-muted);">${new Date(n.timestamp).toLocaleString()}</span>
+          </div>
+          <div style="font-size: 12.5px; color: #334155; margin-top: 4px;">${escapeHtml(n.note || 'Status updated')}</div>
+        </div>
+      `).join('');
+    }
+
+    // Official Certificate PDF Download
+    async function downloadOfficialCertificate(evalId) {
+      try {
+        const res = await fetch(`/.netlify/functions/vendor-portal-data?id=${encodeURIComponent(evalId)}`, {
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success || !data.evaluation) {
+          throw new Error(data.error || 'Unable to load certificate data.');
+        }
+
+        const record = data.evaluation;
+        if (!record.certificate?.signedDate || !record.certificate?.signedBy) {
+          throw new Error('Certificate PDF is unavailable until the certificate has been signed by an authorized signatory.');
+        }
+
+        if (typeof window.downloadTrackScoreCertificatePdf !== 'function') {
+          throw new Error('Certificate generator template is not loaded. Please refresh the page.');
+        }
+
+        showToast('Generating official certificate PDF...');
+        await window.downloadTrackScoreCertificatePdf(record);
+        showToast('Certificate downloaded successfully!', 'success');
+      } catch (error) {
+        console.error('[Certificate PDF] Generation failed:', error);
+        alert(error.message || 'Certificate PDF generation failed.');
+      }
+    }
+
+    // Server-Sent Events (SSE) Live Updates Connection
+    function setupStatusStream() {
+      if (activeEventSource) return;
+
+      try {
+        // Connect to authoritative status-stream endpoint with authentication token
+        const streamUrl = `/.netlify/functions/status-stream?token=${encodeURIComponent(token)}`;
+        activeEventSource = new EventSource(streamUrl);
+
+        activeEventSource.onopen = () => {
+          document.getElementById('sse-status-label').textContent = 'Live Status Active';
+        };
+
+        activeEventSource.onmessage = (event) => {
+          try {
+            const data = JSON.parse(event.data);
+            if (data && (data.newStatus || data.status)) {
+              console.log('[SSE VENDOR EVENT]', data);
+              showToast(`Status update: ${formatStatusName(data.newStatus || data.status)}`, 'info');
+              loadVendorData();
+            }
+          } catch (e) {}
+        };
+
+        activeEventSource.onerror = () => {
+          document.getElementById('sse-status-label').textContent = 'Reconnecting...';
+          if (activeEventSource) {
+            activeEventSource.close();
+            activeEventSource = null;
+          }
+          // Backoff retry after 15 seconds
+          setTimeout(setupStatusStream, 15000);
+        };
+      } catch (err) {
+        console.warn('SSE status stream connection error:', err);
+      }
+    }
+
+    // Cleanup resources on page unload / hide
+    function cleanupLifecycle() {
+      if (activeEventSource) {
+        activeEventSource.close();
+        activeEventSource = null;
+      }
+      if (currentAbortController) {
+        currentAbortController.abort();
+        currentAbortController = null;
+      }
+    }
+
+    window.addEventListener('beforeunload', cleanupLifecycle);
+    window.addEventListener('pagehide', cleanupLifecycle);
+
+    // Initial data load and stream initialization
+    loadVendorData();
+    setupStatusStream();
+  </script>
+</body>
+</html>

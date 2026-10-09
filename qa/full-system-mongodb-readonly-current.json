@@ -1,0 +1,16 @@
+{
+  "generatedAt": "2026-10-01T13:29:00.635Z",
+  "connection": "connected",
+  "operation": "read-only ping and countDocuments",
+  "databaseNameOmitted": true,
+  "counts": {
+    "users": 2,
+    "vendors": 7,
+    "evaluations": 86,
+    "inquiries": 5,
+    "assessment_versions": 209,
+    "assessment_risk": 2
+  },
+  "total": 311,
+  "mutated": false
+}

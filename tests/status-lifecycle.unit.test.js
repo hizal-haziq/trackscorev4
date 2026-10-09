@@ -101,6 +101,8 @@ describe('Status Lifecycle & History Tracking Unit Tests', () => {
   });
 
   it('should allow valid status progression and append to statusHistory', async () => {
+    const connection = await connectToDatabase();
+    await connection.updateEvaluation(testEvalId, { status: 'submitted' });
     const event = {
       httpMethod: 'PUT',
       headers: {
@@ -109,27 +111,27 @@ describe('Status Lifecycle & History Tracking Unit Tests', () => {
       },
       body: JSON.stringify({
         id: testEvalId,
-        status: 'pre_final_sent'
+        status: 'pending_review'
       })
     };
 
     const res = await updateHandler(event, {});
     assert.equal(res.statusCode, 200);
     const body = JSON.parse(res.body);
-    assert.equal(body.status, 'pre_final_sent');
+    assert.equal(body.status, 'pending_review');
 
     // Verify statusHistory
     const updated = await fetchEval(testEvalId);
-    assert.equal(updated.status, 'pre_final_sent');
+    assert.equal(updated.status, 'pending_review');
     assert.ok(Array.isArray(updated.statusHistory));
-    assert.ok(updated.statusHistory.length >= 2);
+    assert.ok(updated.statusHistory.length >= 1);
     const latest = updated.statusHistory[updated.statusHistory.length - 1];
-    assert.equal(latest.status, 'pre_final_sent');
+    assert.equal(latest.status, 'pending_review');
     assert.ok(latest.changedAt);
     assert.ok(latest.changedBy);
   });
 
-  it('should allow rejection from pre_final_sent status and track history with reason', async () => {
+  it('should allow rejection from pending_review status and track history with reason', async () => {
     const event = {
       httpMethod: 'POST',
       headers: {
@@ -155,7 +157,7 @@ describe('Status Lifecycle & History Tracking Unit Tests', () => {
     assert.equal(latest.reason, 'Specification documents incomplete');
   });
 
-  it('should reject attempting to reject an evaluation not in pending_review or pre_final_sent', async () => {
+  it('should reject attempting to reject an evaluation not in pending_review or pending_review', async () => {
     // Current status is 'rejected'
     const event = {
       httpMethod: 'POST',
@@ -176,31 +178,19 @@ describe('Status Lifecycle & History Tracking Unit Tests', () => {
     assert.match(body.error, /Rejection is only permitted/i);
   });
 
-  it('should allow looping back to submitted after rejection', async () => {
-    const event = {
-      httpMethod: 'PUT',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${managerToken}`
-      },
-      body: JSON.stringify({
-        id: testEvalId,
-        status: 'submitted'
-      })
-    };
-
-    const res = await updateHandler(event, {});
-    assert.equal(res.statusCode, 200);
-    const body = JSON.parse(res.body);
-    assert.equal(body.status, 'submitted');
-
+  it('requires an Assessor resubmission and a new version after rejection', async () => {
+    const blocked = await updateHandler({ httpMethod: 'PUT', headers: { Authorization: `Bearer ${managerToken}` }, body: JSON.stringify({ id: testEvalId, status: 'submitted' }) }, {});
+    assert.equal(blocked.statusCode, 403);
+    const previous = await fetchEval(testEvalId);
+    assert.equal(previous.status, 'rejected');
+    const submitted = await saveHandler({ httpMethod: 'POST', headers: { Authorization: `Bearer ${assessorToken}` }, body: JSON.stringify({ ...previous, _id: undefined, id: undefined, resubmitRecordId: testEvalId, assessorId: 'TSA 1001', assessorName: 'Assessor', breakdown: previous.breakdown }) }, {});
+    assert.equal(submitted.statusCode, 200, submitted.body);
     const updated = await fetchEval(testEvalId);
     assert.equal(updated.status, 'submitted');
-    const latest = updated.statusHistory[updated.statusHistory.length - 1];
-    assert.equal(latest.status, 'submitted');
+    assert.equal(updated.currentVersion, previous.currentVersion + 1);
   });
 
-  it('should allow advancing to completed status and lock record from further edits', async () => {
+  it('blocks direct completion and keeps completed records immutable', async () => {
     // Advance to completed
     const event = {
       httpMethod: 'PUT',
@@ -215,7 +205,9 @@ describe('Status Lifecycle & History Tracking Unit Tests', () => {
     };
 
     const res = await updateHandler(event, {});
-    assert.equal(res.statusCode, 200);
+    assert.equal(res.statusCode, 400);
+    const connection = await connectToDatabase();
+    await connection.updateEvaluation(testEvalId, { status: 'completed' });
 
     // Attempting to edit any fields on completed record should be blocked
     const editAttempt = {

@@ -7,6 +7,7 @@
  * - Select assessor from registered staff directory
  * - Set or update scheduled inspection date
  * - Add manager briefing instructions/notes
+ * - Integrates SLA target tracking & deadline calculation
  * - Updates status from 'registered' to 'scheduled'
  * - Records audit trail in statusHistory
  * - Emits real-time SSE notification for the assessor
@@ -15,6 +16,8 @@
 import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js';
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { recordStatusEvent } from './status-bus.js';
+import { resolveSlaDurationDays, computeSlaDeadline, calculateAssessmentSla } from './sla.js';
+import { DEFAULT_ASSESSOR_CAPACITY } from './get-assessor-workload.js';
 
 export const handler = async (event) => {
   const headers = {
@@ -64,7 +67,10 @@ export const handler = async (event) => {
       scheduledDate = '',
       deviceModel = '',
       notes = '',
-      instructions = ''
+      instructions = '',
+      slaDays,
+      slaDurationDays,
+      customSlaDays
     } = body;
 
     if (!id && !companyName) {
@@ -131,13 +137,18 @@ export const handler = async (event) => {
     const newStatus = oldStatus === 'registered' ? 'scheduled' : oldStatus;
     const taskBriefing = (instructions || notes || '').trim();
 
+    // SLA Calculation
+    const effectiveSlaDays = Number(slaDays || slaDurationDays || customSlaDays) || resolveSlaDurationDays(existing);
+    const slaStartAt = existing.slaStartAt || nowIso;
+    const slaDeadline = computeSlaDeadline(existing, slaStartAt, effectiveSlaDays);
+
     const historyEntry = {
       status: newStatus,
       changedAt: nowIso,
       changedBy: managerName,
       timestamp: nowIso,
       actor: managerName,
-      note: `Task assigned to assessor ${chosenAssessorName}${assessorId ? ` (${assessorId})` : ''} by ${managerName}.${scheduledDate ? ` Scheduled inspection date: ${scheduledDate.trim()}.` : ''}${taskBriefing ? ` Instructions: ${taskBriefing}` : ''}`
+      note: `Task assigned to assessor ${chosenAssessorName}${assessorId ? ` (${assessorId})` : ''} by ${managerName}.${scheduledDate ? ` Scheduled inspection date: ${scheduledDate.trim()}.` : ''} SLA Target: ${effectiveSlaDays} days (Deadline: ${new Date(slaDeadline).toLocaleDateString('en-MY', { day: 'numeric', month: 'short', year: 'numeric' })}).${taskBriefing ? ` Instructions: ${taskBriefing}` : ''}`
     };
 
     const updateFields = {
@@ -148,7 +159,10 @@ export const handler = async (event) => {
       assignedAt: nowIso,
       assignedBy: managerName,
       status: newStatus,
-      statusChangedAt: nowIso
+      statusChangedAt: nowIso,
+      slaStartAt,
+      slaDeadline,
+      slaDurationDays: effectiveSlaDays
     };
 
     if (scheduledDate && scheduledDate.trim()) {
@@ -175,6 +189,9 @@ export const handler = async (event) => {
       await connection.updateEvaluation(recordId, updateFields, historyEntry);
     }
 
+    const updatedMerged = { ...existing, ...updateFields };
+    const slaSnapshot = calculateAssessmentSla(updatedMerged);
+
     // Broadcast SSE notification to assessor and management
     recordStatusEvent({
       evaluationId: recordId,
@@ -182,22 +199,52 @@ export const handler = async (event) => {
       companyName: existing.companyName,
       deviceModel: updateFields.deviceModel || existing.deviceModel,
       packageName: existing.packageName || '',
-      assessorId: updateFields.assignedAssessorId,
+      assessorId: updateFields.assignedAssessorId || undefined,
       assessorName: chosenAssessorName,
       assignedAssessor: chosenAssessorName,
-      assignedAssessorId: updateFields.assignedAssessorId,
-      assignedAssessorEmail: updateFields.assignedAssessorEmail,
+      assignedAssessorId: updateFields.assignedAssessorId || undefined,
+      assignedAssessorEmail: updateFields.assignedAssessorEmail || undefined,
       oldStatus,
       newStatus,
       status: newStatus,
       eventType: 'ASSIGNMENT',
       scheduledDate: updateFields.scheduledDate || existing.scheduledDate || null,
-      assignmentInstructions: updateFields.assignmentInstructions || null,
+      assignmentInstructions: taskBriefing || null,
       actor: managerName,
       assignedBy: managerName,
       assignedAt: nowIso,
-      note: `New task assigned: ${existing.companyName} assigned to ${chosenAssessorName}`
+      slaDeadline,
+      slaDurationDays: effectiveSlaDays,
+      slaStatus: slaSnapshot.status,
+      note: `Task assigned to ${chosenAssessorName} - SLA Deadline: ${slaSnapshot.remainingFormatted}`
     });
+
+    let activeTasksCount = 1;
+    if (connection.isMongoAtlas) {
+      const assessorFilters = [{ assignedAssessor: chosenAssessorName }, { assignedAssessorName: chosenAssessorName }];
+      if (updateFields.assignedAssessorId) {
+        assessorFilters.push({ assignedAssessorId: updateFields.assignedAssessorId });
+      }
+      activeTasksCount = await collection.countDocuments({
+        deletedAt: { $exists: false },
+        status: { $nin: ['completed', 'approved', 'cancelled', 'inquiry'] },
+        $or: assessorFilters
+      });
+    } else {
+      const allActive = await connection.getEvaluations(false);
+      activeTasksCount = allActive.filter(d => 
+        !d.deletedAt && d.status !== 'inquiry' && d.status !== 'completed' && d.status !== 'approved' && d.status !== 'cancelled' &&
+        (d.assignedAssessorId === updateFields.assignedAssessorId || d.assignedAssessor === chosenAssessorName || d.assignedAssessorName === chosenAssessorName)
+      ).length;
+    }
+
+    const isOverCapacity = activeTasksCount > DEFAULT_ASSESSOR_CAPACITY;
+    const capacityWarning = isOverCapacity ? {
+      isOverCapacity: true,
+      activeCount: activeTasksCount,
+      capacityLimit: DEFAULT_ASSESSOR_CAPACITY,
+      message: `Assessor ${chosenAssessorName} currently has ${activeTasksCount} active assessments (Recommended capacity: ${DEFAULT_ASSESSOR_CAPACITY}).`
+    } : null;
 
     return {
       statusCode: 200,
@@ -205,20 +252,23 @@ export const handler = async (event) => {
       body: JSON.stringify({
         success: true,
         id: recordId,
-        message: `Task successfully assigned to ${chosenAssessorName}.`,
+        message: `Task successfully assigned to ${chosenAssessorName} (SLA: ${effectiveSlaDays} days)`,
+        status: newStatus,
         assignedAssessor: chosenAssessorName,
         assignedAssessorId: updateFields.assignedAssessorId,
-        status: newStatus,
-        scheduledDate: updateFields.scheduledDate || existing.scheduledDate || null
+        assignedAssessorEmail: updateFields.assignedAssessorEmail,
+        scheduledDate: updateFields.scheduledDate || existing.scheduledDate || null,
+        deviceModel: updateFields.deviceModel || existing.deviceModel,
+        sla: slaSnapshot,
+        capacityWarning
       })
     };
-
   } catch (error) {
     console.error('[ASSIGN-ASSESSOR-ERROR]', error);
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ success: false, error: error.message || 'Error assigning assessor.' })
+      body: JSON.stringify({ success: false, error: 'Error assigning assessor.' })
     };
   }
 };

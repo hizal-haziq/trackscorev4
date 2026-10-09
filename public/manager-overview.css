@@ -1,0 +1,90 @@
+/* Manager-only layout: keep TrackScore's Inter, charcoal and orange identity. */
+#dashboard-main { max-width: 1560px; padding-top: 28px; }
+#dashboard-header .brand-subtitle { display: none; }
+#dashboard-header .header-inner { gap: 20px; }
+#dashboard-header .nav-links { flex-wrap: wrap; }
+#dashboard-header .user-session-bar { margin-left: 0 !important; }
+#dashboard-header .nav-btn { min-height: 40px; }
+.page-title-bar { gap: 20px; align-items: center; }
+.page-title-bar h2 { font-size: 28px; }
+.manager-tools { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 24px 0 0; }
+.manager-tools .dashboard-tab-bar { flex: 1; margin: 0; flex-wrap: wrap; }
+.manager-tools > .btn { min-height: 44px; }
+.manager-overview { display: grid; gap: 24px; margin-top: 24px; }
+.manager-overview[hidden] { display: none; }
+.manager-summary { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
+.manager-metric, .manager-panel { background: white; border: 1px solid #e2e8f0; border-radius: 10px; padding: 24px; min-width: 0; }
+.manager-metric { border-top: 3px solid #cbd5e1; }
+.manager-metric.review { border-top-color: #f58220; }
+.manager-metric.warning { border-top-color: #d97706; }
+.manager-metric.danger { border-top-color: #dc2626; }
+.manager-metric h3 { font-size: 15px; font-weight: 600; margin: 0; color: #475569; display: flex; align-items: center; gap: 8px; }
+.manager-metric h3 span { font-size: 19px; color: #64748b; }
+.manager-metric strong { display: block; font-size: 34px; line-height: 1.3; margin: 12px 0 6px; color: #1e293b; }
+.manager-metric p, .manager-muted { color: #64748b; font-size: 14px; margin: 0; line-height: 1.6; }
+.manager-panel-heading { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 20px; }
+.manager-panel h3 { font-size: 18px; margin: 0; color: #1e293b; }
+.manager-panel h4 { font-size: 15px; margin: 0 0 8px; }
+.manager-columns { display: grid; grid-template-columns: minmax(0, 1.9fr) minmax(0, 1fr); gap: 24px; align-items: start; }
+.manager-list { display: grid; }
+.manager-list-item { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 0; border-bottom: 1px solid #e2e8f0; }
+.manager-list-item:first-child { padding-top: 0; }
+.manager-list-item:last-child { border-bottom: 0; padding-bottom: 0; }
+.manager-list-item strong { display: block; font-size: 15px; line-height: 1.5; overflow-wrap: anywhere; }
+.manager-list-item .btn { flex-shrink: 0; }
+.manager-overview .btn { min-height: 44px; font-size: 14px; }
+.manager-empty { padding: 24px 0; font-size: 15px; color: #64748b; line-height: 1.6; }
+.manager-filters { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 16px; }
+.manager-filters label { display: grid; gap: 6px; font-size: 13px; font-weight: 600; color: #475569; flex: 1; min-width: 130px; }
+.manager-filters label:first-child { flex: 2; min-width: 180px; }
+.manager-filters input, .manager-filters select { width: 100%; min-height: 44px; font-size: 14px; }
+.manager-table-scroll { overflow-x: auto; }
+.manager-recent-table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 650px; }
+.manager-recent-table th { background: #f8fafc; font-size: 12px; font-weight: 600; color: #475569; text-align: left; }
+.manager-recent-table th, .manager-recent-table td { padding: 14px 10px; border-bottom: 1px solid #e2e8f0; vertical-align: middle; }
+.manager-recent-table td:first-child { font-weight: 600; max-width: 210px; overflow-wrap: anywhere; }
+.manager-badge { display: inline-block; border-radius: 5px; padding: 4px 7px; background: #f1f5f9; color: #475569; font-size: 12px; line-height: 1.5; }
+.manager-badge.review, .manager-badge.DUE_SOON { background: #fff7ed; color: #9a3412; }
+.manager-badge.OVERDUE { background: #fef2f2; color: #991b1b; }
+.manager-badge.ON_TRACK, .manager-badge.COMPLETED_ON_TIME { background: #ecfdf5; color: #065f46; }
+.manager-workloads { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: 16px; }
+.manager-workload { border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; }
+.manager-workload progress { width: 100%; height: 8px; accent-color: #f58220; margin: 14px 0 8px; }
+.manager-workload .btn { margin-top: 12px; }
+.manager-operational { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.manager-operational strong { display: block; font-size: 24px; margin: 12px 0 8px; }
+.manager-operational .btn { margin-top: 16px; }
+.manager-secondary summary { cursor: pointer; font-weight: 600; min-height: 44px; padding: 12px 0; }
+.manager-secondary .stat-card { box-shadow: none; }
+.manager-secondary button.stat-card { text-align: left; font: inherit; }
+.manager-status { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; padding: 0 4px; }
+.manager-status[hidden] { display: none; }
+.manager-account-dialog { border: 1px solid #e2e8f0; border-radius: 12px; padding: 24px; width: min(560px, calc(100vw - 32px)); max-height: 85vh; overflow-y: auto; color: #1e293b; }
+.manager-account-dialog::backdrop { background: rgba(15, 23, 42, .5); }
+.manager-account-dialog .btn { min-height: 44px; }
+.manager-account-dialog h3 { margin-bottom: 20px; }
+.manager-account-dialog p { margin: 12px 0; overflow-wrap: anywhere; }
+#manager-queue-banner[hidden] { display: none; }
+.manager-overview :focus-visible, .manager-tools :focus-visible, #dashboard-header :focus-visible { outline: 3px solid #f58220; outline-offset: 3px; }
+#dashboard-main > div[id$="tab-content"] { margin-top: 24px; }
+#dashboard-main .table-container { max-width: 100%; overflow-x: auto; }
+#dashboard-main .table-controls .search-box { min-width: min(260px, 100%) !important; }
+@media (max-width: 1100px) { .manager-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); } .manager-columns { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 700px) {
+  #dashboard-main { padding: 20px 16px; }
+  #dashboard-header .header-inner { flex-direction: column; align-items: stretch; gap: 12px; }
+  #dashboard-header .nav-links { justify-content: flex-start; gap: 6px !important; }
+  #dashboard-header .brand-details { display: block; }
+  #dashboard-header .user-session-bar { flex-wrap: wrap; }
+  .page-title-bar { flex-direction: column; align-items: stretch; }
+  .page-title-bar h2 { font-size: 24px; }
+  .manager-summary, .manager-operational { grid-template-columns: minmax(0, 1fr); }
+  .manager-panel, .manager-metric { padding: 20px; }
+  .manager-tools { align-items: stretch; }
+  .manager-tools .dashboard-tab-bar { flex-basis: 100%; gap: 4px; }
+  .manager-tools .dash-tab-btn { font-size: 13px; padding: 10px 12px; }
+  .manager-list-item { align-items: flex-start; }
+  .manager-filters label { min-width: 100%; }
+  .manager-secondary .dashboard-stats-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  #dashboard-main .table-controls { align-items: stretch; }
+}

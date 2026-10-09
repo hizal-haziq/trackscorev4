@@ -1,15 +1,17 @@
 /**
  * Netlify Serverless Function: issue-certificate
  * Allows managers to advance the certificate lifecycle steps:
- * 1. Mark "prepared" (generates/logs certificateNumber, sets preparedDate) — only allowed once payment.status === 'paid' (or payment_confirmed / waived)
+ * 1. Prepare an approved assessment version.
  * 2. Mark "printed" (sets printedDate) — requires preparedDate
  * 3. Record DGO signature (sets signedBy, signedDate) — requires printedDate and explicit signedBy signatory name -> moves status to 'certificate_issued'
  * 4. Mark "sent to customer" (sets sentToCustomerDate) — requires signedDate -> moves status to 'completed'
  */
 
-import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js';
+import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter, findAssessmentVersion } from './db.js';
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { recordStatusEvent } from './status-bus.js';
+import { calculateAssessmentSla } from './sla.js';
+import { hasApprovedAssessment } from './certificate-eligibility.js';
 
 export const handler = async (event) => {
   const headers = {
@@ -58,8 +60,6 @@ export const handler = async (event) => {
       signedBy = '',
       dgoName = '',
       deliveryMethod = 'Email & Physical Dispatch',
-      paymentOverride = false,
-      overrideReason = '',
       notes = ''
     } = body;
 
@@ -98,26 +98,30 @@ export const handler = async (event) => {
     const oldStatus = existing.status || 'pending_review';
     let newStatus = oldStatus;
 
-    // Check payment status or pre-final lifecycle stage
-    const isPaymentPaid = (existing.payment?.status === 'paid') ||
-      existing.status === 'pre_final_sent' ||
-      existing.status === 'payment_confirmed' ||
-      existing.status === 'certificate_issued' ||
-      existing.status === 'completed' ||
-      Boolean(existing.payment?.overridden);
-
+    if (!hasApprovedAssessment(existing) || existing.status === 'completed' || existing.certificate?.sentToCustomerDate) {
+      return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: 'An approved, unfinished assessment is required for certificate processing.' }) };
+    }
     const currentCert = existing.certificate || {};
+    const certifiedVersionNumber = Number(existing.approvedVersion);
+    const snapshot = await findAssessmentVersion(connection, String(existing._id || id), certifiedVersionNumber);
+    if (!snapshot || !Array.isArray(snapshot.breakdown) || snapshot.breakdown.length !== 33 ||
+        (currentCert.certifiedVersion && Number(currentCert.certifiedVersion) !== certifiedVersionNumber) ||
+        !existing.companyName || !existing.deviceModel) {
+      return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: 'The approved assessment version and required certificate details must exist.' }) };
+    }
 
-    // Standard sub-object schema: { certificateNumber, preparedDate, printedDate, signedBy, signedDate, sentToCustomerDate }
+    // Standard sub-object schema: { certificateNumber, certifiedVersion, preparedDate, printedDate, signedBy, signedDate, sentToCustomerDate }
     let updatedCert = {
       certificateNumber: currentCert.certificateNumber || null,
+      certifiedVersion: certifiedVersionNumber,
       preparedDate: currentCert.preparedDate || null,
       printedDate: currentCert.printedDate || null,
       signedBy: currentCert.signedBy || null,
       signedDate: currentCert.signedDate || null,
       sentToCustomerDate: currentCert.sentToCustomerDate || null,
       ...(currentCert.deliveryMethod ? { deliveryMethod: currentCert.deliveryMethod } : {}),
-      ...(currentCert.deliveredBy ? { deliveredBy: currentCert.deliveredBy } : {})
+      ...(currentCert.deliveredBy ? { deliveredBy: currentCert.deliveredBy } : {}),
+      ...(currentCert.notes ? { notes: currentCert.notes } : {})
     };
 
     let noteText = '';
@@ -125,31 +129,6 @@ export const handler = async (event) => {
 
     // --- STEP 1: PREPARE ---
     if (requestedStep === 'prepare' || requestedStep === 'prepared' || requestedStep === 'mark_prepared') {
-      // Rule 1: Only allowed once payment.status === 'paid' (i.e. record is at payment_confirmed or later)
-      if (!isPaymentPaid) {
-        if (!paymentOverride) {
-          return {
-            statusCode: 400,
-            headers,
-            body: JSON.stringify({
-              success: false,
-              paymentBlocked: true,
-              error: 'Certificate preparation is locked: Payment has not been confirmed for this evaluation (payment.status === "paid" required). Please verify payment first.'
-            })
-          };
-        }
-        if (!overrideReason || !overrideReason.trim()) {
-          return {
-            statusCode: 400,
-            headers,
-            body: JSON.stringify({
-              success: false,
-              error: 'Manager override reason is required when preparing a certificate before payment confirmation.'
-            })
-          };
-        }
-      }
-
       // Generate or preserve certificate number
       const autoCertNum = (certificateNumber && certificateNumber.trim()) ||
         currentCert.certificateNumber ||
@@ -159,7 +138,7 @@ export const handler = async (event) => {
       updatedCert.preparedDate = body.preparedDate ? new Date(body.preparedDate).toISOString() : (currentCert.preparedDate || nowIso);
       updatedCert.preparedBy = managerName;
 
-      noteText = `Certificate ${autoCertNum} marked as prepared on ${new Date(updatedCert.preparedDate).toLocaleDateString('en-MY')}.${paymentOverride ? ` (Payment override: ${overrideReason.trim()})` : ''}`;
+      noteText = `Certificate ${autoCertNum} marked as prepared on ${new Date(updatedCert.preparedDate).toLocaleDateString('en-MY')}.`;
     }
 
     // --- STEP 2: PRINT ---
@@ -235,6 +214,10 @@ export const handler = async (event) => {
       updatedCert.sentToCustomerDate = sentDate;
       updatedCert.deliveryMethod = (deliveryMethod || '').trim() || 'Email & Physical Dispatch';
       updatedCert.deliveredBy = managerName;
+      if (typeof notes !== 'string' || notes.length > 2000) {
+        return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: 'Delivery notes must be text with at most 2000 characters.' }) };
+      }
+      if (notes.trim()) updatedCert.notes = notes.trim();
 
       // Final action moves overall status to certificate_issued then completed
       if (oldStatus !== 'certificate_issued') {
@@ -250,47 +233,8 @@ export const handler = async (event) => {
       noteText = `Certificate ${updatedCert.certificateNumber} dispatched to customer via ${updatedCert.deliveryMethod}. Evaluation lifecycle completed.`;
     }
 
-    // --- BATCH / COMPATIBILITY: COMPLETE ALL (Manager Fast-Track if Paid) ---
-    else if (requestedStep === 'complete_all') {
-      if (!isPaymentPaid && !paymentOverride) {
-        return {
-          statusCode: 400,
-          headers,
-          body: JSON.stringify({
-            success: false,
-            paymentBlocked: true,
-            error: 'Certificate issuance is locked: Payment must be confirmed before issuing certificates.'
-          })
-        };
-      }
-
-      const signatoryName = (signedBy || dgoName || 'Director General Office (DGO)').trim();
-      const autoCertNum = (certificateNumber && certificateNumber.trim()) ||
-        currentCert.certificateNumber ||
-        `TS-CERT-${new Date().getFullYear()}-${existing._id ? String(existing._id).slice(-4).toUpperCase() : Math.floor(1000 + Math.random() * 9000)}`;
-
-      updatedCert = {
-        certificateNumber: autoCertNum,
-        preparedDate: currentCert.preparedDate || nowIso,
-        printedDate: currentCert.printedDate || nowIso,
-        signedBy: signatoryName,
-        signedDate: currentCert.signedDate || nowIso,
-        sentToCustomerDate: nowIso,
-        deliveryMethod: (deliveryMethod || '').trim() || 'Email & Physical Dispatch',
-        deliveredBy: managerName
-      };
-
-      newStatus = 'completed';
-      noteText = `Full certificate lifecycle completed for ${autoCertNum} (Signed by ${signatoryName}).`;
-    } else {
-      return {
-        statusCode: 400,
-        headers,
-        body: JSON.stringify({
-          success: false,
-          error: `Invalid action "${requestedStep}". Permitted steps: prepare, print, sign, sent_to_customer.`
-        })
-      };
+    else {
+      return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: 'Use prepare, print, sign or deliver in order.' }) };
     }
 
     const historyEntry = {
@@ -302,11 +246,20 @@ export const handler = async (event) => {
 
     const allHistoryEntries = [...intermediateHistory, historyEntry];
 
+    const isCompleted = newStatus === 'completed';
     const updateFields = {
       certificate: updatedCert,
       status: newStatus,
       statusChangedAt: nowIso
     };
+    if (isCompleted) {
+      updateFields.completedAt = existing.completedAt || updatedCert.sentToCustomerDate || nowIso;
+    }
+
+    const mergedDoc = { ...existing, ...updateFields };
+    const sla = calculateAssessmentSla(mergedDoc);
+    updateFields.slaStatus = sla.status;
+    updateFields.slaDeadline = existing.slaDeadline || sla.deadline;
 
     if (connection.isMongoAtlas) {
       await collection.updateOne(filter, {
@@ -334,6 +287,14 @@ export const handler = async (event) => {
       deviceModel: existing.deviceModel,
       oldStatus,
       newStatus,
+      slaStatus: sla.status,
+      sla: {
+        status: sla.status,
+        label: sla.label,
+        deadline: sla.deadline,
+        remainingFormatted: sla.remainingFormatted,
+        isCompleted: sla.isCompleted
+      },
       actor: managerName,
       note: noteText
     });
@@ -345,6 +306,7 @@ export const handler = async (event) => {
         success: true,
         message: noteText,
         status: newStatus,
+        sla,
         certificate: updatedCert
       })
     };
@@ -353,7 +315,7 @@ export const handler = async (event) => {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ success: false, error: error.message || 'Error processing certificate action.' })
+      body: JSON.stringify({ success: false, error: 'Error processing certificate action.' })
     };
   }
 };

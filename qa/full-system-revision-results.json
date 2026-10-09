@@ -1,0 +1,64 @@
+{
+  "results": [
+    {
+      "name": "Unrelated Assessor cannot take over or spoof an assessment during resubmission",
+      "passed": true,
+      "evidence": {
+        "unrelatedAssessor": 403,
+        "spoofedIdentity": 403,
+        "recordUnchanged": true
+      }
+    },
+    {
+      "name": "Assessor loads requested revision with all 33 persisted criterion comments",
+      "passed": true,
+      "evidence": {
+        "criteria": 33,
+        "commentsRestored": 33,
+        "managerReasonVisible": true
+      }
+    },
+    {
+      "name": "Assessor edits comments 1, 2, 10, 20, 33 and resubmits genuine version 2",
+      "passed": true,
+      "evidence": {
+        "version": 2,
+        "status": "submitted",
+        "originalSnapshotUnchanged": true,
+        "editedCriteria": [
+          1,
+          2,
+          10,
+          20,
+          33
+        ]
+      }
+    },
+    {
+      "name": "Reload retains revised comments and renders text without script execution",
+      "passed": true,
+      "evidence": {
+        "reloadPersisted": true,
+        "scriptExecuted": false
+      }
+    },
+    {
+      "name": "Backend rejects score tampering and overlong comments",
+      "passed": true,
+      "evidence": {
+        "tamperedScore": 400,
+        "comment2001Characters": 400
+      }
+    },
+    {
+      "name": "Approved record rejects direct mutation and has no correction action in submissions",
+      "passed": true,
+      "evidence": {
+        "status": 403,
+        "recordUnchanged": true,
+        "frontendCorrectionActionAbsent": true
+      }
+    }
+  ],
+  "errors": []
+}

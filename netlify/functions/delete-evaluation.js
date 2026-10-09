@@ -104,7 +104,7 @@ export const handler = async (event, context) => {
       };
     } else {
       const result = await connection.deleteEvaluation(id, deletedBy);
-      if (result.matchedCount === 0 && result.deletedCount === 0) {
+      if (!result.matchedCount && !result.deletedCount) {
         return {
           statusCode: 404,
           headers,
@@ -131,7 +131,7 @@ export const handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: false,
-        error: error.message || 'Internal Server Error while deleting evaluation'
+        error: 'Internal Server Error while deleting evaluation'
       })
     };
   }

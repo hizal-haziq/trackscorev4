@@ -1,0 +1,89 @@
+{
+  "generatedAt": "2026-10-08T01:52:26.326Z",
+  "results": [
+    {
+      "name": "Malformed, oversized and null JSON have safe responses",
+      "passed": true,
+      "evidence": [
+        {
+          "status": 400,
+          "bytes": 49
+        },
+        {
+          "status": 413,
+          "bytes": 65
+        },
+        {
+          "status": 400,
+          "bytes": 49
+        }
+      ]
+    },
+    {
+      "name": "Manager technical edits and signed identity edits are denied without mutation",
+      "passed": true
+    },
+    {
+      "name": "Manager metadata cannot bypass a requested revision without an Assessor version",
+      "passed": true
+    },
+    {
+      "name": "Concurrent first submissions preserve exactly one matching version",
+      "passed": true,
+      "evidence": [
+        200,
+        409
+      ]
+    },
+    {
+      "name": "Missing fields, invalid identifiers, missing records and untrusted login role hints remain safe",
+      "passed": true
+    },
+    {
+      "name": "Missing, forged, expired and wrong-role tokens cannot access sensitive APIs",
+      "passed": true
+    },
+    {
+      "name": "Cross-Assessor and cross-Vendor access remain forbidden; Vendor responses omit internal data",
+      "passed": true
+    },
+    {
+      "name": "Certificate stages enforce approval and ordering with immutable certified versions",
+      "passed": true,
+      "evidence": {
+        "status": "completed",
+        "approvedVersion": 1,
+        "certifiedVersion": 1
+      }
+    },
+    {
+      "name": "Document MIME, base64, length, size, path and ownership protections remain intact",
+      "passed": true,
+      "evidence": {
+        "acceptedProtected": true,
+        "name": ".._.._unsafe__.txt",
+        "unacceptedDelete": true
+      }
+    },
+    {
+      "name": "Unavailable uploads return safe errors and leave document metadata unchanged",
+      "passed": true
+    },
+    {
+      "name": "Storage failures across read/write/export handlers expose only safe messages",
+      "passed": true
+    },
+    {
+      "name": "Production unavailable-database behavior fails closed without touching local storage",
+      "passed": true
+    },
+    {
+      "name": "Public honeypot and per-IP rate limit preserve stored data",
+      "passed": true
+    },
+    {
+      "name": "Retired payment routes remain inert and public assets/private data boundaries hold",
+      "passed": true
+    }
+  ]
+}

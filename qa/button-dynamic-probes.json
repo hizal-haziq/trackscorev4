@@ -1,0 +1,493 @@
+{
+  "results": [
+    {
+      "key": "dashboard.html:212",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:214",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:215",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:216",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:217",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:218",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:219",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:220",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:221",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:222",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:223",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:224",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:225",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:226",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:227",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:228",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:229",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:230",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:231",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:232",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:233",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:234",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:235",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:236",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:237",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:238",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:239",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:240",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:241",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:242",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:243",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:244",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:246",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:247",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:248",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:249",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:250",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:251",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:252",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:253",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:254",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:255",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:256",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:258",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:259",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:260",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:261",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:262",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:263",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:264",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:265",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:266",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:267",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:268",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:269",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:270",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:271",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:272",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:273",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:274",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:275",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:276",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:277",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:278",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:279",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:280",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:281",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:282",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:283",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:284",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:285",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:286",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "dashboard.html:287",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:288",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:289",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "dashboard.html:290",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:78",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:79",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:80",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:81",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:84",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:85",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:86",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:87",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:88",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:89",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:90",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:91",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:92",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:93",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:94",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:95",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:96",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:97",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:98",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:99",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:100",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:101",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:102",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:103",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:104",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:105",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:106",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:107",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "index.html:108",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:109",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:110",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:111",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:112",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:113",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "index.html:114",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "vendor-portal.html:45",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "vendor-portal.html:46",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "vendor-portal.html:47",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "vendor-portal.html:48",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "vendor-portal.html:49",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "vendor-portal.html:50",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "vendor-portal.html:51",
+      "status": "native dynamic click probe passed"
+    },
+    {
+      "key": "vendor-portal.html:52",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "vendor-portal.html:53",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "vendor-portal.html:54",
+      "status": "conditional template not rendered in fixture state"
+    },
+    {
+      "key": "vendor-portal.html:55",
+      "status": "conditional template not rendered in fixture state"
+    }
+  ],
+  "errors": []
+}

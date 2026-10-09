@@ -1,7 +1,10 @@
 /**
  * Reference Data Table for MIROS TrackScore Telematics Packages & Lifecycle
  * Stored as a reference table module, not hardcoded inline.
+ * Extended with SLA definitions and target response times.
  */
+
+import { DEFAULT_SLA_CONFIG, SLA_STATUS, SLA_METADATA } from './sla.js';
 
 export const PACKAGES = {
   package_1: {
@@ -15,7 +18,9 @@ export const PACKAGES = {
     formattedPrice: 'RM4,500',
     validityYears: 2,
     freeReassessments: 1,
-    description: 'RM4,500, 2-year validity, 1 free reassessment'
+    slaDays: 7,
+    slaLabel: 'Standard 7-Day Assessment SLA',
+    description: 'RM4,500, 2-year validity, 1 free reassessment (7-day SLA)'
   },
   package_2: {
     id: 'package_2',
@@ -28,7 +33,9 @@ export const PACKAGES = {
     formattedPrice: 'RM6,000',
     validityYears: 3,
     freeReassessments: 2,
-    description: 'RM6,000, 3-year validity, 2 free reassessments'
+    slaDays: 5,
+    slaLabel: 'Priority 5-Day Fast-Track SLA',
+    description: 'RM6,000, 3-year validity, 2 free reassessments (Priority 5-day SLA)'
   }
 };
 
@@ -37,7 +44,7 @@ export const LIFECYCLE_STATUSES = [
   'scheduled',
   'submitted',
   'pending_review',
-  'pre_final_sent',
+  'approved',
   'certificate_issued',
   'completed',
   'rejected'
@@ -80,14 +87,14 @@ export const LIFECYCLE_METADATA = {
     step: 4,
     description: 'Under managerial review and score validation.'
   },
-  pre_final_sent: {
-    key: 'pre_final_sent',
-    label: 'Pre-Final Result Sent',
-    badgeClass: 'badge-pre-final',
+  approved: {
+    key: 'approved',
+    label: 'Assessment Approved',
+    badgeClass: 'badge-approved',
     color: '#8B5CF6',
     bgColor: '#F5F3FF',
     step: 5,
-    description: 'Preliminary results delivered to customer.'
+    description: 'Approved assessment ready for certificate preparation.'
   },
   certificate_issued: {
     key: 'certificate_issued',
@@ -158,7 +165,10 @@ export async function handler(event, context) {
       success: true,
       packages: Object.values(PACKAGES),
       lifecycleStatuses: LIFECYCLE_STATUSES,
-      lifecycleMetadata: LIFECYCLE_METADATA
+      lifecycleMetadata: LIFECYCLE_METADATA,
+      slaStatuses: Object.values(SLA_STATUS),
+      slaMetadata: SLA_METADATA,
+      defaultSlaConfig: DEFAULT_SLA_CONFIG
     })
   };
 }

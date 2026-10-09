@@ -1,0 +1,95 @@
+{
+  "allMatch": true,
+  "files": [
+    {
+      "file": "app.js",
+      "matches": true,
+      "sha256": "5109945706a8370157996c7ff55717cbe3fe9d791cf07a980d08fbc8b2ebbd89"
+    },
+    {
+      "file": "certificate-pdf.js",
+      "matches": true,
+      "sha256": "283c9e50c6eb0391e16b50a7a3d578846d93d7f23ee1bece5b3ef2306d9e3962"
+    },
+    {
+      "file": "change-password.html",
+      "matches": true,
+      "sha256": "2d8f9d422d74f22f686d1b24110788fc6d8149464f268a0e072667db4e1b1dd3"
+    },
+    {
+      "file": "dashboard.html",
+      "matches": true,
+      "sha256": "725870b1c08a7b0b6b3438ee706da0806ac247b2d18f7ea09b1992561c3211e9"
+    },
+    {
+      "file": "index.html",
+      "matches": true,
+      "sha256": "8901f4068ffce7ae53d99738812b243b8347ae71dae4bf42cf8ea83f87c0c3fd"
+    },
+    {
+      "file": "landing.html",
+      "matches": true,
+      "sha256": "4d37a789b0d42b2284c9d4684caf5182a3d725afc6cd3f030563845b2ed3164f"
+    },
+    {
+      "file": "login.html",
+      "matches": true,
+      "sha256": "d7b630c5f7686bab3210be26c37e070adc710be7fc03d453a61ed75e333dbcd0"
+    },
+    {
+      "file": "manager-overview.css",
+      "matches": true,
+      "sha256": "bf5101373454f7fc0b948e452b7440efc1b87ee9c0fc29a0d627f5003ad26c57"
+    },
+    {
+      "file": "manager-overview.js",
+      "matches": true,
+      "sha256": "19e832502c30e83ac71b7beedf68a5f8a5bfa7691e57bfc1c3f3f10b677a2121"
+    },
+    {
+      "file": "miros-logo.svg",
+      "matches": true,
+      "sha256": "9a3183b2f795fffbad1f7373573561fb7883d23ef451f3fefa691c6b182ef7d8"
+    },
+    {
+      "file": "peer-comments.js",
+      "matches": true,
+      "sha256": "5d99edfbfd6b680164b42a7a8f47f235a45fdad35f24d398fdea5ff67061e833"
+    },
+    {
+      "file": "request-assessment.html",
+      "matches": true,
+      "sha256": "5789386cd110ec822822d8223bbd7668748e8c94df02108be3e451c8d27296ea"
+    },
+    {
+      "file": "style.css",
+      "matches": true,
+      "sha256": "b8b7c898bb8cd3a77e451bbc70ae5d076ddb81c2e05618253cca53cc3ffee9cf"
+    },
+    {
+      "file": "summary-worker.js",
+      "matches": true,
+      "sha256": "aca086c955143fc914c9006adba1f20f13a52154ccb0b8a292b804e8ebd84a73"
+    },
+    {
+      "file": "TrackScore_Logo.svg",
+      "matches": true,
+      "sha256": "a46f4ab389dca4ede866b8391ac128cb40cb43f5a83e670ce45bb73714029bf1"
+    },
+    {
+      "file": "TrackScore_TS_Icon.svg",
+      "matches": true,
+      "sha256": "932d63b62102a672d08efba80c27f4e1eba788c86b9f69ba1c32fd59789eba9a"
+    },
+    {
+      "file": "vendor-portal.html",
+      "matches": true,
+      "sha256": "0cd8d0c6111c1e32432a31c384885139625a9a1e046a125ddefdd5edd1ac20a9"
+    },
+    {
+      "file": "verify-certificate.html",
+      "matches": true,
+      "sha256": "47a48787bd6b70bc00798fe4ae0a0995b8dcb64f61870127f9c64bc363af66d3"
+    }
+  ]
+}

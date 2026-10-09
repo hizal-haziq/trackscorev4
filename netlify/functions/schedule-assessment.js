@@ -2,11 +2,13 @@
  * Netlify Serverless Function: schedule-assessment
  * Allows managers to schedule an inspection date for a registered customer.
  * Moves status: 'registered' -> 'scheduled' (or updates schedule if already scheduled).
+ * Integrates SLA start and deadline tracking.
  */
 
 import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js';
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { recordStatusEvent } from './status-bus.js';
+import { resolveSlaDurationDays, computeSlaDeadline, calculateAssessmentSla } from './sla.js';
 
 export const handler = async (event) => {
   const headers = {
@@ -56,7 +58,10 @@ export const handler = async (event) => {
       assignedAssessorId = '',
       assignedAssessorName = '',
       assignedAssessorEmail = '',
-      deviceModel
+      deviceModel,
+      slaDays,
+      slaDurationDays,
+      customSlaDays
     } = body;
     if (!id && !companyName) {
       return {
@@ -121,6 +126,16 @@ export const handler = async (event) => {
     const oldStatus = existing.status || 'registered';
     const newStatus = 'scheduled';
 
+    // SLA Calculation
+    const targetPackage = body.package || body.packageChoice || existing.package;
+    const packageChanged = Boolean(body.package && body.package !== existing.package);
+    const explicitDays = Number(slaDays || slaDurationDays || customSlaDays);
+    const effectiveSlaDays = explicitDays > 0 
+      ? explicitDays 
+      : (packageChanged ? resolveSlaDurationDays({ package: targetPackage }) : resolveSlaDurationDays(existing));
+    const slaStartAt = existing.slaStartAt || nowIso;
+    const slaDeadline = computeSlaDeadline({ ...existing, slaDeadline: null, package: targetPackage }, slaStartAt, effectiveSlaDays);
+
     const chosenAssessor = (assignedAssessorName || assignedAssessor || '').trim();
     const historyEntry = {
       status: newStatus,
@@ -128,7 +143,7 @@ export const handler = async (event) => {
       changedBy: managerName,
       timestamp: nowIso,
       actor: managerName,
-      note: `Inspection scheduled for ${scheduledDate.trim()}.${deviceModel ? ` Device Model: ${deviceModel.trim()}.` : ''}${chosenAssessor ? ` Assigned to: ${chosenAssessor}${assignedAssessorId ? ` (${assignedAssessorId})` : ''}.` : ''} ${notes ? `Note: ${notes}` : ''}`
+      note: `Inspection scheduled for ${scheduledDate.trim()}.${deviceModel ? ` Device Model: ${deviceModel.trim()}.` : ''}${chosenAssessor ? ` Assigned to: ${chosenAssessor}${assignedAssessorId ? ` (${assignedAssessorId})` : ''}.` : ''} SLA: ${effectiveSlaDays} days (Deadline: ${new Date(slaDeadline).toLocaleDateString('en-MY', { day: 'numeric', month: 'short', year: 'numeric' })}). ${notes ? `Note: ${notes}` : ''}`
     };
 
     const updateFields = {
@@ -136,8 +151,15 @@ export const handler = async (event) => {
       status: newStatus,
       statusChangedAt: nowIso,
       scheduledBy: managerName,
-      scheduledAt: nowIso
+      scheduledAt: nowIso,
+      slaStartAt,
+      slaDeadline,
+      slaDurationDays: effectiveSlaDays
     };
+
+    if (body.package) {
+      updateFields.package = body.package;
+    }
 
     if (deviceModel && deviceModel.trim()) {
       updateFields.deviceModel = deviceModel.trim();
@@ -163,6 +185,9 @@ export const handler = async (event) => {
       await connection.updateEvaluation(recordId, updateFields, historyEntry);
     }
 
+    const updatedMerged = { ...existing, ...updateFields };
+    const slaSnapshot = calculateAssessmentSla(updatedMerged);
+
     recordStatusEvent({
       evaluationId: recordId,
       id: recordId,
@@ -183,7 +208,10 @@ export const handler = async (event) => {
       actor: managerName,
       assignedBy: managerName,
       assignedAt: nowIso,
-      note: `Inspection scheduled for ${scheduledDate.trim()}${chosenAssessor ? ` (Assigned to ${chosenAssessor})` : ''}`
+      slaDeadline,
+      slaDurationDays: effectiveSlaDays,
+      slaStatus: slaSnapshot.status,
+      note: `Inspection scheduled for ${scheduledDate.trim()}${chosenAssessor ? ` (Assigned to ${chosenAssessor})` : ''} - Target SLA: ${effectiveSlaDays} days`
     });
 
     return {
@@ -196,7 +224,8 @@ export const handler = async (event) => {
         status: newStatus,
         scheduledDate: scheduledDate.trim(),
         assignedAssessor: chosenAssessor || null,
-        deviceModel: updateFields.deviceModel || existing.deviceModel
+        deviceModel: updateFields.deviceModel || existing.deviceModel,
+        sla: slaSnapshot
       })
     };
   } catch (error) {
@@ -204,7 +233,7 @@ export const handler = async (event) => {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ success: false, error: error.message || 'Error scheduling assessment.' })
+      body: JSON.stringify({ success: false, error: 'Error scheduling assessment.' })
     };
   }
 };

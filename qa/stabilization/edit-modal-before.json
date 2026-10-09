@@ -1,0 +1,47 @@
+[
+  {
+    "rect": {
+      "x": 0,
+      "y": 0,
+      "width": 1366,
+      "height": 768,
+      "top": 0,
+      "right": 1366,
+      "bottom": 768,
+      "left": 0
+    },
+    "class": "modal-overlay active",
+    "overflow": "visible",
+    "pointer": "auto"
+  },
+  {
+    "rect": {
+      "x": 384,
+      "y": 104.40625,
+      "width": 598,
+      "height": 689.75,
+      "top": 104.40625,
+      "right": 982,
+      "bottom": 794.15625,
+      "left": 384
+    },
+    "class": "",
+    "overflow": "visible",
+    "pointer": "auto"
+  },
+  {
+    "rect": {
+      "x": 852,
+      "y": 742.15625,
+      "width": 106,
+      "height": 38,
+      "top": 742.15625,
+      "right": 958,
+      "bottom": 780.15625,
+      "left": 852
+    },
+    "class": "btn btn-primary btn-sm",
+    "overflow": "visible",
+    "pointer": "auto"
+  }
+]

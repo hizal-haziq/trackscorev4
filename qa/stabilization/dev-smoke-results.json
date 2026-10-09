@@ -1,0 +1,31 @@
+{
+  "generatedAt": "2026-10-08T02:00:35.897Z",
+  "command": "tsx server.ts (npm run dev equivalent), isolated cwd and explicit development/test environment",
+  "results": [
+    {
+      "route": "/",
+      "status": 200
+    },
+    {
+      "route": "/index.html",
+      "status": 200
+    },
+    {
+      "route": "/dashboard.html",
+      "status": 200
+    },
+    {
+      "route": "/login.html",
+      "status": 200
+    },
+    {
+      "route": "/vendor-portal.html",
+      "status": 200
+    },
+    {
+      "route": "Manager authenticated record read",
+      "status": 200,
+      "count": 25
+    }
+  ]
+}

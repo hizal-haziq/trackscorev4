@@ -197,7 +197,7 @@ export const handler = async (event) => {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ success: false, error: error.message || 'Error updating invoice details.' })
+      body: JSON.stringify({ success: false, error: 'Error updating invoice details.' })
     };
   }
 };

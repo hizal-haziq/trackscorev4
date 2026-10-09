@@ -168,17 +168,8 @@ export const handler = async (event) => {
             invoiceNumber,
             amount: packageInfo.price,
             issuedAt: nowIso,
-            paymentStatus: 'unpaid',
-            verifiedAt: null
-          },
-          payment: {
-            status: 'unpaid',
-            receiptNumber: null,
-            verifiedBy: null,
-            verifiedAt: null
           },
           certificate: null,
-          preFinalResult: null,
           totalScore: 0,
           starsCount: 0,
           ratingLabel: 'Pending Assessment',
@@ -204,8 +195,8 @@ export const handler = async (event) => {
           const insertRes = await connection.db.collection(COLLECTION_NAME).insertOne(evaluationDoc);
           newEvalId = insertRes.insertedId;
         } else {
-          const createdEval = await connection.createEvaluation(evaluationDoc);
-          newEvalId = createdEval._id;
+          const createdEval = await connection.insertEvaluation(evaluationDoc);
+          newEvalId = createdEval.insertedId;
         }
 
         // Update inquiry state to converted

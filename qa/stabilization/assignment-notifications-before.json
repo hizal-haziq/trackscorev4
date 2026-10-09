@@ -1,0 +1,12 @@
+{
+  "assessor": {
+    "status": 200,
+    "ownedSeedAssignmentVisible": false,
+    "foreignEmptyNameVisible": true
+  },
+  "assessor2": {
+    "status": 200,
+    "ownedSeedAssignmentVisible": false,
+    "foreignEmptyNameVisible": true
+  }
+}

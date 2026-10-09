@@ -1,0 +1,9 @@
+{
+  "uploadStatus": 201,
+  "documentStored": true,
+  "downloadStatus": 200,
+  "expectedBytes": 42,
+  "actualBytes": 56,
+  "byteExact": false,
+  "base64TextInsteadOfOriginal": true
+}

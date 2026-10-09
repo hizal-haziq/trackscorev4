@@ -1,0 +1,12 @@
+[
+  {
+    "path": "/server.cjs",
+    "status": 200,
+    "bytes": 380905
+  },
+  {
+    "path": "/server.cjs.map",
+    "status": 200,
+    "bytes": 700744
+  }
+]

@@ -6,12 +6,14 @@
  * Security & Access Rules:
  * - When invoked by an Assessor, records MUST be strictly filtered to assessorId === their own ID.
  * - Assessors must NOT see other assessors' submissions.
- * - Surfaces status, history, rejection reasons, payment status, and certificate issuance stage
+ * - Surfaces status, history, rejection reasons, certificate issuance stage
  *   for the assessor's own records.
  */
 
+import { omitRetiredWorkflow } from './retired-workflow.js';
 import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js';
 import { validateRole, ROLE_ASSESSOR, ROLE_MANAGER, authErrorResponse } from './auth.js';
+import { calculateAssessmentSla } from './sla.js';
 
 export const handler = async (event) => {
   const headers = {
@@ -60,6 +62,8 @@ export const handler = async (event) => {
     const ownAssessorName = (currentUser.name || '').trim().toLowerCase();
     const ownAssessorEmail = (currentUser.email || '').trim().toLowerCase();
 
+    const isPeerReview = params.peerReview === 'true' || params.peer === 'true' || params.forPeer === 'true';
+
     if (connection.isMongoAtlas) {
       const collection = connection.db.collection(COLLECTION_NAME);
 
@@ -67,7 +71,7 @@ export const handler = async (event) => {
         const filter = buildMongoIdFilter(idQuery);
         const single = await collection.findOne(filter);
         if (single) {
-          if (isAssessor) {
+          if (isAssessor && !isPeerReview) {
             // Confirm ownership
             const docAssessorId = String(single.assessorId || '').trim().toLowerCase();
             const docAssessorName = String(single.assessorName || '').trim().toLowerCase();
@@ -88,7 +92,7 @@ export const handler = async (event) => {
       } else {
         const filter = { deletedAt: { $exists: false } };
 
-        if (isAssessor) {
+        if (isAssessor && !isPeerReview) {
           // Strictly force own identifier
           const assessorConditions = [];
           if (ownAssessorId) {
@@ -105,6 +109,25 @@ export const handler = async (event) => {
             filter.$or = assessorConditions;
           } else {
             filter.assessorId = '__NONE__';
+          }
+        } else if (isAssessor && isPeerReview) {
+          // Exclude own evaluations so assessor only sees peers
+          const ownConditions = [];
+          if (ownAssessorId) {
+            ownConditions.push({ assessorId: new RegExp(`^${escapeRegex(ownAssessorId)}$`, 'i') });
+            ownConditions.push({ assignedAssessorId: new RegExp(`^${escapeRegex(ownAssessorId)}$`, 'i') });
+          }
+          if (ownAssessorName) {
+            ownConditions.push({ assessorName: new RegExp(`^${escapeRegex(ownAssessorName)}$`, 'i') });
+          }
+          if (ownConditions.length > 0) {
+            filter.$nor = ownConditions;
+          }
+          if (requestedAssessorQuery) {
+            const regex = new RegExp(escapeRegex(requestedAssessorQuery), 'i');
+            filter.$and = [
+              { $or: [{ assessorId: regex }, { assessorName: regex }, { companyName: regex }, { deviceModel: regex }] }
+            ];
           }
         } else if (requestedAssessorQuery) {
           // Manager searching
@@ -125,7 +148,7 @@ export const handler = async (event) => {
       if (idQuery) {
         const single = all.find(d => String(d._id) === idQuery || String(d.id) === idQuery);
         if (single) {
-          if (isAssessor) {
+          if (isAssessor && !isPeerReview) {
             const docAssessorId = String(single.assessorId || '').trim().toLowerCase();
             const docAssessorName = String(single.assessorName || '').trim().toLowerCase();
             const isMatch = (ownAssessorId && docAssessorId === ownAssessorId) ||
@@ -142,11 +165,18 @@ export const handler = async (event) => {
         }
       } else {
         records = all.filter(d => {
+          const docAssessorId = String(d.assessorId || '').trim().toLowerCase();
+          const docAssessorName = String(d.assessorName || '').trim().toLowerCase();
+          const isOwn = (ownAssessorId && docAssessorId === ownAssessorId) ||
+                        (ownAssessorName && docAssessorName === ownAssessorName);
+
           if (isAssessor) {
-            const docAssessorId = String(d.assessorId || '').trim().toLowerCase();
-            const docAssessorName = String(d.assessorName || '').trim().toLowerCase();
-            return (ownAssessorId && docAssessorId === ownAssessorId) ||
-                   (ownAssessorName && docAssessorName === ownAssessorName);
+            if (!isPeerReview) {
+              return isOwn;
+            } else {
+              // Peer review: must NOT be own evaluation
+              if (isOwn) return false;
+            }
           }
           if (requestedAssessorQuery) {
             const a = String(d.assessorName || '').toLowerCase();
@@ -166,35 +196,49 @@ export const handler = async (event) => {
       body: JSON.stringify({
         success: true,
         count: records.length,
-        data: records.map(r => ({
-          _id: String(r._id || r.id),
-          companyName: r.companyName,
-          deviceModel: r.deviceModel,
-          packageName: r.packageName,
-          assessorName: r.assessorName,
-          assessorId: r.assessorId || null,
-          assessmentDate: r.assessmentDate,
-          totalScore: r.totalScore,
-          sectionAScore: r.sectionAScore,
-          sectionBScore: r.sectionBScore,
-          starRating: r.starRating,
-          starsCount: r.starsCount,
-          ratingLabel: r.ratingLabel,
-          status: r.status || 'pending_review',
-          statusChangedAt: r.statusChangedAt || r.createdAt,
-          rejectionReason: r.rejectionReason || null,
-          rejectedBy: r.rejectedBy || null,
-          rejectedAt: r.rejectedAt || null,
-          approvedBy: r.approvedBy || null,
-          approvedAt: r.approvedAt || null,
-          invoice: r.invoice || null,
-          payment: r.payment || null,
-          certificate: r.certificate || null,
-          statusHistory: r.statusHistory || [],
-          breakdown: r.breakdown || [],
-          evaluationHistory: r.evaluationHistory || [],
-          createdAt: r.createdAt
-        }))
+        data: records.map(r => {
+          r = omitRetiredWorkflow(r);
+          const sla = calculateAssessmentSla(r);
+          // Overview shortcuts need the same metadata as repository modals.
+          // This explicit full-record mode is restricted to Managers.
+          if (isManager && params.fullDetails === 'true') {
+            return { ...omitRetiredWorkflow(r), _id: String(r._id || r.id), sla, slaStatus: sla.status };
+          }
+          return {
+            _id: String(r._id || r.id),
+            companyName: r.companyName,
+            deviceModel: r.deviceModel,
+            packageName: r.packageName,
+            assessorName: r.assessorName,
+            assessorId: r.assessorId || null,
+            assessmentDate: r.assessmentDate,
+            totalScore: r.totalScore,
+            sectionAScore: r.sectionAScore,
+            sectionBScore: r.sectionBScore,
+            starRating: r.starRating,
+            starsCount: r.starsCount,
+            ratingLabel: r.ratingLabel,
+            status: r.status || 'pending_review',
+            slaStatus: sla.status,
+            sla,
+            statusChangedAt: r.statusChangedAt || r.createdAt,
+            rejectionReason: r.rejectionReason || null,
+            rejectedBy: r.rejectedBy || null,
+            rejectedAt: r.rejectedAt || null,
+            approvedBy: r.approvedBy || null,
+            approvedAt: r.approvedAt || null,
+            currentVersion: r.currentVersion || null,
+            approvedVersion: r.approvedVersion || null,
+            invoice: r.invoice || null,
+            certificate: r.certificate || null,
+            statusHistory: r.statusHistory || [],
+            breakdown: r.breakdown || [],
+            evaluationHistory: r.evaluationHistory || [],
+            comments: r.comments || [],
+            commentsOverallSummary: r.commentsOverallSummary || null,
+            createdAt: r.createdAt
+          };
+        })
       })
     };
   } catch (error) {
@@ -204,7 +248,7 @@ export const handler = async (event) => {
       headers,
       body: JSON.stringify({
         success: false,
-        error: error.message || 'Internal Server Error during evaluation lookup'
+        error: 'Internal Server Error during evaluation lookup'
       })
     };
   }

@@ -31,7 +31,7 @@ export const handler = async (event, context) => {
     };
   }
 
-  const roleCheck = validateRole(event);
+  const roleCheck = validateRole(event, ROLE_ASSESSOR);
   if (!roleCheck.authorized) {
     return authErrorResponse(headers, roleCheck.statusCode, roleCheck.error);
   }
@@ -48,6 +48,22 @@ export const handler = async (event, context) => {
         return authErrorResponse(headers, 403, 'Forbidden: Assessor identity is missing from the token.');
       }
     }
+
+    const assessorAccount = roleCheck.role === ROLE_ASSESSOR ? roleCheck.user : null;
+    const normalizeIdentity = value => String(value || '').trim().toLowerCase();
+    const ownIds = [assessorAccount?.userId, assessorAccount?.assessorId].filter(Boolean).map(normalizeIdentity);
+    const ownName = normalizeIdentity(assessorAccount?.name);
+    const ownEmail = normalizeIdentity(assessorAccount?.email);
+    const isOwnedNotification = record => {
+      if (!assessorAccount) return true;
+      const state = String(record.status || '').toLowerCase();
+      if (!['assigned', 'scheduled', 'registered'].includes(state) && record.assessorId) {
+        return ownIds.includes(normalizeIdentity(record.assessorId));
+      }
+      if (record.assignedAssessorId) return ownIds.includes(normalizeIdentity(record.assignedAssessorId));
+      if (record.assignedAssessorEmail) return !!ownEmail && normalizeIdentity(record.assignedAssessorEmail) === ownEmail;
+      return !!ownName && [record.assignedAssessor, record.assignedAssessorName, record.assessorName].some(value => normalizeIdentity(value) === ownName);
+    };
 
     // Check in-memory event bus first for any fresh status change events
     const busEvents = getRecentStatusEvents(assessorId, since);
@@ -94,6 +110,17 @@ export const handler = async (event, context) => {
         query.status = { $in: ['approved', 'rejected', 'remediation_required', 'assigned', 'scheduled'] };
       }
 
+      if (assessorAccount) {
+        const exact = value => new RegExp('^' + String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$', 'i');
+        query.$or = [
+          { assessorId: { $in: ownIds.map(exact) } },
+          { assignedAssessorId: { $in: ownIds.map(exact) } },
+          ...(ownEmail ? [{ assignedAssessorEmail: exact(ownEmail) }] : []),
+          ...(ownName ? ['assessorName', 'assignedAssessor', 'assignedAssessorName'].map(field => ({ [field]: exact(ownName) })) : [])
+        ];
+        query.status = { $in: ['approved', 'rejected', 'remediation_required', 'assigned', 'scheduled', 'registered'] };
+      }
+
       records = await collection
         .find(query)
         .sort({ assignedAt: -1, statusChangedAt: -1, updatedAt: -1, createdAt: -1 })
@@ -107,6 +134,7 @@ export const handler = async (event, context) => {
         const isApprovedOrRejected = s === 'approved' || s === 'rejected' || s === 'remediation_required';
         const isAssigned = s === 'assigned' || s === 'scheduled' || (s === 'registered' && (r.assignedAssessor || r.assignedAssessorId));
         if (!isApprovedOrRejected && !isAssigned) return false;
+        if (assessorAccount) return isOwnedNotification(r);
         if (!assessorId) return true;
 
         const aid = assessorId.toLowerCase();
@@ -128,7 +156,7 @@ export const handler = async (event, context) => {
     }
 
     // Merge database state into unified notification list
-    const notifications = records.map(r => {
+    const notifications = records.filter(isOwnedNotification).map(r => {
       const s = (r.status || '').toLowerCase();
       const isAssigned = s === 'assigned' || s === 'scheduled' || (s === 'registered' && (r.assignedAssessor || r.assignedAssessorId));
       const isApproved = s === 'approved';
@@ -180,7 +208,7 @@ export const handler = async (event, context) => {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ error: error.message || 'Failed to check notifications' })
+      body: JSON.stringify({ error: 'Failed to check notifications' })
     };
   }
 };

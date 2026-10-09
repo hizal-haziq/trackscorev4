@@ -1,0 +1,37 @@
+{
+  "results": [
+    {
+      "label": "mobile",
+      "viewportWidth": 375,
+      "company": "ABC Sdn. Bhd.",
+      "canvasWidth": 1588,
+      "canvasHeight": 2240,
+      "pages": 1
+    },
+    {
+      "label": "laptop",
+      "viewportWidth": 1280,
+      "company": "ABC Sdn. Bhd.",
+      "canvasWidth": 1588,
+      "canvasHeight": 2240,
+      "pages": 1
+    },
+    {
+      "label": "desktop",
+      "viewportWidth": 1920,
+      "company": "ABC Sdn. Bhd.",
+      "canvasWidth": 1588,
+      "canvasHeight": 2240,
+      "pages": 1
+    },
+    {
+      "label": "long-company",
+      "viewportWidth": 1440,
+      "company": "International Advanced Telematics Transportation and Fleet Safety Assessment Solutions Research Development Services Malaysia Sdn. Bhd.",
+      "canvasWidth": 1588,
+      "canvasHeight": 2240,
+      "pages": 1
+    }
+  ],
+  "errors": []
+}

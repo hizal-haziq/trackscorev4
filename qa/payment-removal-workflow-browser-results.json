@@ -1,0 +1,94 @@
+{
+  "results": [
+    {
+      "name": "All six application stores start at zero; preset-account login rejected",
+      "passed": true
+    },
+    {
+      "name": "Test fixtures, JSON storage and QA artifacts are not served publicly",
+      "passed": true
+    },
+    {
+      "name": "Explicit first-Manager setup creates exactly one chosen account",
+      "passed": true
+    },
+    {
+      "name": "New Manager overview renders true empty states and responsive layout",
+      "passed": true
+    },
+    {
+      "name": "Manager empty tables and backend-derived statistics remain zero",
+      "passed": true
+    },
+    {
+      "name": "Manager creates Assessor via Team Accounts",
+      "passed": true
+    },
+    {
+      "name": "Assessor empty submissions and notifications render without sample records",
+      "passed": true
+    },
+    {
+      "name": "Vendor account created through UI; empty portal contains no fabricated assessments",
+      "passed": true
+    },
+    {
+      "name": "Public Inquiry creates a record through the actual form",
+      "passed": true
+    },
+    {
+      "name": "Inquiry conversion creates registered assessment and real invoice",
+      "passed": true
+    },
+    {
+      "name": "Vendor account links to registration through credential workflow",
+      "passed": true
+    },
+    {
+      "name": "Scheduling and assignment save through real handlers",
+      "passed": true
+    },
+    {
+      "name": "Assessor completes all 33 criteria and submits assigned registration in place",
+      "passed": true
+    },
+    {
+      "name": "Certificate API blocks before approval and denies Assessor and Vendor roles",
+      "passed": true
+    },
+    {
+      "name": "Manager requests changes; Assessor revises and resubmits version 2",
+      "passed": true
+    },
+    {
+      "name": "Manager approves version 2 directly to certificate readiness without creating payment data",
+      "passed": true
+    },
+    {
+      "name": "Manager prepares, prints, signs and delivers through certificate modal controls",
+      "passed": true
+    },
+    {
+      "name": "Vendor downloads genuine workflow certificate and public verification succeeds",
+      "passed": true
+    },
+    {
+      "name": "Retired Express and Netlify payment routes return 410 without changing records",
+      "passed": true
+    },
+    {
+      "name": "Vendor milestones and Manager completed certificate download remain usable",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "network": [],
+  "finalCounts": {
+    "users": 2,
+    "vendors": 1,
+    "evaluations": 1,
+    "inquiries": 1,
+    "assessment_versions": 2,
+    "assessment_risk": 0
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "checkedAt": "2026-10-02",
+  "config": {
+    "clientEndpointStatus": 200,
+    "clientResponse": "window.APP_CONFIG = {};",
+    "secretSentinelsExposed": false,
+    "viteRelevantWarnings": 0,
+    "unusedScriptReferencesRemoved": 4,
+    "runtimeRoutePreserved": true
+  },
+  "controls": {
+    "inventoryTotal": 546,
+    "buttons": 343,
+    "otherInteractiveControls": 203,
+    "buttonsKept": 343,
+    "buttonsRemoved": 0,
+    "buttonsRenamed": 3,
+    "staticNativeButtonProbes": 226,
+    "nativeProbesPassed": 220,
+    "conditionalOrZeroStateExceptions": 6,
+    "roleWorkflowChecksPassed": 70
+  },
+  "credentialHandoff": {
+    "txtDownloadContainsCredentials": true,
+    "tstDownloadContainsCredentials": true,
+    "vendorClipboardContainsCredentials": true,
+    "staffClipboardContainsCredentials": true,
+    "whatsappPrefillPhoneAndTextCorrect": true,
+    "browserErrors": 0,
+    "failedResponses": 0
+  },
+  "publicInquiryAbuse": {
+    "honeypotStatus": 400,
+    "validSubmissionStatuses": [201, 201, 201, 201, 201],
+    "sixthSubmissionStatus": 429,
+    "retryAfterSeconds": 3600,
+    "persistedAndVisibleAfterManagerReload": 5
+  },
+  "assignment": {
+    "managerReassignedSameRecordTwice": true,
+    "latestAssigneePersisted": true,
+    "accountIdEmailAndAssignedAtPersisted": true,
+    "browserErrors": 0,
+    "failedResponses": 0
+  },
+  "email": {
+    "providerConfigured": false,
+    "deliveryAttempted": false,
+    "invalidRecipientStatus": 400,
+    "invalidRecipientLeftRecordUnchanged": true,
+    "templateAndRecipientVerified": true,
+    "apiStatesNoEmailWasSent": true,
+    "managerToastStatesNoEmailWasSent": true,
+    "passwordLeakDetected": false,
+    "browserErrors": 0,
+    "failedResponses": 0
+  },
+  "certificates": [
+    {
+      "company": "ABC Sdn. Bhd.",
+      "downloaded": true,
+      "pages": 1,
+      "renderedAndVisuallyInspected": true,
+      "logoTitleNumberDatesQrSignatureAndPageEdgesVisible": true,
+      "artifact": "remaining-concerns-certificate-1.pdf"
+    },
+    {
+      "company": "Very Long Commercial Vehicle Telematics Technology Sdn. Bhd.",
+      "downloaded": true,
+      "pages": 1,
+      "renderedAndVisuallyInspected": true,
+      "logoTitleNumberDatesQrSignatureAndPageEdgesVisible": true,
+      "artifact": "remaining-concerns-certificate-2.pdf"
+    }
+  ],
+  "assessorSubmissionAuthorization": {
+    "assignedAssessorSubmission": { "status": "VERIFIED WORKING", "result": "accepted" },
+    "unassignedAssessorSubmission": { "status": "VERIFIED WORKING", "result": "403; record unchanged" },
+    "vendorSubmission": { "status": "VERIFIED WORKING", "result": "403" },
+    "managerSubmission": { "status": "VERIFIED WORKING", "result": "403; regression test added" }
+  },
+  "requestErrorHandling": {
+    "malformedJson": { "status": 400, "safeResponse": true },
+    "oversizedJson": { "status": 413, "safeResponse": true },
+    "invalidPayload": { "status": 400, "safeResponse": true }
+  },
+  "favicons": {
+    "pagesChecked": 4,
+    "failedResponses": 0,
+    "consoleErrors": 0
+  },
+  "regressionCommands": {
+    "npmTest": { "passed": 186, "failed": 0, "suites": 36 },
+    "npmRunLint": "passed",
+    "npmRunBuild": { "passed": true, "viteRelevantWarnings": 0 }
+  },
+  "externalWriteStatus": {
+    "configuredAtlasEnvironmentClassification": "unknown",
+    "atlasWrites": "BLOCKED — no safe staging Atlas database available.",
+    "jsonFallback": "VERIFIED WORKING"
+  }
+}

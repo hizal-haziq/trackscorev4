@@ -1,0 +1,82 @@
+{
+  "results": [
+    {
+      "name": "All six application stores start at zero; preset-account login rejected",
+      "passed": true
+    },
+    {
+      "name": "Test fixtures, JSON storage and QA artifacts are not served publicly",
+      "passed": true
+    },
+    {
+      "name": "Explicit first-Manager setup creates exactly one chosen account",
+      "passed": true
+    },
+    {
+      "name": "New Manager overview renders true empty states and responsive layout",
+      "passed": true
+    },
+    {
+      "name": "Manager empty tables and backend-derived statistics remain zero",
+      "passed": true
+    },
+    {
+      "name": "Manager creates Assessor via Team Accounts",
+      "passed": true
+    },
+    {
+      "name": "Assessor empty submissions and notifications render without sample records",
+      "passed": true
+    },
+    {
+      "name": "Vendor account created through UI; empty portal contains no fabricated assessments",
+      "passed": true
+    },
+    {
+      "name": "Public Inquiry creates a record through the actual form",
+      "passed": true
+    },
+    {
+      "name": "Inquiry conversion creates registered assessment and real invoice",
+      "passed": true
+    },
+    {
+      "name": "Vendor account links to registration through credential workflow",
+      "passed": true
+    },
+    {
+      "name": "Scheduling and assignment save through real handlers",
+      "passed": true
+    },
+    {
+      "name": "Assessor completes all 33 criteria and submits assigned registration in place",
+      "passed": true
+    },
+    {
+      "name": "Manager approves and sends pre-final results; unpaid Vendor stays unpaid",
+      "passed": true
+    },
+    {
+      "name": "Certificate preparation is rejected before confirmed payment",
+      "passed": true
+    },
+    {
+      "name": "Vendor submits payment proof, Manager verifies, and certificate follows lifecycle",
+      "passed": true
+    },
+    {
+      "name": "Vendor downloads genuine workflow certificate and public verification succeeds",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "network": [],
+  "finalCounts": {
+    "users": 2,
+    "vendors": 1,
+    "evaluations": 1,
+    "inquiries": 1,
+    "assessment_versions": 1,
+    "assessment_risk": 0
+  }
+}

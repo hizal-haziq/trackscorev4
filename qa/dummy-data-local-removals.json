@@ -1,0 +1,31 @@
+[
+  {
+    "file": ".data/evaluations.json",
+    "removedIds": [
+      "eval_1790665360502_lldk1"
+    ],
+    "kept": 0
+  },
+  {
+    "file": ".data/users.json",
+    "removedIds": [
+      "user_1790665360509_48nq"
+    ],
+    "kept": 0
+  },
+  {
+    "file": ".data/vendors.json",
+    "removedIds": [
+      "vendor_1790665363237_df11"
+    ],
+    "kept": 0
+  },
+  {
+    "file": ".data/assessment_versions.json",
+    "removedIds": [
+      "ver_1790665360550_ed5lq",
+      "ver_1790665360518_dichn"
+    ],
+    "kept": 0
+  }
+]

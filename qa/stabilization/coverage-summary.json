@@ -1,0 +1,47 @@
+{
+  "generatedAt": "2026-10-08T02:00:42.931Z",
+  "currentDefinitions": 493,
+  "baselineDefinitions": 495,
+  "baselineStatuses": {
+    "VERIFIED WORKING": 346,
+    "NOT TESTED": 137,
+    "PARTIALLY WORKING": 12
+  },
+  "statuses": {
+    "VERIFIED WORKING": 447,
+    "PARTIALLY WORKING": 16,
+    "NOT TESTED": 28,
+    "BLOCKED": 2
+  },
+  "removedDefinitions": 2,
+  "currentNativeRetested": 292,
+  "retainedHistoricalOnly": 168,
+  "newlyVerifiedFromOutstanding": 101,
+  "checks": [
+    {
+      "file": "workflow-results.json",
+      "passed": 20,
+      "failed": []
+    },
+    {
+      "file": "browser-results.json",
+      "passed": 24,
+      "failed": []
+    },
+    {
+      "file": "supplement-results.json",
+      "passed": 12,
+      "failed": []
+    },
+    {
+      "file": "extra-results.json",
+      "passed": 9,
+      "failed": []
+    },
+    {
+      "file": "assessor-pdf-retest-results.json",
+      "passed": 2,
+      "failed": []
+    }
+  ]
+}

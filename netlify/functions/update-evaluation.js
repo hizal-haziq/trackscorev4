@@ -9,7 +9,7 @@
 
 import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js';
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
-import { recomputeScores } from './rubric.js';
+import { omitRetiredWorkflow } from './retired-workflow.js';
 
 export const handler = async (event, context) => {
   const headers = {
@@ -52,6 +52,14 @@ export const handler = async (event, context) => {
       };
     }
 
+    if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+      return { statusCode: 400, headers, body: JSON.stringify({ error: 'Request body must be a JSON object.' }) };
+    }
+    const technicalFields = ['breakdown', 'sectionAScore', 'sectionBScore', 'totalScore', 'starRating', 'starsCount', 'ratingLabel', 'rubricVersion'];
+    if (technicalFields.some(field => Object.prototype.hasOwnProperty.call(payload, field))) {
+      return { statusCode: 403, headers, body: JSON.stringify({ error: 'Technical assessment changes require an Assessor submission and a new assessment version.' }) };
+    }
+
     const id = event.queryStringParameters?.id || payload?._id || payload?.id;
     if (!id) {
       return {
@@ -85,7 +93,7 @@ export const handler = async (event, context) => {
     }
 
     // 3. Immutability Enforcement: Approved/Completed evaluations are locked and cannot be edited
-    if (existingRecord.status === 'approved' || existingRecord.status === 'completed') {
+    if (['approved', 'pre_final_sent', 'payment_confirmed', 'certificate_issued', 'cert_issued', 'completed'].includes(String(existingRecord.status).toLowerCase())) {
       return {
         statusCode: 403,
         headers,
@@ -100,9 +108,6 @@ export const handler = async (event, context) => {
       'scheduled',
       'submitted',
       'pending_review',
-      'pre_final_sent',
-      'certificate_issued',
-      'completed',
       'rejected'
     ];
 
@@ -118,6 +123,12 @@ export const handler = async (event, context) => {
             error: `Invalid status "${payload.status}". Valid statuses: ${VALID_LIFECYCLE_STATUSES.join(', ')}`
           })
         };
+      }
+
+      const sourceStatus = String(existingRecord.status || '').toLowerCase();
+      if ((['submitted', 'pending_review'].includes(targetStatus) && !['submitted', 'pending_review'].includes(sourceStatus)) ||
+          (targetStatus === 'rejected' && sourceStatus !== 'rejected')) {
+        return { statusCode: 403, headers, body: JSON.stringify({ error: 'Use the Assessor submission or Manager review action for assessment lifecycle decisions.' }) };
       }
 
       if (targetStatus !== (existingRecord.status || 'pending_review').toLowerCase()) {
@@ -182,24 +193,12 @@ export const handler = async (event, context) => {
     if (payload.contactPhone !== undefined) updateFields.contactPhone = String(payload.contactPhone).trim();
     if (payload.invoice && typeof payload.invoice === 'object') {
       updateFields.invoice = {
+        ...existingRecord.invoice,
         invoiceNumber: String(payload.invoice.invoiceNumber || '').trim(),
         amount: Number(payload.invoice.amount || 0),
         issuedDate: String(payload.invoice.issuedDate || '').trim(),
         dueDate: String(payload.invoice.dueDate || '').trim()
       };
-    }
-
-    // If breakdown array provided, recompute scores server-side
-    if (Array.isArray(payload.breakdown) && payload.breakdown.length > 0) {
-      const recomputed = recomputeScores(payload.breakdown);
-      updateFields.breakdown = recomputed.breakdown;
-      updateFields.sectionAScore = recomputed.sectionAScore;
-      updateFields.sectionBScore = recomputed.sectionBScore;
-      updateFields.totalScore = recomputed.totalScore;
-      updateFields.starRating = recomputed.starRating;
-      updateFields.starsCount = recomputed.starsCount;
-      updateFields.ratingLabel = recomputed.ratingLabel;
-      updateFields.rubricVersion = recomputed.rubricVersion;
     }
 
     updateFields.updatedAt = new Date().toISOString();
@@ -235,7 +234,7 @@ export const handler = async (event, context) => {
           updatedFields: Object.keys(updateFields),
           auditSnapshot: historySnapshot,
           statusHistoryEntry: statusHistoryEntry || null,
-          data: updatedRecord
+          data: omitRetiredWorkflow(updatedRecord)
         })
       };
     } else {
@@ -258,7 +257,7 @@ export const handler = async (event, context) => {
           status: updateFields.status || existingRecord.status,
           updatedFields: Object.keys(updateFields),
           auditSnapshot: historySnapshot,
-          data: result.updatedDoc
+          data: omitRetiredWorkflow(result.updatedDoc)
         })
       };
     }
@@ -269,7 +268,7 @@ export const handler = async (event, context) => {
       headers,
       body: JSON.stringify({
         success: false,
-        error: error.message || 'Internal Server Error while updating evaluation'
+        error: 'Internal Server Error while updating evaluation'
       })
     };
   }

@@ -11,7 +11,7 @@
 import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { handler } from '../netlify/functions/save-evaluation.js';
-import { generateToken, ROLE_ASSESSOR } from '../netlify/functions/auth.js';
+import { generateToken, ROLE_ASSESSOR, ROLE_MANAGER } from '../netlify/functions/auth.js';
 import { connectToDatabase, closeDatabaseConnection, COLLECTION_NAME } from '../netlify/functions/db.js';
 import {
   recomputeScores,
@@ -25,6 +25,7 @@ describe('save-evaluation.js Integration Suite', () => {
     assessorId: 'MKA 9006',
     name: 'Lead Assessor'
   });
+  const managerToken = generateToken({ role: ROLE_MANAGER, name: 'Lead Manager' });
 
   after(async () => {
     try {
@@ -97,6 +98,16 @@ describe('save-evaluation.js Integration Suite', () => {
 
     const response = await handler(event, {});
     assert.equal(response.statusCode, 401, 'Should return 401 for bad token');
+  });
+
+  it('should reject a Manager attempting to submit an Assessor assessment', async () => {
+    const response = await handler({
+      httpMethod: 'POST',
+      headers: { Authorization: `Bearer ${managerToken}` },
+      body: JSON.stringify(createValidPayload())
+    }, {});
+    assert.equal(response.statusCode, 403);
+    assert.match(JSON.parse(response.body).error, /Only assigned Assessors/i);
   });
 
   // 2. Valid Payload (200)

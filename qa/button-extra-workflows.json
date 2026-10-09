@@ -1,0 +1,17 @@
+{
+  "results": [
+    {
+      "name": "Manager peer comment submits through API and persists",
+      "passed": true
+    },
+    {
+      "name": "Vendor credentials Generate, Copy and both download formats work",
+      "passed": true
+    },
+    {
+      "name": "Assessor peer Review and Post Comment persist without scoring edits",
+      "passed": true
+    }
+  ],
+  "errors": []
+}

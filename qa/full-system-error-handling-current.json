@@ -1,0 +1,26 @@
+{
+  "oversized": {
+    "status": 413,
+    "contentType": "application/json; charset=utf-8",
+    "safe": true,
+    "body": {
+      "success": false,
+      "error": "Request body exceeds the 10 MB limit."
+    }
+  },
+  "malformed": {
+    "status": 400,
+    "contentType": "application/json; charset=utf-8",
+    "safe": true,
+    "body": {
+      "success": false,
+      "error": "Invalid request body."
+    }
+  },
+  "storeUnchanged": true,
+  "faviconSmoke": {
+    "pages": 4,
+    "failedResponses": [],
+    "consoleErrors": []
+  }
+}

@@ -1,0 +1,144 @@
+TRACKSCORE CURRENT IMPLEMENTED WORKFLOW
+=======================================
+
+PUBLIC
+|
++-- landing.html: read rating standard, matrix, packages and process
++-- request-assessment.html: Submit Assessment Inquiry
+|   `-- POST /api/submit-inquiry
+|       `-- inquiry status = inquiry
++-- verify-certificate.html: Verify certificate number
+|   `-- GET/POST /api/verify-certificate (public safe projection)
+`-- login.html: choose Assessor, Manager or Vendor and sign in
+
+MANAGER — INTAKE AND REGISTRATION (dashboard.html)
+|
++-- Applications & Inquiries
+|   +-- Review inquiry
+|   +-- Convert to Registered Customer
+|   |   `-- POST /api/manage-inquiries action=convert
+|   |       +-- inquiry status: inquiry -> converted
+|   |       `-- evaluation record status: registered
+|   `-- Dismiss
+|       `-- inquiry status: inquiry -> dismissed
++-- New Registration / Create Registration
+|   `-- POST /api/register-customer -> evaluation status = registered
++-- Package and invoice are recorded on the evaluation
+|   `-- POST /api/manage-invoice (does not advance lifecycle status)
++-- Create Vendor Login / Generate Vendor Credentials
+|   `-- POST /api/vendor-invite
+|       +-- bcrypt password hash stored in vendors
+|       `-- evaluation/registration ID added to linkedRegistrationIds
++-- Schedule / Reschedule
+|   `-- POST /api/schedule-assessment
+|       `-- registered -> scheduled; SLA start/deadline stored
+`-- Assign / Reassign Assessor
+    `-- POST /api/assign-assessor
+        `-- registered -> scheduled; identity, instructions and SLA stored
+
+ASSESSOR — ASSESSMENT (index.html)
+|
++-- Sign in -> assigned work and own submissions only
++-- Start Assessment / Conduct Assessment / Fix & Resubmit
++-- Complete exactly 33 criteria and optional per-criterion comments
++-- Save Draft
+|   `-- browser localStorage, up to 3 drafts; backup import/export available
++-- Submit Assessment
+|   `-- POST /api/save-evaluation
+|       +-- Assessor identity and assignment checked
+|       +-- exactly 33 unique criteria checked
+|       +-- comments checked (string, max 2,000 chars)
+|       +-- scores recomputed server-side and client totals compared
+|       +-- registered/scheduled record updated in place when matched
+|       +-- currentVersion = 1 and immutable version-1 snapshot created
+|       `-- status = pending_review (some legacy/UI paths use submitted)
+`-- Peer Reviews / Post Comment
+    `-- POST /api/add-comment, scoped to allowed assessment
+
+MANAGER — TECHNICAL REVIEW (dashboard.html)
+|
++-- Attention Required / All Assessments / Review / Audit & Review
++-- View scores, 33 Assessor comments, documents, risk and version history
++-- Add separate Manager review comment
++-- Approve Assessment
+|   `-- POST /api/approve-evaluation action=approve
+|       +-- approvedVersion fixed to currentVersion
+|       `-- pending_review/submitted -> pre_final_sent
+|           (or remains pending_review when pre-final is explicitly skipped)
++-- Request Revision / Reject
+|   `-- POST /api/approve-evaluation action=reject + required reason
+|       `-- pending_review/pre_final_sent -> rejected
+|           (UI meaning: Revision Required / Changes Needed)
+`-- Archive
+    `-- DELETE /api/delete-evaluation (soft delete)
+
+REVISION BRANCHES
+|
++-- Assessor correction
+|   +-- opens rejected record in the 33-criterion form
+|   +-- may change one or many criteria/comments
+|   `-- POST /api/save-evaluation with resubmitRecordId
+|       +-- creates version 2 (or next version)
+|       +-- keeps old snapshots unchanged
+|       `-- rejected -> submitted -> Manager review
+`-- Vendor response
+    `-- POST /api/vendor-resubmit with an explanation
+        +-- ownership checked
+        +-- snapshot created using current technical scores
+        `-- rejected -> submitted
+
+RESULT/PAYMENT BRANCH
+|
++-- Manager prepares simulated pre-final notice
+|   `-- POST /api/send-pre-final
+|       `-- pending_review -> pre_final_sent; stores notice, sends no email
++-- Manager may explicitly skip pre-final
+|   `-- status remains pending_review; preFinalSkipped=true
++-- Vendor submits payment proof/details
+|   `-- POST /api/vendor-submit-payment
+|       +-- ownership checked
+|       +-- payment.status = pending_verification
+|       `-- evaluation lifecycle status unchanged
+`-- Manager verifies payment or records justified override
+    `-- POST /api/verify-payment
+        `-- pre_final_sent (or approved/skipped path) -> payment_confirmed
+            +-- normal: payment.status = paid
+            `-- override: audited overridden flag and reason
+
+CERTIFICATE BRANCH
+|
++-- Prepare Certificate
+|   `-- POST /api/issue-certificate step=prepare
+|       +-- requires paid evidence or explicit reasoned override
+|       +-- assigns TS-CERT-YYYY-XXXX certificate number
+|       `-- stores preparedDate/certifiedVersion; lifecycle status unchanged
++-- Print Certificate
+|   `-- step=print; requires preparation; stores printedDate
++-- Record DGO Signature
+|   `-- step=sign; requires print and signatory; -> certificate_issued
++-- Deliver Certificate
+|   `-- step=deliver; requires signature; -> completed
++-- Vendor Download PDF
+|   `-- certificate-pdf.js uses the Vendor-safe portal record
+`-- Public Verify
+    `-- /verify-certificate.html -> /api/verify-certificate
+        `-- valid only when certificate number and issued/signed state exist
+
+CONTINUOUS MANAGER/ROLE SUPPORT
+|
++-- Dashboard overview: active, review, due soon, overdue, attention queue
++-- Repository filters, reports, Excel export and assessment PDF
++-- Assessor workload: active/due/overdue/completed, capacity 5, reassignment
++-- SLA: ON_TRACK, DUE_SOON, OVERDUE, COMPLETED_ON_TIME, COMPLETED_LATE
++-- Version history: Manager full; Assessor assigned/owned; Vendor linked only
++-- Notifications: database-derived plus in-memory status-event ring buffer
++-- SSE: Manager global, Assessor identity-scoped, Vendor linked-record-scoped
+`-- Team Accounts: Manager creates/resets/deletes staff accounts
+
+TERMINAL / LOCKED STATE
+|
+`-- completed
+    +-- payment verified/overridden
+    +-- certificate signed and delivered
+    +-- approved/certified version recorded
+    `-- technical assessment editing forbidden

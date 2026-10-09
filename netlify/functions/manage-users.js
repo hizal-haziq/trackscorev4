@@ -56,7 +56,7 @@ export const handler = async (event) => {
       return {
         statusCode: 500,
         headers,
-        body: JSON.stringify({ success: false, error: error.message || 'Failed to list users.' })
+        body: JSON.stringify({ success: false, error: 'Failed to list users.' })
       };
     }
   }
@@ -279,7 +279,7 @@ export const handler = async (event) => {
       return {
         statusCode: 500,
         headers,
-        body: JSON.stringify({ success: false, error: error.message || 'Failed to process user operation.' })
+        body: JSON.stringify({ success: false, error: 'Failed to process user operation.' })
       };
     }
   }

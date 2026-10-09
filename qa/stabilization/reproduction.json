@@ -1,0 +1,18 @@
+{
+  "managerTechnicalEdit": {
+    "status": 200,
+    "liveChanged": true,
+    "versionChanged": false
+  },
+  "issuedMetadataEdit": {
+    "status": 200,
+    "companyChanged": true
+  },
+  "doubleSubmission": {
+    "postCount": 2,
+    "storedCount": 1
+  },
+  "vendorTimeline": {
+    "invalidDates": true
+  }
+}

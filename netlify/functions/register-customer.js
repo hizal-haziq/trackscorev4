@@ -5,6 +5,7 @@
  * - Selects Package 1 (RM 4,500) or Package 2 (RM 6,000)
  * - Auto-generates initial Invoice stub
  * - Sets initial status: 'registered'
+ * - Initializes SLA duration and target deadline based on selected package
  * - Optionally provisions or links an external Vendor account (Manager-initiated Option B)
  * - Emits real-time status event to SSE stream
  */
@@ -15,11 +16,13 @@ import {
   findVendorByEmail,
   createVendorRecord,
   updateVendorRecord,
-  COLLECTION_NAME
+  COLLECTION_NAME,
+  buildMongoIdFilter
 } from './db.js';
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { getPackageDetails } from './packages.js';
 import { recordStatusEvent } from './status-bus.js';
+import { computeSlaDeadline, calculateAssessmentSla } from './sla.js';
 
 export const handler = async (event) => {
   const headers = {
@@ -78,7 +81,10 @@ export const handler = async (event) => {
       assignedAssessorEmail = '',
       notes = '',
       inviteVendor = false,
-      vendorPassword = ''
+      vendorPassword = '',
+      slaDays,
+      slaDurationDays,
+      customSlaDays
     } = body;
 
     if (!companyName || !companyName.trim()) {
@@ -102,19 +108,20 @@ export const handler = async (event) => {
     const dueDateStr = dueDateObj.toISOString().split('T')[0];
     const issuedDateStr = nowIso.split('T')[0];
 
-    const cleanModel = deviceModel ? deviceModel.trim() : '';
+    // SLA Initialization
+    const effectiveSlaDays = Number(slaDays || slaDurationDays || customSlaDays) || packageInfo.slaDays || 7;
+    const slaStartAt = nowIso;
+    const slaDeadline = computeSlaDeadline({ package: packageKey }, slaStartAt, effectiveSlaDays);
 
     const registrationDoc = {
+      recordType: 'registration',
       companyName: companyName.trim(),
-      officeAddress: officeAddress ? officeAddress.trim() : '',
-      state: state ? state.trim() : '',
+      officeAddress: officeAddress.trim(),
+      state: state.trim(),
+      deviceModel: deviceModel.trim(),
       contactPerson: contactPerson.trim(),
       contactEmail: contactEmail.trim(),
       contactPhone: contactPhone.trim(),
-      requestedPackage: packageInfo.name,
-      registeredAt: nowIso,
-      registeredBy: managerName,
-      deviceModel: cleanModel,
       package: packageInfo.id,
       packageName: packageInfo.name,
       packageDetails: {
@@ -124,12 +131,16 @@ export const handler = async (event) => {
         currency: packageInfo.currency,
         formattedPrice: packageInfo.formattedPrice,
         validityYears: packageInfo.validityYears,
-        freeReassessments: packageInfo.freeReassessments
+        freeReassessments: packageInfo.freeReassessments,
+        slaDays: effectiveSlaDays
       },
       scheduledDate: scheduledDate ? scheduledDate.trim() : null,
       notes: notes.trim(),
       status: scheduledDate ? 'scheduled' : 'registered',
       statusChangedAt: nowIso,
+      slaStartAt,
+      slaDeadline,
+      slaDurationDays: effectiveSlaDays,
       invoice: {
         invoiceNumber,
         amount: packageInfo.price,
@@ -139,13 +150,6 @@ export const handler = async (event) => {
         isConfirmed: false,
         isDraftStub: true
       },
-      payment: {
-        status: 'unpaid',
-        amountReceived: 0,
-        paymentDate: null,
-        paymentMethod: null,
-        verifiedBy: null
-      },
       statusHistory: [
         {
           status: 'registered',
@@ -153,7 +157,7 @@ export const handler = async (event) => {
           changedBy: managerName,
           timestamp: nowIso,
           actor: managerName,
-          note: `Customer registered for ${packageInfo.name}. Provisional draft invoice stub ${invoiceNumber} generated for manager review.`
+          note: `Customer registered for ${packageInfo.name} (SLA: ${effectiveSlaDays} days, Deadline: ${new Date(slaDeadline).toLocaleDateString('en-MY', { day: 'numeric', month: 'short', year: 'numeric' })}). Draft invoice stub ${invoiceNumber} generated.`
         }
       ],
       createdAt: nowIso
@@ -188,15 +192,111 @@ export const handler = async (event) => {
     const connection = await connectToDatabase();
     let savedId = null;
 
+    // Check for an existing evaluation first using registrationId/evaluationId OR case-insensitive companyName + deviceModel
+    let existingDoc = null;
+    const targetLookupId = (body.registrationId || body.evaluationId || body.id || '').trim();
     if (connection.isMongoAtlas) {
       const col = connection.db.collection(COLLECTION_NAME);
-      const res = await col.insertOne(registrationDoc);
-      savedId = String(res.insertedId);
+      if (targetLookupId) {
+        existingDoc = await col.findOne(buildMongoIdFilter(targetLookupId));
+      }
+      if (!existingDoc && companyName && deviceModel) {
+        const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        existingDoc = await col.findOne({
+          companyName: { $regex: new RegExp(`^${escapeRegex(companyName.trim())}$`, 'i') },
+          deviceModel: { $regex: new RegExp(`^${escapeRegex(deviceModel.trim())}$`, 'i') },
+          status: { $nin: ['approved', 'completed', 'certified'] },
+          deletedAt: null
+        });
+      }
+    } else {
+      if (targetLookupId) {
+        existingDoc = await connection.getEvaluationById(targetLookupId);
+      }
+      if (!existingDoc && companyName && deviceModel) {
+        const all = await connection.getEvaluations();
+        existingDoc = all.find(r =>
+          String(r.companyName || '').toLowerCase() === companyName.trim().toLowerCase() &&
+          String(r.deviceModel || '').toLowerCase() === deviceModel.trim().toLowerCase() &&
+          !['approved', 'completed', 'certified'].includes(r.status) &&
+          !r.deletedAt
+        );
+      }
+    }
+
+    if (existingDoc) {
+      savedId = String(existingDoc._id || existingDoc.id);
+      const updateFields = {
+        officeAddress: officeAddress.trim() || existingDoc.officeAddress || '',
+        state: state.trim() || existingDoc.state || '',
+        contactPerson: contactPerson.trim() || existingDoc.contactPerson || '',
+        contactEmail: contactEmail.trim() || existingDoc.contactEmail || '',
+        contactPhone: contactPhone.trim() || existingDoc.contactPhone || '',
+        package: packageInfo.id,
+        packageName: packageInfo.name,
+        packageDetails: {
+          packageId: packageInfo.id,
+          name: packageInfo.name,
+          price: packageInfo.price,
+          currency: packageInfo.currency,
+          formattedPrice: packageInfo.formattedPrice,
+          validityYears: packageInfo.validityYears,
+          freeReassessments: packageInfo.freeReassessments,
+          slaDays: effectiveSlaDays
+        },
+        notes: notes.trim() || existingDoc.notes || '',
+        linkedRegistrationId: savedId,
+        registrationReferenceId: savedId,
+        updatedAt: nowIso
+      };
+
+      if (scheduledDate) {
+        updateFields.scheduledDate = scheduledDate.trim();
+        updateFields.scheduledAt = nowIso;
+        updateFields.scheduledBy = managerName;
+      }
+      if (chosenAssessor) {
+        updateFields.assignedAssessor = chosenAssessor;
+        updateFields.assignedAssessorName = chosenAssessor;
+        updateFields.assignedAssessorId = (assignedAssessorId || '').trim();
+        updateFields.assignedAssessorEmail = (assignedAssessorEmail || '').trim();
+        updateFields.assignedAt = nowIso;
+        updateFields.assignedBy = managerName;
+      }
+
+      // Preserve existing invoice if already confirmed; otherwise set draft stub
+      if (!existingDoc.invoice || existingDoc.invoice.isDraftStub) {
+        updateFields.invoice = { ...existingDoc.invoice, ...registrationDoc.invoice };
+      }
+      const mergedStatusHistory = Array.isArray(existingDoc.statusHistory) ? [...existingDoc.statusHistory] : [];
+      mergedStatusHistory.push({
+        status: existingDoc.status || 'registered',
+        changedAt: nowIso,
+        changedBy: managerName,
+        timestamp: nowIso,
+        actor: managerName,
+        note: `Registration data linked and synchronized with package ${packageInfo.name}.`
+      });
+      updateFields.statusHistory = mergedStatusHistory;
+
+      if (connection.isMongoAtlas) {
+        const col = connection.db.collection(COLLECTION_NAME);
+        await col.updateOne(buildMongoIdFilter(savedId), { $set: updateFields });
+      } else {
+        await connection.updateEvaluation(savedId, updateFields);
+      }
       registrationDoc._id = savedId;
     } else {
-      const res = await connection.insertEvaluation(registrationDoc);
-      savedId = String(res.insertedId);
-      registrationDoc._id = savedId;
+      if (connection.isMongoAtlas) {
+        const col = connection.db.collection(COLLECTION_NAME);
+        const res = await col.insertOne(registrationDoc);
+        savedId = String(res.insertedId);
+        registrationDoc._id = savedId;
+      } else {
+        const res = await connection.insertEvaluation(registrationDoc);
+        savedId = String(res.insertedId);
+        registrationDoc._id = savedId;
+      }
     }
 
     // Manager-Initiated Option B: Explicit Vendor Account Provisioning
@@ -219,44 +319,45 @@ export const handler = async (event) => {
         const linked = Array.isArray(existingVendor.linkedRegistrationIds) ? [...existingVendor.linkedRegistrationIds] : [];
         if (!linked.includes(savedId)) {
           linked.push(savedId);
+          await updateVendorRecord(connection, existingVendor._id, {
+            linkedRegistrationIds: linked,
+            isActive: true
+          });
         }
-        await updateVendorRecord(connection, existingVendor._id, {
-          companyName: companyName.trim(),
-          contactPhone: contactPhone.trim() || existingVendor.contactPhone,
-          linkedRegistrationIds: linked
-        });
-        vendorAccountCreated = true;
+        vendorAccountCreated = false;
         vendorCredentials = {
-          email: cleanVendorEmail,
-          isExistingAccount: true,
-          companyName: existingVendor.companyName,
-          note: 'Linked new evaluation to existing vendor account.'
+          email: existingVendor.loginEmail || existingVendor.contactEmail,
+          password: '(existing password preserved)',
+          isExisting: true
         };
       } else {
-        // Create new vendor
-        const newVendorDoc = {
+        const vendorDoc = {
           companyName: companyName.trim(),
           contactEmail: cleanVendorEmail,
+          loginEmail: cleanVendorEmail,
           contactPhone: contactPhone.trim(),
           passwordHash,
           linkedRegistrationIds: [savedId],
           isActive: true,
-          createdViaRegistration: true,
-          invitedBy: managerName
+          invitedBy: managerName,
+          invitedAt: nowIso,
+          createdAt: nowIso
         };
-        const createdVendor = await createVendorRecord(connection, newVendorDoc);
+        const createdVendor = await createVendorRecord(connection, vendorDoc);
         vendorAccountCreated = true;
         vendorCredentials = {
           email: cleanVendorEmail,
           password: generatedPassword,
-          isExistingAccount: false,
-          vendorId: createdVendor._id,
-          loginUrl: '/login.html'
+          isExisting: false,
+          vendorId: String(createdVendor._id)
         };
       }
     }
 
-    // Real-time broadcast
+    const slaSnapshot = calculateAssessmentSla(registrationDoc);
+    registrationDoc.sla = slaSnapshot;
+
+    // Emit real-time status event
     recordStatusEvent({
       evaluationId: savedId,
       id: savedId,
@@ -276,9 +377,12 @@ export const handler = async (event) => {
       actor: managerName,
       assignedBy: registrationDoc.assignedAssessor ? managerName : null,
       assignedAt: registrationDoc.assignedAssessor ? nowIso : null,
+      slaDeadline,
+      slaDurationDays: effectiveSlaDays,
+      slaStatus: slaSnapshot.status,
       note: registrationDoc.assignedAssessor
-        ? `New assessment assigned: ${registrationDoc.companyName} (${registrationDoc.deviceModel || 'Unspecified'}) assigned to ${registrationDoc.assignedAssessor}`
-        : `New customer registered (${registrationDoc.packageName})`
+        ? `New assessment assigned: ${registrationDoc.companyName} (${registrationDoc.deviceModel || 'Unspecified'}) assigned to ${registrationDoc.assignedAssessor} - Target SLA: ${effectiveSlaDays} days`
+        : `New customer registered (${registrationDoc.packageName}) - Target SLA: ${effectiveSlaDays} days`
     });
 
     return {
@@ -292,6 +396,7 @@ export const handler = async (event) => {
         record: registrationDoc,
         evaluation: registrationDoc,
         status: registrationDoc.status,
+        sla: slaSnapshot,
         message: `Customer ${registrationDoc.companyName} registered successfully.`,
         vendorAccountCreated,
         vendorCredentials
@@ -302,7 +407,7 @@ export const handler = async (event) => {
     return {
       statusCode: 500,
       headers,
-      body: JSON.stringify({ success: false, error: error.message || 'Error registering customer.' })
+      body: JSON.stringify({ success: false, error: 'Error registering customer.' })
     };
   }
 };

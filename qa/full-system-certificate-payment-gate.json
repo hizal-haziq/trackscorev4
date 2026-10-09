@@ -1,0 +1,7 @@
+{
+  "status": 400,
+  "success": false,
+  "paymentBlocked": true,
+  "error": "Certificate issuance is locked: Confirm payment first, or provide an explicit Manager payment override with a reason when preparing the certificate.",
+  "certificateCreated": false
+}

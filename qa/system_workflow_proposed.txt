@@ -1,0 +1,108 @@
+TRACKSCORE PROPOSED SIMPLIFIED UI WORKFLOW
+==========================================
+
+This proposal maps existing APIs and stored statuses into a clearer task flow.
+It does not require changing the database lifecycle.
+
+PUBLIC
+  Learn -> Request Assessment -> Receive confirmation
+  Verify Certificate -> See safe validity result
+
+MANAGER HOME — task queues
+  Needs Attention
+  +-- New Inquiries
+  +-- Registration / Scheduling Needed
+  +-- Waiting for Review
+  +-- Revision Returned
+  +-- Payment Proof to Verify
+  +-- Ready for Certificate
+  `-- Overdue
+
+MANAGER PRIMARY FLOW
+  Inquiry
+    -> Review once
+    -> Register customer + confirm package/invoice in one guided task
+    -> Create/link Vendor credentials
+    -> Schedule + assign Assessor in one task
+  Assessment
+    -> Review one complete context page
+       (scores, comments, evidence, risk, history)
+    -> Approve | Request Changes | Reject/Close only if the business adds a true terminal rejection
+  Finance & Certificate
+    -> Verify payment
+    -> Prepare -> Print -> Sign -> Deliver
+
+ASSESSOR
+  My Work
+    -> Assigned
+    -> Start/Resume
+    -> 33 criteria + comments
+    -> Save Draft
+    -> Submit
+  Changes Requested
+    -> Open prior version and Manager reason
+    -> amend only what is required
+    -> Resubmit
+  Submitted
+    -> read-only report/history/status
+
+VENDOR
+  My Assessments
+    -> simple milestone view
+    -> Upload Documents when requested
+    -> Respond to Changes when requested
+    -> Submit Payment Proof when eligible
+    -> Download Certificate when issued
+  Company Profile
+    -> contact details and password
+
+PROPOSED USER-FACING LIFECYCLE
+  Registered
+    -> Scheduled
+    -> Assigned
+    -> Assessment In Progress (draft is local UI state)
+    -> Submitted
+    -> Under Review
+       +-> Changes Requested -> Assessor/Vendor response -> Submitted
+       `-> Assessment Approved
+    -> Awaiting Payment
+    -> Payment Under Review
+    -> Payment Verified
+    -> Certificate In Preparation
+    -> Certificate Issued
+    -> Completed
+
+EXISTING-TO-PROPOSED LABEL MAP
+  registered          -> Registered
+  scheduled/assigned  -> Scheduled / Assigned (derive assignment separately)
+  pending_review      -> Under Review
+  submitted           -> Submitted / Under Review
+  rejected            -> Changes Requested
+  pre_final_sent      -> Assessment Approved / Awaiting Payment
+  payment_confirmed   -> Payment Verified
+  certificate_issued  -> Certificate Issued
+  completed           -> Completed
+
+PROPOSED MANAGER NAVIGATION
+  Dashboard
+  Assessments
+    - All Assessments
+    - Review Queue
+    - Schedule & Assignment
+    - Assessor Workload
+  Vendors
+    - Inquiries
+    - Registrations
+    - Vendor Accounts
+  Finance & Certification
+    - Payment Verification
+    - Certificates
+  Reports
+  Administration
+    - Team Accounts
+    - Notifications
+
+PRESERVE WITHOUT REIMPLEMENTATION
+  RBAC and ownership checks; 33-criterion engine; server score recomputation;
+  assessment snapshots; SLA engine; payment gate and audited override;
+  certificate lifecycle/verification/PDF; soft deletion; Atlas/local adapter.

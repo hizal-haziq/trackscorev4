@@ -1,0 +1,18 @@
+{
+  "managerTechnicalEdit": {
+    "status": 403,
+    "liveChanged": false,
+    "versionChanged": false
+  },
+  "issuedMetadataEdit": {
+    "status": 403,
+    "companyChanged": false
+  },
+  "doubleSubmission": {
+    "postCount": 1,
+    "storedCount": 1
+  },
+  "vendorTimeline": {
+    "invalidDates": false
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "statuses": [
+    200,
+    500
+  ],
+  "liveComment": "Concurrent B",
+  "versions": [
+    {
+      "version": 1,
+      "comment": "Concurrent A"
+    }
+  ],
+  "aligned": false
+}

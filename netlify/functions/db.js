@@ -23,12 +23,16 @@ export const COLLECTION_NAME = 'evaluations';
 export const COLLECTION_USERS = 'users';
 export const COLLECTION_VENDORS = 'vendors';
 export const COLLECTION_INQUIRIES = 'inquiries';
+export const COLLECTION_VERSIONS = 'assessment_versions';
+export const COLLECTION_RISK = 'assessment_risk';
 
 const FALLBACK_DIR = path.join(process.cwd(), '.data');
 const FALLBACK_FILE = path.join(FALLBACK_DIR, 'evaluations.json');
 const USERS_FILE = path.join(FALLBACK_DIR, 'users.json');
 const VENDORS_FILE = path.join(FALLBACK_DIR, 'vendors.json');
 const INQUIRIES_FILE = path.join(FALLBACK_DIR, 'inquiries.json');
+const VERSIONS_FILE = path.join(FALLBACK_DIR, 'assessment_versions.json');
+const RISK_FILE = path.join(FALLBACK_DIR, 'assessment_risk.json');
 
 let fallbackStoreEnsured = false;
 const isProductionEnvironment = process.env.NODE_ENV === 'production' || process.env.CONTEXT === 'production';
@@ -43,7 +47,7 @@ class DatabaseUnavailableError extends Error {
 
 // Ensure local development storage exists. User accounts must be created explicitly.
 function ensureFallbackStore() {
-  if (fallbackStoreEnsured && fs.existsSync(FALLBACK_FILE) && fs.existsSync(USERS_FILE) && fs.existsSync(VENDORS_FILE)) {
+  if (fallbackStoreEnsured && fs.existsSync(FALLBACK_FILE) && fs.existsSync(USERS_FILE) && fs.existsSync(VENDORS_FILE) && fs.existsSync(VERSIONS_FILE) && fs.existsSync(RISK_FILE)) {
     return;
   }
   if (!fs.existsSync(FALLBACK_DIR)) {
@@ -70,83 +74,17 @@ function ensureFallbackStore() {
     fs.writeFileSync(INQUIRIES_FILE, JSON.stringify([], null, 2), 'utf-8');
   }
 
-  fallbackStoreEnsured = true;
-}
-
-export async function seedAtlasUsersAndVendors(db) {
-  if (!db) return;
-  try {
-    const generateBootstrapPassword = () => crypto.randomBytes(16).toString('base64url') + '!';
-    const initialUsers = [
-      {
-        email: 'manager@trackscore.my',
-        passwordHash: bcrypt.hashSync(generateBootstrapPassword(), 12),
-        name: 'Lead Operations Manager',
-        role: 'manager',
-        assessorId: null,
-        createdBy: 'System Bootstrap',
-        createdAt: new Date().toISOString()
-      },
-      {
-        email: 'admin@trackscore.my',
-        passwordHash: bcrypt.hashSync(generateBootstrapPassword(), 12),
-        name: 'Lead Operations Manager',
-        role: 'manager',
-        assessorId: null,
-        createdBy: 'System Bootstrap',
-        createdAt: new Date().toISOString()
-      },
-      {
-        email: 'haziq.hizal9006@gmail.com',
-        passwordHash: bcrypt.hashSync(generateBootstrapPassword(), 12),
-        name: 'Haziq Hizal (Lead Manager)',
-        role: 'manager',
-        assessorId: 'MKA 9006',
-        createdBy: 'System Bootstrap',
-        createdAt: new Date().toISOString()
-      },
-      {
-        email: 'assessor@trackscore.my',
-        passwordHash: bcrypt.hashSync(generateBootstrapPassword(), 12),
-        name: 'Ahmad Farhan',
-        role: 'assessor',
-        assessorId: 'MKA 9006',
-        createdBy: 'System Bootstrap',
-        createdAt: new Date().toISOString()
-      },
-      {
-        email: 'farhan@trackscore.my',
-        passwordHash: bcrypt.hashSync(generateBootstrapPassword(), 12),
-        name: 'Ts. Mohd Farhan',
-        role: 'assessor',
-        assessorId: 'AS-8812',
-        createdBy: 'System Bootstrap',
-        createdAt: new Date().toISOString()
-      }
-    ];
-
-    const usersCol = db.collection(COLLECTION_USERS);
-
-    for (const u of initialUsers) {
-      await usersCol.updateOne(
-        { email: u.email },
-        {
-          $setOnInsert: {
-            email: u.email,
-            passwordHash: u.passwordHash,
-            name: u.name,
-            role: u.role,
-            assessorId: u.assessorId,
-            createdBy: u.createdBy,
-            createdAt: u.createdAt
-          }
-        },
-        { upsert: true }
-      );
-    }
-  } catch (err) {
-    console.warn('[SEED-ATLAS-WARN]', err.message);
+  // 5. Assessment Versions Store
+  if (!fs.existsSync(VERSIONS_FILE)) {
+    fs.writeFileSync(VERSIONS_FILE, JSON.stringify([], null, 2), 'utf-8');
   }
+
+  // 6. Assessment Risk Store
+  if (!fs.existsSync(RISK_FILE)) {
+    fs.writeFileSync(RISK_FILE, JSON.stringify([], null, 2), 'utf-8');
+  }
+
+  fallbackStoreEnsured = true;
 }
 
 export function buildMongoIdFilter(id) {
@@ -171,19 +109,11 @@ export async function runLifecycleMigration(db, isMongoAtlas) {
     const nowIso = new Date().toISOString();
     if (isMongoAtlas && db) {
       const col = db.collection(COLLECTION_NAME);
-      const approvedDocs = await col.find({ status: 'approved' }).toArray();
+      const approvedDocs = await col.find({ status: 'approved', approvedVersion: { $exists: false } }).toArray();
       if (approvedDocs.length > 0) {
         console.log(`[LIFECYCLE-MIGRATION] Found ${approvedDocs.length} legacy "approved" records. Starting migration to "completed"...`);
         for (const doc of approvedDocs) {
           const statusHistory = Array.isArray(doc.statusHistory) ? [...doc.statusHistory] : [];
-          if (statusHistory.length === 0 && doc.createdAt) {
-            statusHistory.push({
-              status: 'submitted',
-              timestamp: doc.createdAt,
-              actor: doc.assessorName || 'Assessor',
-              note: 'Initial evaluation submitted.'
-            });
-          }
           statusHistory.push({
             status: 'completed',
             timestamp: doc.approvedAt || nowIso,
@@ -191,22 +121,12 @@ export async function runLifecycleMigration(db, isMongoAtlas) {
             note: 'One-time migration: Transitioned legacy "approved" status to "completed" in full administrative lifecycle.'
           });
 
-          const certificate = doc.certificate || {
-            certificateNumber: 'TS-CERT-' + (doc.assessmentDate ? doc.assessmentDate.replace(/-/g, '') : '2026') + '-' + Math.floor(1000 + Math.random() * 9000),
-            preparedDate: doc.approvedAt || doc.createdAt,
-            printedDate: doc.approvedAt || doc.createdAt,
-            signedBy: 'Director General Office (DGO)',
-            signedDate: doc.approvedAt || doc.createdAt,
-            sentToCustomerDate: doc.approvedAt || doc.createdAt
-          };
 
           await col.updateOne(
             { _id: doc._id },
             {
               $set: {
                 status: 'completed',
-                package: doc.package || 'package_1',
-                certificate,
                 statusHistory,
                 migratedFromApprovedAt: nowIso
               }
@@ -223,28 +143,9 @@ export async function runLifecycleMigration(db, isMongoAtlas) {
       data.forEach(doc => {
         if (!Array.isArray(doc.statusHistory)) {
           doc.statusHistory = [];
-          if (doc.createdAt) {
-            doc.statusHistory.push({
-              status: 'submitted',
-              timestamp: doc.createdAt,
-              actor: doc.assessorName || 'Assessor',
-              note: 'Initial evaluation submitted.'
-            });
-          }
         }
-        if (doc.status === 'approved') {
+        if (doc.status === 'approved' && !doc.approvedVersion) {
           doc.status = 'completed';
-          doc.package = doc.package || 'package_1';
-          if (!doc.certificate) {
-            doc.certificate = {
-              certificateNumber: 'TS-CERT-' + (doc.assessmentDate ? doc.assessmentDate.replace(/-/g, '') : '2026') + '-' + Math.floor(1000 + Math.random() * 9000),
-              preparedDate: doc.approvedAt || doc.createdAt,
-              printedDate: doc.approvedAt || doc.createdAt,
-              signedBy: 'Director General Office (DGO)',
-              signedDate: doc.approvedAt || doc.createdAt,
-              sentToCustomerDate: doc.approvedAt || doc.createdAt
-            };
-          }
           doc.statusHistory.push({
             status: 'completed',
             timestamp: doc.approvedAt || nowIso,
@@ -271,15 +172,26 @@ export async function ensureDatabaseIndexes(db) {
     const col = db.collection(COLLECTION_NAME);
     const usersCol = db.collection(COLLECTION_USERS);
     const vendorsCol = db.collection(COLLECTION_VENDORS);
+    const versionsCol = db.collection(COLLECTION_VERSIONS);
+    const riskCol = db.collection(COLLECTION_RISK);
     await Promise.allSettled([
       col.createIndex({ status: 1 }, { background: true }),
       col.createIndex({ assessorId: 1 }, { background: true }),
+      col.createIndex({ assignedAssessorId: 1, status: 1 }, { background: true }),
+      col.createIndex({ assignedAssessor: 1, status: 1 }, { background: true }),
       col.createIndex({ createdAt: -1 }, { background: true }),
       col.createIndex({ statusChangedAt: -1 }, { background: true }),
       col.createIndex({ companyName: 1, deviceModel: 1, assessorName: 1, assessmentDate: 1 }, { background: true }),
       col.createIndex({ deletedAt: 1, status: 1, createdAt: -1 }, { background: true }),
       usersCol.createIndex({ email: 1 }, { unique: true, background: true }),
-      vendorsCol.createIndex({ contactEmail: 1 }, { unique: true, background: true })
+      usersCol.createIndex({ role: 1 }, { background: true }),
+      vendorsCol.createIndex({ contactEmail: 1 }, { unique: true, background: true }),
+      versionsCol.createIndex({ evaluationId: 1, versionNumber: -1 }, { unique: true, background: true }),
+      versionsCol.createIndex({ evaluationId: 1, createdAt: -1 }, { background: true }),
+      riskCol.createIndex({ evaluationId: 1, versionNumber: -1 }, { background: true }),
+      riskCol.createIndex({ riskLevel: 1 }, { background: true }),
+      riskCol.createIndex({ generatedAt: -1 }, { background: true }),
+      riskCol.createIndex({ assessorId: 1 }, { background: true })
     ]);
     indexesEnsured = true;
   } catch (err) {
@@ -296,7 +208,7 @@ export async function connectToDatabase() {
         : path.join(process.cwd(), '.env.example');
       if (fs.existsSync(envPath)) {
         const content = fs.readFileSync(envPath, 'utf8');
-        const match = content.match(/MONGODB_URI\s*=\s*([^\r\n]+)/);
+        const match = content.match(/^MONGODB_URI[ \t]*=[ \t]*([^\r\n]*)/m);
         if (match && match[1]) {
           const candidate = match[1].trim().replace(/^['"]|['"]$/g, '');
           if (candidate && !candidate.includes('<') && !candidate.includes('>')) {
@@ -344,7 +256,6 @@ export async function connectToDatabase() {
       cachedClient = client;
       cachedDb = db;
       ensureDatabaseIndexes(db).catch(() => {});
-      seedAtlasUsersAndVendors(db).catch(() => {});
       lastAtlasErrorMessage = null;
       isIpWhitelistBlocked = false;
       console.log('Successfully established connection to MongoDB Atlas cluster.');
@@ -390,6 +301,7 @@ export async function closeDatabaseConnection() {
 }
 
 function createFallbackStoreInterface(hasAtlasUri = false) {
+  if (isProductionEnvironment) throw new DatabaseUnavailableError('Database is unavailable. Local fallback is disabled in production.');
   ensureFallbackStore();
   return {
     isMongoAtlas: false,
@@ -592,6 +504,106 @@ function createFallbackStoreInterface(hasAtlasUri = false) {
       ensureFallbackStore();
       const vendors = JSON.parse(fs.readFileSync(VENDORS_FILE, 'utf-8'));
       return vendors.map(({ passwordHash, ...safe }) => safe);
+    },
+    async insertAssessmentVersion(doc) {
+      ensureFallbackStore();
+      let list = [];
+      if (fs.existsSync(VERSIONS_FILE)) {
+        try { list = JSON.parse(fs.readFileSync(VERSIONS_FILE, 'utf-8')); } catch { list = []; }
+      }
+      const isDuplicate = list.some(v => 
+        String(v.evaluationId) === String(doc.evaluationId) && 
+        Number(v.versionNumber) === Number(doc.versionNumber)
+      );
+      if (isDuplicate) {
+        const err = new Error(`E11000 duplicate key error: assessment version ${doc.versionNumber} for evaluation ${doc.evaluationId} already exists.`);
+        err.code = 11000;
+        throw err;
+      }
+      const newDoc = {
+        _id: 'ver_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+        ...doc,
+        createdAt: doc.createdAt || new Date().toISOString()
+      };
+      list.unshift(newDoc);
+      fs.writeFileSync(VERSIONS_FILE, JSON.stringify(list, null, 2), 'utf-8');
+      return { insertedId: newDoc._id, ...newDoc };
+    },
+    async getAssessmentVersions(evaluationId) {
+      ensureFallbackStore();
+      let list = [];
+      if (fs.existsSync(VERSIONS_FILE)) {
+        try { list = JSON.parse(fs.readFileSync(VERSIONS_FILE, 'utf-8')); } catch { list = []; }
+      }
+      return list
+        .filter(v => String(v.evaluationId) === String(evaluationId))
+        .sort((a, b) => (b.versionNumber || 0) - (a.versionNumber || 0));
+    },
+    async getAssessmentVersion(evaluationId, versionNumber) {
+      ensureFallbackStore();
+      let list = [];
+      if (fs.existsSync(VERSIONS_FILE)) {
+        try { list = JSON.parse(fs.readFileSync(VERSIONS_FILE, 'utf-8')); } catch { list = []; }
+      }
+      return list.find(v => String(v.evaluationId) === String(evaluationId) && Number(v.versionNumber) === Number(versionNumber)) || null;
+    },
+    async insertAssessmentRisk(doc) {
+      ensureFallbackStore();
+      let list = [];
+      if (fs.existsSync(RISK_FILE)) {
+        try { list = JSON.parse(fs.readFileSync(RISK_FILE, 'utf-8')); } catch { list = []; }
+      }
+      const newDoc = {
+        _id: 'risk_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7),
+        ...doc,
+        generatedAt: doc.generatedAt || new Date().toISOString()
+      };
+      const existingIdx = list.findIndex(r => 
+        String(r.evaluationId) === String(doc.evaluationId) && 
+        Number(r.versionNumber) === Number(doc.versionNumber)
+      );
+      if (existingIdx >= 0) {
+        list[existingIdx] = { ...list[existingIdx], ...newDoc };
+      } else {
+        list.unshift(newDoc);
+      }
+      fs.writeFileSync(RISK_FILE, JSON.stringify(list, null, 2), 'utf-8');
+      return { insertedId: newDoc._id, ...newDoc };
+    },
+    async getAssessmentRisk(evaluationId, versionNumber) {
+      ensureFallbackStore();
+      let list = [];
+      if (fs.existsSync(RISK_FILE)) {
+        try { list = JSON.parse(fs.readFileSync(RISK_FILE, 'utf-8')); } catch { list = []; }
+      }
+      if (versionNumber !== undefined && versionNumber !== null) {
+        return list.find(r => String(r.evaluationId) === String(evaluationId) && Number(r.versionNumber) === Number(versionNumber)) || null;
+      }
+      const forEval = list
+        .filter(r => String(r.evaluationId) === String(evaluationId))
+        .sort((a, b) => (b.versionNumber || 0) - (a.versionNumber || 0) || new Date(b.generatedAt || 0) - new Date(a.generatedAt || 0));
+      return forEval[0] || null;
+    },
+    async getAssessmentRisks(evaluationId) {
+      ensureFallbackStore();
+      let list = [];
+      if (fs.existsSync(RISK_FILE)) {
+        try { list = JSON.parse(fs.readFileSync(RISK_FILE, 'utf-8')); } catch { list = []; }
+      }
+      return list
+        .filter(r => String(r.evaluationId) === String(evaluationId))
+        .sort((a, b) => (b.versionNumber || 0) - (a.versionNumber || 0));
+    },
+    async getAllAssessmentRisks(filter = {}) {
+      ensureFallbackStore();
+      let list = [];
+      if (fs.existsSync(RISK_FILE)) {
+        try { list = JSON.parse(fs.readFileSync(RISK_FILE, 'utf-8')); } catch { list = []; }
+      }
+      if (filter.riskLevel) {
+        list = list.filter(r => r.riskLevel === filter.riskLevel);
+      }
+      return list;
     }
   };
 }
@@ -858,6 +870,118 @@ export async function updateInquiryRecord(connection, id, updates) {
   return null;
 }
 
+export async function createAssessmentVersionRecord(connection, versionDoc) {
+  const docToInsert = {
+    ...versionDoc,
+    evaluationId: String(versionDoc.evaluationId),
+    versionNumber: Number(versionDoc.versionNumber),
+    createdAt: versionDoc.createdAt || new Date().toISOString()
+  };
+
+  if (connection.isMongoAtlas) {
+    const res = await connection.db.collection(COLLECTION_VERSIONS).insertOne(docToInsert);
+    return { _id: res.insertedId, ...docToInsert };
+  }
+
+  return connection.insertAssessmentVersion(docToInsert);
+}
+
+export async function listAssessmentVersions(connection, evaluationId) {
+  if (connection.isMongoAtlas) {
+    return connection.db.collection(COLLECTION_VERSIONS)
+      .find({ evaluationId: String(evaluationId) })
+      .sort({ versionNumber: -1 })
+      .toArray();
+  }
+
+  return connection.getAssessmentVersions(evaluationId);
+}
+
+export async function findAssessmentVersion(connection, evaluationId, versionNumber) {
+  if (connection.isMongoAtlas) {
+    return connection.db.collection(COLLECTION_VERSIONS).findOne({
+      evaluationId: String(evaluationId),
+      versionNumber: Number(versionNumber)
+    });
+  }
+
+  return connection.getAssessmentVersion(evaluationId, versionNumber);
+}
+
+export async function getNextVersionNumber(connection, evaluationId) {
+  if (connection.isMongoAtlas) {
+    const latest = await connection.db.collection(COLLECTION_VERSIONS).findOne(
+      { evaluationId: String(evaluationId) },
+      { sort: { versionNumber: -1 }, projection: { versionNumber: 1 } }
+    );
+    return (latest?.versionNumber || 0) + 1;
+  }
+
+  const versions = await connection.getAssessmentVersions(evaluationId);
+  return (versions[0]?.versionNumber || 0) + 1;
+}
+
+export async function saveAssessmentRiskRecord(connection, riskDoc) {
+  const docToInsert = {
+    ...riskDoc,
+    evaluationId: String(riskDoc.evaluationId),
+    versionNumber: Number(riskDoc.versionNumber || 1),
+    generatedAt: riskDoc.generatedAt || new Date().toISOString()
+  };
+
+  if (connection.isMongoAtlas) {
+    const col = connection.db.collection(COLLECTION_RISK);
+    await col.updateOne(
+      { evaluationId: docToInsert.evaluationId, versionNumber: docToInsert.versionNumber },
+      { $set: docToInsert },
+      { upsert: true }
+    );
+    return findAssessmentRisk(connection, docToInsert.evaluationId, docToInsert.versionNumber);
+  }
+
+  return connection.insertAssessmentRisk(docToInsert);
+}
+
+export async function findAssessmentRisk(connection, evaluationId, versionNumber) {
+  if (connection.isMongoAtlas) {
+    const query = { evaluationId: String(evaluationId) };
+    if (versionNumber !== undefined && versionNumber !== null) {
+      query.versionNumber = Number(versionNumber);
+      return connection.db.collection(COLLECTION_RISK).findOne(query);
+    }
+    const docs = await connection.db.collection(COLLECTION_RISK)
+      .find(query)
+      .sort({ versionNumber: -1, generatedAt: -1 })
+      .limit(1)
+      .toArray();
+    return docs[0] || null;
+  }
+
+  return connection.getAssessmentRisk(evaluationId, versionNumber);
+}
+
+export async function listAssessmentRisks(connection, evaluationId) {
+  if (connection.isMongoAtlas) {
+    return connection.db.collection(COLLECTION_RISK)
+      .find({ evaluationId: String(evaluationId) })
+      .sort({ versionNumber: -1 })
+      .toArray();
+  }
+
+  return connection.getAssessmentRisks(evaluationId);
+}
+
+export async function listAllAssessmentRisks(connection, filter = {}) {
+  if (connection.isMongoAtlas) {
+    return connection.db.collection(COLLECTION_RISK)
+      .find(filter)
+      .sort({ generatedAt: -1 })
+      .toArray();
+  }
+
+  return connection.getAllAssessmentRisks(filter);
+}
+
 export default {
   connectToDatabase,
   buildMongoIdFilter,
@@ -876,9 +1000,19 @@ export default {
   listInquiries,
   findInquiryById,
   updateInquiryRecord,
+  createAssessmentVersionRecord,
+  listAssessmentVersions,
+  findAssessmentVersion,
+  getNextVersionNumber,
+  saveAssessmentRiskRecord,
+  findAssessmentRisk,
+  listAssessmentRisks,
+  listAllAssessmentRisks,
   DB_NAME,
   COLLECTION_NAME,
   COLLECTION_USERS,
   COLLECTION_VENDORS,
-  COLLECTION_INQUIRIES
+  COLLECTION_INQUIRIES,
+  COLLECTION_VERSIONS,
+  COLLECTION_RISK
 };

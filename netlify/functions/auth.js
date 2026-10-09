@@ -1,7 +1,7 @@
 /**
  * Role-Based Authentication Middleware for Netlify Serverless Functions & Express API
  * Supports three distinct roles:
- * - MANAGER: Full managerial review, registration, invoicing, payment verification, certificate issuance
+ * - MANAGER: Full managerial review, registration, invoicing, certificate issuance
  * - ASSESSOR: Can submit evaluations, manage own drafts, and view own submissions
  * - VENDOR: External, read-only self-service access to own lifecycle stage, invoice, and certificate
  *
@@ -11,27 +11,30 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 
-dotenv.config({ override: true });
+dotenv.config();
 
 export const ROLE_ASSESSOR = 'assessor';
 export const ROLE_MANAGER = 'manager';
 export const ROLE_VENDOR = 'vendor';
 
-const DEFAULT_JWT_SECRET = 'trackscore-jwt-auth-secret-key-32-chars-minimum-safe!';
-export const JWT_SECRET = process.env.JWT_SECRET || DEFAULT_JWT_SECRET;
+const DEVELOPMENT_JWT_SECRET = 'trackscore-local-development-only-secret';
 const MIN_JWT_SECRET_LENGTH = 32;
 
 function getConfiguredJwtSecret() {
-  const secret = (process.env.JWT_SECRET && process.env.JWT_SECRET.trim().length > 0)
-    ? process.env.JWT_SECRET.trim()
-    : DEFAULT_JWT_SECRET;
-
-  if (secret.length < MIN_JWT_SECRET_LENGTH) {
-    return secret.padEnd(MIN_JWT_SECRET_LENGTH, '0');
+  const configured = typeof process.env.JWT_SECRET === 'string' ? process.env.JWT_SECRET.trim() : '';
+  const production = process.env.NODE_ENV === 'production' || process.env.CONTEXT === 'production';
+  if (!configured) {
+    if (production) throw new Error('JWT_SECRET must be configured in production.');
+    return DEVELOPMENT_JWT_SECRET;
   }
-
-  return secret;
+  if (configured.length < MIN_JWT_SECRET_LENGTH) {
+    if (production) throw new Error('JWT_SECRET must be at least 32 characters in production.');
+    return configured.padEnd(MIN_JWT_SECRET_LENGTH, '0');
+  }
+  return configured;
 }
+
+export const JWT_SECRET = getConfiguredJwtSecret();
 
 export function generateToken(payload, expiresIn = '24h') {
   return jwt.sign(payload, getConfiguredJwtSecret(), { expiresIn });
@@ -47,11 +50,16 @@ export function verifyToken(token) {
   }
 }
 
-export function getBearerToken(event) {
+export function getBearerToken(event, { allowQuery = false } = {}) {
   const headers = event?.headers || {};
   const authHeader = headers['authorization'] || headers['Authorization'];
   if (authHeader && typeof authHeader === 'string' && authHeader.startsWith('Bearer ')) {
     return authHeader.substring(7).trim();
+  }
+  if (!allowQuery) return null;
+  const queryToken = event?.queryStringParameters?.token || event?.queryStringParameters?.auth;
+  if (queryToken && typeof queryToken === 'string') {
+    return queryToken.trim();
   }
   return null;
 }
@@ -74,9 +82,9 @@ export function getClientApiKey(event) {
   return null;
 }
 
-export function validateRole(event, requiredRole) {
+export function validateRole(event, requiredRole, options) {
   // Pure JWT Bearer token validation - no dual auth system
-  const bearerToken = getBearerToken(event);
+  const bearerToken = getBearerToken(event, options);
   if (!bearerToken) {
     return {
       authorized: false,

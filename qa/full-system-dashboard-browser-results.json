@@ -1,0 +1,78 @@
+{
+  "results": [
+    {
+      "name": "Profile, keyboard dismissal, notifications and header destinations work",
+      "passed": true
+    },
+    {
+      "name": "New Registration actually submits the existing registration form",
+      "passed": true
+    },
+    {
+      "name": "Populated records are created through registration and assessment APIs, not seeded storage",
+      "passed": true
+    },
+    {
+      "name": "Global metrics, overdue priority, payment/certificate queues and workload warning reflect actual records",
+      "passed": true
+    },
+    {
+      "name": "Notification Details opens the selected assessment without a competing dialog",
+      "passed": true
+    },
+    {
+      "name": "Recent search and status/SLA filters do not change global totals",
+      "passed": true
+    },
+    {
+      "name": "Attention Review opens existing read-only criterion review and Request Changes persists",
+      "passed": true
+    },
+    {
+      "name": "Recent and schedule Details and workload Details open the correct existing modals",
+      "passed": true
+    },
+    {
+      "name": "Attention Verify and Issue open the correct existing payment/certificate modals",
+      "passed": true
+    },
+    {
+      "name": "Payment and certificate summary links filter the existing repository; Clear Filter and View All work",
+      "passed": true
+    },
+    {
+      "name": "Secondary quality filters are keyboard accessible and open the repository",
+      "passed": true
+    },
+    {
+      "name": "Populated responsive layouts and mobile modal stay usable at all requested sizes",
+      "passed": true
+    },
+    {
+      "name": "Loading, API error, stale-data label and Retry recover cleanly",
+      "passed": true
+    },
+    {
+      "name": "Sign Out clears Manager authentication and returns to login",
+      "passed": true
+    }
+  ],
+  "errors": [],
+  "failed": [
+    {
+      "name": "get-evaluations",
+      "status": 503
+    }
+  ],
+  "responseCounts": {
+    "login": 1,
+    "get-evaluations": 67,
+    "get-notifications": 6,
+    "status-stream": 4,
+    "manage-inquiries": 14,
+    "get-assessor-workload": 2,
+    "register-customer": 2,
+    "lookup-evaluation": 7,
+    "approve-evaluation": 1
+  }
+}

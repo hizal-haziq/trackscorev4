@@ -1,0 +1,24 @@
+{
+  "results": [
+    {
+      "name": "Manager login via real sign-in form",
+      "passed": true
+    },
+    {
+      "name": "Manager risk card invokes its handler",
+      "passed": true
+    },
+    {
+      "name": "Manager risk details opens and loads API result",
+      "passed": true
+    },
+    {
+      "name": "Report Approve control references a callable handler",
+      "passed": true
+    }
+  ],
+  "errors": [
+    "Failed to load resource: the server responded with a status of 404 (Not Found)"
+  ],
+  "failedRequests": []
+}

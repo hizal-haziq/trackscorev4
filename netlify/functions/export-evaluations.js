@@ -10,6 +10,7 @@
 
 import { connectToDatabase, COLLECTION_NAME } from './db.js';
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
+import { calculateAssessmentSla } from './sla.js';
 import ExcelJS from 'exceljs'; // Ensure you ran: npm install exceljs
 
 export const handler = async (event, context) => {
@@ -123,6 +124,10 @@ export const handler = async (event, context) => {
       { header: 'Company Name', key: 'companyName', width: 25 },
       { header: 'Device Model', key: 'deviceModel', width: 20 },
       { header: 'Package Tier', key: 'packageName', width: 20 },
+      { header: 'SLA Duration (Days)', key: 'slaDays', width: 18 },
+      { header: 'SLA Deadline', key: 'slaDeadline', width: 22 },
+      { header: 'SLA Status', key: 'slaStatus', width: 18 },
+      { header: 'SLA Timeliness', key: 'slaTimeliness', width: 28 },
       { header: 'Assessor ID', key: 'assessorId', width: 15 },
       { header: 'Assessor Name', key: 'assessorName', width: 25 },
       { header: 'Section A Score (Max 33)', key: 'sectionAScore', width: 20 },
@@ -148,32 +153,41 @@ export const handler = async (event, context) => {
     sheet.getRow(1).font = { bold: true };
 
     // 3. Map Data to Rows
-    const rows = records.map(r => ({
-      id: r._id || r.id || '',
-      assessmentDate: r.assessmentDate || (r.createdAt ? r.createdAt.substring(0, 10) : ''),
-      companyName: r.companyName || '',
-      deviceModel: r.deviceModel || '',
-      packageName: r.packageName || 'Standard Evaluation',
-      assessorId: r.assessorId || 'N/A',
-      assessorName: r.assessorName || '',
-      sectionAScore: Number(r.sectionAScore || 0).toFixed(2),
-      sectionBScore: Number(r.sectionBScore || 0).toFixed(2),
-      totalScore: Number(r.totalScore || 0).toFixed(2),
-      starRating: Number(r.starRating || 0).toFixed(2),
-      starsCount: r.starsCount || 1,
-      ratingLabel: r.ratingLabel || '',
-      rubricVersion: r.rubricVersion || '1.0.0',
-      lifecycle: r.deletedAt ? 'Soft-Deleted (Archived)' : 'Active',
-      status: r.status || 'pending_review',
-      approvedBy: r.approvedBy || '',
-      approvedAt: r.approvedAt || '',
-      rejectionReason: r.rejectionReason || '',
-      deletedAt: r.deletedAt || '',
-      deletedBy: r.deletedBy || '',
-      historyCount: Array.isArray(r.evaluationHistory) ? r.evaluationHistory.length : 0,
-      createdAt: r.createdAt || '',
-      updatedAt: r.updatedAt || ''
-    }));
+    const rows = records.map(r => {
+      const sla = calculateAssessmentSla(r);
+      return {
+        id: r._id || r.id || '',
+        assessmentDate: r.assessmentDate || (r.createdAt ? r.createdAt.substring(0, 10) : ''),
+        companyName: r.companyName || '',
+        deviceModel: r.deviceModel || '',
+        packageName: r.packageName || 'Standard Evaluation',
+        slaDays: sla.durationDays,
+        slaDeadline: sla.deadline,
+        slaStatus: sla.label,
+        slaTimeliness: sla.isCompleted
+          ? (sla.status === 'COMPLETED_ON_TIME' ? sla.remainingFormatted : sla.overdueFormatted)
+          : sla.remainingFormatted,
+        assessorId: r.assessorId || 'N/A',
+        assessorName: r.assessorName || '',
+        sectionAScore: Number(r.sectionAScore || 0).toFixed(2),
+        sectionBScore: Number(r.sectionBScore || 0).toFixed(2),
+        totalScore: Number(r.totalScore || 0).toFixed(2),
+        starRating: Number(r.starRating || 0).toFixed(2),
+        starsCount: r.starsCount || 1,
+        ratingLabel: r.ratingLabel || '',
+        rubricVersion: r.rubricVersion || '1.0.0',
+        lifecycle: r.deletedAt ? 'Soft-Deleted (Archived)' : 'Active',
+        status: ['pre_final_sent', 'payment_confirmed'].includes(r.status) ? 'approved' : r.status || 'pending_review',
+        approvedBy: r.approvedBy || '',
+        approvedAt: r.approvedAt || '',
+        rejectionReason: r.rejectionReason || '',
+        deletedAt: r.deletedAt || '',
+        deletedBy: r.deletedBy || '',
+        historyCount: Array.isArray(r.evaluationHistory) ? r.evaluationHistory.length : 0,
+        createdAt: r.createdAt || '',
+        updatedAt: r.updatedAt || ''
+      };
+    });
 
     sheet.addRows(rows);
 
@@ -198,7 +212,7 @@ export const handler = async (event, context) => {
       statusCode: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        error: error.message || 'Failed to export evaluations to Excel'
+        error: 'Failed to export evaluations to Excel'
       })
     };
   }

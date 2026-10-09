@@ -1,0 +1,15 @@
+[
+  {
+    "id": "stab-rejected",
+    "actions": "Rejected\nApprove",
+    "status": 400
+  },
+  {
+    "id": "stab-completed",
+    "actions": "Completed\nReject / Revoke"
+  },
+  {
+    "id": "stab-certificate_issued",
+    "actions": "Approve\nReject"
+  }
+]

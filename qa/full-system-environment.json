@@ -1,0 +1,9 @@
+{
+  "checkedAt": "2026-10-01T12:00:22.044Z",
+  "node": "v22.2.0",
+  "configured": true,
+  "emailProviderConfigured": false,
+  "smtpConfigured": false,
+  "operation": "read-only connection, ping and collection count; no writes",
+  "connected": true
+}

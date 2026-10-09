@@ -1,0 +1,275 @@
+{
+  "readOnly": true,
+  "collections": [
+    {
+      "name": "users",
+      "count": 2,
+      "inspected": 2,
+      "suspects": [
+        {
+          "id": "6ab7cde2748d81ed40f20cc1",
+          "name": "Lead Operations Manager",
+          "createdBy": "System Bootstrap",
+          "reason": "Bootstrap marker; manual setup and old preset seeding share this marker"
+        }
+      ]
+    },
+    {
+      "name": "vendors",
+      "count": 7,
+      "inspected": 7,
+      "suspects": []
+    },
+    {
+      "name": "evaluations",
+      "count": 86,
+      "inspected": 86,
+      "suspects": []
+    },
+    {
+      "name": "inquiries",
+      "count": 5,
+      "inspected": 5,
+      "suspects": []
+    },
+    {
+      "name": "assessment_versions",
+      "count": 209,
+      "inspected": 209,
+      "suspects": [
+        {
+          "id": "6ab7d1e004f77bfb73b5a23e",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab7d1e2007fe4df9cb4538e",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab7d49ade156c173173ffce",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab7d49b6e6c4b5b07ad07ab",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab88177918568230b78b1ae",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab88177c9f5f68c22d07da3",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8827db8141cf39f8c289c",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8827d3a8a9a5047648e26",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8e50e4da56303179f7d2d",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8e50f10e04959b3eb7f5a",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8e56971264e0d92197bf5",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8e56bd0dbad7a7f5e3cf3",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8e5c2391c6586363acfe9",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8e74e689c0e2a1d5826e2",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8e74ffa97aabbb7492ec5",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8e78bcc7dcef945ec550f",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab8e78e95fc563bb9b1cd4d",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab9070809225bc3d3f0a80f",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab9070893bd27ee2a7dbf2d",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab90bf74bba0c9d2a7ba330",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab90bf97186ed3ce7bbb24d",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab9b552c19ee6dd509a2091",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab9b5525af989190d6e85d3",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab9bffd7502ca4698ffcd13",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab9bfff0e1124f8b8538f54",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab9c7c5595e4cce212be4ad",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6ab9c7c65104933acdd819bd",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abb630698cc05616e843091",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abb630b3a2b96e1312264a7",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abc5e2916948fb3d1bde109",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abc5e2e7176a5ca8ae2bc53",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abc63609e7f01d3068eda1f",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abc63643e39b90d5dae33a6",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abc6407cb3186be1307d160",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abc640bef8496ce538a42b7",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abc690f27554203f85e4281",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abc69124e918bc831bf55f3",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abcb92f0d8287897f72683e",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abcb932b6e687c0656e0ca6",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abcbe1d9719ade2e814993a",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abcbe1f1c0dadeb0a033d38",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abcc663ef7ba43e361276fa",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abcc6661298d3cd4f2ea3d4",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abcc68ee195a121fc970366",
+          "name": "Alpha Tech Fleet",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        },
+        {
+          "id": "6abcc692b278dba8c86d4ab0",
+          "name": "Unique Dedup Fleet Logistics",
+          "reason": "Possible automated fixture; review provenance before deletion"
+        }
+      ]
+    },
+    {
+      "name": "assessment_risk",
+      "count": 2,
+      "inspected": 2,
+      "suspects": []
+    }
+  ],
+  "deleted": 0
+}

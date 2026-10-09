@@ -432,6 +432,7 @@ function handleLogout() {
   localStorage.removeItem('trackscore_token');
   localStorage.removeItem('trackscore_user_role');
   localStorage.removeItem('trackscore_user');
+  sessionStorage.clear();
   window.location.href = '/login.html';
 }
 window.handleLogout = handleLogout;
@@ -500,6 +501,29 @@ window.handleLogout = handleLogout;
           managerBanner.style.display = (role === 'manager') ? 'flex' : 'none';
         }
 
+        if (role === 'manager') {
+          // Disable form submission & drafting for Managers (Assessor responsibility)
+          const saveDraftBtn = document.getElementById('save-draft-btn');
+          const submitBtn = document.getElementById('btn-submit-evaluation') || document.querySelector('button[type="submit"]');
+          if (saveDraftBtn) {
+            saveDraftBtn.disabled = true;
+            saveDraftBtn.style.opacity = '0.5';
+            saveDraftBtn.title = 'Managers review completed assessments in the Manager Dashboard.';
+          }
+          if (submitBtn) {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.5';
+            submitBtn.title = 'Only Assessors submit technical evaluations. Managers review and approve in the Manager Dashboard.';
+          }
+          setTimeout(() => {
+            const formInputs = document.querySelectorAll('#assessment-form input, #assessment-form textarea, #assessment-form select');
+            formInputs.forEach(input => {
+              input.disabled = true;
+              input.setAttribute('title', 'Assessors complete technical criteria. Review evaluations in the Manager Dashboard.');
+            });
+          }, 300);
+        }
+
         const badge = document.createElement('div');
         badge.id = 'user-session-badge';
         badge.style.cssText = 'display: inline-flex; align-items: center; gap: 8px; margin-left: 6px; padding: 4px 10px; background: #1E293B; border: 1px solid #334155; border-radius: 6px; font-size: 12px; color: #E2E8F0; white-space: nowrap !important; flex-shrink: 0;';
@@ -512,7 +536,7 @@ window.handleLogout = handleLogout;
             <span style="max-width: 140px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600;" title="${displayName}">${displayName}</span>
             <span style="background: rgba(255,255,255,0.1); color: ${roleColor}; font-size: 10.5px; font-weight: 700; padding: 1px 6px; border-radius: 3px; text-transform: uppercase;">${roleTitle}</span>
           </span>
-          <button type="button" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #FCA5A5; font-size: 11px; font-weight: 600; cursor: pointer; padding: 2px 7px; border-radius: 4px; white-space: nowrap; line-height: 1.2;" onclick="handleLogout()">Sign Out</button>
+          <button type="button" id="btn-logout" class="btn-logout" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.35); color: #FCA5A5; font-size: 11px; font-weight: 600; cursor: pointer; padding: 2px 7px; border-radius: 4px; white-space: nowrap; line-height: 1.2;" onclick="handleLogout()">Sign Out</button>
         `;
         nav.appendChild(badge);
 
@@ -776,8 +800,64 @@ function renderCriteriaSection(criteriaList, containerId, sectionPrefix) {
     });
     optionsHtml += '</div>';
 
-    rowEl.innerHTML = metaHtml + optionsHtml;
+    const existingComment = assessmentState.selectedItems[criterion.id]?.comment || '';
+    const commentWrapHtml = `
+      <div class="criterion-comment-wrap" id="comment-wrap-${criterion.id}">
+        <div class="criterion-comment-header">
+          <label class="criterion-comment-label" for="comment_${criterion.id}">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            Assessor Comment
+          </label>
+          <span class="criterion-comment-counter" id="counter_${criterion.id}">${existingComment.length} / 2000</span>
+        </div>
+        <textarea
+          id="comment_${criterion.id}"
+          name="comment_${criterion.id}"
+          class="criterion-comment-input"
+          data-crit-id="${criterion.id}"
+          maxlength="2000"
+          placeholder="Write your notes or findings for ${escapedName} here (optional)..."
+          aria-label="Assessor comment for ${escapedName}"
+        >${escapeHtml(existingComment)}</textarea>
+      </div>
+    `;
+
+    rowEl.innerHTML = metaHtml + optionsHtml + commentWrapHtml;
     container.appendChild(rowEl);
+
+    // Attach live input listener to textarea
+    const commentInput = rowEl.querySelector(`#comment_${criterion.id}`);
+    if (commentInput) {
+      commentInput.addEventListener("input", (e) => {
+        const val = e.target.value;
+        const counterEl = document.getElementById(`counter_${criterion.id}`);
+        if (counterEl) {
+          counterEl.textContent = `${val.length} / 2000`;
+          if (val.length > 1950) {
+            counterEl.style.color = '#DC2626';
+            counterEl.style.fontWeight = '700';
+          } else {
+            counterEl.style.color = '#94A3B8';
+            counterEl.style.fontWeight = 'normal';
+          }
+        }
+        if (!assessmentState.selectedItems[criterion.id]) {
+          assessmentState.selectedItems[criterion.id] = {
+            section: sectionPrefix,
+            id: criterion.id,
+            name: criterion.name,
+            selectedOption: "None (0)",
+            tierPoints: 0.0,
+            points: 0.0,
+            comment: ""
+          };
+        }
+        assessmentState.selectedItems[criterion.id].comment = val;
+        debouncedAutosave();
+      });
+    }
 
     // Attach edge-positioning listener on desktop hover for zero screen-edge clipping
     const tipWrap = rowEl.querySelector('.criterion-tooltip-wrapper');
@@ -796,8 +876,11 @@ function renderCriteriaSection(criteriaList, containerId, sectionPrefix) {
         name: criterion.name,
         selectedOption: "None (0)",
         tierPoints: 0.0,
-        points: 0.0
+        points: 0.0,
+        comment: existingComment
       };
+    } else if (assessmentState.selectedItems[criterion.id].comment === undefined) {
+      assessmentState.selectedItems[criterion.id].comment = existingComment;
     }
   });
 }
@@ -906,14 +989,19 @@ function handleOptionChange(event) {
   const crit = critList.find(c => c.id === critId);
   const earnedRaw = computeItemRawPoints(crit, optIdx);
 
-  // Update selected state record
+  // Update selected state record while preserving any entered comment
+  const existingComment = assessmentState.selectedItems[critId]?.comment !== undefined
+    ? assessmentState.selectedItems[critId].comment
+    : (document.getElementById(`comment_${critId}`)?.value || '');
+
   assessmentState.selectedItems[critId] = {
     section,
     id: critId,
     name: critName,
     selectedOption,
     tierPoints: parseFloat(radio.value) || 0,
-    points: earnedRaw
+    points: earnedRaw,
+    comment: existingComment
   };
 
   // Update visual indicators for this row
@@ -1438,15 +1526,22 @@ function serializeDraft(draftId) {
   const selections = {};
   const answeredCriteria = assessmentState.answeredCriteria || {};
 
-  Object.entries(assessmentState.selectedItems).forEach(([critId, item]) => {
+  const allCriteria = [...SECTION_A_CRITERIA, ...SECTION_B_CRITERIA];
+  allCriteria.forEach(crit => {
+    const critId = crit.id;
+    const item = assessmentState.selectedItems[critId] || {};
     const isAnswered = !!answeredCriteria[critId];
+    const liveComment = document.getElementById(`comment_${critId}`)?.value;
+    const comment = liveComment !== undefined ? liveComment : (item.comment || '');
+
     selections[critId] = {
-      section: item.section,
-      id: item.id,
-      name: item.name,
-      selectedOption: item.selectedOption,
-      points: item.points,
-      isAnswered: isAnswered
+      section: item.section || (SECTION_A_CRITERIA.some(c => c.id === critId) ? 'A' : 'B'),
+      id: critId,
+      name: item.name || crit.name,
+      selectedOption: item.selectedOption || 'None (0)',
+      points: typeof item.points === 'number' ? item.points : 0.0,
+      isAnswered: isAnswered,
+      comment: comment
     };
   });
 
@@ -1566,12 +1661,12 @@ function saveDraftToStorage(isManual = false, forceNew = false) {
 
     if (indicator) {
       indicator.innerHTML = isManual
-        ? `<span style="color: #10B981; font-weight: 600;">✓ Saved:</span> Draft "${escapeHtml(displayName)}" saved at ${timeStr} (${countNow}/${MAX_DRAFTS} drafts in storage)`
-        : `<span style="color: #64748B;">Autosaved:</span> "${escapeHtml(displayName)}" at ${timeStr} (${countNow}/${MAX_DRAFTS} drafts in storage)`;
+        ? `<span style="color: #10B981; font-weight: 600;">✓ Saved:</span> Draft "${escapeHtml(displayName)}" saved at ${timeStr} (${countNow}/${MAX_DRAFTS} drafts saved)`
+        : `<span style="color: #64748B;">Autosaved:</span> "${escapeHtml(displayName)}" at ${timeStr} (${countNow}/${MAX_DRAFTS} drafts saved)`;
     }
 
     if (isManual) {
-      showToast(`Draft "${displayName}" saved (${countNow}/${MAX_DRAFTS} drafts in storage)`);
+      showToast(`Draft "${displayName}" saved (${countNow}/${MAX_DRAFTS} drafts saved)`);
       const buttons = [
         document.getElementById("btn-save-draft"),
         document.getElementById("btn-save-draft-top"),
@@ -1646,11 +1741,11 @@ function discardDraft(draftId) {
     localStorage.removeItem("trackscore-active-draft-id");
     hideRubricWarning();
     const indicator = document.getElementById("autosave-indicator");
-    if (indicator) indicator.textContent = "Draft discarded.";
+    if (indicator) indicator.textContent = "Draft deleted.";
   }
   renderDraftsModal();
   updateDraftsCountUI();
-  showToast("Draft discarded successfully.");
+  showToast("Draft deleted.");
 }
 
 function showRubricWarning(version) {
@@ -1735,7 +1830,8 @@ function restoreDraft(draft) {
       name: criterion.name,
       selectedOption: "None (0)",
       tierPoints: 0.0,
-      points: 0.0
+      points: 0.0,
+      comment: ""
     };
   });
 
@@ -1743,6 +1839,28 @@ function restoreDraft(draft) {
 
   if (state.selections) {
     Object.entries(state.selections).forEach(([critId, sel]) => {
+      // Restore comment to DOM textarea, counter and assessmentState
+      const commentVal = typeof sel.comment === 'string' ? sel.comment : '';
+      const commentInput = document.getElementById(`comment_${critId}`);
+      if (commentInput) {
+        commentInput.value = commentVal;
+        const counterEl = document.getElementById(`counter_${critId}`);
+        if (counterEl) {
+          counterEl.textContent = `${commentVal.length} / 2000`;
+          if (commentVal.length > 1950) {
+            counterEl.style.color = '#DC2626';
+            counterEl.style.fontWeight = '700';
+          } else {
+            counterEl.style.color = '#94A3B8';
+            counterEl.style.fontWeight = 'normal';
+          }
+        }
+      }
+
+      if (assessmentState.selectedItems[critId]) {
+        assessmentState.selectedItems[critId].comment = commentVal;
+      }
+
       // CRITICAL: A criterion should ONLY be marked/checked if it was ACTUALLY answered by the user!
       const wasAnswered = !!(savedAnswered[critId] || sel.isAnswered || (typeof sel.points === 'number' && sel.points > 0));
       if (!wasAnswered) return;
@@ -1769,7 +1887,8 @@ function restoreDraft(draft) {
           name: critName,
           selectedOption: matchingRadio.getAttribute("data-label") || sel.selectedOption,
           tierPoints: parseFloat(matchingRadio.value) || 0,
-          points: earnedRaw
+          points: earnedRaw,
+          comment: commentVal
         };
 
         const rowEl = document.getElementById(`row-${critId}`);
@@ -1811,9 +1930,9 @@ function startNewEvaluation() {
   const count = Object.keys(drafts).length;
 
   if (count >= MAX_DRAFTS) {
-    const warning = `You have reached the maximum of ${MAX_DRAFTS} saved drafts. Please submit or discard an existing draft before starting a new one.`;
+    const warning = `You have reached the maximum of ${MAX_DRAFTS} saved drafts. Please submit or delete an existing draft before starting a new one.`;
     openDraftsModal(warning);
-    showToast(`Maximum of ${MAX_DRAFTS} drafts reached. Discard or submit one first.`, true);
+    showToast(`Maximum of ${MAX_DRAFTS} drafts reached. Delete or submit one first.`, true);
     return false;
   }
 
@@ -1860,11 +1979,11 @@ function startNewEvaluation() {
 
   const indicator = document.getElementById("autosave-indicator");
   if (indicator) {
-    indicator.innerHTML = `<span style="color: #64748B;">Fresh evaluation ready</span> (Saved drafts: ${count}/${MAX_DRAFTS})`;
+    indicator.innerHTML = `<span style="color: #64748B;">New assessment ready</span> (Saved drafts: ${count}/${MAX_DRAFTS})`;
   }
 
   updateDraftsCountUI();
-  showToast("Started fresh evaluation form. Enter details to save as draft.");
+  showToast("Started a new assessment form.");
   return true;
 }
 
@@ -1899,7 +2018,7 @@ function renderDraftsModal(warningMsg = null) {
       warningEl.textContent = warningMsg;
       warningEl.style.display = "block";
     } else if (count >= MAX_DRAFTS) {
-      warningEl.textContent = "You have reached the maximum of 3 saved drafts. Please submit or discard an existing draft before starting a new one.";
+      warningEl.textContent = "You have reached the maximum of 3 saved drafts. Please submit or delete an existing draft before starting a new one.";
       warningEl.style.display = "block";
     } else {
       warningEl.style.display = "none";
@@ -1910,8 +2029,8 @@ function renderDraftsModal(warningMsg = null) {
     container.innerHTML = `
       <div class="empty-state-box" style="padding: 32px 16px; margin: 8px 0; text-align: center;">
         <div class="empty-state-icon" style="width: 44px; height: 44px; margin: 0 auto 10px auto; font-size: 28px;">📋</div>
-        <div class="empty-state-title" style="font-size: 15px; font-weight: 700; color: #1E293B;">No In-Progress Drafts</div>
-        <div class="empty-state-subtitle" style="font-size: 13px; color: #64748B; margin-bottom: 12px;">You do not have any evaluations saved in draft state. Click "Start New Evaluation" to begin.</div>
+        <div class="empty-state-title" style="font-size: 15px; font-weight: 700; color: #1E293B;">No Saved Drafts</div>
+        <div class="empty-state-subtitle" style="font-size: 13px; color: #64748B; margin-bottom: 12px;">You do not have any saved drafts. Click "Start New Assessment" to begin.</div>
       </div>
     `;
     return;
@@ -1934,18 +2053,18 @@ function renderDraftsModal(warningMsg = null) {
           <div class="draft-card-meta">
             <span>👤 Assessor: <strong>${escapeHtml(draft.assessorName || "Unassigned")}</strong>${draft.assessorId ? ` <span style="color:#0284C7; font-family: monospace;">[${escapeHtml(draft.assessorId)}]</span>` : ''}</span>
             <span>&bull;</span>
-            <span>📊 Progress: <strong>${answeredCount}/33 criteria</strong></span>
+            <span>📊 Progress: <strong>${answeredCount}/33 items</strong></span>
             <span>&bull;</span>
             <span>🕒 Saved: <strong>${escapeHtml(relativeTime)}</strong></span>
-            ${isRubricMismatch ? `<span class="rubric-badge-warning" title="Started under rubric v${escapeHtml(draft.rubricVersion)}">⚠️ Old Rubric (v${escapeHtml(draft.rubricVersion)})</span>` : ''}
+            ${isRubricMismatch ? `<span class="rubric-badge-warning" title="Started under rubric v${escapeHtml(draft.rubricVersion)}">⚠️ Older Version</span>` : ''}
           </div>
         </div>
         <div class="draft-card-actions" id="actions-${draft.draftId}">
           <button type="button" class="btn ${isActive ? 'btn-secondary' : 'btn-primary'} btn-sm" data-action="resume" data-draft-id="${draft.draftId}">
-            ${isActive ? 'Active' : 'Resume'}
+            ${isActive ? 'Active' : 'Open Draft'}
           </button>
           <button type="button" class="btn btn-secondary btn-sm" data-action="discard" data-draft-id="${draft.draftId}" style="color: #DC2626; border-color: #FECACA;">
-            Discard
+            Delete
           </button>
         </div>
       </div>
@@ -1961,7 +2080,7 @@ window.handleResumeDraftClick = function(draftId) {
   if (draft) {
     restoreDraft(draft);
     closeDraftsModal();
-    showToast(`Restored draft for ${draft.companyName || 'Evaluation'}.`);
+    showToast(`Opened draft for ${draft.companyName || 'Assessment'}.`);
   }
 };
 
@@ -1971,7 +2090,7 @@ window.handleDiscardDraftClick = function(draftId) {
     actionsContainer.innerHTML = `
       <div style="display: inline-flex; align-items: center; gap: 6px;">
         <button type="button" class="btn btn-sm" data-action="confirm-discard" data-draft-id="${draftId}" style="background: #DC2626; color: #FFFFFF; border: 1px solid #DC2626; font-weight: 600; padding: 4px 8px; font-size: 12px;">
-          ⚠️ Confirm Discard
+          ⚠️ Confirm Delete
         </button>
         <button type="button" class="btn btn-secondary btn-sm" data-action="cancel-discard" data-draft-id="${draftId}" style="padding: 4px 8px; font-size: 12px;">
           Cancel
@@ -2007,15 +2126,15 @@ function checkExistingDraft() {
       const btnResume = document.getElementById("btn-resume-draft");
       const btnDiscard = document.getElementById("btn-discard-draft");
       if (btnResume) {
-        btnResume.textContent = "Resume";
+        btnResume.textContent = "Open Draft";
         btnResume.onclick = () => {
           restoreDraft(single);
           banner.style.display = "none";
-          showToast("Evaluation draft restored successfully.");
+          showToast("Draft opened successfully.");
         };
       }
       if (btnDiscard) {
-        btnDiscard.textContent = "Discard";
+        btnDiscard.textContent = "Delete Draft";
         btnDiscard.onclick = () => {
           discardDraft(single.draftId);
           banner.style.display = "none";
@@ -2204,10 +2323,27 @@ async function loadEvaluationForCorrection(recordId) {
     if (document.getElementById("assessmentDate") && doc.assessmentDate) document.getElementById("assessmentDate").value = doc.assessmentDate;
     captureMetadata();
 
-    // Populate radio buttons
+    // Populate radio buttons & assessor comments
     assessmentState.answeredCriteria = {};
     if (Array.isArray(doc.breakdown)) {
       doc.breakdown.forEach(item => {
+        const commentVal = typeof item.comment === 'string' ? item.comment : '';
+        const commentInput = document.getElementById(`comment_${item.id}`);
+        if (commentInput) {
+          commentInput.value = commentVal;
+          const counterEl = document.getElementById(`counter_${item.id}`);
+          if (counterEl) {
+            counterEl.textContent = `${commentVal.length} / 2000`;
+            if (commentVal.length > 1950) {
+              counterEl.style.color = '#DC2626';
+              counterEl.style.fontWeight = '700';
+            } else {
+              counterEl.style.color = '#94A3B8';
+              counterEl.style.fontWeight = 'normal';
+            }
+          }
+        }
+
         let radio = document.querySelector(`input[data-crit-id="${item.id}"][data-label="${item.selectedOption}"]`);
         if (!radio && typeof item.points === "number") {
           radio = document.querySelector(`input[data-crit-id="${item.id}"][value="${item.points}"]`);
@@ -2226,7 +2362,8 @@ async function loadEvaluationForCorrection(recordId) {
             name: critName,
             selectedOption: item.selectedOption,
             tierPoints: parseFloat(radio.value) || 0,
-            points: earnedRaw
+            points: earnedRaw,
+            comment: commentVal
           };
           assessmentState.answeredCriteria[item.id] = true;
           const rowEl = document.getElementById(`row-${item.id}`);
@@ -2244,6 +2381,8 @@ async function loadEvaluationForCorrection(recordId) {
               badgeEl.textContent = "0.00 pts";
             }
           }
+        } else if (assessmentState.selectedItems[item.id]) {
+          assessmentState.selectedItems[item.id].comment = commentVal;
         }
       });
     }
@@ -2293,22 +2432,28 @@ function generatePdfReport() {
   const allCriteriaItems = [];
   SECTION_A_CRITERIA.forEach((crit, idx) => {
     const selected = assessmentState.selectedItems[crit.id] || { selectedOption: "None (0)", points: 0.0 };
+    const liveComment = document.getElementById(`comment_${crit.id}`)?.value;
+    const comment = liveComment !== undefined ? liveComment : (selected.comment || "");
     allCriteriaItems.push({
       sec: "A",
       num: idx + 1,
       name: crit.name,
       selectedOption: selected.selectedOption,
-      points: selected.points
+      points: selected.points,
+      comment: typeof comment === 'string' ? comment.trim() : ""
     });
   });
   SECTION_B_CRITERIA.forEach((crit, idx) => {
     const selected = assessmentState.selectedItems[crit.id] || { selectedOption: "None (0)", points: 0.0 };
+    const liveComment = document.getElementById(`comment_${crit.id}`)?.value;
+    const comment = liveComment !== undefined ? liveComment : (selected.comment || "");
     allCriteriaItems.push({
       sec: "B",
       num: idx + 1,
       name: crit.name,
       selectedOption: selected.selectedOption,
-      points: selected.points
+      points: selected.points,
+      comment: typeof comment === 'string' ? comment.trim() : ""
     });
   });
 
@@ -2326,10 +2471,11 @@ function generatePdfReport() {
       <td style="padding: 2.5px 4px; border-bottom: 1px solid #E2E8F0; font-size: 8px; text-align: center; color: #64748B; font-weight: 700;">
         ${item.sec}${item.num}
       </td>
-      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 8px; font-weight: 600; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;">
+      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 8px; font-weight: 600; color: #0F172A; white-space: normal; overflow-wrap: anywhere; max-width: 140px;">
         ${escapeHtml(item.name)}
+        ${item.comment ? `<div style="font-size: 6.5px; color: #64748B; font-style: italic; white-space: normal; line-height: 1.2;">Obs: ${escapeHtml(item.comment)}</div>` : ''}
       </td>
-      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 7.5px; color: ${item.points > 0 ? (item.sec === 'A' ? '#C2410C' : '#1D4ED8') : '#64748B'}; font-weight: ${item.points > 0 ? '700' : '400'}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">
+      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 7.5px; color: ${item.points > 0 ? (item.sec === 'A' ? '#C2410C' : '#1D4ED8') : '#64748B'}; font-weight: ${item.points > 0 ? '700' : '400'}; white-space: normal; word-break: break-all; line-height: 1.4; max-width: 100px;">
         ${escapeHtml(item.selectedOption)}
       </td>
       <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 8px; font-weight: 700; text-align: right; color: ${item.points > 0 ? '#0F172A' : '#94A3B8'}; white-space: nowrap;">
@@ -2598,7 +2744,7 @@ async function downloadReportPdf(showMessage = true) {
     await loadHtml2Pdf();
 
     if (downloadText) downloadText.textContent = "Generating PDF...";
-    if (statusBadge) statusBadge.textContent = "Compiling 1-page PDF document...";
+    if (statusBadge) statusBadge.textContent = "Compiling PDF document...";
 
     const element = document.getElementById('report-document-wrapper'); 
 
@@ -2623,7 +2769,7 @@ async function downloadReportPdf(showMessage = true) {
         .from(element)
         .save();
 
-      if (statusBadge) statusBadge.textContent = "Report displayed • 1-page PDF file downloaded successfully";
+      if (statusBadge) statusBadge.textContent = "Report displayed • PDF file downloaded successfully";
       if (showMessage) {
         showToast("PDF report successfully downloaded!");
       }
@@ -2736,27 +2882,33 @@ async function saveEvaluationToDatabase() {
     saveBtn.innerHTML = `<span class="spinner-inline spinner-white"></span> Submitting Evaluation...`;
   }
 
-  // Build full breakdown list
+  // Build full breakdown list with assessor comments
   const breakdown = [];
   SECTION_A_CRITERIA.forEach(crit => {
     const item = assessmentState.selectedItems[crit.id] || { selectedOption: "None (0)", points: 0.0 };
+    const liveComment = document.getElementById(`comment_${crit.id}`)?.value;
+    const comment = liveComment !== undefined ? liveComment : (item.comment || "");
     breakdown.push({
       section: "A",
       id: crit.id,
       name: crit.name,
       selectedOption: item.selectedOption,
-      points: item.points
+      points: item.points,
+      comment: typeof comment === 'string' ? comment.trim() : ""
     });
   });
 
   SECTION_B_CRITERIA.forEach(crit => {
     const item = assessmentState.selectedItems[crit.id] || { selectedOption: "None (0)", points: 0.0 };
+    const liveComment = document.getElementById(`comment_${crit.id}`)?.value;
+    const comment = liveComment !== undefined ? liveComment : (item.comment || "");
     breakdown.push({
       section: "B",
       id: crit.id,
       name: crit.name,
       selectedOption: item.selectedOption,
-      points: item.points
+      points: item.points,
+      comment: typeof comment === 'string' ? comment.trim() : ""
     });
   });
 
@@ -2927,6 +3079,10 @@ function closeSubmitConfirmModal() {
 // 6. Utility Functions & Notifications
 // ==========================================================================
 
+function escapeJs(value) {
+  return String(value ?? '').replace(/\\/g, '\\\\').replace(/'/g, "\\'").replace(/"/g, '\\"').replace(/\n/g, '\\n').replace(/\r/g, '\\r');
+}
+
 function escapeHtml(string) {
   if (!string) return "";
   const map = {
@@ -2971,11 +3127,11 @@ function resetEvaluationForm() {
   if (btn && btn.getAttribute("data-confirming") !== "true") {
     btn.setAttribute("data-confirming", "true");
     const origHtml = btn.innerHTML;
-    btn.innerHTML = "⚠️ Confirm Reset?";
+    btn.innerHTML = "⚠️ Clear Form?";
     btn.style.color = "#DC2626";
     btn.style.borderColor = "#DC2626";
     btn.style.fontWeight = "600";
-    showToast("Click 'Confirm Reset?' again to reset form.");
+    showToast("Click 'Clear Form?' again to clear all answers.");
     setTimeout(() => {
       if (btn && btn.getAttribute("data-confirming") === "true") {
         btn.setAttribute("data-confirming", "false");
@@ -2990,7 +3146,7 @@ function resetEvaluationForm() {
 
   if (btn) {
     btn.setAttribute("data-confirming", "false");
-    btn.innerHTML = "Reset Form";
+    btn.innerHTML = "Clear Form";
     btn.style.color = "";
     btn.style.borderColor = "";
     btn.style.fontWeight = "";
@@ -3034,91 +3190,8 @@ function resetEvaluationForm() {
   updateSectionProgressUI();
 
   const indicator = document.getElementById("autosave-indicator");
-  if (indicator) indicator.textContent = "Evaluation form reset to blank state.";
-  showToast("Evaluation form reset to initial state.");
-}
-
-// Auto-populate demo data for quick assessor inspection
-function fillDemoData() {
-  document.getElementById("companyName").value = "Vortex Telematics Malaysia Sdn Bhd";
-  document.getElementById("deviceModel").value = "VT-900 GPS Telematics Hub";
-  setPackageSelectValue("Package 2: Comprehensive Assessment (RM 6,000)");
-  document.getElementById("assessorName").value = "Ir. Khairul Azhar";
-  const demoAssessorIdEl = document.getElementById("assessorId");
-  if (demoAssessorIdEl) {
-    demoAssessorIdEl.value = "MKA 9006";
-    updateAssessorIdValidationUI();
-  }
-
-  // Select some realistic high-score options
-  const samplePicks = {
-    trip_history: ">1 year",
-    realtime_tracking: "Available",
-    map_source: "Open updated",
-    geofence: "Polygon",
-    geofence_alert: "Push",
-    vehicle_status: "Available",
-    engine_status: "Report",
-    overspeed_detection: "Configurable",
-    overspeed_alert: "Push",
-    offline_memory: ">60m",
-    backup_battery: ">24h",
-    sim_network: "Roaming",
-    connectivity: "4G",
-    multilingual: "Other",
-    user_manual: "Other",
-    warranty: ">12m",
-    customer_service: "Control Centre",
-    os_compatibility: "Mobile",
-    trip_report: "Duration",
-    data_interval: "<30s",
-    harsh_accel: "Config",
-    harsh_accel_alert: "Push",
-    harsh_braking: "Config",
-    harsh_braking_alert: "Push",
-    tow_detection: "Available",
-    panic_button: "SMS",
-    mfa: "OTP",
-    sop_tech_problems: "3 days",
-    service_records: "Available",
-    driver_id: "Report",
-    certification: "SIRIM/CE",
-    immobilizer: "Available",
-    tampered_alert: "Push"
-  };
-
-  assessmentState.answeredCriteria = {};
-
-  Object.entries(samplePicks).forEach(([critId, optionLabel]) => {
-    const radio = document.querySelector(`input[data-crit-id="${critId}"][data-label="${optionLabel}"]`);
-    if (radio) {
-      radio.checked = true;
-      const points = parseFloat(radio.value);
-      const section = radio.getAttribute("data-section");
-      const critName = radio.getAttribute("data-crit-name");
-      assessmentState.selectedItems[critId] = {
-        section,
-        id: critId,
-        name: critName,
-        selectedOption: optionLabel,
-        points
-      };
-      assessmentState.answeredCriteria[critId] = true;
-      const rowEl = document.getElementById(`row-${critId}`);
-      const badgeEl = document.getElementById(`badge-${critId}`);
-      if (rowEl) rowEl.classList.add("has-score");
-      if (badgeEl) {
-        badgeEl.classList.add("scored");
-        badgeEl.textContent = `Awarded: ${points.toFixed(2)} pts`;
-      }
-    }
-  });
-
-  captureMetadata();
-  calculateScores();
-  updateSectionProgressUI();
-  debouncedAutosave();
-  showToast("Demo evaluation loaded with high-specification inputs.");
+  if (indicator) indicator.textContent = "Assessment form cleared.";
+  showToast("Assessment form cleared.");
 }
 
 // ==========================================================================
@@ -3366,6 +3439,7 @@ function showAssignmentModal(evt) {
   }
 
   const closeModal = () => {
+    modal.classList.remove("active");
     modal.style.display = "none";
     modal.setAttribute("aria-hidden", "true");
   };
@@ -3384,6 +3458,7 @@ function showAssignmentModal(evt) {
   }
 
   modal.style.display = "flex";
+  modal.classList.add("active");
   modal.setAttribute("aria-hidden", "false");
 }
 window.showAssignmentModal = showAssignmentModal;
@@ -3431,7 +3506,7 @@ function showStatusBanner(evt) {
     banner.style.borderLeftColor = "#16A34A";
     banner.style.background = "";
     const maxScoreVal = evt.rubricVersion === '1.0' ? '43.00' : '5.00';
-    const scoreStr = evt.totalScore !== undefined ? ` [Score: ${Number(evt.totalScore).toFixed(2)}/${maxScoreVal}, ${evt.ratingLabel || 'Grade A'}]` : "";
+    const scoreStr = evt.totalScore !== undefined ? ` [Score: ${Number(evt.totalScore).toFixed(2)}/${maxScoreVal}, ${evt.ratingLabel || 'Rating not recorded'}]` : "";
     textEl.innerHTML = `<strong>Evaluation Approved:</strong> ${escapeHtml(comp)}${escapeHtml(model)}${scoreStr} was approved${escapeHtml(reviewer)}. Record is locked from further edits.`;
     if (actionBtn) {
       actionBtn.style.display = "inline-flex";
@@ -3849,7 +3924,7 @@ function renderNotificationCardsList() {
                 Assigned by <strong>${escapeHtml(reviewer)}</strong> • ${escapeHtml(timestampStr)}
               </span>
             </div>
-            <button type="button" class="btn-toast-close" title="Dismiss notification" onclick="dismissSingleNotification('${escapeHtml(evalId)}')" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #94A3B8; padding: 2px 6px;">&times;</button>
+            <button type="button" class="btn-toast-close" title="Dismiss notification" onclick="dismissSingleNotification('${escapeHtml(escapeJs(evalId))}')" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #94A3B8; padding: 2px 6px;">&times;</button>
           </div>
 
           <div class="notif-card-title">
@@ -3868,11 +3943,11 @@ function renderNotificationCardsList() {
 
           <div class="notif-card-actions">
             <div class="notif-actions-left">
-              <button type="button" class="btn btn-primary btn-sm" onclick="startAssignedEvaluation('${escapeHtml(evalId)}', '${escapeHtml(comp)}', '${escapeHtml(model)}', '${escapeHtml(item.packageName || '')}')" style="font-size: 12px; padding: 6px 14px; font-weight: 700; background: #4F46E5; border-color: #4338CA; color: #FFFFFF; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);">
+              <button type="button" class="btn btn-primary btn-sm" onclick="startAssignedEvaluation('${escapeHtml(escapeJs(evalId))}', '${escapeHtml(escapeJs(comp))}', '${escapeHtml(escapeJs(model))}', '${escapeHtml(escapeJs(item.packageName || ''))}')" style="font-size: 12px; padding: 6px 14px; font-weight: 700; background: #4F46E5; border-color: #4338CA; color: #FFFFFF; display: inline-flex; align-items: center; gap: 5px; box-shadow: 0 2px 6px rgba(79, 70, 229, 0.3);">
                 <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
                 Start Assessment
               </button>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="showAssignmentModalFromFeed('${escapeHtml(evalId)}')" style="font-size: 12px; padding: 6px 12px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="showAssignmentModalFromFeed('${escapeHtml(escapeJs(evalId))}')" style="font-size: 12px; padding: 6px 12px;">
                 View Details
               </button>
             </div>
@@ -3893,7 +3968,7 @@ function renderNotificationCardsList() {
                 Reviewed by <strong>${escapeHtml(reviewer)}</strong> • ${escapeHtml(timestampStr)}
               </span>
             </div>
-            <button type="button" class="btn-toast-close" title="Dismiss notification" onclick="dismissSingleNotification('${escapeHtml(evalId)}')" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #94A3B8; padding: 2px 6px;">&times;</button>
+            <button type="button" class="btn-toast-close" title="Dismiss notification" onclick="dismissSingleNotification('${escapeHtml(escapeJs(evalId))}')" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #94A3B8; padding: 2px 6px;">&times;</button>
           </div>
 
           <div class="notif-card-title">
@@ -3908,11 +3983,11 @@ function renderNotificationCardsList() {
 
           <div class="notif-card-actions">
             <div class="notif-actions-left">
-              <button type="button" class="btn btn-primary btn-sm" onclick="loadAndScrollEvaluationForCorrection('${escapeHtml(evalId)}')" style="font-size: 12px; padding: 5px 12px; font-weight: 700;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="loadAndScrollEvaluationForCorrection('${escapeHtml(escapeJs(evalId))}')" style="font-size: 12px; padding: 5px 12px; font-weight: 700;">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
                 Fix &amp; Resubmit Form
               </button>
-              <button type="button" class="btn btn-secondary btn-sm" onclick="viewNotificationLookupDetails('${escapeHtml(comp)}')" style="font-size: 12px; padding: 5px 10px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="viewNotificationLookupDetails('${escapeHtml(escapeJs(comp))}')" style="font-size: 12px; padding: 5px 10px;">
                 Review Submission Record
               </button>
             </div>
@@ -3937,7 +4012,7 @@ function renderNotificationCardsList() {
                 Approved by <strong>${escapeHtml(reviewer)}</strong> • ${escapeHtml(timestampStr)}
               </span>
             </div>
-            <button type="button" class="btn-toast-close" title="Dismiss notification" onclick="dismissSingleNotification('${escapeHtml(evalId)}')" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #94A3B8; padding: 2px 6px;">&times;</button>
+            <button type="button" class="btn-toast-close" title="Dismiss notification" onclick="dismissSingleNotification('${escapeHtml(escapeJs(evalId))}')" style="background: none; border: none; font-size: 16px; cursor: pointer; color: #94A3B8; padding: 2px 6px;">&times;</button>
           </div>
 
           <div class="notif-card-title">
@@ -3956,11 +4031,11 @@ function renderNotificationCardsList() {
 
           <div class="notif-card-actions">
             <div class="notif-actions-left">
-              <button type="button" class="btn btn-secondary btn-sm" onclick="exportNotificationRecordPDF('${escapeHtml(evalId)}')" style="font-size: 12px; padding: 5px 10px;">
+              <button type="button" class="btn btn-secondary btn-sm" onclick="exportNotificationRecordPDF('${escapeHtml(escapeJs(evalId))}')" style="font-size: 12px; padding: 5px 10px;">
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
                 Download Certified PDF
               </button>
-              <button type="button" class="btn btn-text btn-sm" onclick="dismissSingleNotification('${escapeHtml(evalId)}')" style="font-size: 12px; padding: 5px 8px; color: #64748B;">
+              <button type="button" class="btn btn-text btn-sm" onclick="dismissSingleNotification('${escapeHtml(escapeJs(evalId))}')" style="font-size: 12px; padding: 5px 8px; color: #64748B;">
                 Dismiss
               </button>
             </div>
@@ -4063,7 +4138,6 @@ function setNotificationFilter(filter) {
 
 function initNotificationSection() {
   // Navigation & title quick jump buttons
-  document.getElementById("btn-toggle-notification-section")?.addEventListener("click", scrollToNotificationSection);
   document.getElementById("btn-nav-notifications")?.addEventListener("click", scrollToNotificationSection);
 
   // Filter tabs
@@ -4110,9 +4184,10 @@ function initAssessorStatusListener() {
 
   if (typeof EventSource !== "undefined") {
     try {
-      const currentAssessorName = (document.getElementById("assessorName")?.value || "").trim();
-      let sseUrl = `/.netlify/functions/status-stream`;
-      if (currentAssessorName) sseUrl += `?assessorName=${encodeURIComponent(currentAssessorName)}`;
+      const token = getAuthToken();
+      if (!token) return;
+      // Scope comes from the authenticated token, never the editable form name.
+      const sseUrl = `/.netlify/functions/status-stream?token=${encodeURIComponent(token)}`;
 
       sseConnection = new EventSource(sseUrl);
 
@@ -4265,7 +4340,6 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("drafts-modal-close")?.addEventListener("click", closeDraftsModal);
     document.getElementById("btn-close-drafts")?.addEventListener("click", closeDraftsModal);
     document.getElementById("btn-dismiss-rubric-warning")?.addEventListener("click", hideRubricWarning);
-    document.getElementById("btn-lookup-rejections")?.addEventListener("click", openLookupModal);
     document.getElementById("btn-pdf-report")?.addEventListener("click", generatePdfReport);
     document.getElementById("btn-save-evaluation")?.addEventListener("click", openSubmitConfirmModal);
     document.getElementById("btn-close-submit-confirm")?.addEventListener("click", closeSubmitConfirmModal);
@@ -4275,7 +4349,6 @@ document.addEventListener("DOMContentLoaded", () => {
       saveEvaluationToDatabase();
     });
     document.getElementById("btn-reset-form")?.addEventListener("click", resetEvaluationForm);
-    document.getElementById("btn-demo-data")?.addEventListener("click", fillDemoData);
 
     // Lookup modal handlers
     document.getElementById("lookup-modal-close")?.addEventListener("click", closeLookupModal);
@@ -4410,23 +4483,27 @@ document.addEventListener("DOMContentLoaded", () => {
 // ==========================================================================
 
 let cachedAssessorSubmissions = [];
+let cachedPeerEvaluations = [];
 
 window.switchAssessorPortalTab = function(tabName) {
   const workbench = document.getElementById("evaluation-workbench-layout");
   const submissionsView = document.getElementById("assessor-submissions-view");
+  const peerReviewView = document.getElementById("assessor-peer-review-view");
   const notifSection = document.getElementById("notification-section");
   const stickyBar = document.getElementById("sticky-score-bar");
 
   // Tab buttons
   const tabMatrix = document.getElementById("tab-btn-matrix");
   const tabSubmissions = document.getElementById("tab-btn-submissions");
+  const tabPeerReview = document.getElementById("tab-btn-peer-review");
   const tabNotifs = document.getElementById("tab-btn-notifications");
   const navEval = document.getElementById("nav-eval-form");
   const navSub = document.getElementById("nav-my-submissions");
+  const navPeerReview = document.getElementById("nav-peer-review");
   const navNotifs = document.getElementById("btn-nav-notifications");
 
   // Reset tab button styles
-  [tabMatrix, tabSubmissions, tabNotifs].forEach(btn => {
+  [tabMatrix, tabSubmissions, tabPeerReview, tabNotifs].forEach(btn => {
     if (btn) {
       btn.classList.remove("active");
       btn.style.background = "#FFFFFF";
@@ -4438,6 +4515,7 @@ window.switchAssessorPortalTab = function(tabName) {
 
   if (navEval) navEval.classList.remove("active");
   if (navSub) navSub.classList.remove("active");
+  if (navPeerReview) navPeerReview.classList.remove("active");
   if (navNotifs) navNotifs.classList.remove("active");
 
   const titleBar = document.getElementById("page-title-bar");
@@ -4445,6 +4523,7 @@ window.switchAssessorPortalTab = function(tabName) {
   if (tabName === "submissions") {
     if (workbench) workbench.style.display = "none";
     if (stickyBar) stickyBar.style.display = "none";
+    if (peerReviewView) peerReviewView.style.display = "none";
     if (notifSection) notifSection.style.display = "none";
     if (titleBar) titleBar.style.display = "none";
     if (submissionsView) submissionsView.style.display = "block";
@@ -4460,10 +4539,30 @@ window.switchAssessorPortalTab = function(tabName) {
 
     window.fetchAssessorSubmissions();
     window.scrollTo({ top: 0, behavior: "smooth" });
+  } else if (tabName === "peer-review") {
+    if (workbench) workbench.style.display = "none";
+    if (stickyBar) stickyBar.style.display = "none";
+    if (submissionsView) submissionsView.style.display = "none";
+    if (notifSection) notifSection.style.display = "none";
+    if (titleBar) titleBar.style.display = "none";
+    if (peerReviewView) peerReviewView.style.display = "block";
+
+    if (tabPeerReview) {
+      tabPeerReview.classList.add("active");
+      tabPeerReview.style.background = "#F58220";
+      tabPeerReview.style.color = "#FFFFFF";
+      tabPeerReview.style.borderColor = "#F58220";
+      tabPeerReview.style.fontWeight = "700";
+    }
+    if (navPeerReview) navPeerReview.classList.add("active");
+
+    window.fetchPeerEvaluations();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   } else if (tabName === "notifications") {
     if (workbench) workbench.style.display = "none";
     if (stickyBar) stickyBar.style.display = "none";
     if (submissionsView) submissionsView.style.display = "none";
+    if (peerReviewView) peerReviewView.style.display = "none";
     if (titleBar) titleBar.style.display = "none";
     if (notifSection) notifSection.style.display = "block";
 
@@ -4485,6 +4584,7 @@ window.switchAssessorPortalTab = function(tabName) {
     if (workbench) workbench.style.display = "";
     if (stickyBar) stickyBar.style.display = "";
     if (submissionsView) submissionsView.style.display = "none";
+    if (peerReviewView) peerReviewView.style.display = "none";
     if (notifSection) notifSection.style.display = "none";
     if (titleBar) titleBar.style.display = "";
 
@@ -4509,7 +4609,7 @@ window.fetchAssessorSubmissions = async function(countOnly = false) {
   const statRejected = document.getElementById("assessor-stat-rejected");
 
   if (!countOnly && tbody) {
-    tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 32px; color: #64748B;">Loading your evaluations...</td></tr>`;
+    tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 32px; color: #64748B;">Loading your evaluations...</td></tr>`;
   }
 
   try {
@@ -4521,7 +4621,7 @@ window.fetchAssessorSubmissions = async function(countOnly = false) {
     if (!res.ok) throw new Error("Failed to load submissions.");
 
     const data = await res.json();
-    const records = Array.isArray(data.evaluations) ? data.evaluations : (Array.isArray(data) ? data : []);
+    const records = Array.isArray(data.data) ? data.data : (Array.isArray(data.evaluations) ? data.evaluations : (Array.isArray(data) ? data : []));
     cachedAssessorSubmissions = records;
 
     // Update counters
@@ -4529,12 +4629,18 @@ window.fetchAssessorSubmissions = async function(countOnly = false) {
     let pendingCount = 0;
     let approvedCount = 0;
     let rejectedCount = 0;
+    let onTrackCount = 0;
+    let overdueCount = 0;
 
     records.forEach(r => {
       const s = (r.status || "pending_review").toLowerCase();
       if (s === "approved" || s === "completed") approvedCount++;
       else if (s === "rejected" || s === "remediation_required") rejectedCount++;
       else pendingCount++;
+
+      const slaStatus = r.sla?.status;
+      if (slaStatus === 'OVERDUE') overdueCount++;
+      else if (slaStatus === 'ON_TRACK' || slaStatus === 'DUE_SOON') onTrackCount++;
     });
 
     if (countSpan) countSpan.textContent = totalCount;
@@ -4544,13 +4650,18 @@ window.fetchAssessorSubmissions = async function(countOnly = false) {
     if (statApproved) statApproved.textContent = approvedCount;
     if (statRejected) statRejected.textContent = rejectedCount;
 
+    const statOnTrack = document.getElementById("assessor-stat-ontrack");
+    const statOverdue = document.getElementById("assessor-stat-overdue");
+    if (statOnTrack) statOnTrack.textContent = onTrackCount;
+    if (statOverdue) statOverdue.textContent = overdueCount;
+
     if (!countOnly && tbody) {
       window.renderAssessorSubmissionsTable(records);
     }
   } catch (err) {
     console.error("Failed to fetch assessor submissions:", err);
     if (!countOnly && tbody) {
-      tbody.innerHTML = `<tr><td colspan="8" style="text-align: center; padding: 24px; color: #DC2626;">Error loading submissions: ${escapeHtml(err.message || "Network error")}</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="10" style="text-align: center; padding: 24px; color: #DC2626;">Error loading submissions: ${escapeHtml(err.message || "Network error")}</td></tr>`;
     }
   }
 };
@@ -4559,6 +4670,7 @@ window.startAssignedEvaluation = function(id, company, device, pkg) {
   // Hide assignment popup modal if active
   const assignModal = document.getElementById("assignment-alert-modal");
   if (assignModal) {
+    assignModal.classList.remove("active");
     assignModal.style.display = "none";
     assignModal.setAttribute("aria-hidden", "true");
   }
@@ -4627,7 +4739,7 @@ window.renderAssessorSubmissionsTable = function(records) {
   if (filtered.length === 0) {
     tbody.innerHTML = `
       <tr>
-        <td colspan="8" style="text-align: center; padding: 36px 16px; color: #64748B;">
+        <td colspan="10" style="text-align: center; padding: 36px 16px; color: #64748B;">
           <div style="font-size: 15px; font-weight: 600; color: #1E293B; margin-bottom: 4px;">No evaluations found</div>
           <div style="font-size: 13px;">${query ? "No submissions match your search query." : "You have not submitted any evaluations yet."}</div>
           ${!query ? '<button type="button" class="btn btn-primary btn-sm" onclick="switchAssessorPortalTab(\'matrix\')" style="margin-top: 12px;">Start First Assessment</button>' : ''}
@@ -4657,17 +4769,59 @@ window.renderAssessorSubmissionsTable = function(records) {
     if (isAssigned) {
       statusBadge = '<span class="status-badge" style="background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">🎯 Assigned by Manager</span>';
     } else if (status === "approved" || status === "completed") {
-      statusBadge = '<span class="status-badge" style="background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">✔ Approved &amp; Certified</span>';
+      statusBadge = '<span class="status-badge" style="background: #ECFDF5; color: #065F46; border: 1px solid #A7F3D0; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">✔ Assessment Approved</span>';
     } else if (isRejected) {
       statusBadge = '<span class="status-badge" style="background: #FEF2F2; color: #991B1B; border: 1px solid #FECACA; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">⚠ Remediation Required</span>';
     } else if (status === "pre_final_sent") {
-      statusBadge = '<span class="status-badge" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Pre-Final Issued</span>';
+      statusBadge = '<span class="status-badge" style="background: #E0F2FE; color: #0369A1; border: 1px solid #BAE6FD; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Assessment Approved</span>';
     } else if (status === "certificate_issued") {
       statusBadge = '<span class="status-badge" style="background: #F0FDF4; color: #166534; border: 1px solid #BBF7D0; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Certificate Issued</span>';
     } else if (status === "payment_confirmed") {
-      statusBadge = '<span class="status-badge" style="background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Payment Confirmed</span>';
+      statusBadge = '<span class="status-badge" style="background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">Assessment Approved</span>';
     } else {
       statusBadge = '<span class="status-badge" style="background: #FFFBEB; color: #92400E; border: 1px solid #FDE68A; font-size: 11px; font-weight: 700; padding: 3px 8px; border-radius: 4px; display: inline-flex; align-items: center; gap: 4px;">⏳ Pending Manager Review</span>';
+    }
+
+    // Authoritative SLA resolution
+    const sla = r.sla || null;
+    let slaDeadlineHtml = '<span style="color: #94A3B8; font-size: 12px;">--</span>';
+    let slaBadgeHtml = '<span class="status-badge" style="background: #F1F5F9; color: #64748B; font-size: 11px; font-weight: 600; padding: 2px 7px; border-radius: 4px;">Pending SLA</span>';
+
+    if (sla) {
+      if (sla.deadline) {
+        try {
+          const d = new Date(sla.deadline);
+          const df = d.toLocaleDateString("en-MY", { day: "2-digit", month: "short", year: "numeric" });
+          const tf = d.toLocaleTimeString("en-MY", { hour: "2-digit", minute: "2-digit" });
+          slaDeadlineHtml = `<div style="white-space: nowrap; line-height: 1.25;"><span style="font-weight: 700; color: #1E293B;">${df}</span><div style="font-size: 11px; color: #64748B;">${tf}</div></div>`;
+        } catch(e) {
+          slaDeadlineHtml = `<span style="font-size: 12px;">${escapeHtml(sla.deadline)}</span>`;
+        }
+      }
+
+      const st = sla.status || 'ON_TRACK';
+      let sBg = '#F0FDF4', sBrd = '#BBF7D0', sClr = '#15803D';
+      if (st === 'DUE_SOON') {
+        sBg = '#FFFBEB'; sBrd = '#FDE68A'; sClr = '#B45309';
+      } else if (st === 'OVERDUE') {
+        sBg = '#FEF2F2'; sBrd = '#FECACA'; sClr = '#DC2626';
+      } else if (st === 'COMPLETED_LATE') {
+        sBg = '#F8FAFC'; sBrd = '#E2E8F0'; sClr = '#64748B';
+      }
+      const rem = sla.isCompleted
+        ? (st === 'COMPLETED_ON_TIME' ? 'On time' : 'Late')
+        : (sla.remainingFormatted || '');
+
+      slaBadgeHtml = `
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 2px;">
+          <span class="status-badge" style="background: ${sBg}; border: 1px solid ${sBrd}; color: ${sClr}; font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 9999px; white-space: nowrap;">
+            ${escapeHtml(sla.label || st)}
+          </span>
+          <span style="font-size: 10.5px; font-weight: 600; color: ${st === 'OVERDUE' ? '#DC2626' : (st === 'DUE_SOON' ? '#D97706' : '#64748B')}; white-space: nowrap;">
+            ${escapeHtml(rem)}
+          </span>
+        </div>
+      `;
     }
 
     const scoreCol = isAssigned ? '<span style="color: #64748B; font-weight: 500; font-size: 12px; font-style: italic;">Pending Eval</span>' : `${totalScore} / 5.00`;
@@ -4679,24 +4833,32 @@ window.renderAssessorSubmissionsTable = function(records) {
         <td style="padding: 10px 12px; font-weight: 600; color: #0F172A;">${comp}</td>
         <td style="padding: 10px 12px; color: #334155;">${model}</td>
         <td style="padding: 10px 12px; color: #64748B; font-size: 12px;">${pkg}</td>
+        <td style="padding: 10px 12px; white-space: nowrap;">${slaDeadlineHtml}</td>
+        <td style="padding: 10px 12px; text-align: center; white-space: nowrap;">${slaBadgeHtml}</td>
         <td style="padding: 10px 12px; text-align: center; font-weight: 700; color: #F58220;">${scoreCol}</td>
         <td style="padding: 10px 12px; text-align: center; font-size: 12.5px; color: #EAB308; white-space: nowrap;" title="${starRating} Stars">${starsCol}</td>
         <td style="padding: 10px 12px; text-align: center;">${statusBadge}</td>
         <td style="padding: 10px 12px; text-align: right; white-space: nowrap;">
           ${isAssigned ? `
-            <button type="button" class="btn btn-primary btn-sm" onclick="startAssignedEvaluation('${escapeHtml(id)}', '${escapeHtml(comp)}', '${escapeHtml(model)}', '${escapeHtml(pkg)}')" style="font-size: 11.5px; padding: 4px 10px; font-weight: 700; background: #4F46E5; border-color: #4338CA; color: #FFFFFF;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="startAssignedEvaluation('${escapeHtml(escapeJs(id))}', '${escapeHtml(escapeJs(r.companyName || ""))}', '${escapeHtml(escapeJs(r.deviceModel || ""))}', '${escapeHtml(escapeJs(r.packageName || ""))}')" style="font-size: 11.5px; padding: 4px 10px; font-weight: 700; background: #4F46E5; border-color: #4338CA; color: #FFFFFF;">
               Conduct Assessment
             </button>
           ` : (isRejected ? `
-            <button type="button" class="btn btn-primary btn-sm" onclick="loadAndScrollEvaluationForCorrection('${escapeHtml(id)}')" style="font-size: 11.5px; padding: 4px 9px; font-weight: 700; margin-right: 6px;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="loadAndScrollEvaluationForCorrection('${escapeHtml(escapeJs(id))}')" style="font-size: 11.5px; padding: 4px 9px; font-weight: 700; margin-right: 6px;">
               Fix &amp; Resubmit
             </button>
-            <button type="button" class="btn btn-secondary btn-sm" onclick="viewAssessorSubmissionReport('${escapeHtml(id)}')" style="font-size: 11.5px; padding: 4px 9px;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="viewAssessorSubmissionReport('${escapeHtml(escapeJs(id))}')" style="font-size: 11.5px; padding: 4px 9px;">
               View Report
             </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="openAssessorOwnCommentsModal('${escapeHtml(escapeJs(id))}')" style="font-size: 11.5px; padding: 4px 9px; margin-left: 5px;">
+              Comments (${(r.comments || []).length})
+            </button>
           ` : `
-            <button type="button" class="btn btn-secondary btn-sm" onclick="viewAssessorSubmissionReport('${escapeHtml(id)}')" style="font-size: 11.5px; padding: 4px 9px;">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="viewAssessorSubmissionReport('${escapeHtml(escapeJs(id))}')" style="font-size: 11.5px; padding: 4px 9px;">
               View Report
+            </button>
+            <button type="button" class="btn btn-secondary btn-sm" onclick="openAssessorOwnCommentsModal('${escapeHtml(escapeJs(id))}')" style="font-size: 11.5px; padding: 4px 9px; margin-left: 5px;">
+              Comments (${(r.comments || []).length})
             </button>
           `)}
         </td>
@@ -4737,7 +4899,8 @@ function generatePdfReportForRecord(record) {
         num,
         name: item.name || "",
         selectedOption: item.selectedOption || "None (0)",
-        points: Number(item.points || 0)
+        points: Number(item.tierPoints ?? item.points ?? 0),
+        comment: typeof item.comment === 'string' ? item.comment.trim() : ""
       };
     });
   } else {
@@ -4747,7 +4910,8 @@ function generatePdfReportForRecord(record) {
         num: idx + 1,
         name: crit.name,
         selectedOption: "Verified",
-        points: (Number(sectionA) / 24).toFixed(3)
+        points: (Number(sectionA) / 24).toFixed(3),
+        comment: ""
       });
     });
     SECTION_B_CRITERIA.forEach((crit, idx) => {
@@ -4756,7 +4920,8 @@ function generatePdfReportForRecord(record) {
         num: idx + 1,
         name: crit.name,
         selectedOption: "Verified",
-        points: (Number(sectionB) / 9).toFixed(3)
+        points: (Number(sectionB) / 9).toFixed(3),
+        comment: ""
       });
     });
   }
@@ -4769,10 +4934,11 @@ function generatePdfReportForRecord(record) {
       <td style="padding: 2.5px 4px; border-bottom: 1px solid #E2E8F0; font-size: 8px; text-align: center; color: #64748B; font-weight: 700;">
         ${item.sec}${item.num}
       </td>
-      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 8px; font-weight: 600; color: #0F172A; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px;">
+      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 8px; font-weight: 600; color: #0F172A; white-space: normal; overflow-wrap: anywhere; max-width: 140px;">
         ${escapeHtml(item.name)}
+        ${item.comment ? `<div style="font-size: 6.5px; color: #64748B; font-style: italic; white-space: normal; line-height: 1.2;">Obs: ${escapeHtml(item.comment)}</div>` : ''}
       </td>
-      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 7.5px; color: ${item.points > 0 ? (item.sec === 'A' ? '#C2410C' : '#1D4ED8') : '#64748B'}; font-weight: ${item.points > 0 ? '700' : '400'}; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 100px;">
+      <td style="padding: 2.5px 5px; border-bottom: 1px solid #E2E8F0; font-size: 7.5px; color: ${item.points > 0 ? (item.sec === 'A' ? '#C2410C' : '#1D4ED8') : '#64748B'}; font-weight: ${item.points > 0 ? '700' : '400'}; white-space: normal; word-break: break-all; line-height: 1.4; max-width: 100px;">
         ${escapeHtml(item.selectedOption)}
       </td>
       <td style="padding: 2.5px 4px; border-bottom: 1px solid #E2E8F0; font-size: 8px; text-align: right; font-weight: 700; color: #0F172A;">
@@ -4782,7 +4948,7 @@ function generatePdfReportForRecord(record) {
   `).join("");
 
   return `
-    <div id="pdf-report-content" style="width: 794px; min-height: 1120px; padding: 22px 28px; background: #FFFFFF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0F172A; box-sizing: border-box; position: relative;">
+    <div id="pdf-report-content" style="width: 100%; max-width: 794px; padding: 22px 28px; background: #FFFFFF; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; color: #0F172A; box-sizing: border-box; position: relative;">
       <!-- Header -->
       <div style="display: flex; justify-content: space-between; align-items: flex-start; border-bottom: 2px solid #F58220; padding-bottom: 8px; margin-bottom: 10px;">
         <div style="display: flex; align-items: center; gap: 10px;">
@@ -4917,6 +5083,287 @@ window.viewAssessorSubmissionReport = async function(recordId) {
     showToast("Error loading report: " + err.message, true);
   }
 };
+
+// ==========================================================================
+// Peer Review & Technical Commentary Logic (Transformers.js In-Browser AI)
+// ==========================================================================
+
+window.fetchPeerEvaluations = async function() {
+  const tbody = document.getElementById("peer-evaluations-tbody");
+  if (tbody) {
+    tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 32px; color: #64748B;">Loading peer submissions...</td></tr>`;
+  }
+
+  try {
+    const res = await fetch("/.netlify/functions/lookup-evaluation?peerReview=true&limit=100", {
+      headers: getAuthHeaders()
+    });
+
+    if (handleAuthError(res)) return;
+    if (!res.ok) throw new Error("Failed to load peer evaluations.");
+
+    const data = await res.json();
+    const records = Array.isArray(data.data) ? data.data : (Array.isArray(data.evaluations) ? data.evaluations : []);
+    cachedPeerEvaluations = records;
+
+    window.renderPeerEvaluationsTable(records);
+  } catch (err) {
+    console.error("Failed to fetch peer evaluations:", err);
+    if (tbody) {
+      tbody.innerHTML = `<tr><td colspan="9" style="text-align: center; padding: 24px; color: #DC2626;">Error loading peer evaluations: ${escapeHtml(err.message || "Network error")}</td></tr>`;
+    }
+  }
+};
+
+window.renderPeerEvaluationsTable = function(records) {
+  const tbody = document.getElementById("peer-evaluations-tbody");
+  if (!tbody) return;
+
+  const searchInput = document.getElementById("peer-evaluations-search");
+  const query = (searchInput ? searchInput.value : "").toLowerCase().trim();
+
+  const filtered = records.filter(r => {
+    if (!query) return true;
+    const comp = (r.companyName || "").toLowerCase();
+    const dev = (r.deviceModel || "").toLowerCase();
+    const aName = (r.assessorName || "").toLowerCase();
+    const aId = (r.assessorId || "").toLowerCase();
+    return comp.includes(query) || dev.includes(query) || aName.includes(query) || aId.includes(query);
+  });
+
+  if (filtered.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="9" style="text-align: center; padding: 36px 16px; color: #64748B;">
+          <div style="font-size: 15px; font-weight: 600; color: #1E293B; margin-bottom: 4px;">No peer evaluations found</div>
+          <div style="font-size: 13px;">${query ? "No evaluations match your search query." : "No peer evaluations submitted by other assessors yet."}</div>
+        </td>
+      </tr>
+    `;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map((r, idx) => {
+    const id = r._id || r.id;
+    const dateStr = r.assessmentDate || (r.createdAt ? new Date(r.createdAt).toLocaleDateString("en-GB") : "-");
+    const comp = escapeHtml(r.companyName || "Unknown Company");
+    const model = escapeHtml(r.deviceModel || "Unknown Device");
+    const pkg = escapeHtml(r.packageName || "Standard Assessment");
+    const assessor = escapeHtml(r.assessorName || "Peer Assessor");
+    const totalScore = Number(r.totalScore ?? 0).toFixed(2);
+    const starRating = Number(r.starRating ?? 0).toFixed(1);
+    const commentCount = Array.isArray(r.comments) ? r.comments.length : 0;
+    const status = (r.status || "pending_review").toLowerCase();
+
+    return `
+      <tr style="background: ${idx % 2 === 0 ? '#FFFFFF' : '#F8FAFC'}; border-bottom: 1px solid #E2E8F0;">
+        <td style="padding: 10px 12px; color: #475569; font-size: 12.5px; white-space: nowrap;">${dateStr}</td>
+        <td style="padding: 10px 12px; font-weight: 600; color: #0F172A;">${comp}</td>
+        <td style="padding: 10px 12px; color: #334155;">${model}</td>
+        <td style="padding: 10px 12px; color: #64748B; font-size: 12px;">${pkg}</td>
+        <td style="padding: 10px 12px; color: #0369A1; font-weight: 600;">${assessor}${r.assessorId ? ` <span style="font-size: 11px; color: #64748B;">[${escapeHtml(r.assessorId)}]</span>` : ''}</td>
+        <td style="padding: 10px 12px; text-align: center; font-weight: 700; color: #F58220;">${totalScore} / 5.00</td>
+        <td style="padding: 10px 12px; text-align: center;">
+          <span style="font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 4px; ${status === 'completed' || status === 'approved' ? 'background: #ECFDF5; color: #065F46;' : 'background: #FFFBEB; color: #92400E;'}">
+            ${escapeHtml(status.toUpperCase().replace(/_/g, ' '))}
+          </span>
+        </td>
+        <td style="padding: 10px 12px; text-align: center;">
+          <span style="font-size: 11px; font-weight: 700; background: #EEF2FF; color: #4338CA; border: 1px solid #C7D2FE; padding: 2px 8px; border-radius: 10px;">
+            💬 ${commentCount}
+          </span>
+        </td>
+        <td style="padding: 10px 12px; text-align: right; white-space: nowrap;">
+          <button type="button" class="btn btn-primary btn-sm" onclick="openPeerReviewModal('${escapeHtml(escapeJs(id))}')" style="font-size: 11.5px; padding: 4px 11px; font-weight: 700; background: #F58220; border-color: #EA580C; color: #FFF;">
+            Review &amp; Comment
+          </button>
+        </td>
+      </tr>
+    `;
+  }).join("");
+};
+
+window.openPeerReviewModal = async function(recordId) {
+  const modal = document.getElementById("peer-review-modal");
+  const modalBody = document.getElementById("peer-review-modal-body");
+  const modalTitle = document.getElementById("peer-review-modal-title");
+  if (!modal || !modalBody) return;
+
+  modalBody.innerHTML = `
+    <div style="text-align: center; padding: 48px 24px;">
+      <div class="spinner-inline" style="width: 28px; height: 28px; border-width: 3px;"></div>
+      <div style="margin-top: 12px; font-weight: 600; color: #64748B;">Loading peer evaluation details...</div>
+    </div>
+  `;
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+
+  try {
+    const res = await fetch(`/.netlify/functions/lookup-evaluation?id=${encodeURIComponent(recordId)}&peerReview=true`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error("Could not retrieve peer evaluation.");
+    const data = await res.json();
+    const record = data.data ? data.data[0] : (data.evaluation || data);
+    if (!record) throw new Error("Record not found.");
+
+    if (modalTitle) {
+      modalTitle.textContent = `Peer Review: ${record.companyName} • ${record.deviceModel}`;
+    }
+
+    const breakdown = Array.isArray(record.breakdown) ? record.breakdown : [];
+    let breakdownHtml = "";
+    if (breakdown.length === 0) {
+      breakdownHtml = `<tr><td colspan="4" style="text-align: center; padding: 14px; color: #94A3B8;">No itemized criteria recorded for this submission.</td></tr>`;
+    } else {
+      breakdownHtml = breakdown.map((item, idx) => `
+        <tr style="background-color: ${idx % 2 === 0 ? '#FFFFFF' : '#F8FAFC'};">
+          <td style="padding: 7px 10px; border-bottom: 1px solid #E2E8F0; text-align: center; font-size: 11.5px; color: #64748B;">${idx + 1}</td>
+          <td style="padding: 7px 10px; border-bottom: 1px solid #E2E8F0; font-size: 12.5px; font-weight: 600;">
+            <span style="display: inline-block; padding: 1px 5px; border-radius: 3px; font-size: 10px; font-weight: 700; margin-right: 5px; ${item.section === 'A' ? 'background: #FFF7ED; color: #C2410C;' : 'background: #EFF6FF; color: #1D4ED8;'}">
+              SEC ${item.section || 'A'}
+            </span>
+            ${escapeHtml(item.name)}
+          </td>
+          <td style="padding: 7px 10px; border-bottom: 1px solid #E2E8F0; font-size: 12.5px; color: ${item.points > 0 ? '#C2410C' : '#64748B'}; font-weight: ${item.points > 0 ? '700' : '400'};">
+            ${escapeHtml(item.selectedOption)}
+          </td>
+          <td style="padding: 7px 10px; border-bottom: 1px solid #E2E8F0; font-size: 12.5px; font-weight: 700; text-align: right; color: ${item.points > 0 ? '#0F172A' : '#94A3B8'};">
+            ${Number(item.points || 0).toFixed(2)} pts
+          </td>
+        </tr>
+      `).join("");
+    }
+
+    modalBody.innerHTML = `
+      <!-- Peer Record Metadata Card -->
+      <div style="background: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 8px; padding: 14px 16px; margin-bottom: 16px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px; font-size: 12.5px;">
+          <div>
+            <span style="font-weight: 700; color: #64748B; font-size: 11px; text-transform: uppercase;">Company:</span>
+            <div style="font-weight: 700; color: #0F172A; font-size: 13.5px;">${escapeHtml(record.companyName)}</div>
+          </div>
+          <div>
+            <span style="font-weight: 700; color: #64748B; font-size: 11px; text-transform: uppercase;">Device Model:</span>
+            <div style="font-weight: 700; color: #0F172A; font-size: 13.5px;">${escapeHtml(record.deviceModel)}</div>
+          </div>
+          <div>
+            <span style="font-weight: 700; color: #64748B; font-size: 11px; text-transform: uppercase;">Evaluating Assessor:</span>
+            <div style="color: #0369A1; font-weight: 700;">${escapeHtml(record.assessorName)}${record.assessorId ? ` [${escapeHtml(record.assessorId)}]` : ''}</div>
+          </div>
+          <div>
+            <span style="font-weight: 700; color: #64748B; font-size: 11px; text-transform: uppercase;">Total Score:</span>
+            <div style="color: #F58220; font-weight: 800; font-size: 14px;">${Number(record.totalScore || 0).toFixed(2)} / 5.00</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Itemized Evaluation Breakdown Collapsible -->
+      <details style="margin-bottom: 16px; border: 1px solid #E2E8F0; border-radius: 6px; overflow: hidden; background: #FFFFFF;">
+        <summary style="padding: 10px 14px; font-size: 13px; font-weight: 700; color: #1E293B; cursor: pointer; background: #F1F5F9; user-select: none;">
+          View Itemized 33-Criteria Scoring Breakdown (${breakdown.length} items)
+        </summary>
+        <div style="max-height: 280px; overflow-y: auto;">
+          <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+            <thead>
+              <tr style="background: #0F172A; color: #FFFFFF; font-size: 11px;">
+                <th style="padding: 6px 10px; width: 6%; text-align: center;">#</th>
+                <th style="padding: 6px 10px; width: 48%; text-align: left;">Criterion</th>
+                <th style="padding: 6px 10px; width: 30%; text-align: left;">Option Selected</th>
+                <th style="padding: 6px 10px; width: 16%; text-align: right;">Points</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${breakdownHtml}
+            </tbody>
+          </table>
+        </div>
+      </details>
+
+      <!-- Client-Side AI Summarized Peer Commentary Section -->
+      ${window.PeerCommentsEngine ? window.PeerCommentsEngine.renderPeerCommentsHtml(record, { canComment: true, currentRole: 'assessor' }) : ''}
+    `;
+  } catch (err) {
+    console.error("Error opening peer review modal:", err);
+    modalBody.innerHTML = `<div style="text-align: center; padding: 32px; color: #DC2626;">Error: ${escapeHtml(err.message)}</div>`;
+  }
+};
+
+window.closePeerReviewModal = function() {
+  const modal = document.getElementById("peer-review-modal");
+  if (modal) {
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+  }
+};
+
+window.openAssessorOwnCommentsModal = async function(recordId) {
+  const modal = document.getElementById("assessor-own-comments-modal");
+  const modalBody = document.getElementById("own-comments-modal-body");
+  const modalTitle = document.getElementById("own-comments-modal-title");
+  if (!modal || !modalBody) return;
+
+  modalBody.innerHTML = `
+    <div style="text-align: center; padding: 48px 24px;">
+      <div class="spinner-inline" style="width: 28px; height: 28px; border-width: 3px;"></div>
+      <div style="margin-top: 12px; font-weight: 600; color: #64748B;">Loading comments on your evaluation...</div>
+    </div>
+  `;
+  modal.classList.add("active");
+  modal.setAttribute("aria-hidden", "false");
+
+  try {
+    const res = await fetch(`/.netlify/functions/lookup-evaluation?id=${encodeURIComponent(recordId)}`, {
+      headers: getAuthHeaders()
+    });
+    if (!res.ok) throw new Error("Could not retrieve evaluation comments.");
+    const data = await res.json();
+    const record = data.data ? data.data[0] : (data.evaluation || data);
+    if (!record) throw new Error("Record not found.");
+
+    if (modalTitle) {
+      modalTitle.textContent = `Peer Comments: ${record.companyName} • ${record.deviceModel}`;
+    }
+
+    modalBody.innerHTML = `
+      <div style="background: #EFF6FF; border: 1px solid #BFDBFE; border-radius: 6px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; color: #1E40AF;">
+        <strong>Author Self-Review Notice:</strong> Below are peer reviews and managerial audit comments recorded for your evaluation submission. Comments cannot be added to your own evaluation.
+      </div>
+      ${window.PeerCommentsEngine ? window.PeerCommentsEngine.renderPeerCommentsHtml(record, { canComment: false, currentRole: 'assessor' }) : ''}
+    `;
+  } catch (err) {
+    console.error("Error opening own comments modal:", err);
+    modalBody.innerHTML = `<div style="text-align: center; padding: 32px; color: #DC2626;">Error: ${escapeHtml(err.message)}</div>`;
+  }
+};
+
+window.closeAssessorOwnCommentsModal = function() {
+  const modal = document.getElementById("assessor-own-comments-modal");
+  if (modal) {
+    modal.classList.remove("active");
+    modal.setAttribute("aria-hidden", "true");
+  }
+};
+
+window.onPeerCommentAdded = async function(evaluationId, result) {
+  // If peer review modal is open for this record, refresh its contents
+  const peerModal = document.getElementById("peer-review-modal");
+  if (peerModal && peerModal.classList.contains("active")) {
+    window.openPeerReviewModal(evaluationId);
+  }
+  // Refresh peer evaluations table cache
+  if (typeof window.fetchPeerEvaluations === "function") {
+    window.fetchPeerEvaluations();
+  }
+};
+
+// Wire search input for peer evaluations table
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("peer-evaluations-search")?.addEventListener("input", () => {
+    window.renderPeerEvaluationsTable(cachedPeerEvaluations);
+  });
+});
+
 window.TrackScore = {
   assessmentState,
   SECTION_A_CRITERIA,

@@ -1,0 +1,52 @@
+[
+  {
+    "function": "openScheduleModal",
+    "label": "Reschedule",
+    "fields": [
+      {
+        "id": "schedule-record-id",
+        "value": "duplicate_control_probe"
+      }
+    ]
+  },
+  {
+    "function": "openScheduleModal",
+    "label": "Schedule",
+    "fields": [
+      {
+        "id": "schedule-record-id",
+        "value": "duplicate_control_probe"
+      }
+    ]
+  },
+  {
+    "function": "openAssignTaskModal",
+    "label": "Reassign",
+    "fields": [
+      {
+        "id": "assign-task-record-id",
+        "value": "duplicate_control_probe"
+      }
+    ]
+  },
+  {
+    "function": "openAssignTaskModal",
+    "label": "Assign",
+    "fields": [
+      {
+        "id": "assign-task-record-id",
+        "value": "duplicate_control_probe"
+      }
+    ]
+  },
+  {
+    "function": "openAssignTaskModal",
+    "label": "Assign Assessor",
+    "fields": [
+      {
+        "id": "assign-task-record-id",
+        "value": "duplicate_control_probe"
+      }
+    ]
+  }
+]

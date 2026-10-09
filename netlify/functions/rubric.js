@@ -518,7 +518,7 @@ function recomputeScores(breakdown) {
         name: crit.name,
         selectedOption: matchedOpt.label,
         tierPoints: Number(matchedOpt.points) || 0.0,
-        points: earnedRaw
+        comment: typeof item.comment === 'string' ? item.comment.trim() : ''
       });
     });
   }

@@ -1,0 +1,341 @@
+{
+  "app": "TrackScore",
+  "version": "2.1",
+  "exportedAt": "2026-10-05T03:50:37.939Z",
+  "draftsCount": 1,
+  "drafts": {
+    "16221476-180b-41d5-9dcd-57879a144685": {
+      "draftId": "16221476-180b-41d5-9dcd-57879a144685",
+      "companyName": "Draft Audit Fleet",
+      "deviceModel": "Draft Gateway",
+      "packageName": "",
+      "assessorName": "Unassigned Assessor",
+      "assessorId": "",
+      "lastSavedAt": "2026-10-05T03:50:37.716Z",
+      "formattedTime": "10/5/2026, 11:50:37 AM",
+      "rubricVersion": "2.0",
+      "formState": {
+        "metadata": {
+          "companyName": "Draft Audit Fleet",
+          "deviceModel": "Draft Gateway",
+          "packageName": "",
+          "assessorName": "",
+          "assessorId": "",
+          "assessmentDate": "2026-10-05"
+        },
+        "selections": {
+          "trip_history": {
+            "section": "A",
+            "id": "trip_history",
+            "name": "Trip History Data",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": true,
+            "comment": "Draft persisted evidence"
+          },
+          "realtime_tracking": {
+            "section": "A",
+            "id": "realtime_tracking",
+            "name": "Real-time Tracking",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "map_source": {
+            "section": "A",
+            "id": "map_source",
+            "name": "Map",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "geofence": {
+            "section": "A",
+            "id": "geofence",
+            "name": "Geofence",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "geofence_alert": {
+            "section": "A",
+            "id": "geofence_alert",
+            "name": "Geofence Alert",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "vehicle_status": {
+            "section": "A",
+            "id": "vehicle_status",
+            "name": "Vehicle Status",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "engine_status": {
+            "section": "A",
+            "id": "engine_status",
+            "name": "Engine ON/OFF Detection",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "overspeed_detection": {
+            "section": "A",
+            "id": "overspeed_detection",
+            "name": "Overspeed Detection",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "overspeed_alert": {
+            "section": "A",
+            "id": "overspeed_alert",
+            "name": "Overspeed Alert",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "offline_memory": {
+            "section": "A",
+            "id": "offline_memory",
+            "name": "Built-in/Offline Memory",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "backup_battery": {
+            "section": "A",
+            "id": "backup_battery",
+            "name": "Backup Battery",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "sim_network": {
+            "section": "A",
+            "id": "sim_network",
+            "name": "SIM Card Network",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "connectivity": {
+            "section": "A",
+            "id": "connectivity",
+            "name": "Device Connectivity Support",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "multilingual": {
+            "section": "A",
+            "id": "multilingual",
+            "name": "Device Multilingual Support",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "user_manual": {
+            "section": "A",
+            "id": "user_manual",
+            "name": "User Manual",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "warranty": {
+            "section": "A",
+            "id": "warranty",
+            "name": "Warranty Period",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "customer_service": {
+            "section": "A",
+            "id": "customer_service",
+            "name": "Customer Service",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "os_compatibility": {
+            "section": "A",
+            "id": "os_compatibility",
+            "name": "OS Compatibility",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "trip_report": {
+            "section": "A",
+            "id": "trip_report",
+            "name": "Trip Report",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "data_interval": {
+            "section": "A",
+            "id": "data_interval",
+            "name": "Data Transmission Interval",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "harsh_accel": {
+            "section": "A",
+            "id": "harsh_accel",
+            "name": "Harsh Acceleration",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "harsh_accel_alert": {
+            "section": "A",
+            "id": "harsh_accel_alert",
+            "name": "Harsh Acceleration Alert",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "harsh_braking": {
+            "section": "A",
+            "id": "harsh_braking",
+            "name": "Harsh Braking/Crash Detection",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "harsh_braking_alert": {
+            "section": "A",
+            "id": "harsh_braking_alert",
+            "name": "Harsh Braking/Crash Detection Alert",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "tow_detection": {
+            "section": "B",
+            "id": "tow_detection",
+            "name": "Tow Detection",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "panic_button": {
+            "section": "B",
+            "id": "panic_button",
+            "name": "Panic/Emergency Button",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "mfa": {
+            "section": "B",
+            "id": "mfa",
+            "name": "Apps Multifactor Authentication/Security",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "sop_tech_problems": {
+            "section": "B",
+            "id": "sop_tech_problems",
+            "name": "SOP on Technical Problem",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "service_records": {
+            "section": "B",
+            "id": "service_records",
+            "name": "Device Service Records",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "driver_id": {
+            "section": "B",
+            "id": "driver_id",
+            "name": "Driver Identification",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "certification": {
+            "section": "B",
+            "id": "certification",
+            "name": "Certification",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "immobilizer": {
+            "section": "B",
+            "id": "immobilizer",
+            "name": "Immobilizer",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          },
+          "tampered_alert": {
+            "section": "B",
+            "id": "tampered_alert",
+            "name": "Tampered Alert",
+            "selectedOption": "None (0)",
+            "points": 0,
+            "isAnswered": false,
+            "comment": ""
+          }
+        },
+        "answeredCriteria": {
+          "trip_history": true
+        },
+        "scores": {
+          "sectionA": 0,
+          "sectionB": 0,
+          "total": 0,
+          "starRating": 0,
+          "starsCount": 0,
+          "ratingLabel": "0 Stars - Not Rated (MIROS Non-Compliant)",
+          "rawEarnedA": 0,
+          "rawEarnedB": 0
+        }
+      }
+    }
+  }
+}

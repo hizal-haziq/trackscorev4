@@ -1,0 +1,20 @@
+{
+  "generatedAt": "2026-10-05T03:53:12.096Z",
+  "totalControlDefinitions": 495,
+  "totalButtons": 304,
+  "statuses": {
+    "VERIFIED WORKING": 346,
+    "NOT TESTED": 137,
+    "PARTIALLY WORKING": 12
+  },
+  "workflowChecksPassed": 78,
+  "workflowChecksFailed": [],
+  "browserErrors": 0,
+  "httpFailures": 0,
+  "cancelledRequests": 195,
+  "otherFailedRequests": [],
+  "fixedIssues": 5,
+  "removedDefinitions": 4,
+  "paymentControlsRemovedThisAudit": 0,
+  "paymentMatches": 0
+}

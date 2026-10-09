@@ -1,0 +1,5429 @@
+{
+  "generatedAt": "2026-10-08T01:24:57.618Z",
+  "results": [
+    {
+      "name": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "passed": true,
+      "evidence": {
+        "requests": 1,
+        "xssExecuted": false
+      },
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "click",
+          "tag": "button",
+          "id": "overview-new-registration",
+          "label": "+ New Registration",
+          "inline": "openRegisterCustomerModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-companyName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-companyName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-contactPerson",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-contactPerson",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-contactPhone",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-contactPhone",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-contactEmail",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-contactEmail",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "input",
+          "tag": "input",
+          "id": "reg-deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "change",
+          "tag": "input",
+          "id": "reg-deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-register",
+          "label": "Create Registration",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-registered",
+          "label": "Companies & Assignments 3",
+          "inline": "switchDashboardTab('registered_customers')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "+ Schedule",
+          "inline": "openScheduleModal('eval_1791422582893_fdbv0', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "click",
+          "tag": "button",
+          "id": "schedule-modal-close",
+          "label": "×",
+          "inline": "closeScheduleModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "+ Assign",
+          "inline": "openAssignTaskModal('eval_1791422582893_fdbv0', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', '', '', '', '')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "×",
+          "inline": "closeAssignTaskModal()",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Schedule and assignment submissions fire once; all optional fields persist",
+      "passed": true,
+      "evidence": {
+        "schedulePosts": 1,
+        "assessor": "stability-assessor2"
+      },
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-registered",
+          "label": "Companies & Assignments 3",
+          "inline": "switchDashboardTab('registered_customers')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "+ Schedule",
+          "inline": "openScheduleModal('eval_1791422582893_fdbv0', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "input",
+          "tag": "input",
+          "id": "schedule-date-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "change",
+          "tag": "input",
+          "id": "schedule-date-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "input",
+          "tag": "input",
+          "id": "schedule-device-model-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "input",
+          "tag": "select",
+          "id": "schedule-assessor-select",
+          "label": "-- Keep Current / Unassigned --Stability Assessor (stability-assessor) — [9 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "change",
+          "tag": "select",
+          "id": "schedule-assessor-select",
+          "label": "-- Keep Current / Unassigned --Stability Assessor (stability-assessor) — [9 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "input",
+          "tag": "textarea",
+          "id": "schedule-notes-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "change",
+          "tag": "textarea",
+          "id": "schedule-notes-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-schedule",
+          "label": "Confirm Schedule",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Reassign",
+          "inline": "openAssignTaskModal('eval_1791422582893_fdbv0', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', 'Stability Assessor', 'stability-assessor', '2026-10-09', 'Stability schedule note')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "input",
+          "tag": "select",
+          "id": "assign-task-assessor-select",
+          "label": "-- Choose Assessor --Stability Assessor (stability-assessor) — [9 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "change",
+          "tag": "select",
+          "id": "assign-task-assessor-select",
+          "label": "-- Choose Assessor --Stability Assessor (stability-assessor) — [9 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "input",
+          "tag": "input",
+          "id": "assign-task-date-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "change",
+          "tag": "input",
+          "id": "assign-task-date-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "input",
+          "tag": "textarea",
+          "id": "assign-task-instructions",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "change",
+          "tag": "textarea",
+          "id": "assign-task-instructions",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Schedule and assignment submissions fire once; all optional fields persist",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-assign-task",
+          "label": "Assign Task to Assessor",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Manager metadata fields save through the permitted API and survive reload",
+      "passed": false,
+      "error": "locator.click: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#btn-save-edit').first()\u001b[22m\n\u001b[2m    - locator resolved to <button type=\"submit\" id=\"btn-save-edit\" class=\"btn btn-primary btn-sm\">Save Changes</button>\u001b[22m\n\u001b[2m  - attempting click action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"btn btn-secondary btn-sm\" onclick=\"viewEvaluationReport('stab-rejected')\" title=\"View full official Assessment Report and download PDF\">…</button> from <main class=\"container\" id=\"dashboard-main\">…</main> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m      - element is visible, enabled and stable\u001b[22m\n\u001b[2m      - scrolling into view if needed\u001b[22m\n\u001b[2m      - done scrolling\u001b[22m\n\u001b[2m      - <button type=\"button\" class=\"btn btn-secondary btn-sm\" onclick=\"viewEvaluationReport('stab-rejected')\" title=\"View full official Assessment Report and download PDF\">…</button> from <main class=\"container\" id=\"dashboard-main\">…</main> subtree intercepts pointer events\u001b[22m\n\u001b[2m    - retrying click action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    18 × waiting for element to be visible, enabled and stable\u001b[22m\n\u001b[2m       - element is visible, enabled and stable\u001b[22m\n\u001b[2m       - scrolling into view if needed\u001b[22m\n\u001b[2m       - done scrolling\u001b[22m\n\u001b[2m       - <button type=\"button\" class=\"btn btn-secondary btn-sm\" onclick=\"viewEvaluationReport('stab-rejected')\" title=\"View full official Assessment Report and download PDF\">…</button> from <main class=\"container\" id=\"dashboard-main\">…</main> subtree intercepts pointer events\u001b[22m\n\u001b[2m     - retrying click action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-evaluations",
+          "label": "All Assessments 13",
+          "inline": "switchDashboardTab('evaluations')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "input",
+          "tag": "input",
+          "id": "edit-officeAddress",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "change",
+          "tag": "input",
+          "id": "edit-officeAddress",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "input",
+          "tag": "input",
+          "id": "edit-deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "input",
+          "tag": "select",
+          "id": "edit-packageName",
+          "label": "Package 1: Standard Assessment (RM 4,500 • 2-Year Validity, 1 Free Reassessment) Package 2: Comprehensive Assessment (RM 6,000 • 3-Year Validity, 2 Free Reassessments) Other / Cust",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "change",
+          "tag": "select",
+          "id": "edit-packageName",
+          "label": "Package 1: Standard Assessment (RM 4,500 • 2-Year Validity, 1 Free Reassessment) Package 2: Comprehensive Assessment (RM 6,000 • 3-Year Validity, 2 Free Reassessments) Other / Cust",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "change",
+          "tag": "input",
+          "id": "edit-deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "input",
+          "tag": "input",
+          "id": "edit-packageNameCustom",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "change",
+          "tag": "input",
+          "id": "edit-packageNameCustom",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "input",
+          "tag": "input",
+          "id": "edit-assessorName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "change",
+          "tag": "input",
+          "id": "edit-assessorName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "input",
+          "tag": "input",
+          "id": "edit-assessorId",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "change",
+          "tag": "input",
+          "id": "edit-assessorId",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "input",
+          "tag": "input",
+          "id": "edit-assessmentDate",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "change",
+          "tag": "input",
+          "id": "edit-assessmentDate",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "input",
+          "tag": "select",
+          "id": "edit-state",
+          "label": "-- Select State / Federal Territory -- Johor Kedah Kelantan Melaka Negeri Sembilan Pahang Perak Perlis Pulau Pinang (Penang) Sabah Sarawak Selangor Terengganu Wilayah Persekutuan K",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager metadata fields save through the permitted API and survive reload",
+          "type": "change",
+          "tag": "select",
+          "id": "edit-state",
+          "label": "-- Select State / Federal Territory -- Johor Kedah Kelantan Melaka Negeri Sembilan Pahang Perak Perlis Pulau Pinang (Penang) Sabah Sarawak Selangor Terengganu Wilayah Persekutuan K",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Archive",
+          "inline": "openArchiveModal('eval_1791422582893_fdbv0')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "click",
+          "tag": "button",
+          "id": "archive-modal-cancel",
+          "label": "Cancel",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Archive",
+          "inline": "openArchiveModal('eval_1791422582893_fdbv0')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-confirm-archive",
+          "label": "Archive Record",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "click",
+          "tag": "input",
+          "id": "include-deleted-toggle",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "input",
+          "tag": "input",
+          "id": "include-deleted-toggle",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "change",
+          "tag": "input",
+          "id": "include-deleted-toggle",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "click",
+          "tag": "input",
+          "id": "include-deleted-toggle",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "input",
+          "tag": "input",
+          "id": "include-deleted-toggle",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+          "type": "change",
+          "tag": "input",
+          "id": "include-deleted-toggle",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-evaluations",
+          "label": "All Assessments 12",
+          "inline": "switchDashboardTab('evaluations')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-submitted')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-completed')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close-action",
+          "label": "Close",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Lifecycle states expose only valid review, edit and certificate actions",
+      "passed": false,
+      "error": "locator.click: Error: strict mode violation: locator('button[onclick=\"viewEvaluationReport(\\'stab-preparing\\')\"]') resolved to 2 elements:\n    1) <button type=\"button\" class=\"btn btn-secondary btn-sm\" onclick=\"viewEvaluationReport('stab-preparing')\" title=\"View full official Assessment Report and download PDF\">…</button> aka locator('tr:nth-child(9) > td:nth-child(14) > div > button').first()\n    2) <button type=\"button\" id=\"btn-footer-download-report\" class=\"btn btn-secondary btn-sm\" title=\"View and Download Assessment Report PDF\" onclick=\"viewEvaluationReport('stab-preparing')\">…</button> aka getByRole('button', { name: 'Download Report (PDF)' })\n\nCall log:\n\u001b[2m  - waiting for locator('button[onclick=\"viewEvaluationReport(\\'stab-preparing\\')\"]')\u001b[22m\n",
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-refresh",
+          "label": "Refresh",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-registered')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-registered')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "report-modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-scheduled')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-scheduled')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "report-modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-assigned-ui')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-assigned-ui')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "report-modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-in_progress')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-in_progress')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "report-modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-submitted')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-submitted')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "report-modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-pending_review')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-pending_review')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "report-modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-rejected')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-rejected')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "report-modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review",
+          "inline": "openEvaluationDetails('stab-preparing')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Lifecycle states expose only valid review, edit and certificate actions",
+          "type": "click",
+          "tag": "button",
+          "id": "modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Overview injected failure exposes Retry and successful recovery",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Overview injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-overview",
+          "label": "Dashboard",
+          "inline": "switchDashboardTab('overview')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Overview injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "overview-retry",
+          "label": "Retry",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Repository injected failure exposes Retry and successful recovery",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Repository injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-evaluations",
+          "label": "All Assessments 13",
+          "inline": "switchDashboardTab('evaluations')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Repository injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-refresh",
+          "label": "Refresh",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Repository injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Try Again",
+          "inline": "fetchEvaluations()",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Companies injected failure exposes Retry and successful recovery",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Companies injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-registered",
+          "label": "Companies & Assignments 2",
+          "inline": "switchDashboardTab('registered_customers')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Companies injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-refresh-registered",
+          "label": "Refresh",
+          "inline": "fetchRegisteredCustomers()",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Inquiries injected failure exposes Retry and successful recovery",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiries injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-inquiries",
+          "label": "Applications & Inquiries 5",
+          "inline": "switchDashboardTab('inquiries')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Inquiries injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Refresh",
+          "inline": "fetchInquiries()",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Workload injected failure exposes Retry and successful recovery",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Workload injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-workload",
+          "label": "Assessor Workload 0",
+          "inline": "switchDashboardTab('workload')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Workload injected failure exposes Retry and successful recovery",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Retry",
+          "inline": "fetchAssessorWorkload()",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Client fetch cancellation keeps the newest filter result",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Client fetch cancellation keeps the newest filter result",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-evaluations",
+          "label": "All Assessments 13",
+          "inline": "switchDashboardTab('evaluations')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Client fetch cancellation keeps the newest filter result",
+          "type": "input",
+          "tag": "select",
+          "id": "status-filter",
+          "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Client fetch cancellation keeps the newest filter result",
+          "type": "change",
+          "tag": "select",
+          "id": "status-filter",
+          "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Client fetch cancellation keeps the newest filter result",
+          "type": "input",
+          "tag": "select",
+          "id": "status-filter",
+          "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Client fetch cancellation keeps the newest filter result",
+          "type": "change",
+          "tag": "select",
+          "id": "status-filter",
+          "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Client fetch cancellation keeps the newest filter result",
+          "type": "input",
+          "tag": "select",
+          "id": "status-filter",
+          "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Client fetch cancellation keeps the newest filter result",
+          "type": "change",
+          "tag": "select",
+          "id": "status-filter",
+          "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Pagination Next and Previous fetch distinct pages without stale rows",
+      "passed": false,
+      "error": "locator.selectOption: Timeout 12000ms exceeded.\nCall log:\n\u001b[2m  - waiting for locator('#select-limit')\u001b[22m\n\u001b[2m    - locator resolved to <select id=\"select-limit\" class=\"form-control\" onchange=\"changeLimit(this.value)\">…</select>\u001b[22m\n\u001b[2m  - attempting select option action\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m    - waiting 20ms\u001b[22m\n\u001b[2m    2 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m      - did not find some options\u001b[22m\n\u001b[2m    - retrying select option action\u001b[22m\n\u001b[2m      - waiting 100ms\u001b[22m\n\u001b[2m    24 × waiting for element to be visible and enabled\u001b[22m\n\u001b[2m       - did not find some options\u001b[22m\n\u001b[2m     - retrying select option action\u001b[22m\n\u001b[2m       - waiting 500ms\u001b[22m\n",
+      "interactions": []
+    },
+    {
+      "name": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-open-user-modal",
+          "label": "Team Accounts",
+          "inline": "openUserManagementModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "input",
+          "tag": "input",
+          "id": "staff-name-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "change",
+          "tag": "input",
+          "id": "staff-name-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "input",
+          "tag": "input",
+          "id": "staff-email-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "change",
+          "tag": "input",
+          "id": "staff-email-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "input",
+          "tag": "input",
+          "id": "staff-assessor-id-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "change",
+          "tag": "input",
+          "id": "staff-assessor-id-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "input",
+          "tag": "input",
+          "id": "staff-password-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "change",
+          "tag": "input",
+          "id": "staff-password-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "input",
+          "tag": "input",
+          "id": "staff-phone-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "input",
+          "tag": "select",
+          "id": "staff-role-select",
+          "label": "Assessor (Evaluation Forms & Matrix) Manager (Full Operational Dashboard)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "change",
+          "tag": "select",
+          "id": "staff-role-select",
+          "label": "Assessor (Evaluation Forms & Matrix) Manager (Full Operational Dashboard)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "change",
+          "tag": "input",
+          "id": "staff-phone-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "",
+          "inline": "togglePasswordVisibility('staff-password-input', 'icon-pw-eye')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "",
+          "inline": "togglePasswordVisibility('staff-password-input', 'icon-pw-eye')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-create-user",
+          "label": "+ Create Account & Share",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-mask-banner-pw",
+          "label": "",
+          "inline": "toggleBannerPasswordMask()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-mask-banner-pw",
+          "label": "",
+          "inline": "toggleBannerPasswordMask()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Copy PW",
+          "inline": "copyNewUserTempPassword()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Refresh List",
+          "inline": "loadStaffUsersList()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "🔑 Reset PW",
+          "inline": "openResetPasswordModal('user_1791422654891_s30t')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "input",
+          "tag": "input",
+          "id": "reset-password-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "change",
+          "tag": "input",
+          "id": "reset-password-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "input",
+          "tag": "input",
+          "id": "reset-phone-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "change",
+          "tag": "input",
+          "id": "reset-phone-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "",
+          "inline": "togglePasswordVisibility('reset-password-input', 'icon-reset-eye')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-submit-reset-pw",
+          "label": "Update & Share Credentials",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Delete",
+          "inline": "openDeleteUserModal('user_1791422654891_s30t')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Cancel",
+          "inline": "closeDeleteUserModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Delete",
+          "inline": "openDeleteUserModal('user_1791422654891_s30t')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-confirm-delete-user",
+          "label": "Delete Account",
+          "inline": "executeDeleteUser()",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "passed": true,
+      "evidence": {
+        "excelRows": 40
+      },
+      "interactions": [
+        {
+          "page": "/dashboard.html",
+          "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Report",
+          "inline": "viewEvaluationReport('stab-completed')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-print-report",
+          "label": "Print Report",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-download-pdf-modal",
+          "label": "Download PDF File",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "report-modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-combined-pdf",
+          "label": "Download All as PDF",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-download-pdf-modal",
+          "label": "Download Combined PDF",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "report-modal-close",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-export-csv",
+          "label": "Download Excel",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+          "type": "click",
+          "tag": "a",
+          "id": "",
+          "label": "",
+          "inline": "",
+          "href": "blob:http://127.0.0.1:42769/7f43f429-b202-4b28-9cb6-d36abed8da3d",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+      "passed": false,
+      "error": "Expected values to be strictly equal:\n+ actual - expected\n\n+ ''\n- 'Stability rejected Fleet'\n",
+      "interactions": [
+        {
+          "page": "/index.html",
+          "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-notifications",
+          "label": "Updates & Alerts 0",
+          "inline": "switchAssessorPortalTab('notifications')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+          "type": "click",
+          "tag": "button",
+          "id": "notif-filter-rejected",
+          "label": "Changes Needed (1)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Review Submission Record",
+          "inline": "viewNotificationLookupDetails('Stability rejected Fleet')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+          "type": "input",
+          "tag": "input",
+          "id": "lookup-assessor-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+          "type": "change",
+          "tag": "input",
+          "id": "lookup-assessor-input",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-do-lookup",
+          "label": "Search",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "✏️ Load into Form to Correct & Resubmit",
+          "inline": "loadEvaluationForCorrection('stab-rejected')",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-matrix",
+          "label": "Assessment Form (33 Items)",
+          "inline": "switchAssessorPortalTab('matrix')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "input",
+          "tag": "input",
+          "id": "companyName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "change",
+          "tag": "input",
+          "id": "companyName",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "input",
+          "tag": "input",
+          "id": "deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "change",
+          "tag": "input",
+          "id": "deviceModel",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-save-draft-top",
+          "label": "Save Draft",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-my-drafts",
+          "label": "Drafts (1/3)",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Active",
+          "inline": "",
+          "href": "",
+          "action": "resume"
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "input",
+          "tag": "input",
+          "id": "assessmentDate",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "change",
+          "tag": "input",
+          "id": "assessmentDate",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-save-evaluation",
+          "label": "Submit Assessment",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-cancel-submit-confirm",
+          "label": "Cancel",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-save-evaluation",
+          "label": "Submit Assessment",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/index.html",
+          "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-close-submit-confirm",
+          "label": "×",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Assessor quoted assignment launches without script injection",
+      "passed": false,
+      "error": "The expression evaluated to a falsy value:\n\n  assert.ok((await page.locator('#assessor-submissions-tbody').innerText()).includes('Stability'))\n",
+      "interactions": [
+        {
+          "page": "/index.html",
+          "test": "Assessor quoted assignment launches without script injection",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-submissions",
+          "label": "My Submissions (39)",
+          "inline": "switchAssessorPortalTab('submissions')",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "👤 Company Profile",
+          "inline": "openProfileModal()",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "click",
+          "tag": "input",
+          "id": "prof-company",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "click",
+          "tag": "input",
+          "id": "prof-email",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "input",
+          "tag": "input",
+          "id": "prof-phone",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "change",
+          "tag": "input",
+          "id": "prof-phone",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "input",
+          "tag": "input",
+          "id": "prof-address",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "change",
+          "tag": "input",
+          "id": "prof-address",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "input",
+          "tag": "input",
+          "id": "prof-state",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "change",
+          "tag": "input",
+          "id": "prof-state",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-save-profile",
+          "label": "Save Profile Changes",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "👤 Company Profile",
+          "inline": "openProfileModal()",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "passed": true,
+      "interactions": [
+        {
+          "page": "/vendor-portal.html",
+          "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Return to Sign In",
+          "inline": "window.location.href='/login.html'",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Downloaded short and long certificate PDFs refer to real issued records",
+      "passed": true,
+      "evidence": {
+        "companies": [
+          "ABC Sdn. Bhd.",
+          "Very Long Commercial Vehicle Telematics Technology Sdn. Bhd."
+        ]
+      },
+      "interactions": [
+        {
+          "page": "/vendor-portal.html",
+          "test": "Downloaded short and long certificate PDFs refer to real issued records",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Download PDF",
+          "inline": "downloadOfficialCertificate('pdf-regression-0')",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/vendor-portal.html",
+          "test": "Downloaded short and long certificate PDFs refer to real issued records",
+          "type": "click",
+          "tag": "button",
+          "id": "",
+          "label": "Download PDF",
+          "inline": "downloadOfficialCertificate('pdf-regression-1')",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "Responsive role pages and modal actions fit all five requested viewports",
+      "passed": false,
+      "error": "page.waitForFunction: Timeout 12000ms exceeded.",
+      "interactions": [
+        {
+          "page": "/login.html",
+          "test": "Responsive role pages and modal actions fit all five requested viewports",
+          "type": "input",
+          "tag": "input",
+          "id": "login-email",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Responsive role pages and modal actions fit all five requested viewports",
+          "type": "change",
+          "tag": "input",
+          "id": "login-email",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Responsive role pages and modal actions fit all five requested viewports",
+          "type": "input",
+          "tag": "input",
+          "id": "login-password",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Responsive role pages and modal actions fit all five requested viewports",
+          "type": "change",
+          "tag": "input",
+          "id": "login-password",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "Responsive role pages and modal actions fit all five requested viewports",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-login-submit",
+          "label": "Sign In",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/dashboard.html",
+          "test": "Responsive role pages and modal actions fit all five requested viewports",
+          "type": "click",
+          "tag": "button",
+          "id": "tab-btn-evaluations",
+          "label": "All Assessments 41",
+          "inline": "switchDashboardTab('evaluations')",
+          "href": "",
+          "action": ""
+        }
+      ]
+    },
+    {
+      "name": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "passed": true,
+      "evidence": {
+        "newStreamsDuringObservation": 0,
+        "requestsAfterNavigation": 0
+      },
+      "interactions": [
+        {
+          "page": "/login.html",
+          "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+          "type": "input",
+          "tag": "input",
+          "id": "login-email",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+          "type": "change",
+          "tag": "input",
+          "id": "login-email",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+          "type": "input",
+          "tag": "input",
+          "id": "login-password",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+          "type": "change",
+          "tag": "input",
+          "id": "login-password",
+          "label": "",
+          "inline": "",
+          "href": "",
+          "action": ""
+        },
+        {
+          "page": "/login.html",
+          "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+          "type": "click",
+          "tag": "button",
+          "id": "btn-login-submit",
+          "label": "Sign In",
+          "inline": "",
+          "href": "",
+          "action": ""
+        }
+      ]
+    }
+  ],
+  "events": [
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "setup",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "setup",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 12",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "setup",
+      "type": "input",
+      "tag": "select",
+      "id": "auto-refresh-select",
+      "label": "Off 15s 30s 60s",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "setup",
+      "type": "change",
+      "tag": "select",
+      "id": "auto-refresh-select",
+      "label": "Off 15s 30s 60s",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "click",
+      "tag": "button",
+      "id": "overview-new-registration",
+      "label": "+ New Registration",
+      "inline": "openRegisterCustomerModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-companyName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-companyName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-contactPerson",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-contactPerson",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-contactPhone",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-contactPhone",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-contactEmail",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-contactEmail",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "input",
+      "tag": "input",
+      "id": "reg-deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "change",
+      "tag": "input",
+      "id": "reg-deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-register",
+      "label": "Create Registration",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-registered",
+      "label": "Companies & Assignments 3",
+      "inline": "switchDashboardTab('registered_customers')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "+ Schedule",
+      "inline": "openScheduleModal('eval_1791422582893_fdbv0', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "click",
+      "tag": "button",
+      "id": "schedule-modal-close",
+      "label": "×",
+      "inline": "closeScheduleModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "+ Assign",
+      "inline": "openAssignTaskModal('eval_1791422582893_fdbv0', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', '', '', '', '')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "×",
+      "inline": "closeAssignTaskModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-registered",
+      "label": "Companies & Assignments 3",
+      "inline": "switchDashboardTab('registered_customers')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "+ Schedule",
+      "inline": "openScheduleModal('eval_1791422582893_fdbv0', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "input",
+      "tag": "input",
+      "id": "schedule-date-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "change",
+      "tag": "input",
+      "id": "schedule-date-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "input",
+      "tag": "input",
+      "id": "schedule-device-model-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "input",
+      "tag": "select",
+      "id": "schedule-assessor-select",
+      "label": "-- Keep Current / Unassigned --Stability Assessor (stability-assessor) — [9 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "change",
+      "tag": "select",
+      "id": "schedule-assessor-select",
+      "label": "-- Keep Current / Unassigned --Stability Assessor (stability-assessor) — [9 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "input",
+      "tag": "textarea",
+      "id": "schedule-notes-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "change",
+      "tag": "textarea",
+      "id": "schedule-notes-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-schedule",
+      "label": "Confirm Schedule",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Reassign",
+      "inline": "openAssignTaskModal('eval_1791422582893_fdbv0', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', 'Stability Assessor', 'stability-assessor', '2026-10-09', 'Stability schedule note')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "input",
+      "tag": "select",
+      "id": "assign-task-assessor-select",
+      "label": "-- Choose Assessor --Stability Assessor (stability-assessor) — [9 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "change",
+      "tag": "select",
+      "id": "assign-task-assessor-select",
+      "label": "-- Choose Assessor --Stability Assessor (stability-assessor) — [9 active • AT CAPACITY]Other Assessor (stability-assessor2) — [1 active]",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "input",
+      "tag": "input",
+      "id": "assign-task-date-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "change",
+      "tag": "input",
+      "id": "assign-task-date-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "input",
+      "tag": "textarea",
+      "id": "assign-task-instructions",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "change",
+      "tag": "textarea",
+      "id": "assign-task-instructions",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-assign-task",
+      "label": "Assign Task to Assessor",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 13",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "input",
+      "tag": "input",
+      "id": "edit-officeAddress",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "change",
+      "tag": "input",
+      "id": "edit-officeAddress",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "input",
+      "tag": "input",
+      "id": "edit-deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "input",
+      "tag": "select",
+      "id": "edit-packageName",
+      "label": "Package 1: Standard Assessment (RM 4,500 • 2-Year Validity, 1 Free Reassessment) Package 2: Comprehensive Assessment (RM 6,000 • 3-Year Validity, 2 Free Reassessments) Other / Cust",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "change",
+      "tag": "select",
+      "id": "edit-packageName",
+      "label": "Package 1: Standard Assessment (RM 4,500 • 2-Year Validity, 1 Free Reassessment) Package 2: Comprehensive Assessment (RM 6,000 • 3-Year Validity, 2 Free Reassessments) Other / Cust",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "change",
+      "tag": "input",
+      "id": "edit-deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "input",
+      "tag": "input",
+      "id": "edit-packageNameCustom",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "change",
+      "tag": "input",
+      "id": "edit-packageNameCustom",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "input",
+      "tag": "input",
+      "id": "edit-assessorName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "change",
+      "tag": "input",
+      "id": "edit-assessorName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "input",
+      "tag": "input",
+      "id": "edit-assessorId",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "change",
+      "tag": "input",
+      "id": "edit-assessorId",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "input",
+      "tag": "input",
+      "id": "edit-assessmentDate",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "change",
+      "tag": "input",
+      "id": "edit-assessmentDate",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "input",
+      "tag": "select",
+      "id": "edit-state",
+      "label": "-- Select State / Federal Territory -- Johor Kedah Kelantan Melaka Negeri Sembilan Pahang Perak Perlis Pulau Pinang (Penang) Sabah Sarawak Selangor Terengganu Wilayah Persekutuan K",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "type": "change",
+      "tag": "select",
+      "id": "edit-state",
+      "label": "-- Select State / Federal Territory -- Johor Kedah Kelantan Melaka Negeri Sembilan Pahang Perak Perlis Pulau Pinang (Penang) Sabah Sarawak Selangor Terengganu Wilayah Persekutuan K",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Archive",
+      "inline": "openArchiveModal('eval_1791422582893_fdbv0')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "click",
+      "tag": "button",
+      "id": "archive-modal-cancel",
+      "label": "Cancel",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Archive",
+      "inline": "openArchiveModal('eval_1791422582893_fdbv0')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-confirm-archive",
+      "label": "Archive Record",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "click",
+      "tag": "input",
+      "id": "include-deleted-toggle",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "input",
+      "tag": "input",
+      "id": "include-deleted-toggle",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "change",
+      "tag": "input",
+      "id": "include-deleted-toggle",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "click",
+      "tag": "input",
+      "id": "include-deleted-toggle",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "input",
+      "tag": "input",
+      "id": "include-deleted-toggle",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "type": "change",
+      "tag": "input",
+      "id": "include-deleted-toggle",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 12",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-submitted')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-completed')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close-action",
+      "label": "Close",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-refresh",
+      "label": "Refresh",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-registered')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-registered')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-scheduled')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-scheduled')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-assigned-ui')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-assigned-ui')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-in_progress')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-in_progress')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-submitted')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-submitted')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-pending_review')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-pending_review')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-rejected')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-rejected')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review",
+      "inline": "openEvaluationDetails('stab-preparing')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "type": "click",
+      "tag": "button",
+      "id": "modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Overview injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-overview",
+      "label": "Dashboard",
+      "inline": "switchDashboardTab('overview')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Overview injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "overview-retry",
+      "label": "Retry",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 13",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-refresh",
+      "label": "Refresh",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Try Again",
+      "inline": "fetchEvaluations()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Companies injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-registered",
+      "label": "Companies & Assignments 2",
+      "inline": "switchDashboardTab('registered_customers')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Companies injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-refresh-registered",
+      "label": "Refresh",
+      "inline": "fetchRegisteredCustomers()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiries injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-inquiries",
+      "label": "Applications & Inquiries 5",
+      "inline": "switchDashboardTab('inquiries')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Inquiries injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Refresh",
+      "inline": "fetchInquiries()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-workload",
+      "label": "Assessor Workload 0",
+      "inline": "switchDashboardTab('workload')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Workload injected failure exposes Retry and successful recovery",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Retry",
+      "inline": "fetchAssessorWorkload()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 13",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "type": "input",
+      "tag": "select",
+      "id": "status-filter",
+      "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "type": "change",
+      "tag": "select",
+      "id": "status-filter",
+      "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "type": "input",
+      "tag": "select",
+      "id": "status-filter",
+      "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "type": "change",
+      "tag": "select",
+      "id": "status-filter",
+      "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "type": "input",
+      "tag": "select",
+      "id": "status-filter",
+      "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "type": "change",
+      "tag": "select",
+      "id": "status-filter",
+      "label": "All Statuses Registered Scheduled Submitted Pending Review Approved Certificate Issued Completed Changes Needed",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-open-user-modal",
+      "label": "Team Accounts",
+      "inline": "openUserManagementModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "input",
+      "tag": "input",
+      "id": "staff-name-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "change",
+      "tag": "input",
+      "id": "staff-name-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "input",
+      "tag": "input",
+      "id": "staff-email-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "change",
+      "tag": "input",
+      "id": "staff-email-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "input",
+      "tag": "input",
+      "id": "staff-assessor-id-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "change",
+      "tag": "input",
+      "id": "staff-assessor-id-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "input",
+      "tag": "input",
+      "id": "staff-password-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "change",
+      "tag": "input",
+      "id": "staff-password-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "input",
+      "tag": "input",
+      "id": "staff-phone-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "input",
+      "tag": "select",
+      "id": "staff-role-select",
+      "label": "Assessor (Evaluation Forms & Matrix) Manager (Full Operational Dashboard)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "change",
+      "tag": "select",
+      "id": "staff-role-select",
+      "label": "Assessor (Evaluation Forms & Matrix) Manager (Full Operational Dashboard)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "change",
+      "tag": "input",
+      "id": "staff-phone-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "",
+      "inline": "togglePasswordVisibility('staff-password-input', 'icon-pw-eye')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "",
+      "inline": "togglePasswordVisibility('staff-password-input', 'icon-pw-eye')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-create-user",
+      "label": "+ Create Account & Share",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-mask-banner-pw",
+      "label": "",
+      "inline": "toggleBannerPasswordMask()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-mask-banner-pw",
+      "label": "",
+      "inline": "toggleBannerPasswordMask()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Copy PW",
+      "inline": "copyNewUserTempPassword()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Refresh List",
+      "inline": "loadStaffUsersList()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "🔑 Reset PW",
+      "inline": "openResetPasswordModal('user_1791422654891_s30t')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "input",
+      "tag": "input",
+      "id": "reset-password-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "change",
+      "tag": "input",
+      "id": "reset-password-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "input",
+      "tag": "input",
+      "id": "reset-phone-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "change",
+      "tag": "input",
+      "id": "reset-phone-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "",
+      "inline": "togglePasswordVisibility('reset-password-input', 'icon-reset-eye')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-submit-reset-pw",
+      "label": "Update & Share Credentials",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Delete",
+      "inline": "openDeleteUserModal('user_1791422654891_s30t')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Cancel",
+      "inline": "closeDeleteUserModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Delete",
+      "inline": "openDeleteUserModal('user_1791422654891_s30t')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-confirm-delete-user",
+      "label": "Delete Account",
+      "inline": "executeDeleteUser()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "×",
+      "inline": "closeUserManagementModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Report",
+      "inline": "viewEvaluationReport('stab-completed')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-print-report",
+      "label": "Print Report",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-download-pdf-modal",
+      "label": "Download PDF File",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-combined-pdf",
+      "label": "Download All as PDF",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-download-pdf-modal",
+      "label": "Download Combined PDF",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "report-modal-close",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-export-csv",
+      "label": "Download Excel",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "a",
+      "id": "",
+      "label": "",
+      "inline": "",
+      "href": "blob:http://127.0.0.1:42769/7f43f429-b202-4b28-9cb6-d36abed8da3d",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-notifications",
+      "label": "Updates & Alerts 0",
+      "inline": "switchAssessorPortalTab('notifications')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+      "type": "click",
+      "tag": "button",
+      "id": "notif-filter-rejected",
+      "label": "Changes Needed (1)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Review Submission Record",
+      "inline": "viewNotificationLookupDetails('Stability rejected Fleet')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+      "type": "input",
+      "tag": "input",
+      "id": "lookup-assessor-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+      "type": "change",
+      "tag": "input",
+      "id": "lookup-assessor-input",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-do-lookup",
+      "label": "Search",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "✏️ Load into Form to Correct & Resubmit",
+      "inline": "loadEvaluationForCorrection('stab-rejected')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-matrix",
+      "label": "Assessment Form (33 Items)",
+      "inline": "switchAssessorPortalTab('matrix')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "input",
+      "tag": "input",
+      "id": "companyName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "change",
+      "tag": "input",
+      "id": "companyName",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "input",
+      "tag": "input",
+      "id": "deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "change",
+      "tag": "input",
+      "id": "deviceModel",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-save-draft-top",
+      "label": "Save Draft",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-my-drafts",
+      "label": "Drafts (1/3)",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Active",
+      "inline": "",
+      "href": "",
+      "action": "resume"
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "input",
+      "tag": "input",
+      "id": "assessmentDate",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "change",
+      "tag": "input",
+      "id": "assessmentDate",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-save-evaluation",
+      "label": "Submit Assessment",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-cancel-submit-confirm",
+      "label": "Cancel",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-save-evaluation",
+      "label": "Submit Assessment",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-close-submit-confirm",
+      "label": "×",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/index.html",
+      "test": "Assessor quoted assignment launches without script injection",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-submissions",
+      "label": "My Submissions (39)",
+      "inline": "switchAssessorPortalTab('submissions')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor quoted assignment launches without script injection",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor quoted assignment launches without script injection",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor quoted assignment launches without script injection",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor quoted assignment launches without script injection",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Assessor quoted assignment launches without script injection",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "👤 Company Profile",
+      "inline": "openProfileModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "click",
+      "tag": "input",
+      "id": "prof-company",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "click",
+      "tag": "input",
+      "id": "prof-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "input",
+      "tag": "input",
+      "id": "prof-phone",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "change",
+      "tag": "input",
+      "id": "prof-phone",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "input",
+      "tag": "input",
+      "id": "prof-address",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "change",
+      "tag": "input",
+      "id": "prof-address",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "input",
+      "tag": "input",
+      "id": "prof-state",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "change",
+      "tag": "input",
+      "id": "prof-state",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-save-profile",
+      "label": "Save Profile Changes",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "👤 Company Profile",
+      "inline": "openProfileModal()",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "×",
+      "inline": "closeModal('modal-profile')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Return to Sign In",
+      "inline": "window.location.href='/login.html'",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Download PDF",
+      "inline": "downloadOfficialCertificate('pdf-regression-0')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/vendor-portal.html",
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "type": "click",
+      "tag": "button",
+      "id": "",
+      "label": "Download PDF",
+      "inline": "downloadOfficialCertificate('pdf-regression-1')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/dashboard.html",
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "type": "click",
+      "tag": "button",
+      "id": "tab-btn-evaluations",
+      "label": "All Assessments 41",
+      "inline": "switchDashboardTab('evaluations')",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "type": "input",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "type": "change",
+      "tag": "input",
+      "id": "login-email",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "type": "input",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "type": "change",
+      "tag": "input",
+      "id": "login-password",
+      "label": "",
+      "inline": "",
+      "href": "",
+      "action": ""
+    },
+    {
+      "page": "/login.html",
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "type": "click",
+      "tag": "button",
+      "id": "btn-login-submit",
+      "label": "Sign In",
+      "inline": "",
+      "href": "",
+      "action": ""
+    }
+  ],
+  "errors": [
+    {
+      "test": "Overview injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    },
+    {
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    },
+    {
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Dashboard fetch error: Error: Injected QA failure\n    at fetchEvaluations (http://127.0.0.1:42769/dashboard.html:5447:19)\n    at async fetchEvaluations (http://127.0.0.1:42769/manager-overview.js:83:7)"
+    },
+    {
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    },
+    {
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Dashboard fetch error: Error: Injected QA failure\n    at fetchEvaluations (http://127.0.0.1:42769/dashboard.html:5447:19)\n    at async fetchEvaluations (http://127.0.0.1:42769/manager-overview.js:83:7)"
+    },
+    {
+      "test": "Companies injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    },
+    {
+      "test": "Companies injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Error loading registered customers: Error: Injected QA failure\n    at fetchRegisteredCustomers (http://127.0.0.1:42769/dashboard.html:2741:19)"
+    },
+    {
+      "test": "Inquiries injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    },
+    {
+      "test": "Inquiries injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Error fetching inquiries: Error: Injected QA failure\n    at fetchInquiries (http://127.0.0.1:42769/dashboard.html:2998:19)"
+    },
+    {
+      "test": "Workload injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    },
+    {
+      "test": "Workload injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "message": "[TrackScore Workload] Failed to fetch workload: Error: Server returned HTTP 503\n    at fetchAssessorWorkload (http://127.0.0.1:42769/dashboard.html:4778:19)"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": true,
+      "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": true,
+      "message": "Failed to load resource: the server responded with a status of 503 (Service Unavailable)"
+    }
+  ],
+  "network": [
+    {
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-assessor-workload"
+    },
+    {
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=true&sortBy=createdAt"
+    },
+    {
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+    },
+    {
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
+    },
+    {
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
+    },
+    {
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
+    },
+    {
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/lookup-evaluation?id=stab-submitted"
+    },
+    {
+      "test": "Overview injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "status": 503,
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
+    },
+    {
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "status": 503,
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+    },
+    {
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "status": 503,
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+    },
+    {
+      "test": "Companies injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "status": 503,
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?status=registrations&limit=100"
+    },
+    {
+      "test": "Inquiries injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "status": 503,
+      "url": "http://127.0.0.1:42769/.netlify/functions/manage-inquiries?status=inquiry"
+    },
+    {
+      "test": "Workload injected failure exposes Retry and successful recovery",
+      "expected": true,
+      "status": 503,
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-assessor-workload"
+    },
+    {
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+    },
+    {
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&status=registered&sortBy=createdAt"
+    },
+    {
+      "test": "Assessor quoted assignment launches without script injection",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Assessor quoted assignment launches without script injection",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Assessor quoted assignment launches without script injection",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Assessor quoted assignment launches without script injection",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Assessor quoted assignment launches without script injection",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/status-stream?token=REDACTED"
+    },
+    {
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": true,
+      "status": 503,
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": true,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": true,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": true,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": true,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": true,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": true,
+      "status": 503,
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/status-stream?token=REDACTED"
+    },
+    {
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/status-stream?token=REDACTED"
+    },
+    {
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
+    },
+    {
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
+    },
+    {
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
+    },
+    {
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:42769/.netlify/functions/vendor-portal-data"
+    }
+  ],
+  "downloads": [
+    {
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "file": "assessment-report.pdf",
+      "bytes": 526944
+    },
+    {
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "file": "combined-report.pdf",
+      "bytes": 619924
+    },
+    {
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "file": "export.xlsx",
+      "bytes": 11593
+    },
+    {
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "file": "certificate-short.pdf",
+      "bytes": 377613
+    },
+    {
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "file": "certificate-long.pdf",
+      "bytes": 408394
+    }
+  ],
+  "metrics": [
+    {
+      "test": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
+      "longTasks": []
+    },
+    {
+      "test": "Schedule and assignment submissions fire once; all optional fields persist",
+      "longTasks": []
+    },
+    {
+      "test": "Manager metadata fields save through the permitted API and survive reload",
+      "longTasks": []
+    },
+    {
+      "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
+      "longTasks": []
+    },
+    {
+      "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
+      "longTasks": []
+    },
+    {
+      "test": "Lifecycle states expose only valid review, edit and certificate actions",
+      "longTasks": []
+    },
+    {
+      "test": "Overview injected failure exposes Retry and successful recovery",
+      "longTasks": []
+    },
+    {
+      "test": "Repository injected failure exposes Retry and successful recovery",
+      "longTasks": []
+    },
+    {
+      "test": "Companies injected failure exposes Retry and successful recovery",
+      "longTasks": []
+    },
+    {
+      "test": "Inquiries injected failure exposes Retry and successful recovery",
+      "longTasks": []
+    },
+    {
+      "test": "Workload injected failure exposes Retry and successful recovery",
+      "longTasks": []
+    },
+    {
+      "test": "Client fetch cancellation keeps the newest filter result",
+      "longTasks": []
+    },
+    {
+      "test": "Pagination Next and Previous fetch distinct pages without stale rows",
+      "longTasks": []
+    },
+    {
+      "test": "Staff role, password toggles, Copy PW, reset, cancel and delete retain identity",
+      "longTasks": []
+    },
+    {
+      "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
+      "longTasks": [
+        566,
+        125,
+        131,
+        442,
+        93,
+        114
+      ]
+    },
+    {
+      "test": "Assessor notification details, dismiss, lookup Search, Escape and correction controls use the owned record",
+      "longTasks": []
+    },
+    {
+      "test": "Draft banner resume/delete and submit confirmation Cancel preserve browser and server state",
+      "longTasks": []
+    },
+    {
+      "test": "Assessor quoted assignment launches without script injection",
+      "longTasks": []
+    },
+    {
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "longTasks": []
+    },
+    {
+      "test": "Vendor failed data fetch shows the existing sign-in recovery control",
+      "longTasks": []
+    },
+    {
+      "test": "Downloaded short and long certificate PDFs refer to real issued records",
+      "longTasks": [
+        60
+      ]
+    },
+    {
+      "test": "Responsive role pages and modal actions fit all five requested viewports",
+      "longTasks": []
+    },
+    {
+      "test": "SSE connection count remains bounded and no page requests survive actual navigation",
+      "longTasks": []
+    }
+  ]
+}

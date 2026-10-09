@@ -26,7 +26,7 @@ import { ROLE_MANAGER } from '../netlify/functions/auth.js';
 
 async function bootstrapFirstManager() {
   const args = process.argv.slice(2);
-  const email = (args[0] || process.env.FIRST_MANAGER_EMAIL || 'admin@trackscore.my').trim().toLowerCase();
+  const email = (args[0] || process.env.FIRST_MANAGER_EMAIL || '').trim().toLowerCase();
   const password = (args[1] || process.env.FIRST_MANAGER_PASSWORD || '').trim();
   const name = (args[2] || process.env.FIRST_MANAGER_NAME || 'MIROS Lead Manager').trim();
 

@@ -1,0 +1,62 @@
+{
+  "generatedAt": "2026-10-08T01:54:54.785Z",
+  "staticBackendArtifactsAbsent": true,
+  "results": [
+    {
+      "url": "/server.cjs",
+      "status": 404
+    },
+    {
+      "url": "/server.cjs.map",
+      "status": 404
+    },
+    {
+      "url": "/build/server.cjs",
+      "status": 404
+    },
+    {
+      "url": "/.env",
+      "status": 404
+    },
+    {
+      "url": "/.data/evaluations.json",
+      "status": 404
+    },
+    {
+      "url": "/netlify/functions/auth.js",
+      "status": 404
+    },
+    {
+      "url": "/qa/stabilization/state.json",
+      "status": 404
+    },
+    {
+      "url": "/",
+      "status": 200
+    },
+    {
+      "url": "/dashboard.html",
+      "status": 200
+    },
+    {
+      "url": "/index.html",
+      "status": 200
+    },
+    {
+      "url": "/vendor-portal.html",
+      "status": 200
+    },
+    {
+      "url": "/verify-certificate.html",
+      "status": 200
+    },
+    {
+      "url": "login with production DB unavailable",
+      "status": 503,
+      "body": {
+        "success": false,
+        "error": "Authentication is temporarily unavailable. Please try again later."
+      }
+    }
+  ]
+}

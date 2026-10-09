@@ -1,0 +1,13 @@
+{
+  "getEvaluationRequests": 7,
+  "requests": [
+    "/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt",
+    "/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all",
+    "/.netlify/functions/get-evaluations?status=registrations&limit=1",
+    "/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all",
+    "/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all",
+    "/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all",
+    "/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
+  ],
+  "toasts": 4
+}
