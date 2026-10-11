@@ -6,6 +6,7 @@
 
 import express, { Request, Response, NextFunction } from 'express';
 import path from 'path';
+import fs from 'fs';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -480,9 +481,24 @@ app.get(['/verify-certificate', '/verify-certificate.html', '/verify', '/verify.
   res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'verify-certificate.html'));
 });
 
+app.get(['/react/manager', '/react/manager.html'], (req: Request, res: Response) => {
+  const distReactManager = path.join(distDir, 'react/manager.html');
+  if (fs.existsSync(distReactManager)) {
+    return res.sendFile(distReactManager);
+  }
+  const rootReactManager = path.join(rootDir, 'react/manager.html');
+  if (fs.existsSync(rootReactManager)) {
+    return res.sendFile(rootReactManager);
+  }
+  res.status(404).send('Not Found');
+});
+
 // Serve ONLY explicitly allowed assets from publicDir (and distDir in production)
 // Do NOT serve rootDir!
 app.use(express.static(publicDir, { dotfiles: 'ignore', index: false }));
+if (fs.existsSync(path.join(distDir, 'assets'))) {
+  app.use('/assets', express.static(path.join(distDir, 'assets'), { dotfiles: 'ignore', index: false }));
+}
 if (isProduction) {
   app.use(express.static(distDir, { dotfiles: 'ignore', index: false }));
 }

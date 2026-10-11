@@ -313,7 +313,7 @@
       <div class="manager-tools">
       <div class="dashboard-tab-bar" id="dashboard-tabs-container" aria-label="Manager navigation">
         <button type="button" class="dash-tab-btn active" id="tab-btn-overview" onclick="switchDashboardTab('overview')">Dashboard</button>
-        <button type="button" class="dash-tab-btn active" id="tab-btn-evaluations" onclick="switchDashboardTab('evaluations')">
+        <button type="button" class="dash-tab-btn" id="tab-btn-evaluations" onclick="switchDashboardTab('evaluations')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
             <polyline points="14 2 14 8 20 8"></polyline>
@@ -2602,9 +2602,17 @@
       let inquiriesCount = 0;
 
       // AbortControllers to cancel in-flight requests on rapid filter/page changes
+      let isPageUnloading = false;
       let evaluationsAbortController = null;
       let registeredAbortController = null;
       let workloadAbortController = null;
+
+      window.addEventListener('beforeunload', () => {
+        isPageUnloading = true;
+        evaluationsAbortController?.abort();
+        registeredAbortController?.abort();
+        workloadAbortController?.abort();
+      });
 
       function updateDashboardTabBadges() {
         const badgeEvals = document.getElementById("tab-badge-evaluations");
@@ -2750,7 +2758,7 @@
             filterRegisteredCustomers();
           }
         } catch (error) {
-          if (error.name === 'AbortError') return;
+          if (error.name === 'AbortError' || signal?.aborted || isPageUnloading || (document.visibilityState === 'hidden' && error instanceof TypeError)) return;
           console.error("Error loading registered customers:", error);
           if (tbody) {
             tbody.innerHTML = `
@@ -4792,7 +4800,7 @@
             filterAndRenderWorkloadTable();
           }
         } catch (err) {
-          if (err.name === 'AbortError') return;
+          if (err.name === 'AbortError' || signal?.aborted || isPageUnloading || (document.visibilityState === 'hidden' && err instanceof TypeError)) return;
           console.error("[TrackScore Workload] Failed to fetch workload:", err);
           if (tbody && !isSilent) {
             tbody.innerHTML = `
@@ -5470,7 +5478,7 @@
             throw new Error(result.error || "Failed to load records");
           }
         } catch (error) {
-          if (error.name === 'AbortError') return;
+          if (error.name === 'AbortError' || signal?.aborted || isPageUnloading || (document.visibilityState === 'hidden' && error instanceof TypeError)) return;
           console.error("Dashboard fetch error:", error);
 
           if (isSilent) {
@@ -5765,6 +5773,10 @@
       }
 
       window.addEventListener('pagehide', () => {
+        isPageUnloading = true;
+        evaluationsAbortController?.abort();
+        registeredAbortController?.abort();
+        workloadAbortController?.abort();
         clearTimeout(dashboardRealtimeTimer);
         dashboardPendingEvent = null;
         dashboardSse?.close();

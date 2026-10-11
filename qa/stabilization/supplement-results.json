@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T01:54:48.599Z",
+  "generatedAt": "2026-10-10T03:13:34.959Z",
   "results": [
     {
       "name": "Remaining Public portal links navigate to their declared destinations",
@@ -394,7 +394,7 @@
           "tag": "button",
           "id": "",
           "label": "Review & Confirm",
-          "inline": "openManageInvoiceModal('eval_1791424463842_wczbr', 'Supplemental QA Fleet', 'Package 2', {\"invoiceNumber\":\"INV-2026-2464\",\"amount\":6000,\"issuedDate\":\"2026-10-08\",\"dueDate\":\"2026-10-22\",\"status\":\"draft\",\"isConfirmed\":false,\"isDraftStub\":true})",
+          "inline": "openManageInvoiceModal('eval_1791601991123_1uchh', 'Supplemental QA Fleet', 'Package 2', {\"invoiceNumber\":\"INV-2026-6637\",\"amount\":6000,\"issuedDate\":\"2026-10-10\",\"dueDate\":\"2026-10-24\",\"status\":\"draft\",\"isConfirmed\":false,\"isDraftStub\":true})",
           "href": "",
           "action": ""
         },
@@ -2350,7 +2350,7 @@
       "tag": "button",
       "id": "",
       "label": "Review & Confirm",
-      "inline": "openManageInvoiceModal('eval_1791424463842_wczbr', 'Supplemental QA Fleet', 'Package 2', {\"invoiceNumber\":\"INV-2026-2464\",\"amount\":6000,\"issuedDate\":\"2026-10-08\",\"dueDate\":\"2026-10-22\",\"status\":\"draft\",\"isConfirmed\":false,\"isDraftStub\":true})",
+      "inline": "openManageInvoiceModal('eval_1791601991123_1uchh', 'Supplemental QA Fleet', 'Package 2', {\"invoiceNumber\":\"INV-2026-6637\",\"amount\":6000,\"issuedDate\":\"2026-10-10\",\"dueDate\":\"2026-10-24\",\"status\":\"draft\",\"isConfirmed\":false,\"isDraftStub\":true})",
       "href": "",
       "action": ""
     },
@@ -3846,32 +3846,32 @@
       "test": "Public package selection persists and external contact links expose valid handoff targets",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=100&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=100&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=100&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=100&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Replayed SSE event bursts produce one refresh and one toast per role",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     }
   ],
   "downloads": [
     {
       "test": "Assessor report PDF button and print view download the selected owned assessment",
       "file": "assessor-report.pdf",
-      "bytes": 565700
+      "bytes": 568656
     }
   ],
   "metrics": [
@@ -3894,19 +3894,19 @@
     {
       "test": "Workload search, capacity filter, sort and assessor repository links reflect persisted assignments",
       "longTasks": [
-        51
+        50
       ]
     },
     {
       "test": "Inquiry search, status filter and retained Public Form link respond correctly",
       "longTasks": [
-        51
+        50
       ]
     },
     {
       "test": "Certificate number, dates, delivery method and notes persist through all four native stages",
       "longTasks": [
-        51
+        50
       ]
     },
     {
@@ -3920,9 +3920,9 @@
     {
       "test": "Assessor report PDF button and print view download the selected owned assessment",
       "longTasks": [
-        531,
-        74,
-        64
+        582,
+        70,
+        65
       ]
     },
     {

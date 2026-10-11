@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T02:00:35.897Z",
+  "generatedAt": "2026-10-10T02:35:43.889Z",
   "command": "tsx server.ts (npm run dev equivalent), isolated cwd and explicit development/test environment",
   "results": [
     {
@@ -25,7 +25,7 @@
     {
       "route": "Manager authenticated record read",
       "status": 200,
-      "count": 25
+      "count": 12
     }
   ]
 }

@@ -1,12 +1,12 @@
 {
-  "generatedAt": "2026-10-08T02:01:30.983Z",
+  "generatedAt": "2026-10-10T02:52:14.997Z",
   "results": [
     {
       "file": "certificate-short.pdf",
       "pages": 1,
-      "bytes": 377372,
-      "sha256": "82efa69023c09e0389ff38ff6f74cce257f05810e0b75b3a9c161036c6a27d45",
-      "qr": "http://127.0.0.1:33861/verify-certificate.html?cert=TS-STAB-PDF-0",
+      "bytes": 377590,
+      "sha256": "5664c05f136210dfaa671eb79bea1c8000934989afd43a760e6f78cb491fa7f4",
+      "qr": "http://127.0.0.1:41877/verify-certificate.html?cert=TS-STAB-PDF-0",
       "publicVerification": {
         "valid": true,
         "certificate": {
@@ -28,9 +28,9 @@
     {
       "file": "certificate-long.pdf",
       "pages": 1,
-      "bytes": 408385,
-      "sha256": "a0450e487e8cdac8a134a9149df69f8d085546515db01e774cebfcfb2283ca2f",
-      "qr": "http://127.0.0.1:33861/verify-certificate.html?cert=TS-STAB-PDF-1",
+      "bytes": 408335,
+      "sha256": "acb0c65b8791212e402d28aaa7c357dfebe17275b86339e98dffc427c0e85105",
+      "qr": "http://127.0.0.1:41877/verify-certificate.html?cert=TS-STAB-PDF-1",
       "publicVerification": {
         "valid": true,
         "certificate": {
@@ -52,27 +52,27 @@
     {
       "file": "assessment-report.pdf",
       "pages": 1,
-      "bytes": 526939,
-      "sha256": "87a867a78150c5a605bd2c4f39b6a66a3681aa678e9469672d9abae4410fe15d"
+      "bytes": 527231,
+      "sha256": "84d5c28e7586237bf958a9dadd50286970b6abe4e2d412ac8c4f96803bee0ae7"
     },
     {
       "file": "combined-report.pdf",
       "pages": 4,
-      "bytes": 1504317,
-      "sha256": "6b55bbbd57e270bdd5dda5cfec84368f27d8902515a7b08772ccc8517b9073a0"
+      "bytes": 1586039,
+      "sha256": "35adeec2162d48f954692f27a09f8909596e2f860fcbff4a31c2f02bf0be1140"
     },
     {
       "file": "report-print-view.pdf",
       "pages": 1,
-      "bytes": 72442,
-      "sha256": "a7946323c8b57cb20dd550a47aba6c3ee03135c2aa842ab1405967d977dd3230",
+      "bytes": 72130,
+      "sha256": "4a7331d57baad3cbf55fe71d73a51ced6881fba9bdcb2fdb873a1728e103f3e2",
       "printOnlySelectedReport": true
     },
     {
       "file": "assessor-report.pdf",
       "pages": 1,
-      "bytes": 568659,
-      "sha256": "b6fcf2526d1c033479aaea683ad8a52be1dff47a11e25686cd99757bd6318673"
+      "bytes": 568656,
+      "sha256": "6d81ab7b68809b4e1f36f4fca0c0a6bb66a5f4e546e73d234319b9ded9fa21f3"
     },
     {
       "file": "assessor-form-report.pdf",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-08T01:54:19.712Z",
+  "generatedAt": "2026-10-10T03:13:06.891Z",
   "results": [
     {
       "name": "Quoted and hostile names remain inert when scheduling, assignment and credentials actions are clicked",
@@ -159,7 +159,7 @@
           "tag": "button",
           "id": "",
           "label": "+ Schedule",
-          "inline": "openScheduleModal('eval_1791424354859_k0cfu', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
+          "inline": "openScheduleModal('eval_1791601880536_8lla8', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
           "href": "",
           "action": ""
         },
@@ -181,7 +181,7 @@
           "tag": "button",
           "id": "",
           "label": "+ Assign",
-          "inline": "openAssignTaskModal('eval_1791424354859_k0cfu', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', '', '', '', '')",
+          "inline": "openAssignTaskModal('eval_1791601880536_8lla8', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', '', '', '', '')",
           "href": "",
           "action": ""
         },
@@ -224,7 +224,7 @@
           "tag": "button",
           "id": "",
           "label": "+ Schedule",
-          "inline": "openScheduleModal('eval_1791424354859_k0cfu', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
+          "inline": "openScheduleModal('eval_1791601880536_8lla8', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
           "href": "",
           "action": ""
         },
@@ -323,7 +323,7 @@
           "tag": "button",
           "id": "",
           "label": "Reassign",
-          "inline": "openAssignTaskModal('eval_1791424354859_k0cfu', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', 'Stability Assessor', 'stability-assessor', '2026-10-09', 'Stability schedule note')",
+          "inline": "openAssignTaskModal('eval_1791601880536_8lla8', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', 'Stability Assessor', 'stability-assessor', '2026-10-09', 'Stability schedule note')",
           "href": "",
           "action": ""
         },
@@ -428,7 +428,7 @@
           "tag": "button",
           "id": "",
           "label": "Edit",
-          "inline": "openEditModal('eval_1791424354859_k0cfu')",
+          "inline": "openEditModal('eval_1791601880536_8lla8')",
           "href": "",
           "action": ""
         },
@@ -637,7 +637,7 @@
           "tag": "button",
           "id": "",
           "label": "Edit",
-          "inline": "openEditModal('eval_1791424354859_k0cfu')",
+          "inline": "openEditModal('eval_1791601880536_8lla8')",
           "href": "",
           "action": ""
         },
@@ -665,7 +665,7 @@
           "tag": "button",
           "id": "",
           "label": "Archive",
-          "inline": "openArchiveModal('eval_1791424354859_k0cfu')",
+          "inline": "openArchiveModal('eval_1791601880536_8lla8')",
           "href": "",
           "action": ""
         },
@@ -687,7 +687,7 @@
           "tag": "button",
           "id": "",
           "label": "Archive",
-          "inline": "openArchiveModal('eval_1791424354859_k0cfu')",
+          "inline": "openArchiveModal('eval_1791601880536_8lla8')",
           "href": "",
           "action": ""
         },
@@ -1828,7 +1828,7 @@
           "tag": "button",
           "id": "",
           "label": "🔑 Reset PW",
-          "inline": "openResetPasswordModal('user_1791424416825_ll8r')",
+          "inline": "openResetPasswordModal('user_1791601943521_5i5w')",
           "href": "",
           "action": ""
         },
@@ -1905,7 +1905,7 @@
           "tag": "button",
           "id": "",
           "label": "Delete",
-          "inline": "openDeleteUserModal('user_1791424416825_ll8r')",
+          "inline": "openDeleteUserModal('user_1791601943521_5i5w')",
           "href": "",
           "action": ""
         },
@@ -1927,7 +1927,7 @@
           "tag": "button",
           "id": "",
           "label": "Delete",
-          "inline": "openDeleteUserModal('user_1791424416825_ll8r')",
+          "inline": "openDeleteUserModal('user_1791601943521_5i5w')",
           "href": "",
           "action": ""
         },
@@ -2047,7 +2047,7 @@
           "id": "",
           "label": "",
           "inline": "",
-          "href": "blob:http://127.0.0.1:33861/31c6e0e2-f62d-455b-8e23-bed63df374c6",
+          "href": "blob:http://127.0.0.1:43857/2d6a4763-9932-4411-8e9e-6fd392a303fa",
           "action": ""
         }
       ]
@@ -3691,7 +3691,7 @@
       "tag": "button",
       "id": "",
       "label": "+ Schedule",
-      "inline": "openScheduleModal('eval_1791424354859_k0cfu', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
+      "inline": "openScheduleModal('eval_1791601880536_8lla8', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
       "href": "",
       "action": ""
     },
@@ -3713,7 +3713,7 @@
       "tag": "button",
       "id": "",
       "label": "+ Assign",
-      "inline": "openAssignTaskModal('eval_1791424354859_k0cfu', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', '', '', '', '')",
+      "inline": "openAssignTaskModal('eval_1791601880536_8lla8', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', '', '', '', '')",
       "href": "",
       "action": ""
     },
@@ -3746,7 +3746,7 @@
       "tag": "button",
       "id": "",
       "label": "+ Schedule",
-      "inline": "openScheduleModal('eval_1791424354859_k0cfu', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
+      "inline": "openScheduleModal('eval_1791601880536_8lla8', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', '', 'Model O\\'Brien', '', '')",
       "href": "",
       "action": ""
     },
@@ -3845,7 +3845,7 @@
       "tag": "button",
       "id": "",
       "label": "Reassign",
-      "inline": "openAssignTaskModal('eval_1791424354859_k0cfu', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', 'Stability Assessor', 'stability-assessor', '2026-10-09', 'Stability schedule note')",
+      "inline": "openAssignTaskModal('eval_1791601880536_8lla8', 'O\\'Brien & Fleet \\\"QA\\\" \\'); window.__xssRan=true; //', 'Model O\\'Brien', 'Stability Assessor', 'stability-assessor', '2026-10-09', 'Stability schedule note')",
       "href": "",
       "action": ""
     },
@@ -3944,7 +3944,7 @@
       "tag": "button",
       "id": "",
       "label": "Edit",
-      "inline": "openEditModal('eval_1791424354859_k0cfu')",
+      "inline": "openEditModal('eval_1791601880536_8lla8')",
       "href": "",
       "action": ""
     },
@@ -4153,7 +4153,7 @@
       "tag": "button",
       "id": "",
       "label": "Edit",
-      "inline": "openEditModal('eval_1791424354859_k0cfu')",
+      "inline": "openEditModal('eval_1791601880536_8lla8')",
       "href": "",
       "action": ""
     },
@@ -4175,7 +4175,7 @@
       "tag": "button",
       "id": "",
       "label": "Archive",
-      "inline": "openArchiveModal('eval_1791424354859_k0cfu')",
+      "inline": "openArchiveModal('eval_1791601880536_8lla8')",
       "href": "",
       "action": ""
     },
@@ -4197,7 +4197,7 @@
       "tag": "button",
       "id": "",
       "label": "Archive",
-      "inline": "openArchiveModal('eval_1791424354859_k0cfu')",
+      "inline": "openArchiveModal('eval_1791601880536_8lla8')",
       "href": "",
       "action": ""
     },
@@ -5275,7 +5275,7 @@
       "tag": "button",
       "id": "",
       "label": "🔑 Reset PW",
-      "inline": "openResetPasswordModal('user_1791424416825_ll8r')",
+      "inline": "openResetPasswordModal('user_1791601943521_5i5w')",
       "href": "",
       "action": ""
     },
@@ -5352,7 +5352,7 @@
       "tag": "button",
       "id": "",
       "label": "Delete",
-      "inline": "openDeleteUserModal('user_1791424416825_ll8r')",
+      "inline": "openDeleteUserModal('user_1791601943521_5i5w')",
       "href": "",
       "action": ""
     },
@@ -5374,7 +5374,7 @@
       "tag": "button",
       "id": "",
       "label": "Delete",
-      "inline": "openDeleteUserModal('user_1791424416825_ll8r')",
+      "inline": "openDeleteUserModal('user_1791601943521_5i5w')",
       "href": "",
       "action": ""
     },
@@ -5496,7 +5496,7 @@
       "id": "",
       "label": "",
       "inline": "",
-      "href": "blob:http://127.0.0.1:33861/31c6e0e2-f62d-455b-8e23-bed63df374c6",
+      "href": "blob:http://127.0.0.1:43857/2d6a4763-9932-4411-8e9e-6fd392a303fa",
       "action": ""
     },
     {
@@ -6988,7 +6988,7 @@
     {
       "test": "Repository injected failure exposes Retry and successful recovery",
       "expected": true,
-      "message": "Dashboard fetch error: Error: Injected QA failure\n    at fetchEvaluations (http://127.0.0.1:33861/dashboard.html:5447:19)\n    at async fetchEvaluations (http://127.0.0.1:33861/manager-overview.js:83:7)"
+      "message": "Dashboard fetch error: Error: Injected QA failure\n    at fetchEvaluations (http://127.0.0.1:43857/dashboard.html:5455:19)\n    at async fetchEvaluations (http://127.0.0.1:43857/manager-overview.js:83:7)"
     },
     {
       "test": "Repository injected failure exposes Retry and successful recovery",
@@ -6998,7 +6998,7 @@
     {
       "test": "Repository injected failure exposes Retry and successful recovery",
       "expected": true,
-      "message": "Dashboard fetch error: Error: Injected QA failure\n    at fetchEvaluations (http://127.0.0.1:33861/dashboard.html:5447:19)\n    at async fetchEvaluations (http://127.0.0.1:33861/manager-overview.js:83:7)"
+      "message": "Dashboard fetch error: Error: Injected QA failure\n    at fetchEvaluations (http://127.0.0.1:43857/dashboard.html:5455:19)\n    at async fetchEvaluations (http://127.0.0.1:43857/manager-overview.js:83:7)"
     },
     {
       "test": "Companies injected failure exposes Retry and successful recovery",
@@ -7008,7 +7008,7 @@
     {
       "test": "Companies injected failure exposes Retry and successful recovery",
       "expected": true,
-      "message": "Error loading registered customers: Error: Injected QA failure\n    at fetchRegisteredCustomers (http://127.0.0.1:33861/dashboard.html:2741:19)"
+      "message": "Error loading registered customers: Error: Injected QA failure\n    at fetchRegisteredCustomers (http://127.0.0.1:43857/dashboard.html:2749:19)"
     },
     {
       "test": "Inquiries injected failure exposes Retry and successful recovery",
@@ -7018,7 +7018,7 @@
     {
       "test": "Inquiries injected failure exposes Retry and successful recovery",
       "expected": true,
-      "message": "Error fetching inquiries: Error: Injected QA failure\n    at fetchInquiries (http://127.0.0.1:33861/dashboard.html:2998:19)"
+      "message": "Error fetching inquiries: Error: Injected QA failure\n    at fetchInquiries (http://127.0.0.1:43857/dashboard.html:3006:19)"
     },
     {
       "test": "Workload injected failure exposes Retry and successful recovery",
@@ -7028,7 +7028,7 @@
     {
       "test": "Workload injected failure exposes Retry and successful recovery",
       "expected": true,
-      "message": "[TrackScore Workload] Failed to fetch workload: Error: Server returned HTTP 503\n    at fetchAssessorWorkload (http://127.0.0.1:33861/dashboard.html:4778:19)"
+      "message": "[TrackScore Workload] Failed to fetch workload: Error: Server returned HTTP 503\n    at fetchAssessorWorkload (http://127.0.0.1:43857/dashboard.html:4786:19)"
     },
     {
       "test": "Vendor failed data fetch shows the existing sign-in recovery control",
@@ -7041,154 +7041,160 @@
       "test": "setup",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=true&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=true&sortBy=createdAt"
     },
     {
       "test": "Archive Cancel and Confirm operate on the selected record once and preserve history",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Superseded details requests cannot replace the current record or reopen a closed modal",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/lookup-evaluation?id=stab-submitted"
+      "url": "http://127.0.0.1:43857/.netlify/functions/lookup-evaluation?id=stab-submitted"
     },
     {
       "test": "Overview injected failure exposes Retry and successful recovery",
       "expected": true,
       "status": 503,
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?view=overview&q=&overviewStatus=all&overviewSla=all"
     },
     {
       "test": "Repository injected failure exposes Retry and successful recovery",
       "expected": true,
       "status": 503,
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Repository injected failure exposes Retry and successful recovery",
       "expected": true,
       "status": 503,
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Companies injected failure exposes Retry and successful recovery",
       "expected": true,
       "status": 503,
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?status=registrations&limit=100"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?status=registrations&limit=100"
     },
     {
       "test": "Inquiries injected failure exposes Retry and successful recovery",
       "expected": true,
       "status": 503,
-      "url": "http://127.0.0.1:33861/.netlify/functions/manage-inquiries?status=inquiry"
+      "url": "http://127.0.0.1:43857/.netlify/functions/manage-inquiries?status=inquiry"
     },
     {
       "test": "Workload injected failure exposes Retry and successful recovery",
       "expected": true,
       "status": 503,
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-assessor-workload"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-assessor-workload"
     },
     {
       "test": "Client fetch cancellation keeps the newest filter result",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Client fetch cancellation keeps the newest filter result",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&status=registered&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&status=registered&sortBy=createdAt"
     },
     {
       "test": "Pagination Next and Previous fetch distinct pages without stale rows",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/status-stream?token=REDACTED"
+      "url": "http://127.0.0.1:43857/.netlify/functions/vendor-portal-data"
+    },
+    {
+      "test": "Vendor activity timestamps, readonly identity and profile fields remain stable after reload",
+      "expected": false,
+      "error": "net::ERR_ABORTED",
+      "url": "http://127.0.0.1:43857/.netlify/functions/status-stream?token=REDACTED"
     },
     {
       "test": "Vendor failed data fetch shows the existing sign-in recovery control",
       "expected": true,
       "status": 503,
-      "url": "http://127.0.0.1:33861/.netlify/functions/vendor-portal-data"
+      "url": "http://127.0.0.1:43857/.netlify/functions/vendor-portal-data"
     },
     {
       "test": "Downloaded short and long certificate PDFs refer to real issued records",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/status-stream?token=REDACTED"
+      "url": "http://127.0.0.1:43857/.netlify/functions/status-stream?token=REDACTED"
     },
     {
       "test": "Responsive role pages and modal actions fit all five requested viewports",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/status-stream?token=REDACTED"
+      "url": "http://127.0.0.1:43857/.netlify/functions/status-stream?token=REDACTED"
     },
     {
       "test": "Responsive role pages and modal actions fit all five requested viewports",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "Replayed SSE event bursts produce one refresh and one toast per role",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/status-stream?token=REDACTED"
+      "url": "http://127.0.0.1:43857/.netlify/functions/status-stream?token=REDACTED"
     },
     {
       "test": "Replayed SSE event bursts produce one refresh and one toast per role",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
+      "url": "http://127.0.0.1:43857/.netlify/functions/get-evaluations?page=1&limit=25&includeDeleted=false&sortBy=createdAt"
     },
     {
       "test": "SSE connection count remains bounded and no page requests survive actual navigation",
       "expected": false,
       "error": "net::ERR_ABORTED",
-      "url": "http://127.0.0.1:33861/.netlify/functions/status-stream?token=REDACTED"
+      "url": "http://127.0.0.1:43857/.netlify/functions/status-stream?token=REDACTED"
     }
   ],
   "downloads": [
     {
       "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
       "file": "assessment-report.pdf",
-      "bytes": 526939
+      "bytes": 526949
     },
     {
       "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
       "file": "combined-report.pdf",
-      "bytes": 1504317
+      "bytes": 1526510
     },
     {
       "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
       "file": "export.xlsx",
-      "bytes": 11601
+      "bytes": 11600
     },
     {
       "test": "Downloaded short and long certificate PDFs refer to real issued records",
       "file": "certificate-short.pdf",
-      "bytes": 377372
+      "bytes": 377554
     },
     {
       "test": "Downloaded short and long certificate PDFs refer to real issued records",
       "file": "certificate-long.pdf",
-      "bytes": 408385
+      "bytes": 408262
     }
   ],
   "metrics": [
@@ -7251,12 +7257,12 @@
     {
       "test": "Manager report PDF, combined PDF, Excel and print view produce actual usable files",
       "longTasks": [
-        706,
-        220,
-        245,
-        759,
-        153,
-        250
+        665,
+        188,
+        134,
+        763,
+        206,
+        284
       ]
     },
     {
@@ -7282,7 +7288,8 @@
     {
       "test": "Downloaded short and long certificate PDFs refer to real issued records",
       "longTasks": [
-        62
+        56,
+        57
       ]
     },
     {
