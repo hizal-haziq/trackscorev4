@@ -6,7 +6,7 @@ export class ApiError extends Error {
   constructor(message: string, public status: number, public kind: ApiErrorKind = 'http') {super(message); this.name = 'ApiError';}
 }
 export function apiUrl(endpoint: string, prefix: ApiPrefix = import.meta.env?.VITE_API_PREFIX === '/api' ? '/api' : '/.netlify/functions'): string {
-  if (!/^[a-z][a-z0-9-]*(?:\?[^#]*)?$/.test(endpoint) || /[\r\n]/.test(endpoint)) throw new Error('Invalid API endpoint.');
+  if (!['/api', '/.netlify/functions'].includes(prefix) || !/^[a-z][a-z0-9-]*(?:\?[^#]*)?$/.test(endpoint) || /[\r\n]/.test(endpoint)) throw new Error('Invalid API endpoint.');
   return `${prefix}/${endpoint}`;
 }
 export function apiRequest(endpoint: string, options: ApiOptions & {responseType: 'blob'}): Promise<Blob>;
@@ -18,10 +18,12 @@ export async function apiRequest(endpoint: string, options: ApiOptions = {}): Pr
   if (authenticated) {const session = readSession(); if (session) headers.set('Authorization', `Bearer ${session.token}`);}
   if (body !== undefined) headers.set('Content-Type', 'application/json');
   const response = await fetch(apiUrl(endpoint, prefix), {...init, headers, ...(body !== undefined ? {body: JSON.stringify(body)} : {})});
+  init.signal?.throwIfAborted();
   // Inspect JSON errors even when the successful response is a file download.
   let parsed: unknown;
   const isJson = response.headers.get('content-type')?.includes('json');
-  if (isJson) {try {parsed = await response.json();} catch {parsed = null;}}
+  if (isJson) {try {parsed = await response.json();} catch (error) {if (error instanceof Error && error.name === 'AbortError') throw error; parsed = null;}}
+  init.signal?.throwIfAborted();
   const message = isRecord(parsed) && typeof parsed.error === 'string' ? parsed.error : 'The request could not be completed. Please try again.';
   if (response.status === 401) {clearSession(); throw new ApiError('Your session has expired. Please sign in again.', 401, 'unauthenticated');}
   if (response.status === 403) {

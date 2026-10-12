@@ -4,11 +4,12 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "tsx server.ts",
-    "build": "vite build && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=build/server.cjs",
+    "dev": "NODE_ENV=development tsx server.ts",
+    "build:react": "vite build --config vite.react.config.ts",
+    "build": "vite build && npm run build:react && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=build/server.cjs",
     "start": "node build/server.cjs",
     "clean": "rm -rf dist build server.js",
-    "lint": "tsc --noEmit",
+    "lint": "tsc --noEmit && tsc --noEmit -p tsconfig.react.json",
     "test": "node scripts/run-tests-isolated.mjs",
     "reset-data": "node scripts/reset-data.js"
   },

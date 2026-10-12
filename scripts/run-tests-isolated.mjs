@@ -9,13 +9,13 @@ const root = path.resolve(import.meta.dirname, '..');
 const workspace = fs.mkdtempSync(path.join(os.tmpdir(), 'trackscore-tests-'));
 let exitCode = 1;
 try {
-  for (const name of ['tests', 'netlify', 'public']) fs.cpSync(path.join(root, name), path.join(workspace, name), { recursive: true });
+  for (const name of ['tests', 'netlify', 'public', 'src']) fs.cpSync(path.join(root, name), path.join(workspace, name), { recursive: true });
   for (const name of fs.readdirSync(root).filter(name => /\.(html|js|css|svg|json)$/.test(name))) {
     if (fs.statSync(path.join(root, name)).isFile()) fs.copyFileSync(path.join(root, name), path.join(workspace, name));
   }
   fs.symlinkSync(path.join(root, 'node_modules'), path.join(workspace, 'node_modules'), 'junction');
   const files = fs.readdirSync(path.join(workspace, 'tests')).filter(name => name.endsWith('.test.js')).map(name => `tests/${name}`);
-  const result = spawnSync(process.execPath, ['--test', '--test-concurrency=1', ...files], {
+  const result = spawnSync(process.execPath, ['--import', 'tsx', '--test', '--test-concurrency=1', ...files], {
     cwd: workspace, stdio: 'inherit',
     env: { ...process.env, NODE_ENV: 'test', CONTEXT: 'test', MONGODB_URI: '', JWT_SECRET: crypto.randomBytes(32).toString('hex'), AUTO_SEED_DEFAULT_USERS: 'false', RESEND_API_KEY: '', SMTP_PASSWORD: '' }
   });

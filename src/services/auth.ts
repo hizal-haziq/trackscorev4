@@ -58,6 +58,6 @@ export function saveSession(response: LoginResponse) {
 export function requirePasswordChange() {
   const store = storage();
   const profile = parse(store?.getItem(AUTH_KEYS.user) || null);
-  store?.setItem(AUTH_KEYS.user, JSON.stringify({...isRecord(profile) ? profile : {}, mustChangePassword: true}));
+  store?.setItem(AUTH_KEYS.user, JSON.stringify({... (isRecord(profile) ? profile : {}), mustChangePassword: true}));
   announce();
 }

@@ -5,6 +5,7 @@
  */
 
 import express, { Request, Response, NextFunction } from 'express';
+import {spawn, type ChildProcess} from 'node:child_process';
 import path from 'path';
 import fs from 'fs';
 import dotenv from 'dotenv';
@@ -426,6 +427,18 @@ app.use((req: Request, res: Response, next: NextFunction) => {
 });
 
 // Specific HTML route shortcuts
+// Serve generated React output only. Source and repository paths remain blocked.
+app.use('/react', (req: Request, res: Response) => {
+  if (req.method !== 'GET' && req.method !== 'HEAD') return res.status(404).send('Not Found');
+  if (req.path === '/manager') return res.redirect('/react/manager.html');
+  const allowed = req.path === '/manager.html' || /^\/assets\/[a-zA-Z0-9_-]+\.(js|css|svg|png|woff2)$/.test(req.path);
+  if (!allowed) return res.status(404).send('Not Found');
+  res.setHeader('Cache-Control', 'no-store');
+  return res.sendFile(path.join(distDir, 'react', req.path), err => {
+    if (err && !res.headersSent) res.status(404).send('Not Found');
+  });
+});
+
 app.get(['/', '/landing', '/landing.html'], (req: Request, res: Response) => {
   const target = isProduction && path.join(distDir, 'landing.html');
   res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'landing.html'));
@@ -481,18 +494,6 @@ app.get(['/verify-certificate', '/verify-certificate.html', '/verify', '/verify.
   res.sendFile(target && path.resolve(target) ? target : path.join(publicDir, 'verify-certificate.html'));
 });
 
-app.get(['/react/manager', '/react/manager.html'], (req: Request, res: Response) => {
-  const distReactManager = path.join(distDir, 'react/manager.html');
-  if (fs.existsSync(distReactManager)) {
-    return res.sendFile(distReactManager);
-  }
-  const rootReactManager = path.join(rootDir, 'react/manager.html');
-  if (fs.existsSync(rootReactManager)) {
-    return res.sendFile(rootReactManager);
-  }
-  res.status(404).send('Not Found');
-});
-
 // Serve ONLY explicitly allowed assets from publicDir (and distDir in production)
 // Do NOT serve rootDir!
 app.use(express.static(publicDir, { dotfiles: 'ignore', index: false }));
@@ -524,6 +525,23 @@ app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(publicDir, 'landing.html'));
 });
 
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`TrackScore server running on http://0.0.0.0:${PORT}`);
-});
+async function startServer() {
+  let reactWatcher: ChildProcess | undefined;
+  const watcherScript = path.join(rootDir, 'scripts/watch-react.mjs');
+  if (process.env.NODE_ENV === 'development' && process.env.CONTEXT !== 'production' && fs.existsSync(watcherScript) && fs.existsSync(path.join(rootDir, 'vite.react.config.ts'))) {
+    reactWatcher = spawn(process.execPath, [watcherScript], {cwd: rootDir, env: {...process.env, NODE_ENV: 'development'}, stdio: ['ignore', 'inherit', 'inherit', 'ipc']});
+    const stopWatcher = () => reactWatcher?.kill('SIGTERM');
+    process.on('exit', stopWatcher);
+    process.on('SIGINT', () => {stopWatcher(); process.exit(0);});
+    process.on('SIGTERM', () => {stopWatcher(); process.exit(0);});
+    await new Promise<void>((resolve, reject) => {
+      reactWatcher!.on('message', message => {
+        if (typeof message === 'object' && message !== null && 'type' in message && message.type === 'react-ready') resolve();
+      });
+      reactWatcher!.once('error', reject);
+      reactWatcher!.once('exit', code => reject(new Error(`React build watcher exited (${code}).`)));
+    });
+  }
+  app.listen(PORT, '0.0.0.0', () => console.log(`TrackScore server running on http://0.0.0.0:${PORT}`));
+}
+startServer().catch(error => {console.error('Server startup failed:', error.message); process.exit(1);});
