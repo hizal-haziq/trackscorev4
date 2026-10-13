@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: get-assessor-workload
  * Authoritative Server-Side Assessor Workload Aggregation
@@ -248,7 +249,7 @@ export function calculateAssessorWorkloads(assessors = [], rawEvaluations = [], 
   };
 }
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -314,7 +315,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[GET-ASSESSOR-WORKLOAD-ERROR]', error);
+    logSecurityFailure('get-assessor-workload');
     return {
       statusCode: 500,
       headers,
@@ -325,5 +326,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'get-assessor-workload');
 
 export default { handler };

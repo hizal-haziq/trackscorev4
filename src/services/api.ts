@@ -1,6 +1,7 @@
 import type {ApiErrorKind, ApiOptions, ApiPrefix} from '../types/api';
 import {isRecord} from '../types/api';
 import {clearSession, readSession, requirePasswordChange} from './auth';
+import {sanitizeMessage, isSensitive} from '../utils/errors';
 
 export class ApiError extends Error {
   constructor(message: string, public status: number, public kind: ApiErrorKind = 'http') {super(message); this.name = 'ApiError';}
@@ -17,20 +18,28 @@ export async function apiRequest(endpoint: string, options: ApiOptions = {}): Pr
   const headers = new Headers(init.headers);
   if (authenticated) {const session = readSession(); if (session) headers.set('Authorization', `Bearer ${session.token}`);}
   if (body !== undefined) headers.set('Content-Type', 'application/json');
-  const response = await fetch(apiUrl(endpoint, prefix), {...init, headers, ...(body !== undefined ? {body: JSON.stringify(body)} : {})});
+  let response: Response;
+  try {
+    response = await fetch(apiUrl(endpoint, prefix), {...init, headers, ...(body !== undefined ? {body: JSON.stringify(body)} : {})});
+  } catch (error) {
+    if (error instanceof Error && error.name === 'AbortError') throw error;
+    throw new ApiError('TrackScore could not connect to the server.', 0, 'network');
+  }
   init.signal?.throwIfAborted();
   // Inspect JSON errors even when the successful response is a file download.
   let parsed: unknown;
   const isJson = response.headers.get('content-type')?.includes('json');
   if (isJson) {try {parsed = await response.json();} catch (error) {if (error instanceof Error && error.name === 'AbortError') throw error; parsed = null;}}
   init.signal?.throwIfAborted();
-  const message = isRecord(parsed) && typeof parsed.error === 'string' ? parsed.error : 'The request could not be completed. Please try again.';
+  const rawError = isRecord(parsed) && typeof parsed.error === 'string' ? parsed.error : '';
+  const sanitized = sanitizeMessage(rawError);
+  const message = sanitized || (rawError && !isSensitive(rawError) ? rawError : 'The request could not be completed. Please try again.');
   if (response.status === 401) {clearSession(); throw new ApiError('Your session has expired. Please sign in again.', 401, 'unauthenticated');}
   if (response.status === 403) {
-    if ((isRecord(parsed) && parsed.mustChangePassword === true) || /^password change required:/i.test(message)) {
+    if ((isRecord(parsed) && parsed.mustChangePassword === true) || /^password change required:/i.test(rawError || message)) {
       requirePasswordChange(); throw new ApiError('Please change your temporary password to continue.', 403, 'password-change');
     }
-    throw new ApiError(message, 403, 'forbidden');
+    throw new ApiError(message || 'You do not have permission to access this page or action.', 403, 'forbidden');
   }
   if (!response.ok) throw new ApiError(message, response.status);
   if (responseType === 'blob') {if (isJson) throw new ApiError('The download did not return a file.', response.status, 'invalid-response');return response.blob();}

@@ -402,9 +402,34 @@ function computeSectionMax(criteriaList) {
   return MAX_TOTAL_SCORE;
 }
 
+function parseJwtPayload(token) {
+  try {
+    if (!token || typeof token !== 'string') return null;
+    const parts = token.split('.');
+    if (parts.length !== 3 || !parts[1]) return null;
+    const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+    return JSON.parse(jsonPayload);
+  } catch (e) {
+    return null;
+  }
+}
+
 // Authentication & Session Helpers (JWT Bearer Auth)
 function getAuthToken() {
   return localStorage.getItem('trackscore_token') || '';
+}
+
+function getAuthRole() {
+  const token = getAuthToken();
+  const claims = parseJwtPayload(token);
+  if (claims && claims.role) {
+    localStorage.setItem('trackscore_user_role', claims.role);
+    return claims.role;
+  }
+  return localStorage.getItem('trackscore_user_role') || '';
 }
 
 function getAuthHeaders(extraHeaders = {}) {
@@ -440,13 +465,38 @@ window.handleLogout = handleLogout;
 // Enforce authentication for evaluation page
 (function initAuthGuard() {
   const token = localStorage.getItem('trackscore_token');
-  const role = localStorage.getItem('trackscore_user_role');
   if (!token) {
     window.location.href = '/login.html';
     return;
   }
-  if (role === 'vendor') {
-    window.location.href = '/vendor-portal.html';
+  const claims = parseJwtPayload(token);
+  if (!claims || !claims.role) {
+    localStorage.removeItem('trackscore_token');
+    localStorage.removeItem('trackscore_user_role');
+    localStorage.removeItem('trackscore_user');
+    window.location.href = '/login.html';
+    return;
+  }
+  if (claims.exp && claims.exp * 1000 < Date.now()) {
+    localStorage.removeItem('trackscore_token');
+    localStorage.removeItem('trackscore_user_role');
+    localStorage.removeItem('trackscore_user');
+    window.location.href = '/login.html?reason=expired';
+    return;
+  }
+  const role = claims.role;
+  localStorage.setItem('trackscore_user_role', role);
+
+  if (role !== 'assessor') {
+    if (role === 'manager') {
+      window.location.href = '/dashboard.html';
+      return;
+    }
+    if (role === 'vendor') {
+      window.location.href = '/vendor-portal.html';
+      return;
+    }
+    window.location.href = '/login.html';
     return;
   }
 
@@ -454,7 +504,7 @@ window.handleLogout = handleLogout;
   try {
     const rawUser = localStorage.getItem('trackscore_user');
     const user = rawUser ? JSON.parse(rawUser) : null;
-    if (user && user.mustChangePassword === true) {
+    if (claims.mustChangePassword === true || (user && user.mustChangePassword === true)) {
       window.location.href = '/change-password.html';
       return;
     }
@@ -2707,7 +2757,7 @@ function loadHtml2Pdf() {
   if (html2pdfLoadingPromise) return html2pdfLoadingPromise;
   html2pdfLoadingPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+    script.src = "/pdf-engine.js";
     script.async = true;
     script.onload = () => resolve(window.html2pdf);
     script.onerror = (err) => {
@@ -3108,7 +3158,7 @@ function showToast(message, isError = false) {
   toast.className = `toast ${isError ? 'toast-error' : ''}`;
   toast.innerHTML = `
     <span>${isError ? '⚠️' : '✓'}</span>
-    <span>${message}</span>
+    <span>${escapeHtml(message)}</span>
   `;
 
   toastContainer.appendChild(toast);

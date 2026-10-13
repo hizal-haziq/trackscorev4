@@ -1,3 +1,5 @@
+import {guardedEvaluationUpdate} from './db.js';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: issue-certificate
  * Allows managers to advance the certificate lifecycle steps:
@@ -13,7 +15,7 @@ import { recordStatusEvent } from './status-bus.js';
 import { calculateAssessmentSla } from './sla.js';
 import { hasApprovedAssessment } from './certificate-eligibility.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -94,6 +96,7 @@ export const handler = async (event) => {
       };
     }
 
+    if(event.securityExpectedVersion!==undefined && Number(existing.currentVersion||0)!==event.securityExpectedVersion)return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
     const nowIso = new Date().toISOString();
     const oldStatus = existing.status || 'pending_review';
     let newStatus = oldStatus;
@@ -109,6 +112,9 @@ export const handler = async (event) => {
         !existing.companyName || !existing.deviceModel) {
       return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: 'The approved assessment version and required certificate details must exist.' }) };
     }
+
+    const stepAliases={prepare:'preparedDate',prepared:'preparedDate',mark_prepared:'preparedDate',print:'printedDate',printed:'printedDate',mark_printed:'printedDate',sign:'signedDate',signed:'signedDate',record_signature:'signedDate',deliver:'sentToCustomerDate',delivered:'sentToCustomerDate',sent:'sentToCustomerDate',sent_to_customer:'sentToCustomerDate',mark_sent:'sentToCustomerDate'};
+    if(currentCert[stepAliases[requestedStep]])return {statusCode:409,headers,body:JSON.stringify({success:false,error:'This certificate step has already been recorded.'})};
 
     // Standard sub-object schema: { certificateNumber, certifiedVersion, preparedDate, printedDate, signedBy, signedDate, sentToCustomerDate }
     let updatedCert = {
@@ -262,7 +268,7 @@ export const handler = async (event) => {
     updateFields.slaDeadline = existing.slaDeadline || sla.deadline;
 
     if (connection.isMongoAtlas) {
-      await collection.updateOne(filter, {
+      await guardedEvaluationUpdate(collection, existing, filter, {
         $set: updateFields,
         $push: { statusHistory: { $each: allHistoryEntries } }
       });
@@ -276,8 +282,8 @@ export const handler = async (event) => {
         });
       }
     } else {
-      for (const h of allHistoryEntries) {
-        await connection.updateEvaluation(id, updateFields, h);
+      for (const [index,h] of allHistoryEntries.entries()) {
+        await connection.updateEvaluation(id, updateFields, h, null, index===0?existing:null);
       }
     }
 
@@ -311,7 +317,8 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[ISSUE-CERTIFICATE-ERROR]', error);
+    if(error.code==='ASSESSMENT_CONFLICT')return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
+    logSecurityFailure('issue-certificate');
     return {
       statusCode: 500,
       headers,
@@ -319,6 +326,8 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'issue-certificate');
 
 export default { handler };
 

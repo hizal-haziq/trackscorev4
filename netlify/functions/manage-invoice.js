@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: manage-invoice
  * Manager action to confirm package and log invoice details on a registered/scheduled record.
@@ -10,7 +11,7 @@ import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { getPackageDetails } from './packages.js';
 import { recordStatusEvent } from './status-bus.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -193,7 +194,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[MANAGE-INVOICE-ERROR]', error);
+    logSecurityFailure('manage-invoice');
     return {
       statusCode: 500,
       headers,
@@ -201,5 +202,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'manage-invoice');
 
 export default { handler };

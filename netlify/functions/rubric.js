@@ -631,3 +631,12 @@ export default {
   recomputeScores,
   validateBreakdownCriteria
 };
+
+export function validateBreakdownOptions(breakdown) {
+  return Array.isArray(breakdown) && breakdown.every(item => {
+    const criterion = CRITERIA_MAP[item?.id];
+    if (!criterion || typeof item.selectedOption !== 'string') return false;
+    const label=normalizeLabel(item.selectedOption), alias=OPTION_ALIASES[label]||label;
+    return criterion.options.some(option => normalizeLabel(option.label)===label || normalizeLabel(option.label)===alias || OPTION_ALIASES[normalizeLabel(option.label)]===alias);
+  });
+}

@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure, assessorOwns, projectStatusEvent} from './security.js';
 /**
  * Netlify Serverless Function: get-notifications
  * Polling-based notification check for assessors to receive real-time status changes (Approved / Rejected)
@@ -8,10 +9,11 @@ import { getRecentStatusEvents } from './status-bus.js';
 import {
   validateRole,
   ROLE_ASSESSOR,
+  ROLE_MANAGER,
   authErrorResponse
 } from './auth.js';
 
-export const handler = async (event, context) => {
+const rawHandler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -31,7 +33,7 @@ export const handler = async (event, context) => {
     };
   }
 
-  const roleCheck = validateRole(event, ROLE_ASSESSOR);
+  const roleCheck = validateRole(event, [ROLE_ASSESSOR, ROLE_MANAGER]);
   if (!roleCheck.authorized) {
     return authErrorResponse(headers, roleCheck.statusCode, roleCheck.error);
   }
@@ -66,7 +68,7 @@ export const handler = async (event, context) => {
     };
 
     // Check in-memory event bus first for any fresh status change events
-    const busEvents = getRecentStatusEvents(assessorId, since);
+    const busEvents = getRecentStatusEvents(assessorId, since).filter(e => !assessorAccount || assessorOwns(e,assessorAccount)).map(e=>projectStatusEvent(e,roleCheck.user,null)).filter(Boolean);
 
     // Also check database records
     const connection = await connectToDatabase();
@@ -204,7 +206,7 @@ export const handler = async (event, context) => {
       })
     };
   } catch (error) {
-    console.error('get-notifications error:', error);
+    logSecurityFailure('get-notifications');
     return {
       statusCode: 500,
       headers,
@@ -212,3 +214,5 @@ export const handler = async (event, context) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'get-notifications');

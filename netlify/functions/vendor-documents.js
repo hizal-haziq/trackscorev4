@@ -1,3 +1,5 @@
+import {guardedEvaluationUpdate} from './db.js';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: vendor-documents
  * Secure Document & Evidence Management for Vendor Self-Service Portal
@@ -12,6 +14,7 @@
  */
 
 import fs from 'fs';
+import crypto from 'node:crypto';
 import path from 'path';
 import {
   connectToDatabase,
@@ -28,6 +31,7 @@ import {
   ROLE_ASSESSOR
 } from './auth.js';
 import { recordStatusEvent } from './status-bus.js';
+import {assessorOwns} from './security.js';
 
 const UPLOADS_DIR = path.join(process.cwd(), '.uploads');
 const MAX_FILE_SIZE_BYTES = 10 * 1024 * 1024; // 10MB limit
@@ -63,7 +67,7 @@ function getStoredDocumentPath(id) {
   return target.startsWith(`${root}${path.sep}`) ? target : null;
 }
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -154,9 +158,7 @@ export const handler = async (event) => {
 
       // Check assessor scoping if role is assessor
       if (isAssessor) {
-        const assessorId = String(decoded.assessorId || '').toLowerCase();
-        const docAssessorId = String(evalDoc.assessorId || evalDoc.assignedAssessorId || '').toLowerCase();
-        if (assessorId && docAssessorId && docAssessorId !== assessorId) {
+        if (!assessorOwns(evalDoc, decoded)) {
           return { error: 'Forbidden: Assessors can only view documents for their assigned evaluations.', status: 403 };
         }
       }
@@ -209,7 +211,7 @@ export const handler = async (event) => {
               headers: {
                 ...headers,
                 'Content-Type': targetDoc.fileType || 'application/octet-stream',
-                'Content-Disposition': `attachment; filename="${targetDoc.name}"`,
+                'Content-Disposition': `attachment; filename="${sanitizeFileName(targetDoc.name)}"`,
                 'X-Content-Type-Options': 'nosniff'
               },
               isBase64Encoded: true,
@@ -229,7 +231,7 @@ export const handler = async (event) => {
           headers: {
             ...headers,
             'Content-Type': targetDoc.fileType || 'application/octet-stream',
-            'Content-Disposition': `attachment; filename="${targetDoc.name}"`,
+            'Content-Disposition': `attachment; filename="${sanitizeFileName(targetDoc.name)}"`,
             'X-Content-Type-Options': 'nosniff'
           },
           isBase64Encoded: true,
@@ -265,7 +267,20 @@ export const handler = async (event) => {
     }
 
     const action = String(body.action || (event.httpMethod === 'DELETE' ? 'delete' : 'upload')).toLowerCase();
+    const rawCategory = String(body.category || '').trim().toLowerCase();
+    if (rawCategory === 'payment_proof') {
+      return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: 'Unsupported document category.' }) };
+    }
+    if (action === 'upload' && !isVendor) {
+      return {
+        statusCode: 403,
+        headers,
+        body: JSON.stringify({ success: false, error: 'Forbidden: Only vendor accounts may upload vendor documents.' })
+      };
+    }
+
     const evalId = body.evaluationId || body.id;
+
 
     const check = await getEvaluationWithOwnershipCheck(evalId);
     if (check.error) {
@@ -275,6 +290,7 @@ export const handler = async (event) => {
         body: JSON.stringify({ success: false, error: check.error })
       };
     }
+
 
     const evalDoc = check.evalDoc;
     const existingDocs = Array.isArray(evalDoc.documents) ? [...evalDoc.documents] : [];
@@ -288,6 +304,13 @@ export const handler = async (event) => {
       const rawName = String(body.name || body.fileName || '').trim();
       const category = String(body.category || 'other').trim();
       if (category.toLowerCase() === 'payment_proof') return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: 'Unsupported document category.' }) };
+      if (!isVendor) {
+        return {
+          statusCode: 403,
+          headers,
+          body: JSON.stringify({ success: false, error: 'Forbidden: Only vendor accounts may upload vendor documents.' })
+        };
+      }
       const rawBase64 = String(body.fileData || body.content || '').trim();
       const fileType = String(body.fileType || 'application/pdf').trim().toLowerCase();
       const notes = String(body.notes || '').trim();
@@ -308,6 +331,13 @@ export const handler = async (event) => {
         };
       }
 
+      const extensions = {'application/pdf':['pdf'],'image/jpeg':['jpg','jpeg'],'image/png':['png'],'image/webp':['webp'],'application/msword':['doc'],'application/vnd.openxmlformats-officedocument.wordprocessingml.document':['docx'],'text/plain':['txt']};
+      const filename = path.basename(rawName.replaceAll('\\','/')).toLowerCase();
+      const ext=filename.split('.').at(-1);
+      if (/[\x00-\x1f/\\]/.test(rawName) || rawName.includes('..') || !extensions[fileType]?.includes(ext) || /\.(exe|js|html?|svg|sh|bat|cmd|com|scr|php)(?:\.|$)/i.test(filename)) {
+        return {statusCode:400,headers,body:JSON.stringify({success:false,error:'Invalid filename or file extension for this type.'})};
+      }
+
       if (rawName.length > 255 || notes.length > 2000 || category.length > 50) {
         return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: 'Document details exceed the allowed length.' }) };
       }
@@ -322,12 +352,12 @@ export const handler = async (event) => {
 
       // Strip data URL header if present (e.g. data:application/pdf;base64,...)
       const base64Data = rawBase64.replace(/^data:[^;]+;base64,/, '');
-      if (base64Data.length > Math.ceil(MAX_FILE_SIZE_BYTES / 3) * 4 || !/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/.test(base64Data)) {
+      if (base64Data.length % 4 !== 0 || Math.floor(base64Data.length*3/4) - (base64Data.endsWith('==')?2:base64Data.endsWith('=')?1:0) > MAX_FILE_SIZE_BYTES || !/^[A-Za-z0-9+/]*={0,2}$/.test(base64Data)) {
         return { statusCode: 400, headers, body: JSON.stringify({ success: false, error: 'File content is invalid or exceeds the 10MB limit.' }) };
       }
       const fileBuffer = Buffer.from(base64Data, 'base64');
 
-      if (fileBuffer.length > MAX_FILE_SIZE_BYTES) {
+      if (fileBuffer.length === 0 || fileBuffer.length > MAX_FILE_SIZE_BYTES) {
         return {
           statusCode: 400,
           headers,
@@ -335,13 +365,13 @@ export const handler = async (event) => {
         };
       }
 
-      const docId = `doc_${Date.now()}_${Math.random().toString(36).substring(2, 8)}`;
+      const docId = `doc_${Date.now()}_${crypto.randomBytes(6).toString('hex')}`;
       const safeName = sanitizeFileName(rawName);
 
       ensureUploadsDir();
       const diskFilePath = getStoredDocumentPath(docId);
       if (!diskFilePath) throw new Error('Generated document identifier is invalid.');
-      fs.writeFileSync(diskFilePath, fileBuffer);
+      fs.writeFileSync(diskFilePath, fileBuffer, {flag:'wx', mode:0o600});
 
       const categoryLabels = {
         device_spec: 'Device Technical Specification',
@@ -383,12 +413,12 @@ export const handler = async (event) => {
       };
 
       if (connection.isMongoAtlas) {
-        await connection.db.collection(COLLECTION_NAME).updateOne(
+        await guardedEvaluationUpdate(connection.db.collection(COLLECTION_NAME),evalDoc,
           buildMongoIdFilter(evalDoc._id),
           { $set: updateData }
         );
       } else {
-        await connection.updateEvaluation(String(evalDoc._id || evalDoc.id), updateData);
+        await connection.updateEvaluation(String(evalDoc._id || evalDoc.id), updateData,null,null,evalDoc);
       }
 
       recordStatusEvent({
@@ -416,6 +446,7 @@ export const handler = async (event) => {
     // Delete Document
     // -------------------------------------------------------------------------
     if (action === 'delete') {
+      if (isAssessor) return {statusCode:403,headers,body:JSON.stringify({success:false,error:'Assessors cannot delete Vendor evidence.'})};
       const docId = String(body.docId || body.documentId || '').trim();
       if (!docId) {
         return {
@@ -439,7 +470,7 @@ export const handler = async (event) => {
         return { statusCode: 410, headers, body: JSON.stringify({ success: false, error: 'This document action is no longer available.' }) };
       }
       // Anti-tampering: Vendors cannot delete accepted/verified documents
-      if (isVendor && targetDoc.status === 'accepted') {
+      if (isVendor && ['accepted','verified'].includes(String(targetDoc.status).toLowerCase())) {
         return {
           statusCode: 403,
           headers,
@@ -473,12 +504,12 @@ export const handler = async (event) => {
       };
 
       if (connection.isMongoAtlas) {
-        await connection.db.collection(COLLECTION_NAME).updateOne(
+        await guardedEvaluationUpdate(connection.db.collection(COLLECTION_NAME),evalDoc,
           buildMongoIdFilter(evalDoc._id),
           { $set: updateData }
         );
       } else {
-        await connection.updateEvaluation(String(evalDoc._id || evalDoc.id), updateData);
+        await connection.updateEvaluation(String(evalDoc._id || evalDoc.id), updateData,null,null,evalDoc);
       }
 
       return {
@@ -497,7 +528,8 @@ export const handler = async (event) => {
       body: JSON.stringify({ success: false, error: 'Invalid action. Supported actions: "upload", "delete".' })
     };
   } catch (err) {
-    console.error('[VENDOR-DOCUMENTS-ERROR]', err);
+    if(err.code==='ASSESSMENT_CONFLICT')return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
+    logSecurityFailure('vendor-documents');
     return {
       statusCode: 500,
       headers,
@@ -505,5 +537,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'vendor-documents');
 
 export default { handler };

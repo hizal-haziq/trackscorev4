@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure, assessorOwns, peerEligible} from './security.js';
 /**
  * Netlify Serverless Function: add-comment
  * Adds an append-only peer comment to an evaluation document with browser-based AI summarization.
@@ -15,7 +16,7 @@ import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js'
 import { validateRole, ROLE_ASSESSOR, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { recordStatusEvent } from './status-bus.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -124,6 +125,7 @@ export const handler = async (event) => {
       };
     }
 
+    if (isAssessor && !peerEligible(evalDoc)) return authErrorResponse(headers,403,'Access denied for this peer assessment.');
     // Assessor Self-Comment Restriction
     if (isAssessor) {
       const callerAssessorId = String(currentUser.assessorId || '').trim().toLowerCase();
@@ -213,7 +215,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[ADD-COMMENT-ERROR]', error);
+    logSecurityFailure('add-comment');
     return {
       statusCode: 500,
       headers,
@@ -224,5 +226,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'add-comment');
 
 export default { handler };

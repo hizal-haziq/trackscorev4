@@ -1,3 +1,4 @@
+import {createVendorRecord} from '../netlify/functions/db.js';
 /**
  * Final Production Verification Test Suite for Assessment History & Versioning
  * Independent verification script covering:
@@ -43,8 +44,8 @@ describe('Final Production Verification: Assessment History & Versioning', () =>
   const assessorToken = generateToken({ role: ROLE_ASSESSOR, assessorId: 'MKA 9006', name: 'Farhan Assessor' });
   const rogueAssessorToken = generateToken({ role: ROLE_ASSESSOR, assessorId: 'PEN 8888', name: 'Rogue Assessor' });
   
-  const vendorAToken = generateToken({ role: ROLE_VENDOR, name: 'Vendor A Corp', linkedRegistrationIds: ['vendor-a-reg-1'] });
-  const vendorBToken = generateToken({ role: ROLE_VENDOR, name: 'Vendor B Corp', linkedRegistrationIds: ['vendor-b-reg-2'] });
+  const vendorAToken = generateToken({ role: ROLE_VENDOR, vendorId:'security-history-vendor-a', name: 'Vendor A Corp', linkedRegistrationIds: ['vendor-a-reg-1'] });
+  const vendorBToken = generateToken({ role: ROLE_VENDOR, vendorId:'security-history-vendor-b', name: 'Vendor B Corp', linkedRegistrationIds: ['vendor-b-reg-2'] });
 
   const testIdsToCleanup = [];
 
@@ -328,6 +329,8 @@ describe('Final Production Verification: Assessment History & Versioning', () =>
   // =========================================================================
   it('Vendor & Assessor Isolation: unauthorized roles cannot access other evaluations', async () => {
     const conn = await connectToDatabase();
+    await createVendorRecord(conn,{_id:'security-history-vendor-a',isActive:true,contactEmail:'history-a@example.test',linkedRegistrationIds:['vendor-a-reg-1']});
+    await createVendorRecord(conn,{_id:'security-history-vendor-b',isActive:true,contactEmail:'history-b@example.test',linkedRegistrationIds:['vendor-b-reg-2']});
     const vendorAEvalId = 'vendor-a-eval-' + Date.now();
     testIdsToCleanup.push(vendorAEvalId);
 

@@ -4,14 +4,15 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "NODE_ENV=development tsx server.ts",
+    "dev": "npm run build:pdf && NODE_ENV=development tsx server.ts",
     "build:react": "vite build --config vite.react.config.ts",
-    "build": "vite build && npm run build:react && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=build/server.cjs",
+    "build": "npm run build:pdf && vite build && npm run build:react && esbuild server.ts --bundle --platform=node --format=cjs --packages=external --sourcemap --outfile=build/server.cjs",
     "start": "node build/server.cjs",
     "clean": "rm -rf dist build server.js",
     "lint": "tsc --noEmit && tsc --noEmit -p tsconfig.react.json",
     "test": "node scripts/run-tests-isolated.mjs",
-    "reset-data": "node scripts/reset-data.js"
+    "reset-data": "node scripts/reset-data.js",
+    "build:pdf": "node scripts/build-pdf.mjs"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
@@ -21,6 +22,7 @@
     "dotenv": "^17.2.3",
     "exceljs": "^4.4.0",
     "express": "^4.21.2",
+    "html2pdf.js": "0.14.0",
     "jsonwebtoken": "^9.0.3",
     "lucide-react": "^0.546.0",
     "mongodb": "^7.6.0",
@@ -42,5 +44,10 @@
     "tsx": "^4.21.0",
     "typescript": "~5.8.2",
     "vite": "^6.2.3"
+  },
+  "overrides": {
+    "exceljs": {
+      "uuid": "11.1.1"
+    }
   }
 }

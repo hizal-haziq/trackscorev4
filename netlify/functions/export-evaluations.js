@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: export-evaluations
  * Exports matching evaluation records as a standard Excel file (.xlsx).
@@ -13,7 +14,7 @@ import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { calculateAssessmentSla } from './sla.js';
 import ExcelJS from 'exceljs'; // Ensure you ran: npm install exceljs
 
-export const handler = async (event, context) => {
+const rawHandler = async (event, context) => {
   const corsHeaders = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -207,7 +208,7 @@ export const handler = async (event, context) => {
     };
 
   } catch (error) {
-    console.error('Error exporting evaluations to Excel:', error);
+    logSecurityFailure('export-evaluations');
     return {
       statusCode: 500,
       headers: { ...corsHeaders, 'Content-Type': 'application/json' },
@@ -217,5 +218,7 @@ export const handler = async (event, context) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'export-evaluations');
 
 export default { handler };

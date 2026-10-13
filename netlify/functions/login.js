@@ -1,3 +1,5 @@
+import {trustedClientIp} from './security.js';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: login
  * Unified authentication endpoint for:
@@ -32,14 +34,7 @@ setInterval(() => {
   }
 }, 5 * 60 * 1000).unref();
 
-function getClientIp(event) {
-  const headers = event.headers || {};
-  const forwarded = headers['x-forwarded-for'] || headers['X-Forwarded-For'];
-  if (forwarded) {
-    return forwarded.split(',')[0].trim();
-  }
-  return headers['client-ip'] || headers['x-real-ip'] || '127.0.0.1';
-}
+function getClientIp(event) { return trustedClientIp(event); }
 
 function recordFailedAttempt(clientIp) {
   const ipHash = crypto.createHash('sha256').update(clientIp).digest('hex');
@@ -63,7 +58,7 @@ function isRateLimited(clientIp) {
   return valid.length >= MAX_FAILED_ATTEMPTS_PER_WINDOW;
 }
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -126,7 +121,7 @@ export const handler = async (event) => {
 
     // 1. Check internal users (Manager or Assessor by Email or Assessor ID)
     const user = await findUserByEmail(connection, cleanInput);
-    if (user && user.passwordHash) {
+    if (user && user.passwordHash && user.isActive !== false && !user.deletedAt) {
       const isMatch = bcrypt.compareSync(cleanPassword, user.passwordHash) ||
                       bcrypt.compareSync(String(password || ''), user.passwordHash);
 
@@ -226,7 +221,7 @@ export const handler = async (event) => {
       body: JSON.stringify({ success: false, error: 'Invalid email address or password. Please try again.' })
     };
   } catch (error) {
-    console.error('[AUTH-LOGIN-ERROR]', error);
+    logSecurityFailure('login');
     if (error?.code === 'DATABASE_UNAVAILABLE') {
       return {
         statusCode: 503,
@@ -244,5 +239,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'login');
 
 export default { handler };

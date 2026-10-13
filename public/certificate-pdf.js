@@ -781,7 +781,7 @@
     } else if (!window.html2pdf) {
       await new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        script.src = '/pdf-engine.js';
         script.async = true;
         script.onload = () => resolve(window.html2pdf);
         script.onerror = (err) => reject(new Error('Failed to load html2pdf library: ' + err.message));

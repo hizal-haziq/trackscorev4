@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: verify-certificate
  * Public Certificate Verification Service for MIROS TrackScore
@@ -11,7 +12,7 @@
 
 import { connectToDatabase, COLLECTION_NAME } from './db.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -114,7 +115,7 @@ export const handler = async (event) => {
       })
     };
   } catch (err) {
-    console.error('[VERIFY-CERTIFICATE-ERROR]', err);
+    logSecurityFailure('verify-certificate');
     return {
       statusCode: 500,
       headers,
@@ -122,5 +123,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'verify-certificate');
 
 export default { handler };

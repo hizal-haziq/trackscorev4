@@ -1,3 +1,5 @@
+import crypto from 'node:crypto';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: register-customer
  * Allows Managers to register a new customer/device before formal assessment.
@@ -24,7 +26,7 @@ import { getPackageDetails } from './packages.js';
 import { recordStatusEvent } from './status-bus.js';
 import { computeSlaDeadline, calculateAssessmentSla } from './sla.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -307,9 +309,9 @@ export const handler = async (event) => {
       const cleanVendorEmail = contactEmail.trim().toLowerCase();
       const existingVendor = await findVendorByEmail(connection, cleanVendorEmail);
 
-      const generatedPassword = vendorPassword && vendorPassword.trim().length >= 6
+      const generatedPassword = vendorPassword && vendorPassword.trim().length >= 8
         ? vendorPassword.trim()
-        : `Vendor-${Math.random().toString(36).substring(2, 8)}!`;
+        : `Vendor-${crypto.randomBytes(16).toString('base64url')}!`;
 
       const salt = bcrypt.genSaltSync(10);
       const passwordHash = bcrypt.hashSync(generatedPassword, salt);
@@ -403,7 +405,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[REGISTER-CUSTOMER-ERROR]', error);
+    logSecurityFailure('register-customer');
     return {
       statusCode: 500,
       headers,
@@ -411,5 +413,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'register-customer');
 
 export default { handler };

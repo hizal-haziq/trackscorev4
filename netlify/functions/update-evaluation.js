@@ -1,3 +1,5 @@
+import {guardedEvaluationUpdate} from './db.js';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: update-evaluation
  * Handles PUT / PATCH requests to update an existing evaluation record by _id.
@@ -11,7 +13,7 @@ import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js'
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { omitRetiredWorkflow } from './retired-workflow.js';
 
-export const handler = async (event, context) => {
+const rawHandler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -132,15 +134,7 @@ export const handler = async (event, context) => {
       }
 
       if (targetStatus !== (existingRecord.status || 'pending_review').toLowerCase()) {
-        const changedBy = (
-          payload.changedBy ||
-          payload.updatedBy ||
-          payload.editedBy ||
-          roleCheck?.user?.name ||
-          roleCheck?.user?.email ||
-          payload.assessorName ||
-          'Assessor'
-        ).trim();
+        const changedBy = roleCheck.user?.name || roleCheck.user?.email || 'Manager';
 
         const nowIso = new Date().toISOString();
         updateFields.status = targetStatus;
@@ -156,7 +150,7 @@ export const handler = async (event, context) => {
     // 4. Prepare audit trail snapshot
     const historySnapshot = {
       editedAt: new Date().toISOString(),
-      editedBy: payload.editedBy || payload.assessorName || 'Manager',
+      editedBy: roleCheck.user?.name || roleCheck.user?.email || 'Manager',
       previousScores: {
         sectionAScore: existingRecord.sectionAScore ?? 0,
         sectionBScore: existingRecord.sectionBScore ?? 0,
@@ -176,7 +170,7 @@ export const handler = async (event, context) => {
     if (payload.assessorName) updateFields.assessorName = String(payload.assessorName).trim();
     if (payload.assessorId !== undefined) {
       const cleanAssessorId = String(payload.assessorId).trim().toUpperCase();
-      if (cleanAssessorId && !/^[A-Z]{3} \d{4}$/.test(cleanAssessorId)) {
+      if (cleanAssessorId && !/^[A-Z]{3} \d{4}$/.test(cleanAssessorId) && cleanAssessorId !== 'PAA 001') {
         return {
           statusCode: 400,
           headers,
@@ -209,7 +203,7 @@ export const handler = async (event, context) => {
     }
 
     if (connection.isMongoAtlas) {
-      const result = await collection.updateOne(filter, {
+      const result = await guardedEvaluationUpdate(collection,existingRecord,filter, {
         $set: updateFields,
         $push: pushOps
       });
@@ -238,7 +232,7 @@ export const handler = async (event, context) => {
         })
       };
     } else {
-      const result = await connection.updateEvaluation(id, updateFields, historySnapshot, statusHistoryEntry);
+      const result = await connection.updateEvaluation(id, updateFields, historySnapshot, statusHistoryEntry,existingRecord);
       if (result.matchedCount === 0) {
         return {
           statusCode: 404,
@@ -262,7 +256,8 @@ export const handler = async (event, context) => {
       };
     }
   } catch (error) {
-    console.error('Error updating evaluation:', error);
+    if(error.code==='ASSESSMENT_CONFLICT')return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
+    logSecurityFailure('update-evaluation');
     return {
       statusCode: 500,
       headers,
@@ -273,5 +268,7 @@ export const handler = async (event, context) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'update-evaluation');
 
 export default { handler };

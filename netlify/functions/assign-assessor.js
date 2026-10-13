@@ -1,3 +1,5 @@
+import {guardedEvaluationUpdate} from './db.js';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: assign-assessor
  * Allows Managers to assign any registered customer, scheduled assessment,
@@ -19,7 +21,7 @@ import { recordStatusEvent } from './status-bus.js';
 import { resolveSlaDurationDays, computeSlaDeadline, calculateAssessmentSla } from './sla.js';
 import { DEFAULT_ASSESSOR_CAPACITY } from './get-assessor-workload.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -131,6 +133,9 @@ export const handler = async (event) => {
     }
 
     const recordId = String(existing._id || id);
+    if(existing.deletedAt || existing.approvedVersion || ['approved','pre_final_sent','payment_confirmed','certificate_issued','completed'].includes(existing.status))return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Approved and completed assessments cannot be reassigned or rescheduled.'})};
+
+    if(event.securityExpectedVersion!==undefined && Number(existing.currentVersion||0)!==event.securityExpectedVersion)return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
     const nowIso = new Date().toISOString();
     const oldStatus = existing.status || 'registered';
     // Promote registered to scheduled when assigned; otherwise keep existing status
@@ -181,12 +186,12 @@ export const handler = async (event) => {
     }
 
     if (connection.isMongoAtlas) {
-      await collection.updateOne({ _id: existing._id }, {
+      await guardedEvaluationUpdate(collection, existing, { _id: existing._id }, {
         $set: updateFields,
         $push: { statusHistory: historyEntry }
       });
     } else {
-      await connection.updateEvaluation(recordId, updateFields, historyEntry);
+      await connection.updateEvaluation(recordId, updateFields, historyEntry, null, existing);
     }
 
     const updatedMerged = { ...existing, ...updateFields };
@@ -264,7 +269,8 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[ASSIGN-ASSESSOR-ERROR]', error);
+    if(error.code==='ASSESSMENT_CONFLICT')return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
+    logSecurityFailure('assign-assessor');
     return {
       statusCode: 500,
       headers,
@@ -272,5 +278,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'assign-assessor');
 
 export default { handler };

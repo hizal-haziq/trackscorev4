@@ -1,3 +1,5 @@
+import {guardedEvaluationUpdate} from './db.js';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: vendor-resubmit
  * Allows vendors to respond to revision/rejection requests and resubmit their assessment.
@@ -26,7 +28,7 @@ import { verifyToken, getBearerToken, ROLE_VENDOR } from './auth.js';
 import { recordStatusEvent } from './status-bus.js';
 import { calculateAssessmentSla } from './sla.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -154,9 +156,7 @@ export const handler = async (event) => {
 
     // Verify evaluation is in an eligible revision state
     const currentStatus = String(evalDoc.status || '').toLowerCase();
-    const isEligible = currentStatus === 'rejected' ||
-                       currentStatus === 'pending_review' ||
-                       Boolean(evalDoc.rejectionReason);
+    const isEligible = ['rejected','remediation_required'].includes(currentStatus);
 
     if (!isEligible) {
       return {
@@ -244,12 +244,12 @@ export const handler = async (event) => {
     }
 
     if (connection.isMongoAtlas) {
-      await connection.db.collection(COLLECTION_NAME).updateOne(
+      await guardedEvaluationUpdate(connection.db.collection(COLLECTION_NAME),evalDoc,
         buildMongoIdFilter(targetEvalId),
         { $set: updateFields }
       );
     } else {
-      await connection.updateEvaluation(targetEvalId, updateFields);
+      await connection.updateEvaluation(targetEvalId, updateFields,null,null,evalDoc);
     }
 
     // 6. Real-time notification
@@ -276,7 +276,8 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[VENDOR-RESUBMIT-ERROR]', error);
+    if(error.code==='ASSESSMENT_CONFLICT'||error.code===11000)return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
+    logSecurityFailure('vendor-resubmit');
     return {
       statusCode: 500,
       headers,
@@ -284,5 +285,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'vendor-resubmit');
 
 export default { handler };

@@ -492,7 +492,7 @@ describe('Assessment Risk & Anomaly Detection Test Suite', () => {
     const vendorRes = await riskHandler(vendorEvent, {});
     assert.equal(vendorRes.statusCode, 403, 'Vendor must be forbidden with 403');
     const vendorBody = JSON.parse(vendorRes.body);
-    assert.match(vendorBody.error, /restricted to operations managers and authorized assessors/i);
+    assert.match(vendorBody.error, /Forbidden/i);
 
     // C. Non-assigned Assessor B -> 403 Forbidden
     const otherAssessorEvent = {

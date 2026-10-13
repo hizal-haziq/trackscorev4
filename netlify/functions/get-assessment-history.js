@@ -1,3 +1,5 @@
+import {assessorOwns} from './security.js';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: get-assessment-history
  * Retrieves the version history list for a specific evaluation.
@@ -21,7 +23,7 @@ import {
   authErrorResponse
 } from './auth.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -84,10 +86,7 @@ export const handler = async (event) => {
     const currentUserName = auth.user?.name;
 
     if (userRole === 'assessor') {
-      const isAssigned = (currentAssessorId && evaluation.assignedAssessorId === currentAssessorId) ||
-                         (currentAssessorId && evaluation.assessorId === currentAssessorId) ||
-                         (currentUserName && evaluation.assessorName === currentUserName) ||
-                         (currentUserName && evaluation.assignedAssessor === currentUserName);
+      const isAssigned = assessorOwns(evaluation, auth.user);
       if (!isAssigned) {
         return {
           statusCode: 403,
@@ -99,7 +98,7 @@ export const handler = async (event) => {
         };
       }
     } else if (userRole === 'vendor') {
-      const linkedIds = Array.isArray(auth.user?.linkedRegistrationIds) ? auth.user.linkedRegistrationIds.map(String) : [];
+      const linkedIds = Array.isArray(event.securityVendor?.linkedRegistrationIds) ? event.securityVendor.linkedRegistrationIds.map(String) : [];
       const evalIdStr = String(evaluation._id || evaluation.id || evaluationId);
       const regRef = String(evaluation.registrationReferenceId || evaluation.linkedRegistrationId || '');
       const isOwner = linkedIds.includes(evalIdStr) || (regRef && linkedIds.includes(regRef));
@@ -190,7 +189,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[GET-ASSESSMENT-HISTORY-ERROR]', error);
+    logSecurityFailure('get-assessment-history');
     return {
       statusCode: 500,
       headers,
@@ -201,3 +200,5 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'get-assessment-history');

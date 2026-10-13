@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: change-password
  * Allows an authenticated manager or assessor to set a new password
@@ -8,7 +9,7 @@ import bcrypt from 'bcryptjs';
 import { connectToDatabase, findUserById, updateUserRecord } from './db.js';
 import { getBearerToken, verifyToken, generateToken, authErrorResponse } from './auth.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -50,7 +51,7 @@ export const handler = async (event) => {
     };
   }
 
-  const { newPassword, confirmPassword } = body;
+  const { newPassword, confirmPassword, currentPassword } = body;
 
   if (!newPassword || newPassword.trim().length < 8) {
     return {
@@ -80,6 +81,9 @@ export const handler = async (event) => {
       };
     }
 
+    if(user.isActive===false||user.deletedAt||user.role!==decoded.role)return authErrorResponse(headers,403,'Access denied.');
+    const initialChange=decoded.mustChangePassword===true&&user.mustChangePassword===true;
+    if(!initialChange && (typeof currentPassword!=='string'||!bcrypt.compareSync(currentPassword.trim(),user.passwordHash||'')))return authErrorResponse(headers,403,'Current password is required and must match.');
     // Hash the new password with bcrypt
     const salt = bcrypt.genSaltSync(10);
     const passwordHash = bcrypt.hashSync(newPassword.trim(), salt);
@@ -123,7 +127,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[CHANGE-PASSWORD-ERROR]', error);
+    logSecurityFailure('change-password');
     return {
       statusCode: 500,
       headers,
@@ -131,5 +135,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'change-password');
 
 export default { handler };

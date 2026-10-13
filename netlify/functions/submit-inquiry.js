@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: submit-inquiry
  * 
@@ -48,7 +49,7 @@ function sanitizeString(str, maxLen) {
   return str.replace(/<[^>]*>?/gm, '').trim().slice(0, maxLen);
 }
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type',
@@ -225,7 +226,7 @@ export const handler = async (event) => {
     };
 
   } catch (err) {
-    console.error('[SUBMIT-INQUIRY-ERROR]', err);
+    logSecurityFailure('submit-inquiry');
     return {
       statusCode: 500,
       headers,
@@ -233,3 +234,5 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'submit-inquiry');

@@ -1,3 +1,4 @@
+import {createVendorRecord,connectToDatabase} from '../netlify/functions/db.js';
 import { describe, it, after } from 'node:test';
 import assert from 'node:assert/strict';
 import { closeDatabaseConnection } from '../netlify/functions/db.js';
@@ -162,6 +163,7 @@ describe('End-to-End Assessor Comment Persistence & UI Workflow', () => {
     assert.equal(v2c1.comment, 'UPDATED: 6-month buffer verified via CAN bus logs');
 
     // Step 6 -> Vendor role security isolation: Vendor CANNOT view comments
+    await createVendorRecord(await connectToDatabase(), {contactEmail:`vendor-${timestamp}@fleet.com`,loginEmail:`vendor-${timestamp}@fleet.com`,companyName,isActive:true,linkedRegistrationIds:[String(evalId)]});
     const vendorToken = generateToken({
       role: ROLE_VENDOR,
       companyName,

@@ -4,7 +4,7 @@ TRACKSCORE VENDOR PORTAL ACCESS CREDENTIALS
 Company Name:     Supplemental QA Fleet
 Contact Email:    supplement@stability.test
 Login Email:      supplementalqafleet@trackscore-vendor.my
-Password:         Tiger-Valley-25
+Password:         [REDACTED]
 Portal URL:       http://127.0.0.1:33861/login.html
 Login Role:       Vendor (Click the 'Vendor' tab on the login screen)
 Account Status:   Active Immediately (No email activation link required)
@@ -14,7 +14,7 @@ HOW TO LOG IN (FOR VENDOR):
 1. Open your web browser and navigate to: http://127.0.0.1:33861/login.html
 2. On the login form, select the "Vendor" tab.
 3. Enter Login Email:  supplementalqafleet@trackscore-vendor.my
-4. Enter Password:     Tiger-Valley-25
+4. Enter Password: [REDACTED]
 5. Click "Sign In to Vendor Portal".
 
 VENDOR SELF-SERVICE CAPABILITIES:

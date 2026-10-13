@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: manage-users
  * Allows managers to list and create Assessor and Manager accounts.
@@ -18,7 +19,7 @@ import {
 } from './db.js';
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -52,7 +53,7 @@ export const handler = async (event) => {
         })
       };
     } catch (error) {
-      console.error('[MANAGE-USERS-GET-ERROR]', error);
+      logSecurityFailure('manage-users');
       return {
         statusCode: 500,
         headers,
@@ -96,11 +97,11 @@ export const handler = async (event) => {
         }
 
         const cleanPassword = String(password || '').trim();
-        if (!cleanPassword || cleanPassword.length < 6) {
+        if (!cleanPassword || cleanPassword.length < 8) {
           return {
             statusCode: 400,
             headers,
-            body: JSON.stringify({ success: false, error: 'New password must be at least 6 characters.' })
+            body: JSON.stringify({ success: false, error: 'New password must be at least 8 characters.' })
           };
         }
 
@@ -216,13 +217,13 @@ export const handler = async (event) => {
       }
 
       const cleanPassword = String(password || '').trim();
-      if (!cleanPassword || cleanPassword.length < 6) {
+      if (!cleanPassword || cleanPassword.length < 8) {
         return {
           statusCode: 400,
           headers,
           body: JSON.stringify({
             success: false,
-            error: 'Password is required and must be at least 6 characters.'
+            error: 'Password is required and must be at least 8 characters.'
           })
         };
       }
@@ -275,7 +276,7 @@ export const handler = async (event) => {
         })
       };
     } catch (error) {
-      console.error('[MANAGE-USERS-POST-ERROR]', error);
+      logSecurityFailure('manage-users');
       return {
         statusCode: 500,
         headers,
@@ -290,5 +291,7 @@ export const handler = async (event) => {
     body: JSON.stringify({ success: false, error: 'Method Not Allowed. Use GET or POST.' })
   };
 };
+
+export const handler = secureHandler(rawHandler, 'manage-users');
 
 export default { handler };

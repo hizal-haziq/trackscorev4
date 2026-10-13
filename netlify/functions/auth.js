@@ -9,6 +9,7 @@
  */
 
 import jwt from 'jsonwebtoken';
+import crypto from 'node:crypto';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -17,7 +18,7 @@ export const ROLE_ASSESSOR = 'assessor';
 export const ROLE_MANAGER = 'manager';
 export const ROLE_VENDOR = 'vendor';
 
-const DEVELOPMENT_JWT_SECRET = 'trackscore-local-development-only-secret';
+const DEVELOPMENT_JWT_SECRET = crypto.randomBytes(32).toString('hex');
 const MIN_JWT_SECRET_LENGTH = 32;
 
 function getConfiguredJwtSecret() {
@@ -37,14 +38,15 @@ function getConfiguredJwtSecret() {
 export const JWT_SECRET = getConfiguredJwtSecret();
 
 export function generateToken(payload, expiresIn = '24h') {
-  return jwt.sign(payload, getConfiguredJwtSecret(), { expiresIn });
+  return jwt.sign(payload, getConfiguredJwtSecret(), { expiresIn, algorithm: 'HS256' });
 }
 
 export function verifyToken(token) {
   const secret = getConfiguredJwtSecret();
 
   try {
-    return jwt.verify(token, secret);
+    const decoded = jwt.verify(token, secret, {algorithms: ['HS256']});
+    return decoded && typeof decoded === 'object' && [ROLE_MANAGER, ROLE_ASSESSOR, ROLE_VENDOR].includes(decoded.role) && Number.isFinite(decoded.exp) ? decoded : null;
   } catch (err) {
     return null;
   }
@@ -105,7 +107,7 @@ export function validateRole(event, requiredRole, options) {
   const userRole = decoded.role;
 
   // Block access to protected endpoints if password change is required
-  if (decoded.mustChangePassword === true) {
+  if (decoded.mustChangePassword === true && options?.allowPasswordChange !== true) {
     return {
       authorized: false,
       statusCode: 403,
@@ -115,56 +117,65 @@ export function validateRole(event, requiredRole, options) {
   }
 
   // Strict Role Isolation:
-  // 1. Vendor JWT can NEVER access manager or assessor endpoints
-  if (userRole === ROLE_VENDOR) {
-    if (requiredRole && requiredRole !== ROLE_VENDOR) {
+  // If requiredRole is specified, enforce strictly. Supports a single role string or array of allowed roles.
+  if (requiredRole) {
+    const allowedRoles = Array.isArray(requiredRole) ? requiredRole : [requiredRole];
+    if (!allowedRoles.includes(userRole)) {
+      if (userRole === ROLE_VENDOR) {
+        return {
+          authorized: false,
+          statusCode: 403,
+          error: 'Forbidden: Vendor accounts are strictly limited to the external vendor portal.'
+        };
+      }
+      if (userRole === ROLE_ASSESSOR) {
+        if (allowedRoles.includes(ROLE_MANAGER)) {
+          return {
+            authorized: false,
+            statusCode: 403,
+            error: 'Forbidden: Assessor accounts cannot perform manager-only actions.'
+          };
+        }
+        if (allowedRoles.includes(ROLE_VENDOR)) {
+          return {
+            authorized: false,
+            statusCode: 403,
+            error: 'Forbidden: Assessor accounts cannot access external vendor portal endpoints.'
+          };
+        }
+        return {
+          authorized: false,
+          statusCode: 403,
+          error: `Forbidden: Assessor accounts do not have required role: ${allowedRoles.join(' or ')}.`
+        };
+      }
+      if (userRole === ROLE_MANAGER) {
+        if (allowedRoles.includes(ROLE_VENDOR)) {
+          return {
+            authorized: false,
+            statusCode: 403,
+            error: 'Forbidden: Vendor endpoints require authorized vendor credentials.'
+          };
+        }
+        if (allowedRoles.includes(ROLE_ASSESSOR)) {
+          return {
+            authorized: false,
+            statusCode: 403,
+            error: 'Forbidden: Only assigned Assessors may perform this action.'
+          };
+        }
+        return {
+          authorized: false,
+          statusCode: 403,
+          error: `Forbidden: Manager accounts do not have required role: ${allowedRoles.join(' or ')}.`
+        };
+      }
       return {
         authorized: false,
         statusCode: 403,
-        error: 'Forbidden: Vendor accounts are strictly limited to the external vendor portal.'
+        error: `Forbidden: Insufficient privileges. Required role: ${allowedRoles.join(' or ')}.`
       };
     }
-    return { authorized: true, user: decoded, role: ROLE_VENDOR };
-  }
-
-  // 2. Assessor JWT cannot access manager-only actions
-  if (userRole === ROLE_ASSESSOR) {
-    if (requiredRole === ROLE_MANAGER) {
-      return {
-        authorized: false,
-        statusCode: 403,
-        error: 'Forbidden: Assessor accounts cannot perform manager-only actions.'
-      };
-    }
-    if (requiredRole === ROLE_VENDOR) {
-      return {
-        authorized: false,
-        statusCode: 403,
-        error: 'Forbidden: Assessor accounts cannot access external vendor portal endpoints.'
-      };
-    }
-    return { authorized: true, user: decoded, role: ROLE_ASSESSOR };
-  }
-
-  // 3. Manager role has access to manager and assessor endpoints
-  if (userRole === ROLE_MANAGER) {
-    if (requiredRole === ROLE_VENDOR) {
-      return {
-        authorized: false,
-        statusCode: 403,
-        error: 'Forbidden: Vendor endpoints require authorized vendor credentials.'
-      };
-    }
-    return { authorized: true, user: decoded, role: ROLE_MANAGER };
-  }
-
-  // Role mismatch fallback
-  if (requiredRole && userRole !== requiredRole) {
-    return {
-      authorized: false,
-      statusCode: 403,
-      error: `Forbidden: Insufficient privileges. Required role: ${requiredRole}.`
-    };
   }
 
   return { authorized: true, user: decoded, role: userRole };

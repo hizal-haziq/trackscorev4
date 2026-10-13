@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: delete-evaluation
  * Handles DELETE requests to remove an evaluation record by _id.
@@ -9,7 +10,7 @@
 import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js';
 import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 
-export const handler = async (event, context) => {
+const rawHandler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -40,13 +41,13 @@ export const handler = async (event, context) => {
 
   try {
     let id = event.queryStringParameters?.id;
-    let deletedBy = event.queryStringParameters?.deletedBy || 'Manager';
+    let deletedBy = roleCheck.user?.name || roleCheck.user?.email || 'Manager';
 
     if (!id && event.body) {
       try {
         const parsed = typeof event.body === 'string' ? JSON.parse(event.body) : event.body;
         id = parsed._id || parsed.id;
-        if (parsed.deletedBy) deletedBy = parsed.deletedBy;
+
       } catch {
         // body wasn't JSON
       }
@@ -125,7 +126,7 @@ export const handler = async (event, context) => {
       };
     }
   } catch (error) {
-    console.error('Error soft-deleting evaluation:', error);
+    logSecurityFailure('delete-evaluation');
     return {
       statusCode: 500,
       headers,
@@ -136,6 +137,8 @@ export const handler = async (event, context) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'delete-evaluation');
 
 export default { handler };
 

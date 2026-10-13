@@ -1,3 +1,5 @@
+import {guardedEvaluationUpdate} from './db.js';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: approve-evaluation
  * Handles POST requests to approve or reject an evaluation record.
@@ -13,7 +15,7 @@ import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { recordStatusEvent } from './status-bus.js';
 import { calculateAssessmentSla } from './sla.js';
 
-export const handler = async (event, context) => {
+const rawHandler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -74,7 +76,7 @@ export const handler = async (event, context) => {
 
     const connection = await connectToDatabase();
     const nowIso = new Date().toISOString();
-    const managerIdentifier = (payload.managerName || payload.approvedBy || payload.rejectedBy || roleCheck.user?.name || 'Operations Manager').trim();
+    const managerIdentifier = String(roleCheck.user?.name || roleCheck.user?.email || 'Operations Manager').trim();
 
     // Fetch current document first
     let existing = null;
@@ -97,6 +99,7 @@ export const handler = async (event, context) => {
       };
     }
 
+    if(event.securityExpectedVersion!==undefined && Number(existing.currentVersion||0)!==event.securityExpectedVersion)return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
     const currentStatus = (existing.status || 'pending_review').toLowerCase();
 
     const rawAction = String(payload.action || payload.status || 'approve').trim().toLowerCase();
@@ -221,7 +224,7 @@ export const handler = async (event, context) => {
 
     // Apply update to persistent storage
     if (connection.isMongoAtlas) {
-      await collection.updateOne(filter, {
+      await guardedEvaluationUpdate(collection, existing, filter, {
         $set: updateFields,
         $push: { 
           evaluationHistory: historyEntry,
@@ -245,7 +248,7 @@ export const handler = async (event, context) => {
         });
       }
     } else {
-      await connection.updateEvaluation(id, updateFields, historyEntry, statusHistoryEntry);
+      await connection.updateEvaluation(id, updateFields, historyEntry, statusHistoryEntry, existing);
     }
 
     if (targetStatus !== 'rejected' && updateFields.approvedVersion) {
@@ -266,7 +269,7 @@ export const handler = async (event, context) => {
           }
         }
       } catch (verErr) {
-        console.warn('Failed to tag version document as approved:', verErr.message);
+        console.warn('[approval] VERSION_TAG_UNAVAILABLE');
       }
     }
 
@@ -300,7 +303,7 @@ export const handler = async (event, context) => {
         statusChangedAt: nowIso
       });
     } catch (evtErr) {
-      console.error('Failed to broadcast status change event:', evtErr);
+      logSecurityFailure('approve-evaluation');
     }
 
     return {
@@ -324,7 +327,8 @@ export const handler = async (event, context) => {
       })
     };
   } catch (error) {
-    console.error('Error approving/rejecting evaluation:', error);
+    if(error.code==='ASSESSMENT_CONFLICT')return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
+    logSecurityFailure('approve-evaluation');
     return {
       statusCode: 500,
       headers,
@@ -335,5 +339,7 @@ export const handler = async (event, context) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'approve-evaluation');
 
 export default { handler };

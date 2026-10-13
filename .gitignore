@@ -12,3 +12,9 @@ coverage/
 .netlify
 .uploads/
 .data/
+
+# Private security/browser evidence and temporary credentials
+*.har
+qa/**/*credentials*.txt
+qa/**/*credentials*.tst
+public/pdf-engine.js

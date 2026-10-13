@@ -132,7 +132,7 @@ export async function runLifecycleMigration(db, isMongoAtlas) {
               }
             }
           );
-          console.log(`[LIFECYCLE-MIGRATION] Migrated evaluation ID: ${doc._id} (${doc.companyName || 'Unknown'}) to "completed".`);
+          console.log('[database] LEGACY_LIFECYCLE_MIGRATED');
         }
       }
     } else {
@@ -154,7 +154,7 @@ export async function runLifecycleMigration(db, isMongoAtlas) {
           });
           doc.migratedFromApprovedAt = nowIso;
           modified = true;
-          console.log(`[LIFECYCLE-MIGRATION] Migrated evaluation ID: ${doc._id} (${doc.companyName || 'Unknown'}) to "completed".`);
+          console.log('[database] LEGACY_LIFECYCLE_MIGRATED');
         }
       });
       if (modified) {
@@ -162,7 +162,7 @@ export async function runLifecycleMigration(db, isMongoAtlas) {
       }
     }
   } catch (err) {
-    console.error('[LIFECYCLE-MIGRATION-ERROR]', err);
+    console.error('[database] MIGRATION_UNAVAILABLE');
   }
 }
 
@@ -195,7 +195,7 @@ export async function ensureDatabaseIndexes(db) {
     ]);
     indexesEnsured = true;
   } catch (err) {
-    console.warn('[DB-INDEX] Non-blocking index creation note:', err.message);
+    console.warn('[database] INDEX_UNAVAILABLE');
   }
 }
 
@@ -270,16 +270,11 @@ export async function connectToDatabase() {
         isIpWhitelistBlocked = true;
         if (!hasLoggedNotice) {
           hasLoggedNotice = true;
-          console.info(
-            '[MongoDB Atlas Notice] Atlas connection rejected during TLS handshake (SSL alert 80). ' +
-            'This occurs when the current cloud IP address is not on the Atlas IP Access List. ' +
-            'To resolve: In cloud.mongodb.com -> Network Access -> Add IP Address: 0.0.0.0/0 (Allow Access from Anywhere). ' +
-            'TrackScore is operating normally using persistent local storage.'
-          );
+          console.info('[database] TLS_CONNECTION_REJECTED');
         }
       } else if (!hasLoggedNotice) {
         hasLoggedNotice = true;
-        console.warn('MongoDB Atlas connection failed, falling back to local store:', err.message);
+        console.warn('[database] CONNECTION_UNAVAILABLE');
       }
     }
   }
@@ -335,12 +330,15 @@ function createFallbackStoreInterface(hasAtlasUri = false) {
       const records = includeDeleted ? data : data.filter(d => !d.deletedAt);
       return records.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
     },
-    async updateEvaluation(id, updateDoc, historyEntry = null, statusHistoryEntry = null) {
+    async updateEvaluation(id, updateDoc, historyEntry = null, statusHistoryEntry = null, expected = null) {
       ensureFallbackStore();
       const data = JSON.parse(fs.readFileSync(FALLBACK_FILE, 'utf-8'));
       const idx = data.findIndex(d => String(d._id) === String(id));
       if (idx === -1) {
         return { matchedCount: 0, modifiedCount: 0 };
+      }
+      if (expected && ['status','currentVersion','statusChangedAt','updatedAt','certificate'].some(key => JSON.stringify(data[idx][key] ?? null) !== JSON.stringify(expected[key] ?? null))) {
+        throw Object.assign(new Error('Information changed.'), {code:'ASSESSMENT_CONFLICT'});
       }
 
       const history = Array.isArray(data[idx].evaluationHistory)
@@ -870,6 +868,15 @@ export async function updateInquiryRecord(connection, id, updates) {
   return null;
 }
 
+export async function guardedEvaluationUpdate(collection, existing, filter, update) {
+  const state = {};
+  for (const key of ['status','currentVersion','statusChangedAt','updatedAt']) state[key]=existing[key] ?? null;
+  for (const key of ['preparedDate','printedDate','signedDate','sentToCustomerDate']) state['certificate.'+key]=existing.certificate?.[key] ?? null;
+  const result=await collection.updateOne({$and:[filter,state]},update);
+  if(!result.matchedCount)throw Object.assign(new Error('Information changed.'),{code:'ASSESSMENT_CONFLICT'});
+  return result;
+}
+
 export async function createAssessmentVersionRecord(connection, versionDoc) {
   const docToInsert = {
     ...versionDoc,
@@ -879,6 +886,8 @@ export async function createAssessmentVersionRecord(connection, versionDoc) {
   };
 
   if (connection.isMongoAtlas) {
+    // A rejected/failed unique index must never silently permit duplicate versions.
+    await connection.db.collection(COLLECTION_VERSIONS).createIndex({evaluationId:1,versionNumber:-1},{unique:true});
     const res = await connection.db.collection(COLLECTION_VERSIONS).insertOne(docToInsert);
     return { _id: res.insertedId, ...docToInsert };
   }

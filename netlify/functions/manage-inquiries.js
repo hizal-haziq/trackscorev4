@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: manage-inquiries
  * 
@@ -17,7 +18,7 @@ import { validateRole, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { getPackageDetails } from './packages.js';
 import { recordStatusEvent } from './status-bus.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -61,7 +62,7 @@ export const handler = async (event) => {
         })
       };
     } catch (err) {
-      console.error('[MANAGE-INQUIRIES-GET-ERROR]', err);
+      logSecurityFailure('manage-inquiries');
       return {
         statusCode: 500,
         headers,
@@ -281,7 +282,7 @@ export const handler = async (event) => {
       };
 
     } catch (err) {
-      console.error('[MANAGE-INQUIRIES-POST-ERROR]', err);
+      logSecurityFailure('manage-inquiries');
       return {
         statusCode: 500,
         headers,
@@ -296,3 +297,5 @@ export const handler = async (event) => {
     body: JSON.stringify({ success: false, error: 'Method Not Allowed.' })
   };
 };
+
+export const handler = secureHandler(rawHandler, 'manage-inquiries');

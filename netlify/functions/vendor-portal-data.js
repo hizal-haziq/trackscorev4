@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: vendor-portal-data
  * Vendor-facing endpoint providing self-service read-only access to their own evaluation records.
@@ -23,7 +24,7 @@ import {
 import { verifyToken, getBearerToken, ROLE_VENDOR } from './auth.js';
 import { calculateAssessmentSla } from './sla.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -186,7 +187,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[VENDOR-PORTAL-DATA-ERROR]', error);
+    logSecurityFailure('vendor-portal-data');
     return {
       statusCode: 500,
       headers,
@@ -246,5 +247,7 @@ function sanitizeVendorRecord(doc) {
     statusChangedAt: doc.statusChangedAt
   };
 }
+
+export const handler = secureHandler(rawHandler, 'vendor-portal-data');
 
 export default { handler };

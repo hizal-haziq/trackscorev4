@@ -17,8 +17,7 @@ fs.mkdirSync(sandbox);
 process.chdir(sandbox);
 for (const name of ['public','netlify','dist','build','src','react']) fs.cpSync(path.join(root,name),path.join(sandbox,name),{recursive:true});
 for (const name of ['server.ts','package.json','vite.react.config.ts','tsconfig.json']) fs.copyFileSync(path.join(root,name),path.join(sandbox,name));
-fs.mkdirSync(path.join(sandbox,'scripts'));
-fs.copyFileSync(path.join(root,'scripts/watch-react.mjs'),path.join(sandbox,'scripts/watch-react.mjs'));
+fs.cpSync(path.join(root,'scripts'),path.join(sandbox,'scripts'),{recursive:true});
 fs.symlinkSync(path.join(root,'node_modules'),path.join(sandbox,'node_modules'));
 fs.mkdirSync(path.join(sandbox,'.data'));
 const secret = crypto.randomBytes(32).toString('hex');
@@ -113,6 +112,7 @@ try{
     mountProofs.push(proof);fs.writeFileSync(path.join(qa,'react-mount-proof.json'),JSON.stringify(mountProofs,null,2));return proof;
   }
   const pattern='**/get-evaluations?view=overview*';
+  if(!process.argv.includes('--security-only')) {
   await check('Development keeps all eight legacy pages and only serves generated React files',async()=>{
     for(const route of ['/','/login.html','/dashboard.html','/index.html','/vendor-portal.html','/request-assessment.html','/change-password.html','/verify-certificate.html','/react/manager.html'])assert.equal((await fetch(dev.base+route)).status,200,route);
     const blocked=['/src/main.tsx','/.env','/.data/users.json','/build/server.cjs','/server.ts','/react/.env','/react/src/main.tsx','/react/@fs/etc/passwd','/react/manager.html.map','/react/assets/server.cjs','/react/netlify/functions/auth.js','/react/uploads/private.pdf','/react/package.json','/react/unknown'];for(const route of blocked)assert.equal((await fetch(dev.base+route)).status,404,route);return {legacyPages:8,blockedPaths:blocked.length};
@@ -182,12 +182,34 @@ try{
     }
     assert.deepEqual(snapshots[0].metrics,snapshots[1].metrics);assert.deepEqual(snapshots[0].recent.map(r=>r._id),snapshots[1].recent.map(r=>r._id));assert.deepEqual(snapshots[0].schedule.map(r=>r._id),snapshots[1].schedule.map(r=>r._id));assert.deepEqual(filteredSnapshots[0].recent.map(r=>r._id),filteredSnapshots[1].recent.map(r=>r._id));fs.writeFileSync(path.join(qa,'parity-values.json'),JSON.stringify({metrics:snapshots[0].metrics,attentionTotal:snapshots[0].attentionTotal,recentIds:snapshots[0].recent.map(r=>r._id),revisionIds:filteredSnapshots[0].recent.map(r=>r._id),scheduleIds:snapshots[0].schedule.map(r=>r._id),workload:snapshots[0].workload.assessors.map(a=>({id:a.id,active:a.workload.active,capacity:a.workload.capacity}))},null,2));return {metricsIdentical:true,recentAndScheduleIdsIdentical:true,revisionIdsIdentical:true,captures:['legacy-overview.har','react-overview.har']};
   });
+  if(process.argv.includes('--phase-b')) {
+    const {verifyPhaseB}=await import('./react-manager-phase-b.mjs');
+    await verifyPhaseB({page,context,browser,dev,qa,check,write,records,users,login,overview,settled,delay,streams});
+  }
+  if(process.argv.includes('--phase-c')) {
+    const {verifyPhaseC}=await import('./react-manager-phase-c.mjs');
+    await verifyPhaseC({page,context,browser,dev,qa,check,write,records,users,login,overview,settled,delay,streams});
+  }
+  if(process.argv.includes('--phase-d')) {
+    const {verifyPhaseD}=await import('./react-manager-phase-d.mjs');
+    await verifyPhaseD({page,context,browser,dev,qa,check,write,records,users,login,overview,settled,delay,streams});
+  }
+  if(process.argv.includes('--phase-e')) {
+    const {verifyPhaseE}=await import('./react-assessor-phase-e.mjs');
+    await verifyPhaseE({page,context,browser,dev,qa,check,write,records,users,login,overview,settled,delay,streams});
+  }
+  if(process.argv.includes('--phase-f')) {
+    const {verifyPhaseF}=await import('./react-vendor-phase-f.mjs');
+    await verifyPhaseF({page,context,browser,dev,qa,check,write,records,users,vendors,login,overview,settled,delay,streams});
+  }
+  }
+  if(process.argv.includes('--security')||process.argv.includes('--security-only')) {const {verifySecurity}=await import('./security-browser.mjs');await verifySecurity({page,context,browser,dev,qa,check,write,records,users,vendors,login,overview,delay,secret,passwordHash,sandbox});}
   await check('Development watcher rebuilds source safely',async()=>{const file=path.join(sandbox,'src/components/layout/ManagerLayout.tsx'),original=fs.readFileSync(file,'utf8'),html=fs.readFileSync(path.join(sandbox,'dist/react/manager.html'),'utf8');fs.writeFileSync(file,original.replace('Manager Overview</span>','Manager Overview QA rebuild</span>'));for(let i=0;i<80&&fs.readFileSync(path.join(sandbox,'dist/react/manager.html'),'utf8')===html;i++)await delay(100);assert.notEqual(fs.readFileSync(path.join(sandbox,'dist/react/manager.html'),'utf8'),html);await overview();await page.locator('.ts-topbar').getByText('Manager Overview QA rebuild',{exact:true}).waitFor();fs.writeFileSync(file,original);});
   await page.goto('about:blank');dev.child.kill('SIGTERM');await new Promise(resolve=>dev.child.once('exit',resolve));fs.rmSync(path.join(sandbox,'dist'),{recursive:true});fs.cpSync(path.join(root,'dist'),path.join(sandbox,'dist'),{recursive:true});
   const prod=await start('production');
   await check('Production serves legacy HTML and generated React assets, never source',async()=>{for(const route of ['/','/index.html','/dashboard.html','/login.html','/vendor-portal.html','/request-assessment.html','/change-password.html','/verify-certificate.html','/react/manager.html'])assert.equal((await fetch(prod.base+route)).status,200,route);const html=await(await fetch(prod.base+'/react/manager.html')).text();for(const asset of html.matchAll(/(?:src|href)="(\/react\/assets\/[^\"]+)"/g))assert.equal((await fetch(prod.base+asset[1])).status,200);for(const route of ['/src/main.tsx','/react/src/main.tsx','/react/.env','/.data/users.json','/build/server.cjs','/server.cjs','/react/unknown','/react/@fs/etc/passwd'])assert.equal((await fetch(prod.base+route)).status,404,route);assert.ok(!fs.existsSync(path.join(sandbox,'dist/server.cjs')));});
   await check('Production React bundle renders with a valid Manager and real-shaped mock overview',async()=>{const {summarizeManagerDashboard}=await import(pathToFileURL(path.join(sandbox,'netlify/functions/manager-overview.js')).href);await page.route(pattern,route=>route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({success:true,overview:summarizeManagerDashboard(records,users.filter(u=>u.role==='assessor'))})}));await page.goto(prod.base+'/login.html');await page.evaluate(token=>{localStorage.setItem('trackscore_token',token);localStorage.setItem('trackscore_user_role','manager');localStorage.setItem('trackscore_user','{}');},jwt.sign({role:'manager',name:'Production QA Manager'},secret,{expiresIn:'1h'}));requests.clear();await page.goto(prod.base+'/react/manager.html');await page.locator('.ts-metrics').waitFor();await settled();assert.equal(await page.locator('.ts-metric').count(),8);const mount=await proveReactActive('production');return {productionOverview:'Mocked real backend summarizer; Atlas not exercised',reactMounted:mount.reactContainer&&mount.reactChild,bundleSha256:mount.bundleSha256,apiInitiator:mount.overviewRequest.frames[0].path};});
-  await check('Complete run has no unexpected console or HTTP errors',async()=>{assert.equal(errors.filter(e=>!e.expected).length,0);assert.equal(http.filter(e=>!e.expected).length,0);return {unexpectedConsole:0,unexpectedHTTP:0,intentionalFailureCases:4};});
+  await check('Complete run has no unexpected console or HTTP errors',async()=>{assert.equal(errors.filter(e=>!e.expected).length,0);assert.equal(http.filter(e=>!e.expected).length,0);return {unexpectedConsole:0,unexpectedHTTP:0,intentionalFailureCases:new Set(errors.filter(e=>e.expected).map(e=>e.test)).size};});
 }finally{
   fs.writeFileSync(path.join(qa,'results.json'),JSON.stringify({generatedAt:new Date().toISOString(),results,errors,http,streams},null,2));
   if(browser)await browser.close();for(const child of children)if(child.exitCode===null)child.kill('SIGTERM');for(const fd of logs)fs.closeSync(fd);console.log('Evidence: '+qa);

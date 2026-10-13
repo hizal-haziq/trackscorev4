@@ -2707,7 +2707,7 @@ function loadHtml2Pdf() {
   if (html2pdfLoadingPromise) return html2pdfLoadingPromise;
   html2pdfLoadingPromise = new Promise((resolve, reject) => {
     const script = document.createElement("script");
-    script.src = "https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js";
+    script.src = "/pdf-engine.js";
     script.async = true;
     script.onload = () => resolve(window.html2pdf);
     script.onerror = (err) => {
@@ -3108,7 +3108,7 @@ function showToast(message, isError = false) {
   toast.className = `toast ${isError ? 'toast-error' : ''}`;
   toast.innerHTML = `
     <span>${isError ? '⚠️' : '✓'}</span>
-    <span>${message}</span>
+    <span>${escapeHtml(message)}</span>
   `;
 
   toastContainer.appendChild(toast);

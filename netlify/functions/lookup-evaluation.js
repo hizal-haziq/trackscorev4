@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure, assessorOwns, assessorMongoScope, peerEligible} from './security.js';
 /**
  * Netlify Serverless Function: lookup-evaluation
  * Allows assessors to view their own submissions ("My Submissions" view)
@@ -15,7 +16,7 @@ import { connectToDatabase, COLLECTION_NAME, buildMongoIdFilter } from './db.js'
 import { validateRole, ROLE_ASSESSOR, ROLE_MANAGER, authErrorResponse } from './auth.js';
 import { calculateAssessmentSla } from './sla.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -76,9 +77,7 @@ export const handler = async (event) => {
             const docAssessorId = String(single.assessorId || '').trim().toLowerCase();
             const docAssessorName = String(single.assessorName || '').trim().toLowerCase();
             const docCreatedBy = String(single.createdBy || '').trim().toLowerCase();
-            const isMatch = (ownAssessorId && docAssessorId === ownAssessorId) ||
-                            (ownAssessorName && docAssessorName === ownAssessorName) ||
-                            (ownAssessorEmail && docCreatedBy === ownAssessorEmail);
+            const isMatch = assessorOwns(single, currentUser);
             if (!isMatch) {
               return {
                 statusCode: 403,
@@ -106,7 +105,7 @@ export const handler = async (event) => {
           }
 
           if (assessorConditions.length > 0) {
-            filter.$or = assessorConditions;
+            Object.assign(filter, assessorMongoScope(currentUser));
           } else {
             filter.assessorId = '__NONE__';
           }
@@ -144,15 +143,16 @@ export const handler = async (event) => {
       }
     } else {
       // Local fallback
-      const all = await connection.getEvaluations(false);
+      // Match Mongo's ID lookup for Managers inspecting archived records.
+      // Other roles and unfiltered searches retain their existing archive scope.
+      const all = await connection.getEvaluations(isManager && Boolean(idQuery));
       if (idQuery) {
         const single = all.find(d => String(d._id) === idQuery || String(d.id) === idQuery);
         if (single) {
           if (isAssessor && !isPeerReview) {
             const docAssessorId = String(single.assessorId || '').trim().toLowerCase();
             const docAssessorName = String(single.assessorName || '').trim().toLowerCase();
-            const isMatch = (ownAssessorId && docAssessorId === ownAssessorId) ||
-                            (ownAssessorName && docAssessorName === ownAssessorName);
+            const isMatch = assessorOwns(single, currentUser);
             if (!isMatch) {
               return {
                 statusCode: 403,
@@ -167,8 +167,7 @@ export const handler = async (event) => {
         records = all.filter(d => {
           const docAssessorId = String(d.assessorId || '').trim().toLowerCase();
           const docAssessorName = String(d.assessorName || '').trim().toLowerCase();
-          const isOwn = (ownAssessorId && docAssessorId === ownAssessorId) ||
-                        (ownAssessorName && docAssessorName === ownAssessorName);
+          const isOwn = assessorOwns(d, currentUser);
 
           if (isAssessor) {
             if (!isPeerReview) {
@@ -190,6 +189,13 @@ export const handler = async (event) => {
       }
     }
 
+    if (isAssessor) {
+      if (isPeerReview) {
+        if (idQuery && records.some(r => !peerEligible(r) || assessorOwns(r,currentUser))) return authErrorResponse(headers,403,'Access denied for this peer assessment.');
+        records = records.filter(r => peerEligible(r) && !assessorOwns(r,currentUser));
+      } else records = records.filter(r => !r.deletedAt && assessorOwns(r,currentUser));
+    }
+
     return {
       statusCode: 200,
       headers,
@@ -204,6 +210,7 @@ export const handler = async (event) => {
           if (isManager && params.fullDetails === 'true') {
             return { ...omitRetiredWorkflow(r), _id: String(r._id || r.id), sla, slaStatus: sla.status };
           }
+          if (isAssessor && isPeerReview) return { _id:String(r._id||r.id), companyName:r.companyName,deviceModel:r.deviceModel,assessorName:r.assessorName,assessorId:r.assessorId,assessmentDate:r.assessmentDate,totalScore:r.totalScore,sectionAScore:r.sectionAScore,sectionBScore:r.sectionBScore,starRating:r.starRating,status:r.status,breakdown:r.breakdown,comments:r.comments,commentsOverallSummary:r.commentsOverallSummary,currentVersion:r.currentVersion,sla,slaStatus:sla.status };
           return {
             _id: String(r._id || r.id),
             companyName: r.companyName,
@@ -242,7 +249,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('Error during evaluation lookup:', error);
+    logSecurityFailure('lookup-evaluation');
     return {
       statusCode: 500,
       headers,
@@ -257,5 +264,7 @@ export const handler = async (event) => {
 function escapeRegex(str) {
   return str.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
+
+export const handler = secureHandler(rawHandler, 'lookup-evaluation');
 
 export default { handler };

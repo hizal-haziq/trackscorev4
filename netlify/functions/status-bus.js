@@ -19,7 +19,7 @@ export function recordStatusEvent(eventData) {
   try {
     statusEmitter.emit('status-change', event);
   } catch (err) {
-    console.error('Status event emit error:', err);
+    console.error('[status-bus] EMIT_FAILED');
   }
   return event;
 }
@@ -33,9 +33,7 @@ export function getRecentStatusEvents(assessorId = null, sinceTimestamp = null) 
       const eAssessorName = String(e.assessorName || e.assignedAssessor || e.assignedAssessorName || '').trim().toLowerCase();
       const eAssessorEmail = String(e.assessorEmail || e.assignedAssessorEmail || '').trim().toLowerCase();
       return eAssessorId === aid || 
-             eAssessorName === aid || 
-             (aid.length >= 3 && eAssessorName.includes(aid)) || 
-             (eAssessorName.length >= 3 && aid.includes(eAssessorName)) ||
+             eAssessorName === aid ||
              (aid.includes('@') && eAssessorEmail === aid);
     });
   }

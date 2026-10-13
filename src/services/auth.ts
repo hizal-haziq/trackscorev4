@@ -30,6 +30,18 @@ export function readSession(now = Date.now()): AuthSession | null {
   if (expiresAt !== null && expiresAt <= now) return null;
   const raw = parse(store?.getItem(AUTH_KEYS.user) || null);
   const profile = isRecord(raw) ? raw : {};
+
+  // Authoritative token claims are source of truth: repair any tampered storage values
+  if (store && store.getItem(AUTH_KEYS.role) !== payload.role) {
+    store.setItem(AUTH_KEYS.role, payload.role);
+  }
+  if (store && isRecord(profile) && profile.role !== payload.role) {
+    store.setItem(AUTH_KEYS.user, JSON.stringify({...profile, role: payload.role}));
+  }
+  if (typeof window !== 'undefined' && payload.role !== 'manager') {
+    window.sessionStorage.removeItem('manager_authenticated');
+  }
+
   return {token, expiresAt, user: {
     id: typeof payload.userId === 'string' ? payload.userId : typeof payload.vendorId === 'string' ? payload.vendorId : undefined,
     role: payload.role,
@@ -60,4 +72,8 @@ export function requirePasswordChange() {
   const profile = parse(store?.getItem(AUTH_KEYS.user) || null);
   store?.setItem(AUTH_KEYS.user, JSON.stringify({... (isRecord(profile) ? profile : {}), mustChangePassword: true}));
   announce();
+}
+
+export function getStoredToken(): string | null {
+  return storage()?.getItem(AUTH_KEYS.token) || null;
 }

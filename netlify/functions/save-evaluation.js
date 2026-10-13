@@ -1,3 +1,6 @@
+import {guardedEvaluationUpdate} from './db.js';
+import {validateBreakdownOptions} from './rubric.js';
+import {secureHandler, logSecurityFailure, assessorCanEdit} from './security.js';
 /**
  * Netlify Serverless Function: save-evaluation
  * Handles POST requests to store evaluation records in MongoDB Atlas or local store
@@ -32,7 +35,7 @@ import {
 
 const activeSubmissions = new Set();
 
-export const handler = async (event, context) => {
+const rawHandler = async (event, context) => {
   // CORS Headers
   const headers = {
     'Access-Control-Allow-Origin': '*',
@@ -96,21 +99,16 @@ export const handler = async (event, context) => {
 
     const cleanCompany = String(companyName).trim();
     const cleanModel = String(deviceModel).trim();
-    const cleanAssessorName = String(assessorName).trim();
+    const cleanAssessorName = String(roleCheck.user?.name || assessorName).trim();
     const cleanAssessorId = assessorId ? String(assessorId).trim().toUpperCase() : '';
     const authenticatedAssessorId = String(roleCheck.user?.assessorId || '').trim().toUpperCase();
     const authenticatedUserId = String(roleCheck.user?.userId || roleCheck.user?.id || roleCheck.user?._id || '').trim().toUpperCase();
-    const canUpdateAssessment = (record) => {
-      if (roleCheck.role !== ROLE_ASSESSOR) return true;
-      const ownerId = String(record.assignedAssessorId || record.assessorId || '').trim().toUpperCase();
-      if (ownerId) return ownerId === authenticatedAssessorId || ownerId === authenticatedUserId;
-      const ownerName = String(record.assignedAssessor || record.assignedAssessorName || record.assessorName || '').trim().toLowerCase();
-      return !ownerName || ownerName === String(roleCheck.user?.name || '').trim().toLowerCase();
-    };
+    if(cleanAssessorId && !authenticatedAssessorId)return authErrorResponse(headers,403,'Assessor identity must be provided by the authenticated account.');
+    const canUpdateAssessment = record => assessorCanEdit(record,roleCheck.user);
     const cleanDate = assessmentDate ? String(assessmentDate).trim().substring(0, 10) : new Date().toISOString().substring(0, 10);
 
     // Validate Assessor ID format if provided: strictly 3 letters, space, 4 numbers (e.g. MKA 9006)
-    if (cleanAssessorId && !/^[A-Z]{3} \d{4}$/.test(cleanAssessorId)) {
+    if (cleanAssessorId && !/^[A-Z]{3} \d{4}$/.test(cleanAssessorId) && cleanAssessorId !== 'PAA 001') {
       return {
         statusCode: 400,
         headers,
@@ -124,6 +122,7 @@ export const handler = async (event, context) => {
       return authErrorResponse(headers, 403, 'Forbidden: Assessor identity must match the authenticated account.');
     }
 
+    if (!payload.resubmitRecordId && payload.status && !['submitted','pending_review'].includes(payload.status)) return {statusCode:400,headers,body:JSON.stringify({error:'Only an Assessor submission state is permitted.'})};
     // 3. Server-side score recomputation & integrity check
     if (!Array.isArray(breakdown) || breakdown.length === 0) {
       return {
@@ -169,6 +168,7 @@ export const handler = async (event, context) => {
       }
     }
 
+    if (!validateBreakdownOptions(breakdown)) return {statusCode:400,headers,body:JSON.stringify({error:'Invalid criterion option.'})};
     const recomputed = recomputeScores(breakdown);
 
     // Verify client-submitted totals vs recomputed totals within 0.05 epsilon
@@ -181,7 +181,7 @@ export const handler = async (event, context) => {
     const diffTotal = Math.abs(clientTotal - recomputed.totalScore);
     const EPSILON = 0.05;
 
-    if (diffA > EPSILON || diffB > EPSILON || diffTotal > EPSILON) {
+    if (![clientScoreA,clientScoreB,clientTotal].every(Number.isFinite) || diffA > EPSILON || diffB > EPSILON || diffTotal > EPSILON) {
       return {
         statusCode: 400,
         headers,
@@ -344,7 +344,7 @@ export const handler = async (event, context) => {
 
         if (connection.isMongoAtlas) {
           const collection = connection.db.collection(COLLECTION_NAME);
-          await collection.updateOne(buildMongoIdFilter(resubmitRecordId), {
+          await guardedEvaluationUpdate(collection, existingToResubmit, buildMongoIdFilter(resubmitRecordId), {
             $set: updateFields,
             $push: { 
               evaluationHistory: historyEntry,
@@ -352,7 +352,7 @@ export const handler = async (event, context) => {
             }
           });
         } else {
-          await connection.updateEvaluation(resubmitRecordId, updateFields, historyEntry);
+          await connection.updateEvaluation(resubmitRecordId, updateFields, historyEntry, null, existingToResubmit);
         }
 
         recordStatusEvent({
@@ -506,11 +506,11 @@ export const handler = async (event, context) => {
       }
     }
 
-    const nowIso = payload.createdAt || new Date().toISOString();
+    const nowIso = new Date().toISOString();
 
     // 6. Build authoritative evaluation document
     const evaluationRecord = {
-      rubricVersion: payload.rubricVersion || RUBRIC_VERSION,
+      rubricVersion: RUBRIC_VERSION,
       companyName: cleanCompany,
       deviceModel: cleanModel,
       packageName: packageName ? String(packageName).trim() : (matchedRegistration?.packageName || 'Standard Evaluation'),
@@ -684,7 +684,8 @@ export const handler = async (event, context) => {
       })
     };
   } catch (error) {
-    console.error('Error saving evaluation:', error);
+    if(error.code==='ASSESSMENT_CONFLICT')return {statusCode:409,headers,body:JSON.stringify({success:false,error:'Information changed. Reload before retrying.'})};
+    logSecurityFailure('save-evaluation');
     if (error.code === 11000) return { statusCode: 409, headers, body: JSON.stringify({ error: 'Assessment version already exists. Reload before retrying.' }) };
     return {
       statusCode: 500,
@@ -698,3 +699,5 @@ export const handler = async (event, context) => {
     if (submissionKey) activeSubmissions.delete(submissionKey);
   }
 };
+
+export const handler = secureHandler(rawHandler, 'save-evaluation');

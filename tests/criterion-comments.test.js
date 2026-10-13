@@ -1,3 +1,4 @@
+import {createVendorRecord} from '../netlify/functions/db.js';
 /**
  * Comprehensive Test Suite for Per-Criterion Assessor Comments Save & Edit Persistence
  * Covers Requirements:
@@ -588,6 +589,7 @@ describe('Per-Criterion Assessor Comments Persistence Suite', () => {
       createdEvalIds.push(evalId);
 
       // Generate vendor token linked to this evaluation
+      await createVendorRecord(await connectToDatabase(), {contactEmail:`vendor-${timestamp}@commenttest.com`,loginEmail:`vendor-${timestamp}@commenttest.com`,companyName,isActive:true,linkedRegistrationIds:[String(evalId)]});
       const vendorToken = generateToken({
         role: ROLE_VENDOR,
         companyName,

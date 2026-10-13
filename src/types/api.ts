@@ -1,5 +1,5 @@
 export type ApiPrefix = '/.netlify/functions' | '/api';
-export type ApiErrorKind = 'unauthenticated' | 'forbidden' | 'password-change' | 'http' | 'invalid-response';
+export type ApiErrorKind = 'unauthenticated' | 'forbidden' | 'password-change' | 'http' | 'invalid-response' | 'network';
 export interface ApiOptions extends Omit<RequestInit, 'body'> {
   body?: unknown;
   prefix?: ApiPrefix;

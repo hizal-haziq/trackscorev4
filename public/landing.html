@@ -3,35 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TrackScore • MIROS Telematics Assessment &amp; Compliance Platform</title>
-  <meta name="description" content="Official Malaysian Institute of Road Safety Research (MIROS) telematics assessment and compliance platform." />
+  <title>TrackScore • Commercial Vehicle Tracking System Rating Programme | MIROS</title>
+  <meta name="description" content="MIROS evaluates commercial-vehicle tracking systems using defined basic and additional features to help industry users identify systems that support safer, more effective vehicle operations." />
   <link rel="icon" type="image/svg+xml" href="/TrackScore_TS_Icon.svg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
   
   <style>
     :root {
-      /* White / Light Institutional Theme Variables */
       --bg-white: #FFFFFF;
       --bg-canvas: #F8FAFC;
       --bg-surface: #FFFFFF;
       --bg-surface-subtle: #F1F5F9;
-      --card-border: #E2E8F0;
-      --card-border-subtle: rgba(15, 23, 42, 0.06);
-      --card-border-focus: rgba(249, 115, 22, 0.4);
+      --border-light: #E2E8F0;
+      --border-subtle: rgba(15, 23, 42, 0.08);
       --text-main: #0F172A;
       --text-muted: #475569;
       --text-dim: #64748B;
-      --primary-orange: #EA580C;
-      --primary-orange-light: #F97316;
-      --primary-orange-subtle: rgba(249, 115, 22, 0.08);
-      --accent-gold: #D97706;
-      --accent-cyan: #0284C7;
+      --primary-orange: #F58220;
+      --primary-orange-hover: #E06F12;
+      --primary-orange-light: #FFF7ED;
+      --accent-navy: #0F172A;
+      --accent-blue: #0284C7;
+      --accent-blue-light: #F0F9FF;
       --accent-green: #059669;
-      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      --font-body: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
       --font-display: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
-      --font-mono: 'JetBrains Mono', monospace;
+      --shadow-sm: 0 1px 3px rgba(15, 23, 42, 0.04);
+      --shadow-md: 0 4px 14px rgba(15, 23, 42, 0.05);
+      --shadow-lg: 0 10px 28px rgba(15, 23, 42, 0.07);
     }
 
     *, *::before, *::after {
@@ -40,1836 +41,1312 @@
       padding: 0;
     }
 
-    html, body {
-      min-height: 100%;
-      background-color: var(--bg-white);
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: var(--bg-canvas);
       color: var(--text-main);
       font-family: var(--font-body);
+      font-size: clamp(0.95rem, 1.1vw, 1.05rem);
       line-height: 1.6;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
       overflow-x: hidden;
-    }
-
-    /* Ambient background with delicate clean laboratory gradient */
-    body {
-      background-image: 
-        radial-gradient(ellipse 65% 35% at 50% -5%, rgba(249, 115, 22, 0.06), transparent 70%),
-        radial-gradient(ellipse 40% 25% at 90% 25%, rgba(2, 132, 199, 0.03), transparent 60%),
-        linear-gradient(180deg, var(--bg-white) 0%, var(--bg-canvas) 100%);
-      background-attachment: fixed;
       display: flex;
       flex-direction: column;
     }
 
-    /* Technical grid pattern background (light, airy, architectural) */
-    .bg-grid-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 600px;
-      background-size: 40px 40px;
-      background-image: 
-        linear-gradient(to right, rgba(15, 23, 42, 0.03) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(15, 23, 42, 0.03) 1px, transparent 1px);
-      mask-image: radial-gradient(ellipse 70% 60% at 50% 10%, #000 50%, transparent 100%);
-      -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 10%, #000 50%, transparent 100%);
-      pointer-events: none;
-      z-index: 0;
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    :focus-visible {
+      outline: 3px solid var(--primary-orange);
+      outline-offset: 3px;
     }
 
     .container {
       width: 100%;
-      max-width: 1240px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 28px;
-      position: relative;
-      z-index: 1;
+      padding-inline: clamp(1rem, 3.5vw, 1.75rem);
     }
 
     /* =========================================================
-       NAVBAR (Crisp White Theme)
+       1. HEADER / NAVIGATION
        ========================================================= */
     .site-header {
-      background: rgba(255, 255, 255, 0.92);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border-bottom: 1px solid var(--card-border);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-light);
       position: sticky;
       top: 0;
       z-index: 100;
-      transition: background-color 0.2s ease, border-color 0.2s ease;
+      transition: background-color 0.2s ease;
     }
 
     .header-inner {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 74px;
-      gap: 24px;
-    }
-
-    /* Brand Lockup: Official MIROS Logo + TrackScore title */
-    .brand-group {
-      display: flex;
-      align-items: center;
+      height: 72px;
       gap: 16px;
-      text-decoration: none;
+      min-width: 0;
     }
 
-    .miros-logo-wrapper {
-      position: relative;
+    .brand-group {
       display: inline-flex;
       align-items: center;
-      overflow: hidden;
-      border-radius: 4px;
-      animation: mirosFadeInUp 750ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    @keyframes mirosFadeInUp {
-      0% {
-        opacity: 0;
-        transform: translateY(6px);
-      }
-      100% {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    /* Barely noticeable institutional amber shimmer across logo */
-    .miros-logo-wrapper::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -130%;
-      width: 50%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(249, 115, 22, 0.03) 20%,
-        rgba(249, 115, 22, 0.18) 50%,
-        rgba(249, 115, 22, 0.03) 80%,
-        transparent 100%
-      );
-      transform: skewX(-22deg);
-      pointer-events: none;
-      animation: mirosShimmer 7.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-      animation-delay: 2s;
-    }
-
-    @keyframes mirosShimmer {
-      0%, 84% {
-        left: -130%;
-        opacity: 0;
-      }
-      87% {
-        opacity: 1;
-      }
-      96% {
-        left: 170%;
-        opacity: 1;
-      }
-      100% {
-        left: 170%;
-        opacity: 0;
-      }
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+      flex-shrink: 0;
+      min-width: 0;
+      min-height: 44px;
     }
 
     .miros-logo-img {
-      height: 38px;
+      height: 36px;
       width: auto;
+      max-width: 150px;
       display: block;
+      flex-shrink: 0;
     }
 
     .brand-divider {
       width: 1px;
-      height: 26px;
-      background: var(--card-border);
+      height: 28px;
+      background-color: var(--border-light);
+      flex-shrink: 0;
     }
 
-    .ts-brand-lockup {
+    .brand-text-block {
       display: flex;
       flex-direction: column;
+      min-width: 0;
     }
 
-    .ts-brand-title {
+    .brand-name {
       font-family: var(--font-display);
-      font-size: 20px;
+      font-size: clamp(17px, 1.8vw, 20px);
       font-weight: 800;
-      letter-spacing: -0.4px;
-      color: #0F172A;
-      display: flex;
-      align-items: baseline;
+      color: var(--accent-navy);
+      letter-spacing: -0.02em;
       line-height: 1.1;
+      white-space: nowrap;
     }
 
-    .ts-brand-title span.score {
-      color: #334155;
-      font-weight: 700;
-    }
-
-    .ts-brand-title span.dot {
+    .brand-name span {
       color: var(--primary-orange);
-      margin-left: 1px;
     }
 
-    .ts-brand-subtitle {
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-      color: var(--text-dim);
-      margin-top: 1px;
+    .brand-subtitle {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--text-muted);
+      letter-spacing: 0.02em;
+      line-height: 1.3;
+      margin-top: 2px;
+      overflow-wrap: anywhere;
     }
 
-    /* Navigation Menu */
-    .nav-menu {
+    /* Desktop Navigation */
+    .desktop-nav {
       display: flex;
       align-items: center;
-      gap: 24px;
+      gap: clamp(12px, 1.6vw, 24px);
+      min-width: 0;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: clamp(10px, 1.4vw, 20px);
       list-style: none;
+      margin: 0;
+      padding: 0;
     }
 
     .nav-link {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-size: 13.5px;
+      display: inline-flex;
+      align-items: center;
+      font-size: clamp(13px, 0.95vw, 14px);
       font-weight: 600;
-      padding: 6px 0;
+      color: var(--text-muted);
       transition: color 0.15s ease;
-      position: relative;
-      cursor: pointer;
+      padding: 8px 6px;
+      min-height: 44px;
+      white-space: nowrap;
     }
 
     .nav-link:hover {
-      color: #0F172A;
+      color: var(--primary-orange);
     }
 
-    .nav-link::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 0%;
-      height: 2px;
-      background: var(--primary-orange);
-      transition: width 0.2s ease;
-      border-radius: 2px;
-    }
-
-    .nav-link:hover::after {
-      width: 100%;
-    }
-
-    /* Header CTAs */
-    .nav-actions {
+    .header-cta-group {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
+      flex-shrink: 0;
     }
 
-    .btn-nav-register {
-      color: #C2410C;
-      background: rgba(249, 115, 22, 0.08);
-      border: 1px solid rgba(249, 115, 22, 0.25);
-      padding: 8px 14px;
-      border-radius: 6px;
-      font-size: 12.5px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: all 0.18s ease;
+    .btn-nav-signin {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(13px, 0.95vw, 14px);
+      font-weight: 600;
+      color: var(--accent-navy);
+      padding: 0.55rem 1rem;
+      min-height: 44px;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      background: var(--bg-white);
       white-space: nowrap;
+      transition: all 0.15s ease;
     }
 
-    .btn-nav-register:hover {
-      background: rgba(249, 115, 22, 0.15);
-      border-color: var(--primary-orange);
-      color: #9A3412;
-      transform: translateY(-1px);
+    .btn-nav-signin:hover {
+      background: var(--bg-surface-subtle);
+      border-color: #CBD5E1;
+      color: var(--primary-orange);
     }
 
-    .btn-nav-login {
-      background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
+    .btn-nav-apply {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: clamp(13px, 0.95vw, 14px);
+      font-weight: 700;
       color: #FFFFFF;
-      border: 1px solid rgba(234, 88, 12, 0.85);
-      padding: 8px 18px;
-      border-radius: 6px;
-      font-size: 13px;
-      font-weight: 700;
-      text-decoration: none;
-      transition: all 0.18s ease;
-      box-shadow: 0 2px 10px rgba(249, 115, 22, 0.22);
+      padding: 0.55rem 1.15rem;
+      min-height: 44px;
+      border-radius: 8px;
+      background: var(--primary-orange);
+      border: 1px solid var(--primary-orange);
       white-space: nowrap;
+      transition: background-color 0.15s ease, transform 0.1s ease;
     }
 
-    .btn-nav-login:hover {
-      background: linear-gradient(135deg, #FB923C 0%, #EA580C 100%);
-      box-shadow: 0 4px 14px rgba(249, 115, 22, 0.35);
-      transform: translateY(-1px);
+    .btn-nav-apply:hover {
+      background: var(--primary-orange-hover);
+      border-color: var(--primary-orange-hover);
     }
 
     /* Mobile Hamburger */
     .mobile-toggle {
       display: none;
-      background: #FFFFFF;
-      border: 1px solid var(--card-border);
-      color: var(--text-main);
-      padding: 8px;
-      border-radius: 6px;
-      cursor: pointer;
+      align-items: center;
+      justify-content: center;
+      padding: 10px;
+      color: var(--accent-navy);
+      border-radius: 8px;
+      min-height: 44px;
+      min-width: 44px;
+      flex-shrink: 0;
     }
 
-    .mobile-drawer {
+    .mobile-menu {
       display: none;
-      flex-direction: column;
-      background: #FFFFFF;
-      border-bottom: 1px solid var(--card-border);
-      padding: 16px 24px 22px;
-      gap: 12px;
-      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border-light);
+      padding: 20px 24px;
+      box-shadow: var(--shadow-lg);
     }
 
-    .mobile-drawer.open {
-      display: flex;
-    }
-
-    .mobile-drawer .nav-link {
-      font-size: 14.5px;
-      padding: 8px 0;
-      border-bottom: 1px solid var(--card-border);
-    }
-
-    /* =========================================================
-       HERO SECTION (Spacious Two-Column Light Layout)
-       ========================================================= */
-    .hero-section {
-      flex: 1;
-      display: flex;
-      align-items: center;
-      padding: 72px 0 64px;
-      position: relative;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.12fr 0.88fr;
-      gap: 56px;
-      align-items: center;
-    }
-
-    /* Hero Left */
-    .hero-left {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-    }
-
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #FFFFFF;
-      border: 1px solid rgba(249, 115, 22, 0.3);
-      padding: 5px 12px;
-      border-radius: 9999px;
-      font-family: var(--font-mono);
-      font-size: 11.5px;
-      font-weight: 700;
-      color: #0F172A;
-      margin-bottom: 24px;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-    }
-
-    .badge-dot {
-      width: 6px;
-      height: 6px;
-      background: var(--accent-green);
-      border-radius: 50%;
-      box-shadow: 0 0 6px var(--accent-green);
-    }
-
-    .hero-title {
-      font-family: var(--font-display);
-      font-size: clamp(34px, 4.3vw, 50px);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -1.2px;
-      color: #0F172A;
-      margin-bottom: 22px;
-    }
-
-    .hero-title .text-orange {
-      color: var(--primary-orange);
-    }
-
-    .hero-desc {
-      font-size: 16.5px;
-      color: var(--text-muted);
-      line-height: 1.65;
-      max-width: 540px;
-      margin-bottom: 36px;
-    }
-
-    .hero-cta-group {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      flex-wrap: wrap;
-    }
-
-    .btn-primary-cta {
-      background: linear-gradient(135deg, #F97316 0%, #EA580C 100%);
-      color: #FFFFFF;
-      padding: 14px 24px;
-      border-radius: 8px;
-      font-size: 14.5px;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      box-shadow: 0 4px 18px rgba(249, 115, 22, 0.35);
-      border: 1px solid rgba(234, 88, 12, 0.9);
-      letter-spacing: 0.2px;
-    }
-
-    .btn-primary-cta:hover {
-      background: linear-gradient(135deg, #FB923C 0%, #EA580C 100%);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 22px rgba(249, 115, 22, 0.45);
-    }
-
-    .btn-secondary-cta {
-      background: #FFFFFF;
-      color: #0F172A;
-      border: 1px solid #CBD5E1;
-      padding: 14px 22px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 700;
-      text-decoration: none;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.2s ease;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
-    }
-
-    .btn-secondary-cta:hover {
-      background: #F8FAFC;
-      border-color: #94A3B8;
-      transform: translateY(-2px);
-    }
-
-    /* =========================================================
-       HERO RIGHT: SOPHISTICATED FLOATING ASSESSMENT & CERTIFICATION CARD
-       ========================================================= */
-    .hero-right {
-      position: relative;
-      perspective: 1000px;
-    }
-
-    /* Ambient glow behind card */
-    .hero-right::before {
-      content: '';
-      position: absolute;
-      top: 10%;
-      left: 10%;
-      right: 10%;
-      bottom: 10%;
-      background: radial-gradient(circle, rgba(249, 115, 22, 0.12) 0%, rgba(2, 132, 199, 0.06) 50%, transparent 75%);
-      filter: blur(40px);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Main Floating Card Container */
-    .assessment-card {
-      position: relative;
-      z-index: 1;
-      background: linear-gradient(155deg, #0C172E 0%, #060D19 100%);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 18px;
-      padding: 26px;
-      box-shadow: 
-        0 24px 60px -15px rgba(2, 6, 23, 0.35),
-        0 0 35px -10px rgba(249, 115, 22, 0.12),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12);
-      color: #FFFFFF;
-      overflow: hidden;
-      animation: gentleCardFloat 6s ease-in-out infinite;
-    }
-
-    @keyframes gentleCardFloat {
-      0%, 100% {
-        transform: translateY(0px);
-      }
-      50% {
-        transform: translateY(-6px);
-      }
-    }
-
-    /* Minimal subtle background grid inside card */
-    .card-grid-pattern {
-      position: absolute;
-      inset: 0;
-      background-size: 24px 24px;
-      background-image: 
-        linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    /* Subtle periodic light sweep across card */
-    .assessment-card::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -150%;
-      width: 60%;
-      height: 100%;
-      background: linear-gradient(
-        90deg,
-        transparent 0%,
-        rgba(255, 255, 255, 0.02) 30%,
-        rgba(249, 115, 22, 0.08) 50%,
-        rgba(255, 255, 255, 0.02) 70%,
-        transparent 100%
-      );
-      transform: skewX(-25deg);
-      pointer-events: none;
-      animation: cardLightSweep 9s cubic-bezier(0.4, 0, 0.2, 1) infinite;
-      animation-delay: 2.5s;
-      z-index: 1;
-    }
-
-    @keyframes cardLightSweep {
-      0%, 82% {
-        left: -150%;
-        opacity: 0;
-      }
-      85% {
-        opacity: 1;
-      }
-      95% {
-        left: 200%;
-        opacity: 1;
-      }
-      100% {
-        left: 200%;
-        opacity: 0;
-      }
-    }
-
-    .card-inner-content {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
-
-    /* Top Header Bar */
-    .card-top-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      padding-bottom: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    }
-
-    .card-brand-lockup {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .card-icon-badge {
-      width: 34px;
-      height: 34px;
-      border-radius: 8px;
-      background: linear-gradient(135deg, rgba(249, 115, 22, 0.2) 0%, rgba(234, 88, 12, 0.35) 100%);
-      border: 1px solid rgba(249, 115, 22, 0.4);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #FB923C;
-      flex-shrink: 0;
-    }
-
-    .card-title-wrap {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .card-main-title {
-      font-family: var(--font-display);
-      font-size: 15px;
-      font-weight: 700;
-      color: #F8FAFC;
-      letter-spacing: -0.2px;
-      line-height: 1.2;
-    }
-
-    .card-sub-title {
-      font-size: 11px;
-      color: #94A3B8;
-      font-weight: 500;
-    }
-
-    .card-status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(16, 185, 129, 0.12);
-      border: 1px solid rgba(16, 185, 129, 0.32);
-      color: #34D399;
-      font-family: var(--font-mono);
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: 0.5px;
-      padding: 5px 10px;
-      border-radius: 9999px;
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.15);
-      white-space: nowrap;
-    }
-
-    .status-dot-pulse {
-      width: 6px;
-      height: 6px;
-      background: #10B981;
-      border-radius: 50%;
-      box-shadow: 0 0 8px #10B981;
-      animation: dotPulse 2s infinite ease-in-out;
-    }
-
-    @keyframes dotPulse {
-      0%, 100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-      50% {
-        opacity: 0.5;
-        transform: scale(0.85);
-      }
-    }
-
-    /* 5-Stage Assessment Outcome Pipeline */
-    .outcome-pipeline {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 12px;
-      padding: 14px 16px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-
-    .pipeline-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: #94A3B8;
-      text-transform: uppercase;
-      letter-spacing: 0.6px;
-    }
-
-    .pipeline-steps {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: relative;
-      padding: 2px 4px;
-    }
-
-    /* Continuous glowing track line */
-    .pipeline-track {
-      position: absolute;
-      top: 13px;
-      left: 12px;
-      right: 12px;
-      height: 2px;
-      background: rgba(255, 255, 255, 0.1);
-      z-index: 1;
-    }
-
-    .pipeline-track-fill {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, #F97316 0%, #FB923C 50%, #10B981 100%);
-      box-shadow: 0 0 8px rgba(249, 115, 22, 0.5);
-      animation: trackShimmer 3s ease-in-out infinite;
-    }
-
-    @keyframes trackShimmer {
-      0%, 100% { opacity: 0.85; }
-      50% { opacity: 1; filter: drop-shadow(0 0 6px rgba(249, 115, 22, 0.8)); }
-    }
-
-    .pipeline-step {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      position: relative;
-      z-index: 2;
-    }
-
-    .step-node {
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: #0C172E;
-      border: 1.5px solid #F97316;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #FB923C;
-      font-size: 11px;
-      font-weight: 700;
-      box-shadow: 0 0 10px rgba(249, 115, 22, 0.25);
-      transition: all 0.2s ease;
-    }
-
-    .step-node.completed {
-      background: #064E3B;
-      border-color: #10B981;
-      color: #6EE7B7;
-      box-shadow: 0 0 10px rgba(16, 185, 129, 0.35);
-    }
-
-    .step-node.active-gold {
-      background: #78350F;
-      border-color: #F59E0B;
-      color: #FDE68A;
-      box-shadow: 0 0 12px rgba(245, 158, 11, 0.4);
-    }
-
-    .step-label {
-      font-size: 10px;
-      font-weight: 600;
-      color: #CBD5E1;
-      letter-spacing: 0.2px;
-      white-space: nowrap;
-    }
-
-    /* Core Rating & Certification Outcome Box */
-    .rating-certification-box {
-      background: linear-gradient(145deg, rgba(26, 43, 76, 0.55) 0%, rgba(15, 27, 49, 0.75) 100%);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 14px;
-      padding: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
-      position: relative;
-    }
-
-    .rating-left-col {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-
-    .rating-eyebrow {
-      font-family: var(--font-mono);
-      font-size: 10.5px;
-      font-weight: 700;
-      color: #FB923C;
-      letter-spacing: 0.8px;
-      text-transform: uppercase;
-    }
-
-    .stars-visual-group {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      margin: 3px 0 6px;
-    }
-
-    .star-icon {
-      color: #FFB300;
-      filter: drop-shadow(0 0 6px rgba(255, 179, 0, 0.45));
-    }
-
-    .rating-grade-title {
-      font-family: var(--font-display);
-      font-size: 19px;
-      font-weight: 800;
-      color: #FFFFFF;
-      letter-spacing: -0.3px;
-      line-height: 1.15;
-    }
-
-    .rating-compliance-text {
-      font-size: 12px;
-      color: #94A3B8;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    /* Right Badge: Official Seal / Shield */
-    .cert-seal-badge {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      background: linear-gradient(140deg, rgba(249, 115, 22, 0.15) 0%, rgba(16, 185, 129, 0.12) 100%);
-      border: 1px solid rgba(249, 115, 22, 0.35);
-      border-radius: 12px;
-      padding: 12px 14px;
-      box-shadow: 0 4px 14px rgba(0, 0, 0, 0.2);
-      flex-shrink: 0;
-      min-width: 110px;
-    }
-
-    .cert-seal-icon {
-      color: #F59E0B;
-      margin-bottom: 5px;
-      filter: drop-shadow(0 0 8px rgba(245, 158, 11, 0.4));
-    }
-
-    .cert-seal-text {
-      font-family: var(--font-display);
-      font-size: 11px;
-      font-weight: 800;
-      color: #F8FAFC;
-      letter-spacing: 0.4px;
-      line-height: 1.2;
-    }
-
-    .cert-seal-sub {
-      font-family: var(--font-mono);
-      font-size: 9px;
-      font-weight: 700;
-      color: #34D399;
-      letter-spacing: 0.6px;
-      margin-top: 2px;
-    }
-
-    /* Three Verification & Compliance Indicators */
-    .compliance-indicators-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-    }
-
-    .compliance-pill-box {
-      background: rgba(255, 255, 255, 0.035);
-      border: 1px solid rgba(255, 255, 255, 0.07);
-      border-radius: 8px;
-      padding: 10px 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
-    }
-
-    .pill-header-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 11px;
-      font-weight: 600;
-      color: #E2E8F0;
-    }
-
-    .pill-header-row svg {
-      color: #10B981;
-      flex-shrink: 0;
-    }
-
-    .pill-status-val {
-      font-family: var(--font-mono);
-      font-size: 9.5px;
-      color: #94A3B8;
-      letter-spacing: 0.4px;
-      text-transform: uppercase;
-      padding-left: 18px;
-    }
-
-    /* Bottom Stream Wave / Verification Bar */
-    .card-footer-stream {
-      background: rgba(0, 0, 0, 0.25);
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      border-radius: 8px;
-      padding: 8px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-    }
-
-    .stream-meta-label {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: #94A3B8;
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .stream-wave-visual {
-      flex: 1;
-      height: 18px;
-    }
-
-    .stream-line-path {
-      stroke: #F97316;
-      stroke-width: 1.5;
-      fill: none;
-      stroke-dasharray: 4 2;
-      animation: streamLineFlow 2.6s linear infinite;
-    }
-
-    @keyframes streamLineFlow {
-      from { stroke-dashoffset: 48; }
-      to { stroke-dashoffset: 0; }
-    }
-
-    .stream-status-ok {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      color: #34D399;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* Floating Satellite Chip (Adds layered dimension) */
-    .floating-accreditation-chip {
-      position: absolute;
-      top: -14px;
-      right: 20px;
-      background: #0B1528;
-      border: 1px solid rgba(249, 115, 22, 0.4);
-      border-radius: 9999px;
-      padding: 5px 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
-      z-index: 3;
-    }
-
-    .floating-accreditation-chip span.icon-check {
-      color: #10B981;
-      font-size: 12px;
-      font-weight: 800;
-    }
-
-    .floating-accreditation-chip span.chip-text {
-      font-family: var(--font-mono);
-      font-size: 10px;
-      font-weight: 700;
-      color: #F8FAFC;
-      letter-spacing: 0.6px;
-      text-transform: uppercase;
-    }
-
-    @media (max-width: 600px) {
-      .compliance-indicators-grid {
-        grid-template-columns: 1fr;
-      }
-      .pipeline-steps {
-        overflow-x: auto;
-      }
-      .rating-certification-box {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .cert-seal-badge {
-        width: 100%;
-      }
-    }
-
-    /* =========================================================
-       SMALL TRUST / CREDIBILITY LINE (Subtle & Compact, Light)
-       ========================================================= */
-    .credibility-strip {
-      border-top: 1px solid var(--card-border);
-      border-bottom: 1px solid var(--card-border);
-      background: #F8FAFC;
-      padding: 16px 0;
-      margin-top: auto;
-    }
-
-    .credibility-inner {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      font-family: var(--font-mono);
-      font-size: 12px;
-      color: var(--text-dim);
-      letter-spacing: 0.6px;
-    }
-
-    .credibility-item {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-muted);
-      font-weight: 600;
-    }
-
-    .credibility-dot {
-      width: 5px;
-      height: 5px;
-      background: var(--primary-orange);
-      border-radius: 50%;
-    }
-
-    .credibility-sep {
-      color: #CBD5E1;
-    }
-
-    /* =========================================================
-       CONCISE SITE FOOTER (Clean Light Surface)
-       ========================================================= */
-    .site-footer {
-      background: #FFFFFF;
-      border-top: 1px solid var(--card-border);
-      padding: 36px 0 24px;
-      font-size: 13px;
-      color: var(--text-dim);
-    }
-
-    .footer-inner {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-
-    .footer-brand {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .footer-links {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      list-style: none;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      transition: color 0.15s ease;
-    }
-
-    .footer-links a:hover {
-      color: var(--primary-orange);
-    }
-
-    .footer-copy {
-      color: var(--text-dim);
-      font-size: 12.5px;
-    }
-
-    /* =========================================================
-       DETAILED INFO SLIDE-OVER DRAWER (Clean Light Styling)
-       ========================================================= */
-    .info-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(15, 23, 42, 0.4);
-      backdrop-filter: blur(6px);
-      -webkit-backdrop-filter: blur(6px);
-      z-index: 200;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.25s ease;
-    }
-
-    .info-modal-backdrop.open {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .info-drawer {
-      position: fixed;
-      top: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      max-width: 640px;
-      background: #FFFFFF;
-      border-left: 1px solid var(--card-border);
-      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.12);
-      z-index: 201;
-      transform: translateX(100%);
-      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-      display: flex;
-      flex-direction: column;
-      overflow-y: auto;
-    }
-
-    .info-modal-backdrop.open .info-drawer {
-      transform: translateX(0);
-    }
-
-    .drawer-header {
-      flex-shrink: 0;
-      padding: 24px 28px;
-      border-bottom: 1px solid var(--card-border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      background: #FFFFFF;
-      z-index: 10;
-    }
-
-    .drawer-title {
-      font-family: var(--font-display);
-      font-size: 18px;
-      font-weight: 800;
-      color: #0F172A;
-    }
-
-    .drawer-close-btn {
-      background: #F1F5F9;
-      border: 1px solid var(--card-border);
-      color: var(--text-muted);
-      width: 34px;
-      height: 34px;
-      border-radius: 6px;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.15s ease;
-    }
-
-    .drawer-close-btn:hover {
-      color: #0F172A;
-      background: #E2E8F0;
-    }
-
-    /* Tab switcher inside drawer */
-    .drawer-nav-tabs {
-      flex-shrink: 0;
-      display: flex;
-      border-bottom: 1px solid var(--card-border);
-      padding: 0 28px;
-      gap: 16px;
-      overflow-x: auto;
-      background: #F8FAFC;
-    }
-
-    .drawer-tab {
-      background: transparent;
-      border: none;
-      color: var(--text-dim);
-      font-size: 13px;
-      font-weight: 700;
-      padding: 14px 0;
-      cursor: pointer;
-      border-bottom: 2px solid transparent;
-      white-space: nowrap;
-      transition: all 0.15s ease;
-    }
-
-    .drawer-tab:hover {
-      color: var(--text-main);
-    }
-
-    .drawer-tab.active {
-      color: var(--primary-orange);
-      border-bottom-color: var(--primary-orange);
-    }
-
-    .drawer-body {
-      padding: 28px;
-      flex: 1;
-      background: #FFFFFF;
-    }
-
-    .tab-content-panel {
-      display: none;
-    }
-
-    .tab-content-panel.active {
+    .mobile-menu.open {
       display: block;
     }
 
-    /* Content styling inside drawer */
-    .drawer-section-title {
-      font-family: var(--font-display);
-      font-size: 20px;
-      font-weight: 800;
-      color: #0F172A;
-      margin-bottom: 10px;
-    }
-
-    .drawer-section-desc {
-      font-size: 14px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 24px;
-    }
-
-    .drawer-card-grid {
+    .mobile-nav-links {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 12px;
+      list-style: none;
+      margin-bottom: 20px;
     }
 
-    .drawer-card {
-      background: #F8FAFC;
-      border: 1px solid var(--card-border);
-      border-radius: 10px;
-      padding: 18px;
-    }
-
-    .drawer-card h4 {
+    .mobile-nav-links .nav-link {
       font-size: 15px;
-      font-weight: 700;
-      color: #0F172A;
-      margin-bottom: 6px;
       display: flex;
       align-items: center;
-      justify-content: space-between;
+      padding: 8px 0;
+      min-height: 44px;
     }
 
-    .drawer-card p {
-      font-size: 13.5px;
-      color: var(--text-muted);
-      line-height: 1.5;
-    }
-
-    .drawer-card .price-tag {
-      font-family: var(--font-mono);
-      font-size: 13px;
-      color: var(--primary-orange);
-      font-weight: 700;
-    }
-
-    .drawer-footer-cta {
-      margin-top: 26px;
-      padding-top: 20px;
-      border-top: 1px solid var(--card-border);
+    .mobile-menu-actions {
       display: flex;
-      gap: 12px;
+      flex-direction: column;
+      gap: 10px;
     }
 
-    /* =========================================================
-       RESPONSIVENESS & MOBILE
-       ========================================================= */
-    @media (max-width: 1024px) {
-      .hero-grid {
-        grid-template-columns: 1fr;
-        gap: 48px;
-      }
-      .hero-section {
-        padding: 50px 0 40px;
-      }
-      .credibility-inner {
-        font-size: 11px;
-        gap: 12px;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .nav-menu, .nav-actions {
-        display: none;
-      }
-      .mobile-toggle {
-        display: block;
-      }
-      .header-inner {
-        height: 66px;
-      }
-      .hero-title {
-        font-size: 32px;
-      }
-      .hero-desc {
-        font-size: 15px;
-      }
-      .credibility-sep {
-        display: none;
-      }
-      .credibility-inner {
-        flex-direction: column;
-        gap: 8px;
-        text-align: center;
-      }
-      .footer-inner {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 16px;
-      }
-    }
-
-    /* Accessibility */
-    @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after {
-        animation: none !important;
-        transition: none !important;
-      }
-      .miros-logo-wrapper {
-        animation: none !important;
-        opacity: 1 !important;
-        transform: none !important;
-      }
-      .miros-logo-wrapper::after {
-        display: none !important;
-      }
-      .pulse-path {
-        animation: none !important;
-      }
-    }
-
-    /* =========================================================
-       PRESENTATION REFINEMENT
-       Landing-page-only visual polish; content and behavior unchanged.
-       ========================================================= */
-    :root {
-      --landing-max-width: 1220px;
-      --landing-shadow-sm: 0 8px 24px rgba(15, 23, 42, 0.06);
-      --landing-shadow-lg: 0 22px 56px rgba(15, 23, 42, 0.12);
-    }
-
-    body {
-      background:
-        radial-gradient(circle at 84% 8%, rgba(2, 132, 199, 0.05), transparent 24rem),
-        radial-gradient(circle at 8% 6%, rgba(249, 115, 22, 0.07), transparent 28rem),
-        linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 52%, #F1F5F9 100%);
-    }
-
-    .container {
-      max-width: var(--landing-max-width);
-    }
-
-    .site-header {
-      background: rgba(255, 255, 255, 0.94);
-      border-bottom-color: rgba(148, 163, 184, 0.3);
-      box-shadow: 0 1px 0 rgba(15, 23, 42, 0.03), 0 8px 20px rgba(15, 23, 42, 0.035);
-    }
-
-    .header-inner {
-      height: 78px;
-    }
-
-    .brand-group {
-      gap: 14px;
-    }
-
-    .miros-logo-img {
-      height: 36px;
-    }
-
-    .ts-brand-title {
-      font-size: 19px;
-    }
-
-    .nav-menu {
-      gap: 6px;
-    }
-
-    .nav-menu .nav-link {
-      padding: 9px 11px;
-      border-radius: 7px;
-      font-size: 12.5px;
-    }
-
-    .nav-menu .nav-link:hover {
-      background: #F8FAFC;
-    }
-
-    .nav-menu .nav-link::after {
-      left: 11px;
-      right: 11px;
-      width: auto;
-      transform: scaleX(0);
-      transform-origin: center;
-    }
-
-    .nav-menu .nav-link:hover::after {
-      width: auto;
-      transform: scaleX(1);
-    }
-
-    .btn-nav-register,
-    .btn-nav-login {
-      min-height: 40px;
-      display: inline-flex;
+    .mobile-menu-actions a {
+      text-align: center;
+      padding: 12px;
+      min-height: 44px;
+      display: flex;
       align-items: center;
       justify-content: center;
-      border-radius: 7px;
     }
 
-    .btn-nav-login,
-    .btn-primary-cta {
-      background: var(--primary-orange);
-      background-image: none;
-    }
-
-    .btn-nav-login:hover,
-    .btn-primary-cta:hover {
-      background: #C2410C;
-      background-image: none;
-    }
-
-    .mobile-toggle {
-      min-width: 42px;
-      min-height: 42px;
-      transition: border-color 0.18s ease, background-color 0.18s ease;
-    }
-
-    .mobile-toggle:hover {
-      border-color: #F97316;
-      background: #FFF7ED;
-    }
-
+    /* =========================================================
+       2. HERO SECTION
+       ========================================================= */
     .hero-section {
-      min-height: 690px;
-      padding: 86px 0 90px;
-      align-items: center;
-    }
-
-    .hero-section::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(90deg, rgba(255,255,255,0.78), transparent 72%);
-      pointer-events: none;
+      padding-block: clamp(2.5rem, 5vw, 4.5rem);
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--bg-canvas) 100%);
+      border-bottom: 1px solid var(--border-light);
     }
 
     .hero-grid {
-      grid-template-columns: minmax(0, 1fr) minmax(500px, 0.92fr);
-      gap: 72px;
+      display: grid;
+      grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+      align-items: center;
+      gap: clamp(24px, 3.5vw, 48px);
     }
 
     .hero-left {
-      max-width: 620px;
+      min-width: 0;
     }
 
-    .hero-badge {
-      margin-bottom: 22px;
-      background: #FFF7ED;
-      border-color: rgba(234, 88, 12, 0.25);
-      box-shadow: none;
-      color: #9A3412;
-    }
-
-    .hero-title {
-      max-width: 680px;
-      font-size: clamp(38px, 4.5vw, 58px);
-      line-height: 1.08;
-      letter-spacing: -1.8px;
-      margin-bottom: 24px;
-    }
-
-    .hero-desc {
-      max-width: 590px;
-      font-size: 16px;
-      line-height: 1.75;
-      margin-bottom: 32px;
-    }
-
-    .hero-cta-group {
-      gap: 12px;
-    }
-
-    .btn-primary-cta,
-    .btn-secondary-cta {
-      min-height: 48px;
-      padding: 13px 20px;
-      border-radius: 8px;
-    }
-
-    .btn-primary-cta {
-      box-shadow: 0 8px 18px rgba(234, 88, 12, 0.2);
-    }
-
-    .btn-secondary-cta {
-      box-shadow: 0 3px 10px rgba(15, 23, 42, 0.05);
-    }
-
-    .hero-right {
-      padding: 14px 0 0;
-    }
-
-    .hero-right::before {
-      opacity: 0.8;
-      filter: blur(56px);
-    }
-
-    .assessment-card {
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: var(--landing-shadow-lg);
-      animation: none;
-    }
-
-    .assessment-card::after {
-      display: none;
-    }
-
-    .outcome-pipeline,
-    .rating-certification-box {
-      border-radius: 10px;
-    }
-
-    .compliance-pill-box {
-      border-radius: 7px;
-    }
-
-    .floating-accreditation-chip {
-      position: relative;
-      top: auto;
-      right: auto;
-      width: fit-content;
-      max-width: 100%;
-      margin: 0 0 12px auto;
-      padding: 6px 11px;
-      background: #FFF7ED;
-      border: 1px solid rgba(234, 88, 12, 0.22);
-      border-radius: 6px;
-      box-shadow: none;
-    }
-
-    .floating-accreditation-chip span.chip-text {
-      color: #9A3412;
-      letter-spacing: 0.45px;
-    }
-
-    .floating-accreditation-chip span.icon-check {
-      color: #059669;
-    }
-
-    .credibility-strip {
-      background: #FFFFFF;
-      padding: 22px 0;
-      margin-top: 0;
-      box-shadow: inset 0 1px 0 rgba(15, 23, 42, 0.02);
-    }
-
-    .credibility-inner {
-      max-width: 920px;
-      margin: 0 auto;
-      font-size: 11px;
-      letter-spacing: 0.4px;
-    }
-
-    .site-footer {
-      padding: 30px 0 24px;
-      background: #F8FAFC;
-    }
-
-    .footer-inner {
-      align-items: flex-start;
-      gap: 24px;
-    }
-
-    .footer-brand {
+    .hero-badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      background: var(--primary-orange-light);
+      border: 1px solid rgba(245, 130, 32, 0.25);
+      font-size: 12px;
       font-weight: 700;
+      color: #C2410C;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+      max-width: 100%;
     }
 
-    .footer-links {
-      gap: 10px 18px;
+    .hero-badge-pill .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--primary-orange);
+      flex-shrink: 0;
     }
 
-    .footer-links a {
-      padding: 4px 0;
+    .hero-h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 4.2vw, 3.75rem);
+      font-weight: 800;
+      line-height: 1.1;
+      color: var(--accent-navy);
+      letter-spacing: -0.03em;
+      margin-bottom: 12px;
+      max-width: min(100%, 720px);
+      overflow-wrap: anywhere;
     }
 
-    .info-modal-backdrop {
-      background: rgba(15, 23, 42, 0.48);
+    .hero-h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.2rem, 2.2vw, 1.75rem);
+      font-weight: 700;
+      line-height: 1.25;
+      color: var(--primary-orange);
+      letter-spacing: -0.015em;
+      margin-bottom: 20px;
+      max-width: min(100%, 720px);
+      overflow-wrap: anywhere;
     }
 
-    .info-drawer {
-      max-width: 680px;
-      border-left-color: rgba(148, 163, 184, 0.28);
+    .hero-description {
+      font-size: clamp(0.95rem, 1.1vw, 1.05rem);
+      line-height: 1.65;
+      color: var(--text-muted);
+      max-width: min(100%, 640px);
+      margin-bottom: 28px;
+      overflow-wrap: anywhere;
     }
 
-    .drawer-header {
-      padding: 20px 26px;
+    .hero-actions-container {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
     }
 
-    .drawer-nav-tabs {
-      padding: 0 26px;
-      gap: 22px;
+    .hero-btn-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      min-width: 0;
     }
 
-    .drawer-body {
-      padding: 26px;
+    .btn-hero-primary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--primary-orange);
+      color: #FFFFFF;
+      font-size: clamp(0.95rem, 1vw, 1rem);
+      font-weight: 700;
+      padding: 0.8rem 1.4rem;
+      min-height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--primary-orange);
+      box-shadow: 0 2px 8px rgba(245, 130, 32, 0.25);
+      white-space: nowrap;
+      transition: all 0.15s ease;
     }
 
-    .drawer-card {
+    .btn-hero-primary:hover {
+      background: var(--primary-orange-hover);
+      border-color: var(--primary-orange-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(245, 130, 32, 0.35);
+    }
+
+    .btn-hero-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      background: var(--bg-white);
+      color: var(--accent-navy);
+      font-size: clamp(0.95rem, 1vw, 1rem);
+      font-weight: 600;
+      padding: 0.8rem 1.3rem;
+      min-height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--border-light);
+      box-shadow: var(--shadow-sm);
+      white-space: nowrap;
+      transition: all 0.15s ease;
+    }
+
+    .btn-hero-secondary:hover {
+      background: var(--bg-surface-subtle);
+      border-color: #CBD5E1;
+      transform: translateY(-1px);
+    }
+
+    .hero-sub-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: clamp(0.875rem, 0.95vw, 0.925rem);
+      font-weight: 600;
+      color: var(--text-dim);
+      padding: 6px 0;
+      min-height: 44px;
+      transition: color 0.15s ease;
+      width: fit-content;
+    }
+
+    .hero-sub-link:hover {
+      color: var(--primary-orange);
+    }
+
+    /* =========================================================
+       3. HERO VISUAL & LORRY STAGE
+       ========================================================= */
+    .hero-right {
+      min-width: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .hero-visual-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: clamp(20px, 2.5vw, 28px) clamp(16px, 2.2vw, 24px);
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      min-width: 0;
+    }
+
+    .visual-top-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent-navy);
+      background: var(--bg-surface-subtle);
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: 1px solid var(--border-light);
+      margin-bottom: 14px;
+      max-width: 100%;
+      text-align: center;
+    }
+
+    .lorry-image-stage {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 4px 0 14px;
+    }
+
+    .lorry-backdrop-glow {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 90%;
+      height: 85%;
+      background: radial-gradient(ellipse at center, rgba(245, 130, 32, 0.08) 0%, rgba(241, 245, 249, 0.45) 60%, transparent 80%);
+      border-radius: 50%;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .telematics-gps-tag {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      z-index: 3;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border: 1px solid var(--border-light);
+      border-radius: 20px;
+      padding: 4px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--accent-navy);
+      box-shadow: var(--shadow-sm);
+      letter-spacing: 0.02em;
+    }
+
+    .hero-lorry-img {
+      position: relative;
+      z-index: 2;
+      width: 100%;
+      height: auto;
+      max-width: 440px;
+      aspect-ratio: 910 / 686;
+      object-fit: contain;
+      display: block;
+      filter: drop-shadow(0 8px 18px rgba(15, 23, 42, 0.08));
+      transition: transform 0.25s ease;
+    }
+
+    .hero-lorry-img:hover {
+      transform: scale(1.015);
+    }
+
+    .lorry-ground-shadow {
+      position: relative;
+      z-index: 1;
+      width: 84%;
+      height: 12px;
+      background: radial-gradient(ellipse at center, rgba(15, 23, 42, 0.16) 0%, rgba(15, 23, 42, 0) 70%);
+      border-radius: 50%;
+      margin-top: -6px;
+    }
+
+    .visual-footer-info {
+      width: 100%;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-light);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-muted);
+      gap: 8px;
+      flex-wrap: wrap;
+      position: relative;
+      z-index: 2;
+    }
+
+    .visual-footer-info strong {
+      color: var(--accent-navy);
+    }
+
+    /* =========================================================
+       4. SUMMARY METRICS
+       ========================================================= */
+    .metrics-section {
+      padding-block: clamp(2rem, 3.5vw, 2.75rem);
+      background: var(--bg-white);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(12px, 1.8vw, 20px);
+    }
+
+    .metric-card {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: clamp(18px, 2.2vw, 24px) clamp(14px, 1.8vw, 20px);
+      text-align: center;
+      min-width: 0;
+      transition: transform 0.15s ease, border-color 0.15s ease;
+    }
+
+    .metric-card:hover {
+      border-color: #CBD5E1;
+      transform: translateY(-2px);
+    }
+
+    .metric-number {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3vw, 2.625rem);
+      font-weight: 800;
+      color: var(--accent-navy);
+      line-height: 1;
+      margin-bottom: 8px;
+      letter-spacing: -0.03em;
+    }
+
+    .metric-card.accent-orange .metric-number {
+      color: var(--primary-orange);
+    }
+
+    .metric-label {
+      font-size: clamp(13px, 1vw, 14px);
+      font-weight: 700;
+      color: var(--accent-navy);
+      margin-bottom: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    .metric-sub {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    /* =========================================================
+       5. HOW IT WORKS
+       ========================================================= */
+    .section-standard {
+      padding-block: clamp(2.5rem, 5vw, 4.5rem);
+    }
+
+    .section-header-block {
+      text-align: center;
+      max-width: 640px;
+      margin: 0 auto clamp(28px, 4vw, 44px);
+      padding-inline: 8px;
+    }
+
+    .section-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--primary-orange);
+      margin-bottom: 8px;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 2.5vw, 2rem);
+      font-weight: 800;
+      color: var(--accent-navy);
+      letter-spacing: -0.02em;
+      line-height: 1.2;
+      margin-bottom: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    .section-subtitle {
+      font-size: clamp(0.9rem, 1.1vw, 0.975rem);
+      color: var(--text-muted);
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: clamp(14px, 1.8vw, 22px);
+      position: relative;
+    }
+
+    .step-card {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 14px;
+      padding: clamp(20px, 2.2vw, 26px) clamp(16px, 1.8vw, 20px);
+      box-shadow: var(--shadow-sm);
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      min-width: 0;
+    }
+
+    .step-badge {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+
+    .step-num {
+      width: 32px;
+      height: 32px;
       border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.035);
+      background: var(--primary-orange-light);
+      color: var(--primary-orange);
+      font-family: var(--font-display);
+      font-weight: 800;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    a:focus-visible,
-    button:focus-visible {
-      outline: 3px solid rgba(234, 88, 12, 0.3);
-      outline-offset: 3px;
+    .step-icon {
+      color: var(--text-dim);
+      flex-shrink: 0;
     }
 
-    @media (max-width: 1100px) {
+    .step-title {
+      font-size: clamp(16px, 1.2vw, 18px);
+      font-weight: 700;
+      color: var(--accent-navy);
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .step-desc {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      overflow-wrap: anywhere;
+    }
+
+    /* =========================================================
+       6. RATING CRITERIA OVERVIEW
+       ========================================================= */
+    .criteria-section {
+      background: var(--bg-white);
+      border-top: 1px solid var(--border-light);
+      border-bottom: 1px solid var(--border-light);
+    }
+
+    .criteria-equation-card {
+      background: var(--bg-canvas);
+      border: 1px solid var(--border-light);
+      border-radius: 18px;
+      padding: clamp(24px, 3.5vw, 36px) clamp(18px, 3vw, 32px);
+      max-width: 960px;
+      margin: 0 auto;
+      box-shadow: var(--shadow-sm);
+      min-width: 0;
+    }
+
+    .equation-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1.1fr);
+      align-items: center;
+      gap: clamp(10px, 1.8vw, 20px);
+      min-width: 0;
+    }
+
+    .equation-box {
+      background: var(--bg-white);
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      padding: clamp(18px, 2.2vw, 24px) clamp(14px, 1.8vw, 18px);
+      text-align: center;
+      min-width: 0;
+    }
+
+    .equation-box.total-box {
+      border-color: var(--primary-orange);
+      background: var(--primary-orange-light);
+    }
+
+    .equation-box-number {
+      font-family: var(--font-display);
+      font-size: clamp(1.75rem, 2.8vw, 2.25rem);
+      font-weight: 800;
+      color: var(--accent-navy);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .total-box .equation-box-number {
+      color: var(--primary-orange);
+    }
+
+    .equation-box-title {
+      font-size: clamp(13px, 1vw, 14px);
+      font-weight: 700;
+      color: var(--accent-navy);
+      margin-bottom: 4px;
+      overflow-wrap: anywhere;
+    }
+
+    .equation-box-detail {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.4;
+      overflow-wrap: anywhere;
+    }
+
+    .equation-symbol {
+      font-family: var(--font-display);
+      font-size: clamp(22px, 2.5vw, 28px);
+      font-weight: 700;
+      color: var(--text-dim);
+      text-align: center;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+
+    .criteria-action-row {
+      text-align: center;
+      margin-top: clamp(20px, 3vw, 28px);
+    }
+
+    .btn-criteria-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: clamp(0.9rem, 1vw, 0.95rem);
+      font-weight: 700;
+      color: var(--primary-orange);
+      padding: 0.8rem 1.4rem;
+      min-height: 44px;
+      border-radius: 8px;
+      background: var(--bg-white);
+      border: 1px solid rgba(245, 130, 32, 0.35);
+      transition: all 0.15s ease;
+      max-width: 100%;
+      white-space: nowrap;
+    }
+
+    .btn-criteria-link:hover {
+      background: var(--primary-orange-light);
+      border-color: var(--primary-orange);
+    }
+
+    /* =========================================================
+       7. RESULTS & VERIFICATION SECTION
+       ========================================================= */
+    .results-cta-card {
+      background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+      border-radius: 18px;
+      padding: clamp(28px, 4vw, 44px) clamp(20px, 3.5vw, 36px);
+      color: #FFFFFF;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      box-shadow: var(--shadow-lg);
+      min-width: 0;
+    }
+
+    .results-cta-content {
+      max-width: 600px;
+      min-width: 0;
+    }
+
+    .results-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #FDBA74;
+      margin-bottom: 8px;
+    }
+
+    .results-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.5rem, 2.4vw, 1.875rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      color: #FFFFFF;
+      overflow-wrap: anywhere;
+    }
+
+    .results-desc {
+      font-size: clamp(0.9rem, 1.1vw, 0.975rem);
+      color: #CBD5E1;
+      line-height: 1.6;
+      overflow-wrap: anywhere;
+    }
+
+    .results-btn-group {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      min-width: 0;
+    }
+
+    .btn-results-verify {
+      background: var(--primary-orange);
+      color: #FFFFFF;
+      font-size: clamp(0.9rem, 1vw, 0.95rem);
+      font-weight: 700;
+      padding: 0.8rem 1.4rem;
+      min-height: 44px;
+      border-radius: 8px;
+      border: 1px solid var(--primary-orange);
+      transition: background-color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      white-space: nowrap;
+    }
+
+    .btn-results-verify:hover {
+      background: var(--primary-orange-hover);
+      border-color: var(--primary-orange-hover);
+    }
+
+    .btn-results-view {
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      font-size: clamp(0.9rem, 1vw, 0.95rem);
+      font-weight: 600;
+      padding: 0.8rem 1.3rem;
+      min-height: 44px;
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      transition: background-color 0.15s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+    }
+
+    .btn-results-view:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    /* =========================================================
+       8. SIMPLE FOOTER
+       ========================================================= */
+    .site-footer {
+      background: var(--bg-white);
+      border-top: 1px solid var(--border-light);
+      padding-top: clamp(2.5rem, 4vw, 3.5rem);
+      padding-bottom: 2rem;
+      margin-top: auto;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr;
+      gap: clamp(24px, 3.5vw, 40px);
+      padding-bottom: clamp(24px, 3.5vw, 36px);
+      border-bottom: 1px solid var(--border-light);
+      min-width: 0;
+    }
+
+    .footer-brand-block {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .footer-logo-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .footer-brand-title {
+      font-family: var(--font-display);
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--accent-navy);
+    }
+
+    .footer-brand-desc {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 360px;
+      overflow-wrap: anywhere;
+    }
+
+    .footer-col-title {
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent-navy);
+      margin-bottom: 14px;
+    }
+
+    .footer-link-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .footer-link-list a {
+      display: inline-flex;
+      align-items: center;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      min-height: 44px;
+      transition: color 0.15s ease;
+      overflow-wrap: anywhere;
+    }
+
+    .footer-link-list a:hover {
+      color: var(--primary-orange);
+    }
+
+    .footer-contact-item {
+      font-size: 13.5px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 8px;
+      overflow-wrap: anywhere;
+    }
+
+    .footer-contact-item a {
+      display: inline-flex;
+      align-items: center;
+      min-height: 44px;
+      overflow-wrap: anywhere;
+    }
+
+    .footer-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      font-size: 12.5px;
+      color: var(--text-dim);
+      flex-wrap: wrap;
+      gap: 12px;
+      overflow-wrap: anywhere;
+    }
+
+    /* =========================================================
+       RESPONSIVE DESIGN BREAKPOINTS
+       1200px: Laptop & compact widescreen
+       992px:  Landscape tablet & small laptop
+       768px:  Tablet portrait & phone drawer trigger
+       480px:  Standard & compact phone
+       ========================================================= */
+    @media (max-width: 1200px) {
+      .brand-subtitle {
+        display: none;
+      }
+      .desktop-nav {
+        gap: 12px;
+      }
+      .nav-links {
+        gap: 10px;
+      }
+      .btn-nav-signin {
+        padding: 0.5rem 0.85rem;
+      }
+      .btn-nav-apply {
+        padding: 0.5rem 0.95rem;
+      }
+    }
+
+    @media (max-width: 992px) {
+      .container {
+        padding-inline: 16px;
+      }
+      .brand-group {
+        gap: 8px;
+      }
+      .brand-divider {
+        display: none;
+      }
+      .miros-logo-img {
+        height: 26px;
+        max-width: 85px;
+      }
+      .brand-name {
+        font-size: 16px;
+      }
+      .desktop-nav {
+        gap: 8px;
+      }
+      .nav-links {
+        gap: 6px;
+      }
+      .nav-link {
+        font-size: 12px;
+        padding: 6px 4px;
+      }
+      .header-cta-group {
+        gap: 6px;
+      }
+      .btn-nav-signin {
+        font-size: 12px;
+        padding: 6px 9px;
+      }
+      .btn-nav-apply {
+        font-size: 12px;
+        padding: 6px 10px;
+      }
       .hero-grid {
-        grid-template-columns: minmax(0, 1fr) minmax(430px, 0.9fr);
-        gap: 42px;
+        grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+        gap: 28px;
       }
-
-      .nav-menu {
-        gap: 0;
+      .hero-visual-card {
+        max-width: 380px;
+        padding: 20px 16px;
       }
-
-      .nav-menu .nav-link {
-        padding-inline: 8px;
+      .hero-lorry-img {
+        max-width: 340px;
       }
-    }
-
-    @media (max-width: 1024px) {
-      .hero-section {
-        min-height: auto;
-        padding: 68px 0 70px;
+      .telematics-gps-tag {
+        font-size: 10.5px;
+        padding: 4px 9px;
       }
-
-      .hero-grid {
+      .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .steps-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      .equation-grid {
         grid-template-columns: 1fr;
-        gap: 50px;
-        min-width: 0;
+        gap: 10px;
       }
-
-      .hero-grid > *,
-      .hero-left,
-      .hero-right,
-      .assessment-card {
-        min-width: 0;
+      .equation-symbol {
+        margin: 2px 0;
+        font-size: 20px;
       }
-
-      .hero-left {
-        max-width: 760px;
+      .results-cta-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
       }
-
-      .hero-right {
-        max-width: 720px;
-        width: 100%;
-        margin: 0 auto;
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
       }
     }
 
     @media (max-width: 768px) {
       .header-inner {
-        height: 68px;
+        height: 64px;
       }
-
-      .hero-section {
-        padding: 54px 0 56px;
+      .desktop-nav {
+        display: none;
       }
-
-      .hero-title {
-        font-size: clamp(34px, 8vw, 48px);
-        letter-spacing: -1.1px;
+      .mobile-toggle {
+        display: inline-flex;
       }
-
-      .hero-desc {
-        font-size: 15px;
-        line-height: 1.65;
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 32px;
       }
-
-      .assessment-card {
-        padding: 18px;
+      .hero-left {
+        max-width: 100%;
+        text-align: left;
       }
-
-      .floating-accreditation-chip {
-        right: 12px;
+      .hero-right {
+        width: 100%;
+        margin-top: 4px;
       }
-
-      .drawer-header,
-      .drawer-body {
-        padding-left: 20px;
-        padding-right: 20px;
+      .hero-visual-card {
+        max-width: 420px;
+        margin: 0 auto;
       }
-
-      .drawer-nav-tabs {
-        padding-left: 20px;
-        padding-right: 20px;
+      .hero-lorry-img {
+        max-width: 380px;
+      }
+      .metrics-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .steps-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+      .results-cta-card {
+        padding: 28px 20px;
+      }
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
       }
     }
 
-    @media (max-width: 560px) {
+    @media (max-width: 480px) {
       .container {
-        padding-left: 18px;
-        padding-right: 18px;
+        padding-inline: 16px;
       }
-
-      .header-inner,
-      .brand-group,
-      .ts-brand-lockup {
-        min-width: 0;
+      .header-inner {
+        height: 58px;
       }
-
-      .ts-brand-lockup {
-        overflow: hidden;
+      .miros-logo-img {
+        height: 24px;
+        max-width: 88px;
       }
-
-      .brand-divider,
-      .ts-brand-subtitle {
-        display: none;
+      .brand-name {
+        font-size: 16px;
       }
-
-      .brand-group {
+      .hero-section {
+        padding-block: 2.25rem;
+      }
+      .hero-h1 {
+        font-size: clamp(1.85rem, 8vw, 2.15rem);
+        line-height: 1.12;
+      }
+      .hero-h2 {
+        font-size: clamp(1.1rem, 4.8vw, 1.25rem);
+        line-height: 1.3;
+      }
+      .hero-description {
+        font-size: 14.5px;
+        margin-bottom: 24px;
+      }
+      .hero-btn-row {
+        flex-direction: column;
+        width: 100%;
         gap: 10px;
       }
-
-      .miros-logo-img {
-        height: 32px;
-      }
-
-      .ts-brand-title {
-        font-size: 18px;
-      }
-
-      .hero-title,
-      .hero-desc,
-      .hero-cta-group {
+      .btn-hero-primary,
+      .btn-hero-secondary {
         width: 100%;
-        max-width: 100%;
       }
-
-      .hero-cta-group {
-        width: 100%;
-        flex-direction: column;
-        align-items: stretch;
-      }
-
-      .btn-primary-cta,
-      .btn-secondary-cta {
+      .hero-sub-link {
         width: 100%;
         justify-content: center;
       }
-
-      .hero-right {
-        padding-top: 8px;
+      .hero-visual-card {
+        padding: 16px 12px;
+        max-width: 100%;
       }
-
-      .floating-accreditation-chip {
-        top: auto;
-        right: auto;
-        margin: 0 0 10px auto;
+      .hero-lorry-img {
+        max-width: 310px;
       }
-
-      .card-top-bar {
-        align-items: flex-start;
+      .telematics-gps-tag {
+        font-size: 10px;
+        padding: 3px 8px;
+        top: 8px;
+        right: 8px;
+      }
+      .metrics-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+      .metric-card {
+        padding: 18px 14px;
+      }
+      .criteria-equation-card {
+        padding: 20px 14px;
+      }
+      .btn-criteria-link {
+        width: 100%;
+        white-space: normal;
+        text-align: center;
+      }
+      .results-cta-card {
+        padding: 24px 16px;
+      }
+      .results-btn-group {
+        width: 100%;
         flex-direction: column;
+        gap: 10px;
       }
-
-      .card-status-badge {
-        align-self: flex-start;
+      .btn-results-verify,
+      .btn-results-view {
+        width: 100%;
       }
-
-      .pipeline-header {
-        flex-wrap: wrap;
-        gap: 4px 10px;
+      .footer-grid {
+        gap: 20px;
       }
-
-      .pipeline-steps {
-        min-width: 440px;
-      }
-
-      .outcome-pipeline {
-        overflow-x: auto;
-      }
-
-      .rating-certification-box {
-        padding: 16px;
-      }
-
       .site-footer {
-        padding-top: 26px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      .assessment-card,
-      .status-dot-pulse,
-      .pipeline-track-fill,
-      .stream-line-path {
-        animation: none !important;
+        padding-top: 2rem;
+        padding-bottom: 1.5rem;
       }
     }
   </style>
 </head>
 <body>
 
-  <!-- Subtle ambient grid overlay -->
-  <div class="bg-grid-overlay" aria-hidden="true"></div>
-
   <!-- =========================================================
-       NAVBAR (White Theme)
+       1. HEADER / NAVIGATION
        ========================================================= -->
   <header class="site-header" id="site-header">
     <div class="container header-inner">
-      <!-- MIROS Logo & TrackScore Branding -->
-      <a href="/landing.html" class="brand-group" id="header-brand" title="TrackScore • Official MIROS Telematics Assessment Platform">
-        <div class="miros-logo-wrapper">
-          <img src="/miros-logo.svg" alt="MIROS - Malaysian Institute of Road Safety Research" class="miros-logo-img" />
-        </div>
-
+      <!-- Left: MIROS Logo, TrackScore Branding & Subtitle -->
+      <a href="/landing.html" class="brand-group" id="header-brand" title="TrackScore • Commercial Vehicle Tracking System Rating Programme">
+        <img src="/miros-logo.svg" alt="MIROS - Malaysian Institute of Road Safety Research" class="miros-logo-img" />
         <div class="brand-divider" aria-hidden="true"></div>
-
-        <div class="ts-brand-lockup">
-          <div class="ts-brand-title">
-            Track<span class="score">Score</span><span class="dot">&bull;</span>
-          </div>
-          <div class="ts-brand-subtitle">Telematics Assessment Platform</div>
+        <div class="brand-text-block">
+          <div class="brand-name">Track<span>Score</span></div>
+          <div class="brand-subtitle">Commercial Vehicle Tracking System Rating Programme</div>
         </div>
       </a>
 
-      <!-- Desktop Navigation Menu -->
-      <nav aria-label="Main Navigation">
-        <ul class="nav-menu">
-          <li><a href="#star-rating" class="nav-link open-drawer-tab" data-tab="rating">Rating Standard</a></li>
-          <li><a href="#criteria" class="nav-link open-drawer-tab" data-tab="matrix">Evaluation Matrix</a></li>
-          <li><a href="#packages" class="nav-link open-drawer-tab" data-tab="packages">Packages</a></li>
-          <li><a href="#workflow" class="nav-link open-drawer-tab" data-tab="process">Process</a></li>
-          <li><a href="#portals" class="nav-link open-drawer-tab" data-tab="portals">Portal Access</a></li>
+      <!-- Right: Navigation Links & Action Buttons -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <ul class="nav-links">
+          <li><a href="#about" class="nav-link">About TrackScore</a></li>
+          <li><a href="#how-it-works" class="nav-link">How It Works</a></li>
+          <li><a href="#criteria" class="nav-link">Rating Criteria</a></li>
+          <li><a href="#results" class="nav-link">Results</a></li>
         </ul>
+
+        <div class="header-cta-group">
+          <a href="/login.html" class="btn-nav-signin" id="nav-btn-signin">Sign In</a>
+          <a href="/request-assessment.html" class="btn-nav-apply" id="nav-btn-apply">Apply for TrackScore</a>
+        </div>
       </nav>
 
-      <!-- Navbar CTAs -->
-      <div class="nav-actions">
-        <a href="/request-assessment.html" class="btn-nav-register" id="nav-btn-register">
-          Register Company
-        </a>
-        <a href="/login.html" class="btn-nav-login" id="nav-btn-login">
-          Sign In
-        </a>
-      </div>
-
-      <!-- Mobile Menu Toggle -->
+      <!-- Mobile Hamburger Toggle -->
       <button class="mobile-toggle" id="mobile-toggle-btn" aria-label="Toggle navigation menu" aria-expanded="false">
-        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
           <line x1="3" y1="12" x2="21" y2="12"></line>
           <line x1="3" y1="6" x2="21" y2="6"></line>
           <line x1="3" y1="18" x2="21" y2="18"></line>
@@ -1877,549 +1354,397 @@
       </button>
     </div>
 
-    <!-- Mobile Drawer -->
-    <div class="mobile-drawer" id="mobile-drawer-menu">
-      <a href="#star-rating" class="nav-link open-drawer-tab" data-tab="rating">Rating Standard</a>
-      <a href="#criteria" class="nav-link open-drawer-tab" data-tab="matrix">Evaluation Matrix</a>
-      <a href="#packages" class="nav-link open-drawer-tab" data-tab="packages">Packages</a>
-      <a href="#workflow" class="nav-link open-drawer-tab" data-tab="process">Process</a>
-      <a href="#portals" class="nav-link open-drawer-tab" data-tab="portals">Portal Access</a>
-      <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
-        <a href="/request-assessment.html" class="btn-nav-register" style="text-align: center;">
-          Register Company
-        </a>
-        <a href="/login.html" class="btn-nav-login" style="text-align: center;">
-          Sign In
-        </a>
+    <!-- Mobile Drawer Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <ul class="mobile-nav-links">
+        <li><a href="#about" class="nav-link mobile-link">About TrackScore</a></li>
+        <li><a href="#how-it-works" class="nav-link mobile-link">How It Works</a></li>
+        <li><a href="#criteria" class="nav-link mobile-link">Rating Criteria</a></li>
+        <li><a href="#results" class="nav-link mobile-link">Results</a></li>
+      </ul>
+      <div class="mobile-menu-actions">
+        <a href="/request-assessment.html" class="btn-nav-apply" style="text-align: center;">Apply for TrackScore</a>
+        <a href="/login.html" class="btn-nav-signin" style="text-align: center;">Sign In</a>
       </div>
     </div>
   </header>
 
   <!-- =========================================================
-       HERO SECTION (Light Modern Theme)
+       2. HERO SECTION
        ========================================================= -->
-  <main class="hero-section" id="hero">
-    <div class="container">
-      <div class="hero-grid">
-        <!-- Hero Left Side -->
-        <div class="hero-left">
-          <!-- Small MIROS / TrackScore badge -->
-          <div class="hero-badge">
-            <span class="badge-dot" aria-hidden="true"></span>
-            MIROS / TrackScore
+  <main>
+    <section class="hero-section" id="about">
+      <div class="container">
+        <div class="hero-grid">
+          <!-- Hero Left Column -->
+          <div class="hero-left">
+            <div class="hero-badge-pill">
+              <span class="pill-dot" aria-hidden="true"></span>
+              MIROS Programme
+            </div>
+
+            <h1 class="hero-h1">TrackScore</h1>
+            <h2 class="hero-h2">Commercial Vehicle Tracking System<br />Rating Programme</h2>
+
+            <p class="hero-description">
+              MIROS evaluates commercial-vehicle tracking systems to help industry users identify systems that meet defined requirements and support safer, more effective vehicle operations.
+            </p>
+
+            <div class="hero-actions-container">
+              <div class="hero-btn-row">
+                <a href="/request-assessment.html" class="btn-hero-primary" id="hero-cta-register">
+                  Apply for TrackScore
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                  </svg>
+                </a>
+
+                <a href="/login.html" class="btn-hero-secondary" id="hero-cta-login">
+                  Sign In
+                </a>
+              </div>
+
+              <a href="#results" class="hero-sub-link">
+                View Results &rarr;
+              </a>
+            </div>
           </div>
 
-          <!-- Main Heading -->
-          <h1 class="hero-title">
-            National Assessment &amp; Compliance<br />
-            for <span class="text-orange">Fleet Telematics</span>
-          </h1>
-
-          <!-- Short TrackScore Description -->
-          <p class="hero-desc">
-            TrackScore is the official MIROS platform for evaluating, verifying, and certifying commercial vehicle telemetry units, OBD-II devices, and tracking hardware across Malaysia.
-          </p>
-
-          <!-- Primary & Secondary CTAs -->
-          <div class="hero-cta-group">
-            <a href="/request-assessment.html" class="btn-primary-cta" id="hero-cta-register">
-              Register Company &rarr;
-            </a>
-
-            <a href="/login.html" class="btn-secondary-cta" id="hero-cta-login">
-              Sign In to Portal
-            </a>
-          </div>
-        </div>
-
-        <!-- Hero Right Side: Modern TrackScore Assessment / Certification Visual -->
-        <div class="hero-right">
-          <!-- Floating dimensional accreditation chip -->
-          <div class="floating-accreditation-chip">
-            <span class="icon-check">&#10003;</span>
-            <span class="chip-text">MIROS Telematics Accreditation</span>
-          </div>
-
-          <!-- Sophisticated Floating Assessment & Certification Card -->
-          <div class="assessment-card" role="region" aria-label="TrackScore Assessment and Certification Overview">
-            <!-- Minimal subtle technical grid inside card -->
-            <div class="card-grid-pattern" aria-hidden="true"></div>
-
-            <div class="card-inner-content">
-              <!-- Top Header Bar -->
-              <div class="card-top-bar">
-                <div class="card-brand-lockup">
-                  <div class="card-icon-badge" aria-hidden="true">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                      <path d="m9 12 2 2 4-4"></path>
-                    </svg>
-                  </div>
-                  <div class="card-title-wrap">
-                    <div class="card-main-title">TrackScore Assessment</div>
-                    <div class="card-sub-title">National Telematics Compliance Audit</div>
-                  </div>
-                </div>
-
-                <div class="card-status-badge">
-                  <span class="status-dot-pulse" aria-hidden="true"></span>
-                  <span>VERIFIED</span>
-                </div>
-              </div>
-
-              <!-- 5-Stage Assessment Outcome Pipeline -->
-              <div class="outcome-pipeline">
-                <div class="pipeline-header">
-                  <span>AUDIT LIFECYCLE WORKFLOW</span>
-                  <span>MS 2673 BENCHMARK</span>
-                </div>
-
-                <div class="pipeline-steps">
-                  <div class="pipeline-track" aria-hidden="true">
-                    <div class="pipeline-track-fill"></div>
-                  </div>
-
-                  <!-- 1. Assessment -->
-                  <div class="pipeline-step">
-                    <div class="step-node completed" title="Assessment stage">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </div>
-                    <span class="step-label">Assessment</span>
-                  </div>
-
-                  <!-- 2. Verification -->
-                  <div class="pipeline-step">
-                    <div class="step-node completed" title="Verification stage">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </div>
-                    <span class="step-label">Verification</span>
-                  </div>
-
-                  <!-- 3. Compliance -->
-                  <div class="pipeline-step">
-                    <div class="step-node completed" title="Compliance stage">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                        <polyline points="20 6 9 17 4 12"></polyline>
-                      </svg>
-                    </div>
-                    <span class="step-label">Compliance</span>
-                  </div>
-
-                  <!-- 4. Rating -->
-                  <div class="pipeline-step">
-                    <div class="step-node active-gold" title="Rating stage">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor">
-                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                      </svg>
-                    </div>
-                    <span class="step-label">Rating</span>
-                  </div>
-
-                  <!-- 5. Certification -->
-                  <div class="pipeline-step">
-                    <div class="step-node active-gold" title="Certification stage">
-                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                      </svg>
-                    </div>
-                    <span class="step-label">Certification</span>
-                  </div>
-                </div>
-              </div>
-
-              <!-- Core Star-Rating & Certification Outcome Box -->
-              <div class="rating-certification-box">
-                <div class="rating-left-col">
-                  <div class="rating-eyebrow">Rating Scale</div>
-                  <div class="stars-visual-group" aria-label="Five-star rating scale">
-                    <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                    <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                    <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                    <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                    <svg class="star-icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
-                    </svg>
-                  </div>
-                  <div class="rating-grade-title">1?5 Star Assessment</div>
-                  <div class="rating-compliance-text">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#10B981" stroke-width="2.5">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span>MS 2673 Compliance Standard</span>
-                  </div>
-                </div>
-
-                <!-- Right Seal / Shield Badge -->
-                <div class="cert-seal-badge">
-                  <div class="cert-seal-icon" aria-hidden="true">
-                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                      <polyline points="9 12 11 14 15 10"></polyline>
-                    </svg>
-                  </div>
-                  <div class="cert-seal-text">MIROS ASSESSMENT</div>
-                  <div class="cert-seal-sub">CERTIFICATION WORKFLOW</div>
-                </div>
-              </div>
-
-              <!-- Qualitative Compliance Indicators (Zero fake numbers) -->
-              <div class="compliance-indicators-grid">
-                <div class="compliance-pill-box">
-                  <div class="pill-header-row">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span>Hardware Durability</span>
-                  </div>
-                  <div class="pill-status-val">Assessment criteria</div>
-                </div>
-
-                <div class="compliance-pill-box">
-                  <div class="pill-header-row">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span>Crash Telemetry</span>
-                  </div>
-                  <div class="pill-status-val">Assessment criteria</div>
-                </div>
-
-                <div class="compliance-pill-box">
-                  <div class="pill-header-row">
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                    <span>Data Security</span>
-                  </div>
-                  <div class="pill-status-val">Assessment criteria</div>
-                </div>
-              </div>
-
-              <!-- Bottom Stream Wave / Verification Bar -->
-              <div class="card-footer-stream">
-                <span class="stream-meta-label">ASSESSMENT AND VERIFICATION</span>
-                <svg class="stream-wave-visual" viewBox="0 0 220 18" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                  <path class="stream-line-path" d="M 0,9 L 30,9 L 40,2 L 50,16 L 60,9 L 100,9 L 110,1 L 120,17 L 130,9 L 170,9 L 180,3 L 190,15 L 200,9 L 220,9" />
+          <!-- Hero Right Column: Clean Institutional Visual with Lorry -->
+          <div class="hero-right">
+            <div class="hero-visual-card" role="region" aria-label="Commercial vehicle telematics rating evaluation visual">
+              <div class="visual-top-badge">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.5">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                 </svg>
-                <span class="stream-status-ok">
-                  <span class="status-dot-pulse" style="width: 5px; height: 5px;"></span>
-                  TRACKSCORE
-                </span>
+                Fleet Telematics &amp; Safety Rating
+              </div>
+
+              <!-- Real Commercial Vehicle Target Context -->
+              <div class="lorry-image-stage">
+                <div class="lorry-backdrop-glow" aria-hidden="true"></div>
+
+                <!-- Floating Subtle GPS Telematics Marker -->
+                <div class="telematics-gps-tag" aria-hidden="true">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#F58220" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                  <span>Telematics Verified</span>
+                </div>
+
+                <img
+                  src="/commercial-vehicle-truck.png"
+                  alt="Commercial vehicle heavy lorry representing transport fleet operations and TrackScore telematics evaluation"
+                  class="hero-lorry-img"
+                  width="910"
+                  height="686"
+                  loading="eager"
+                />
+                <div class="lorry-ground-shadow" aria-hidden="true"></div>
+              </div>
+
+              <div class="visual-footer-info">
+                <span>Commercial Vehicle Operations</span>
+                <strong>MIROS Standard Rubric</strong>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- =========================================================
+         4. TRACKSCORE SUMMARY METRICS
+         ========================================================= -->
+    <section class="metrics-section" aria-label="TrackScore Evaluation Summary Metrics">
+      <div class="container">
+        <div class="metrics-grid">
+          <!-- Metric 1: 24 Basic Features -->
+          <div class="metric-card">
+            <div class="metric-number">24</div>
+            <div class="metric-label">Basic Features</div>
+            <div class="metric-sub">Core telematics, positioning and operational data parameters</div>
+          </div>
+
+          <!-- Metric 2: 9 Additional Features -->
+          <div class="metric-card">
+            <div class="metric-number">9</div>
+            <div class="metric-label">Additional Features</div>
+            <div class="metric-sub">Advanced safety support, vehicle monitoring and reporting</div>
+          </div>
+
+          <!-- Metric 3: 1–5 Star Rating -->
+          <div class="metric-card accent-orange">
+            <div class="metric-number">1–5</div>
+            <div class="metric-label">Star Rating</div>
+            <div class="metric-sub">Objective rating scale based on technical criteria verification</div>
+          </div>
+
+          <!-- Metric 4: 33 Total Criteria -->
+          <div class="metric-card">
+            <div class="metric-number">33</div>
+            <div class="metric-label">Total Criteria</div>
+            <div class="metric-sub">Defined evaluation criteria across basic and additional features</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         5. HOW IT WORKS
+         ========================================================= -->
+    <section class="section-standard" id="how-it-works">
+      <div class="container">
+        <div class="section-header-block">
+          <div class="section-eyebrow">Evaluation Pathway</div>
+          <h2 class="section-title">How It Works</h2>
+          <p class="section-subtitle">
+            A clear four-step process for evaluating commercial vehicle tracking systems.
+          </p>
+        </div>
+
+        <div class="steps-grid">
+          <!-- Step 1: Apply -->
+          <div class="step-card">
+            <div class="step-badge">
+              <span class="step-num">1</span>
+              <div class="step-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                </svg>
+              </div>
+            </div>
+            <h3 class="step-title">Apply</h3>
+            <p class="step-desc">
+              Submit an assessment application with company information and vehicle tracking hardware details.
+            </p>
+          </div>
+
+          <!-- Step 2: Assessment -->
+          <div class="step-card">
+            <div class="step-badge">
+              <span class="step-num">2</span>
+              <div class="step-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M9 11l3 3L22 4"></path>
+                  <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path>
+                </svg>
+              </div>
+            </div>
+            <h3 class="step-title">Assessment</h3>
+            <p class="step-desc">
+              MIROS evaluates the tracking system against defined technical criteria and functional capabilities.
+            </p>
+          </div>
+
+          <!-- Step 3: Rating -->
+          <div class="step-card">
+            <div class="step-badge">
+              <span class="step-num">3</span>
+              <div class="step-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                </svg>
+              </div>
+            </div>
+            <h3 class="step-title">Rating</h3>
+            <p class="step-desc">
+              An objective 1 to 5 star rating is determined based on verified basic and additional features.
+            </p>
+          </div>
+
+          <!-- Step 4: Results -->
+          <div class="step-card">
+            <div class="step-badge">
+              <span class="step-num">4</span>
+              <div class="step-icon" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                  <polyline points="9 12 11 14 15 10"></polyline>
+                </svg>
+              </div>
+            </div>
+            <h3 class="step-title">Results</h3>
+            <p class="step-desc">
+              Official assessment results and verified certificate information are recorded and can be viewed.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         6. RATING CRITERIA OVERVIEW
+         ========================================================= -->
+    <section class="section-standard criteria-section" id="criteria">
+      <div class="container">
+        <div class="section-header-block">
+          <div class="section-eyebrow">Assessment Rubric</div>
+          <h2 class="section-title">Rating Criteria</h2>
+          <p class="section-subtitle">
+            TrackScore evaluates 33 criteria across basic and additional tracking-system features.
+          </p>
+        </div>
+
+        <div class="criteria-equation-card">
+          <div class="equation-grid">
+            <!-- Box 1: 24 Basic Features -->
+            <div class="equation-box">
+              <div class="equation-box-number">24</div>
+              <div class="equation-box-title">Basic Features</div>
+              <div class="equation-box-detail">Fundamental positioning, telemetry logging and core operation</div>
+            </div>
+
+            <div class="equation-symbol" aria-hidden="true">+</div>
+
+            <!-- Box 2: 9 Additional Features -->
+            <div class="equation-box">
+              <div class="equation-box-number">9</div>
+              <div class="equation-box-title">Additional Features</div>
+              <div class="equation-box-detail">Enhanced safety, diagnostic capabilities and advanced reporting</div>
+            </div>
+
+            <div class="equation-symbol" aria-hidden="true">=</div>
+
+            <!-- Box 3: 33 Criteria -->
+            <div class="equation-box total-box">
+              <div class="equation-box-number">33</div>
+              <div class="equation-box-title">Total Criteria</div>
+              <div class="equation-box-detail">Comprehensive evaluation determining the overall star rating</div>
+            </div>
+          </div>
+
+          <div class="criteria-action-row">
+            <a href="/request-assessment.html" class="btn-criteria-link">
+              Apply for TrackScore Assessment &rarr;
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================
+         7. RESULTS / VERIFICATION CTA
+         ========================================================= -->
+    <section class="section-standard" id="results">
+      <div class="container">
+        <div class="results-cta-card">
+          <div class="results-cta-content">
+            <div class="results-eyebrow">Public Verification</div>
+            <h2 class="results-title">View TrackScore Results</h2>
+            <p class="results-desc">
+              Check TrackScore ratings and available certification information for evaluated commercial tracking systems.
+            </p>
+          </div>
+
+          <div class="results-btn-group">
+            <a href="/verify-certificate.html" class="btn-results-verify">
+              Verify Certificate
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="20 6 9 17 4 12"></polyline>
+              </svg>
+            </a>
+
+            <a href="/verify-certificate.html" class="btn-results-view">
+              View Results
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
   </main>
 
   <!-- =========================================================
-       SMALL TRUST / CREDIBILITY LINE (Subtle & Compact, Light)
-       ========================================================= -->
-  <section class="credibility-strip" aria-label="Institutional Credibility">
-    <div class="container">
-      <div class="credibility-inner">
-        <div class="credibility-item">
-          <span class="credibility-dot" aria-hidden="true"></span>
-          <span>MALAYSIAN INSTITUTE OF ROAD SAFETY RESEARCH (MIROS)</span>
-        </div>
-        <div class="credibility-sep" aria-hidden="true">&bull;</div>
-        <div class="credibility-item">
-          <span>NATIONAL TELEMATICS ASSESSMENT PLATFORM</span>
-        </div>
-        <div class="credibility-sep" aria-hidden="true">&bull;</div>
-        <div class="credibility-item">
-          <span>MS 2673 COMPLIANCE STANDARD</span>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- =========================================================
-       CONCISE SITE FOOTER (Clean Light Surface)
+       8. SIMPLE FOOTER
        ========================================================= -->
   <footer class="site-footer">
-    <div class="container footer-inner">
-      <div class="footer-brand">
-        <span style="font-weight: 800; color: #0F172A; font-size: 14px;">TrackScore</span>
-        <span style="color: #CBD5E1;">&bull;</span>
-        <span style="color: var(--text-muted); font-size: 13px;">MIROS Testing Facility, Kajang, Selangor</span>
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Footer Column 1: Brand & Positioning -->
+        <div class="footer-brand-block">
+          <div class="footer-logo-row">
+            <img src="/miros-logo.svg" alt="MIROS" height="32" />
+            <div class="footer-brand-title">TrackScore</div>
+          </div>
+          <p class="footer-brand-desc">
+            Commercial Vehicle Tracking System Rating Programme by the Malaysian Institute of Road Safety Research (MIROS).
+          </p>
+        </div>
+
+        <!-- Footer Column 2: Quick Links -->
+        <div>
+          <h3 class="footer-col-title">Programme Links</h3>
+          <ul class="footer-link-list">
+            <li><a href="#about">About TrackScore</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#criteria">Rating Criteria</a></li>
+            <li><a href="/request-assessment.html">Apply for TrackScore</a></li>
+            <li><a href="/verify-certificate.html">Results &amp; Verification</a></li>
+            <li><a href="/login.html">Sign In</a></li>
+          </ul>
+        </div>
+
+        <!-- Footer Column 3: Verified Contact Details -->
+        <div>
+          <h3 class="footer-col-title">Testing Facility</h3>
+          <p class="footer-contact-item">
+            Malaysian Institute of Road Safety Research (MIROS)<br />
+            Testing Facility, Kajang, Selangor, Malaysia
+          </p>
+          <p class="footer-contact-item">
+            Email: <a href="mailto:admin@miros.gov.my" style="color: var(--primary-orange);">admin@miros.gov.my</a><br />
+            Phone: <a href="tel:+60389249200" style="color: var(--text-main); font-weight: 600;">+603-8924 9200</a>
+          </p>
+        </div>
       </div>
 
-      <ul class="footer-links">
-        <li><a href="/request-assessment.html">Register Company</a></li>
-        <li><a href="/login.html">Sign In to Portal</a></li>
-        <li><a href="mailto:admin@miros.gov.my">admin@miros.gov.my</a></li>
-        <li><a href="tel:+60389249200">+603-8924 9200</a></li>
-      </ul>
-
-      <div class="footer-copy">
-        &copy; 2026 MIROS. All Rights Reserved.
+      <div class="footer-bottom">
+        <div>
+          &copy; 2026 Malaysian Institute of Road Safety Research (MIROS). All Rights Reserved.
+        </div>
+        <div>
+          TrackScore Commercial Vehicle Tracking System Rating Programme
+        </div>
       </div>
     </div>
   </footer>
 
   <!-- =========================================================
-       DETAILED INFO SLIDE-OVER DRAWER (Clean Light Theme)
+       Lightweight Navigation Script
        ========================================================= -->
-  <div class="info-modal-backdrop" id="info-modal-backdrop" aria-hidden="true">
-    <aside class="info-drawer" id="info-drawer" role="dialog" aria-modal="true" aria-labelledby="drawer-title-id">
-      <div class="drawer-header">
-        <div class="drawer-title" id="drawer-title-id">Platform Specifications</div>
-        <button class="drawer-close-btn" id="drawer-close-btn" aria-label="Close information drawer">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-      </div>
-
-      <!-- Tab Switcher -->
-      <nav class="drawer-nav-tabs" aria-label="Specification Tabs">
-        <button class="drawer-tab active" data-tab-target="rating">Rating Standard</button>
-        <button class="drawer-tab" data-tab-target="matrix">Evaluation Matrix</button>
-        <button class="drawer-tab" data-tab-target="packages">Packages</button>
-        <button class="drawer-tab" data-tab-target="process">Process</button>
-        <button class="drawer-tab" data-tab-target="portals">Portals</button>
-      </nav>
-
-      <div class="drawer-body">
-        <!-- TAB 1: Rating Standard -->
-        <div class="tab-content-panel active" id="tab-panel-rating">
-          <h3 class="drawer-section-title">The MIROS 5-Star Telematics Standard</h3>
-          <p class="drawer-section-desc">
-            Devices are benchmarked across hardware durability, crash event precision, and data encryption into an official star grade recognised by transport regulators and commercial insurers.
-          </p>
-          <div class="drawer-card-grid">
-            <div class="drawer-card">
-              <h4><span>&#9733;&#9733;&#9733;&#9733;&#9733; 1?5 Star Assessment</span> <span class="price-tag">90% &ndash; 100%</span></h4>
-              <p>Full CAN-bus telemetry, precision crash g-force profiling, real-time failover, and hardware-level encryption.</p>
-            </div>
-            <div class="drawer-card">
-              <h4><span>&#9733;&#9733;&#9733;&#9733;&#9734; 4-Star Advanced</span> <span class="price-tag">80% &ndash; 89%</span></h4>
-              <p>Reliable sensor telemetry, anti-tamper triggers, 4G cellular backup, and verified OBD diagnostic compliance.</p>
-            </div>
-            <div class="drawer-card">
-              <h4><span>&#9733;&#9733;&#9733;&#9734;&#9734; 3-Star Standard</span> <span class="price-tag">70% &ndash; 79%</span></h4>
-              <p>Core location tracking, speed monitoring, and standard fleet telematics reporting meeting basic regulatory thresholds.</p>
-            </div>
-            <div class="drawer-card">
-              <h4><span>&#9733;&#9733;&#9734;&#9734;&#9734; 2-Star Conditional</span> <span class="price-tag">50% &ndash; 69%</span></h4>
-              <p>Entry-level GPS tracking with conditional compliance; recommendations provided for hardware upgrade.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB 2: Evaluation Matrix -->
-        <div class="tab-content-panel" id="tab-panel-matrix">
-          <h3 class="drawer-section-title">Key Assessment Pillars</h3>
-          <p class="drawer-section-desc">
-            Independent laboratory evaluation covering physical hardware resilience, sensor fidelity, and data security.
-          </p>
-          <div class="drawer-card-grid">
-            <div class="drawer-card">
-              <h4>Hardware &amp; Physical Durability</h4>
-              <p>Thermal resistance, IP water/dust sealing, vibration tolerance, internal battery reserve, and harness integrity under automotive conditions.</p>
-            </div>
-            <div class="drawer-card">
-              <h4>Crash &amp; Impact Telemetry</h4>
-              <p>High-frequency 3-axis accelerometer logging, rollover detection, severe impact alert latency, and pre-crash buffer capture.</p>
-            </div>
-            <div class="drawer-card">
-              <h4>Location Precision &amp; CAN-Bus</h4>
-              <p>Multi-constellation GNSS accuracy (GPS/GLONASS/Galileo), odometer precision, fuel economy data, and engine diagnostic reporting.</p>
-            </div>
-            <div class="drawer-card">
-              <h4>Data Security &amp; Anti-Tamper</h4>
-              <p>TLS 1.3 transmission encryption, authenticated firmware signing, SIM card lock, and instant alerts when device is disconnected.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB 3: Packages -->
-        <div class="tab-content-panel" id="tab-panel-packages">
-          <h3 class="drawer-section-title">Assessment Packages</h3>
-          <p class="drawer-section-desc">
-            Select the evaluation package suited to your commercial fleet roll-out or regulatory compliance requirements.
-          </p>
-          <div class="drawer-card-grid">
-            <div class="drawer-card" style="border-color: rgba(249, 115, 22, 0.4); background: #FFF7ED;">
-              <h4><span>Comprehensive Assessment (Recommended)</span> <span class="price-tag">RM 6,000</span></h4>
-              <p>Complete stress-testing, physical teardown, advanced CAN-bus decoding, environmental vibration chamber testing, and priority 5-day review.</p>
-            </div>
-            <div class="drawer-card">
-              <h4><span>Standard Assessment</span> <span class="price-tag">RM 4,500</span></h4>
-              <p>Core hardware and sensor verification, basic crash trigger testing, official MIROS Technical Audit Report, and Digital Compliance Certificate.</p>
-            </div>
-          </div>
-          <div class="drawer-footer-cta">
-            <a href="/request-assessment.html" class="btn-primary-cta" style="width: 100%; justify-content: center;">
-              Register Company &rarr;
-            </a>
-          </div>
-        </div>
-
-        <!-- TAB 4: Process -->
-        <div class="tab-content-panel" id="tab-panel-process">
-          <h3 class="drawer-section-title">Evaluation &amp; Certification Process</h3>
-          <p class="drawer-section-desc">
-            End-to-end pathway from initial inquiry submission to official MIROS accredited certification.
-          </p>
-          <div class="drawer-card-grid">
-            <div class="drawer-card">
-              <h4>01 &bull; Public Inquiry</h4>
-              <p>Vendor submits company, contact, and device model details via the public intake form.</p>
-            </div>
-            <div class="drawer-card">
-              <h4>02 &bull; Registration &amp; Invoicing</h4>
-              <p>Operations Manager reviews inquiry, issues formal invoice, and provisions vendor access credentials.</p>
-            </div>
-            <div class="drawer-card">
-              <h4>03 &bull; Lab Scheduling</h4>
-              <p>Inspection slot scheduled with certified MIROS assessors.</p>
-            </div>
-            <div class="drawer-card">
-              <h4>04 &bull; Technical Evaluation</h4>
-              <p>Assessors conduct hardware inspections, CAN-bus audits, and calculate weighted criteria scores.</p>
-            </div>
-            <div class="drawer-card">
-              <h4>05 &bull; Certification</h4>
-              <p>Final approval by MIROS Manager, issuing official Star Rating certificate &amp; audit PDF.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- TAB 5: Portals -->
-        <div class="tab-content-panel" id="tab-panel-portals">
-          <h3 class="drawer-section-title">Dedicated User Portals</h3>
-          <p class="drawer-section-desc">
-            Secure, role-based workflows for client vendors, certified assessors, and MIROS operations managers.
-          </p>
-          <div class="drawer-card-grid">
-            <div class="drawer-card">
-              <h4>Telematics Vendors</h4>
-              <p style="margin-bottom: 12px;">Upload required documents, track live evaluation progress, and download certificates when available.</p>
-              <a href="/login.html?role=vendor" class="btn-secondary-cta" style="padding: 8px 16px; font-size: 13px;">Sign In as Vendor &rarr;</a>
-            </div>
-            <div class="drawer-card">
-              <h4>Certified Assessors</h4>
-              <p style="margin-bottom: 12px;">Access criteria checklists, auto-score calculation engines, live draft saving, and discrepancy remediation tools.</p>
-              <a href="/login.html?role=assessor" class="btn-secondary-cta" style="padding: 8px 16px; font-size: 13px;">Sign In as Assessor &rarr;</a>
-            </div>
-            <div class="drawer-card">
-              <h4>Operations Managers</h4>
-              <p style="margin-bottom: 12px;">Manage customer intake, assign evaluation dates, review assessments, approve final star ratings, and issue certificates.</p>
-              <a href="/login.html?role=manager" class="btn-secondary-cta" style="padding: 8px 16px; font-size: 13px;">Sign In as Manager &rarr;</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </aside>
-  </div>
-
-  <!-- Lightweight Vanilla JS for Interactions -->
   <script>
     (function() {
-      // Mobile drawer toggle
-      var mobileToggle = document.getElementById('mobile-toggle-btn');
-      var mobileDrawer = document.getElementById('mobile-drawer-menu');
-      if (mobileToggle && mobileDrawer) {
-        mobileToggle.addEventListener('click', function() {
-          var isOpen = mobileDrawer.classList.toggle('open');
-          mobileToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      // Mobile Navigation Toggle
+      var toggleBtn = document.getElementById('mobile-toggle-btn');
+      var mobileMenu = document.getElementById('mobile-menu');
+      if (toggleBtn && mobileMenu) {
+        toggleBtn.addEventListener('click', function() {
+          var isOpen = mobileMenu.classList.toggle('open');
+          toggleBtn.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+        });
+
+        // Close menu on link click
+        var mobileLinks = mobileMenu.querySelectorAll('a');
+        mobileLinks.forEach(function(link) {
+          link.addEventListener('click', function() {
+            mobileMenu.classList.remove('open');
+            toggleBtn.setAttribute('aria-expanded', 'false');
+          });
         });
       }
 
-      // Information Drawer & Tabs
-      var backdrop = document.getElementById('info-modal-backdrop');
-      var closeBtn = document.getElementById('drawer-close-btn');
-      var navButtons = document.querySelectorAll('.open-drawer-tab');
-      var tabButtons = document.querySelectorAll('.drawer-tab');
-      var tabPanels = document.querySelectorAll('.tab-content-panel');
-
-      function switchTab(targetName) {
-        tabButtons.forEach(function(btn) {
-          if (btn.getAttribute('data-tab-target') === targetName) {
-            btn.classList.add('active');
-          } else {
-            btn.classList.remove('active');
-          }
-        });
-        tabPanels.forEach(function(panel) {
-          if (panel.id === 'tab-panel-' + targetName) {
-            panel.classList.add('active');
-          } else {
-            panel.classList.remove('active');
-          }
-        });
-      }
-
-      function openDrawer(tabName) {
-        if (tabName) switchTab(tabName);
-        backdrop.classList.add('open');
-        backdrop.setAttribute('aria-hidden', 'false');
-        document.body.style.overflow = 'hidden';
-      }
-
-      function closeDrawer() {
-        backdrop.classList.remove('open');
-        backdrop.setAttribute('aria-hidden', 'true');
-        document.body.style.overflow = '';
-      }
-
-      navButtons.forEach(function(btn) {
-        btn.addEventListener('click', function(e) {
-          e.preventDefault();
-          var tab = btn.getAttribute('data-tab') || 'rating';
-          if (mobileDrawer) mobileDrawer.classList.remove('open');
-          openDrawer(tab);
-        });
-      });
-
-      tabButtons.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var target = btn.getAttribute('data-tab-target');
-          switchTab(target);
-        });
-      });
-
-      if (closeBtn) {
-        closeBtn.addEventListener('click', closeDrawer);
-      }
-
-      if (backdrop) {
-        backdrop.addEventListener('click', function(e) {
-          if (e.target === backdrop) {
-            closeDrawer();
-          }
-        });
-      }
-
+      // Close mobile menu on Escape key
       window.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape' && backdrop.classList.contains('open')) {
-          closeDrawer();
+        if (e.key === 'Escape' && mobileMenu && mobileMenu.classList.contains('open')) {
+          mobileMenu.classList.remove('open');
+          if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
         }
       });
-
-      // If page URL has hash corresponding to a tab, open it
-      var hash = window.location.hash;
-      if (hash === '#star-rating') openDrawer('rating');
-      else if (hash === '#criteria') openDrawer('matrix');
-      else if (hash === '#packages') openDrawer('packages');
-      else if (hash === '#workflow') openDrawer('process');
-      else if (hash === '#portals') openDrawer('portals');
     })();
   </script>
 

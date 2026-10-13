@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="/portal-guard.js" data-role="vendor"></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/svg+xml" href="/TrackScore_TS_Icon.svg">
@@ -1105,8 +1106,46 @@
       { key: 'completed', label: 'Completed' }
     ];
 
+    function parseJwtPayload(token) {
+      try {
+        if (!token || typeof token !== 'string') return null;
+        const parts = token.split('.');
+        if (parts.length !== 3 || !parts[1]) return null;
+        const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+        const jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+          return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join(''));
+        return JSON.parse(jsonPayload);
+      } catch (e) {
+        return null;
+      }
+    }
+
     const token = localStorage.getItem('trackscore_token');
-    const userRole = localStorage.getItem('trackscore_user_role');
+    const tokenClaims = parseJwtPayload(token);
+    if (!token || !tokenClaims || !tokenClaims.role) {
+      localStorage.removeItem('trackscore_token');
+      localStorage.removeItem('trackscore_user_role');
+      localStorage.removeItem('trackscore_user');
+      window.location.href = '/login.html';
+    } else if (tokenClaims.exp && tokenClaims.exp * 1000 < Date.now()) {
+      localStorage.removeItem('trackscore_token');
+      localStorage.removeItem('trackscore_user_role');
+      localStorage.removeItem('trackscore_user');
+      window.location.href = '/login.html?reason=expired';
+    } else if (tokenClaims.role !== 'vendor') {
+      localStorage.setItem('trackscore_user_role', tokenClaims.role);
+      if (tokenClaims.role === 'manager') {
+        window.location.href = '/dashboard.html';
+      } else if (tokenClaims.role === 'assessor') {
+        window.location.href = '/index.html';
+      } else {
+        window.location.href = '/login.html';
+      }
+    } else {
+      localStorage.setItem('trackscore_user_role', 'vendor');
+    }
+    const userRole = tokenClaims ? tokenClaims.role : '';
     let currentVendorData = null;
     let cachedEvaluations = [];
     let html2pdfLoadingPromise = null;
@@ -1115,11 +1154,6 @@
     let pendingStatusEvent = null;
     let notificationsList = [];
     let currentAbortController = null;
-
-    // Security check on mount: vendor token required
-    if (!token || userRole !== 'vendor') {
-      window.location.href = '/login.html';
-    }
 
     // Helper: Toast notification
     function showToast(message, type = 'info') {
@@ -1211,7 +1245,7 @@
       if (html2pdfLoadingPromise) return html2pdfLoadingPromise;
       html2pdfLoadingPromise = new Promise((resolve, reject) => {
         const script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+        script.src = '/pdf-engine.js';
         script.async = true;
         script.onload = () => resolve(window.html2pdf);
         script.onerror = (err) => {

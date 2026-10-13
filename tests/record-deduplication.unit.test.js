@@ -139,6 +139,8 @@ describe('Assessment Record Deduplication & Linking Unit Tests', () => {
     const registrationId = regBody.id || regBody.evaluation?.id || regBody.registration?._id;
     testIdsToCleanup.push(registrationId);
 
+    // Assign the registration before the Assessor submits it.
+    await (await connectToDatabase()).updateEvaluation(registrationId,{assignedAssessorId:'KUL 8820',assignedAssessorName:'Ts. Mohd Farhan'});
     // B. Assessor submits evaluation for the same company + deviceModel
     const saveEvent = {
       httpMethod: 'POST',

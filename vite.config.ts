@@ -23,6 +23,8 @@ export default defineConfig(() => {
           changePassword: path.resolve(__dirname, 'change-password.html'),
           verifyCertificate: path.resolve(__dirname, 'verify-certificate.html'),
           reactManager: path.resolve(__dirname, 'react/manager.html'),
+          reactAssessor: path.resolve(__dirname, 'react/assessor.html'),
+          reactVendor: path.resolve(__dirname, 'react/vendor.html'),
         },
       },
     },

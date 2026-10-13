@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: vendor-invite
  * Manager-initiated vendor credential generation.
@@ -40,7 +41,7 @@ function generateVendorPassword() {
   while (second === first) {
     second = PASSWORD_WORDS[crypto.randomInt(PASSWORD_WORDS.length)];
   }
-  return `${first}-${second}-${String(crypto.randomInt(100)).padStart(2, '0')}`;
+  return `${first}-${second}-${crypto.randomBytes(12).toString('base64url')}`;
 }
 
 async function generateUniqueLoginEmail(connection, companyName, existingVendor = null) {
@@ -56,7 +57,7 @@ async function generateUniqueLoginEmail(connection, companyName, existingVendor 
   }
 }
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -208,7 +209,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[VENDOR-INVITE-ERROR]', error);
+    logSecurityFailure('vendor-invite');
     return {
       statusCode: 500,
       headers,
@@ -216,5 +217,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'vendor-invite');
 
 export default { handler };

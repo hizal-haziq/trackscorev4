@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure, assessorOwns, assessorMongoScope} from './security.js';
 /**
  * Netlify Serverless Function: get-evaluations
  * Handles GET requests to retrieve historical evaluations sorted by date descending.
@@ -31,7 +32,7 @@ function attachRiskToRecord(doc, peerEvals) {
   };
 }
 
-export const handler = async (event, context) => {
+const rawHandler = async (event, context) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -55,7 +56,7 @@ export const handler = async (event, context) => {
   }
 
   // 1. API Protection Check (Assessor or Manager Role Required; Vendors Forbidden)
-  const roleCheck = validateRole(event, ROLE_ASSESSOR);
+  const roleCheck = validateRole(event, [ROLE_ASSESSOR, ROLE_MANAGER]);
   if (!roleCheck.authorized) {
     return authErrorResponse(headers, roleCheck.statusCode, roleCheck.error);
   }
@@ -71,7 +72,7 @@ export const handler = async (event, context) => {
     }
     const page = Math.max(1, parseInt(params.page, 10) || 1);
     const limit = Math.max(1, Math.min(100, parseInt(params.limit, 10) || 25));
-    const includeDeleted = params.includeDeleted === 'true' || params.includeDeleted === '1';
+    const includeDeleted = !isAssessorOnly && (params.includeDeleted === 'true' || params.includeDeleted === '1');
     const statusFilter = (params.status || '').trim().toLowerCase();
     const slaStatusParam = (params.slaStatus || params.sla || '').trim().toUpperCase();
     const riskStatusParam = (params.riskLevel || params.risk || '').trim().toUpperCase();
@@ -119,8 +120,8 @@ export const handler = async (event, context) => {
           assessorConditions.push({ assignedAssessorEmail: { $regex: roleCheck.user.email, $options: 'i' } });
         }
         if (assessorConditions.length > 0) {
-          queryFilter.$or = assessorConditions;
-        }
+          Object.assign(queryFilter, assessorMongoScope(roleCheck.user));
+        } else { queryFilter._id = '__NO_AUTHORIZED_RECORD__'; }
       } else if (params.assessor) {
         const aParam = params.assessor.trim();
         queryFilter.$or = [
@@ -148,7 +149,7 @@ export const handler = async (event, context) => {
       }
 
       if (searchQuery) {
-        const sRegex = { $regex: searchQuery, $options: 'i' };
+        const sRegex = { $regex: searchQuery.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), $options: 'i' };
         queryFilter.$and = queryFilter.$and || [];
         queryFilter.$and.push({
           $or: [
@@ -242,19 +243,7 @@ export const handler = async (event, context) => {
 
       // Strict role scoping for assessors in local fallback
       if (isAssessorOnly) {
-        allEvaluations = allEvaluations.filter(d => {
-          const matchId = authenticatedAssessorId && (
-            String(d.assessorId || '') === authenticatedAssessorId ||
-            String(d.assignedAssessorId || '') === authenticatedAssessorId
-          );
-          const matchName = authenticatedAssessorName && (
-            String(d.assessorName || '').toLowerCase().includes(authenticatedAssessorName.toLowerCase()) ||
-            String(d.assignedAssessor || '').toLowerCase().includes(authenticatedAssessorName.toLowerCase()) ||
-            String(d.assignedAssessorName || '').toLowerCase().includes(authenticatedAssessorName.toLowerCase())
-          );
-          const matchEmail = roleCheck.user?.email && String(d.assignedAssessorEmail || '').toLowerCase() === roleCheck.user.email.toLowerCase();
-          return matchId || matchName || matchEmail;
-        });
+        allEvaluations = allEvaluations.filter(d => assessorOwns(d, roleCheck.user));
       } else if (params.assessor) {
         const aParam = params.assessor.trim().toLowerCase();
         allEvaluations = allEvaluations.filter(d => 
@@ -360,7 +349,7 @@ export const handler = async (event, context) => {
       })
     };
   } catch (error) {
-    console.error('Error fetching evaluations:', error);
+    logSecurityFailure('get-evaluations');
     return {
       statusCode: 500,
       headers,
@@ -559,5 +548,7 @@ export function deduplicateEvaluations(records) {
 
   return result;
 }
+
+export const handler = secureHandler(rawHandler, 'get-evaluations');
 
 export default { handler, deduplicateEvaluations };

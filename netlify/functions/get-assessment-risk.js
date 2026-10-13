@@ -1,3 +1,5 @@
+import {assessorOwns} from './security.js';
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: get-assessment-risk
  * Provides on-demand and cached assessment risk and anomaly intelligence.
@@ -31,7 +33,7 @@ import {
   RISK_LEVELS
 } from './assessment-risk.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization, x-api-key',
@@ -156,9 +158,7 @@ export const handler = async (event) => {
       const docAssessorId = evaluation.assessorId || evaluation.assignedAssessorId;
       const docAssessorName = evaluation.assessorName || evaluation.assignedAssessor;
 
-      const isMatch = (currentAssessorId && docAssessorId === currentAssessorId) ||
-                      (currentUserName && docAssessorName && docAssessorName.toLowerCase() === currentUserName.toLowerCase());
-
+      const isMatch = assessorOwns(evaluation, auth.user);
       if (!isMatch) {
         return {
           statusCode: 403,
@@ -220,7 +220,7 @@ export const handler = async (event) => {
     };
 
   } catch (err) {
-    console.error('[GET-ASSESSMENT-RISK-ERROR]', err);
+    logSecurityFailure('get-assessment-risk');
     return {
       statusCode: 500,
       headers,
@@ -231,3 +231,5 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'get-assessment-risk');

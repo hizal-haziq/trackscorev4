@@ -1,3 +1,4 @@
+import {secureHandler, logSecurityFailure} from './security.js';
 /**
  * Netlify Serverless Function: vendor-profile
  * Secure Profile & Password Management for Vendor Self-Service Portal
@@ -18,7 +19,7 @@ import {
 } from './db.js';
 import { verifyToken, getBearerToken, ROLE_VENDOR } from './auth.js';
 
-export const handler = async (event) => {
+const rawHandler = async (event) => {
   const headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Headers': 'Content-Type, Authorization',
@@ -207,7 +208,7 @@ export const handler = async (event) => {
       })
     };
   } catch (error) {
-    console.error('[VENDOR-PROFILE-ERROR]', error);
+    logSecurityFailure('vendor-profile');
     return {
       statusCode: 500,
       headers,
@@ -215,5 +216,7 @@ export const handler = async (event) => {
     };
   }
 };
+
+export const handler = secureHandler(rawHandler, 'vendor-profile');
 
 export default { handler };

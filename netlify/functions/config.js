@@ -1,8 +1,9 @@
-exports.handler = async (event, context) => {
+import {secureHandler} from './security.js';
+const rawHandler = async (event, context) => {
   // Define the configuration object your frontend expects
   const config = {
     // Inject safe environment variables here
-    APP_URL: process.env.APP_URL || "",
+    APP_URL: "",
     API_BASE: "/api",
     
     // 🚨 CRITICAL SECURITY WARNING: 
@@ -22,3 +23,4 @@ exports.handler = async (event, context) => {
     body: `window.APP_CONFIG = ${JSON.stringify(config)};`,
   };
 };
+export const handler=secureHandler(rawHandler,'config');
